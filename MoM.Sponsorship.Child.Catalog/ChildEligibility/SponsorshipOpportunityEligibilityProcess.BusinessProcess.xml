@@ -1,0 +1,38 @@
+﻿<BusinessProcessSpec
+	xmlns="bb_appfx_businessprocess"
+	xmlns:common="bb_appfx_commontypes"
+	ID="c0c3662a-2586-4104-a1db-638e9e9950b0"
+	Name="Sponsorship Opportunity Eligibility Business Process"
+	Description="This business process is used to update the pending reasons and eligibility of children"
+	Author="Cary Mayeda"
+	GeneratesOutput="false"
+	ParameterTableName="USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS"
+	RecordType="SponsorshipOpportunityEligibilityProcess"
+	common:SecurityUIFolder="Sponsorship\Business Process\Eligibility"
+	>
+
+	<!-- 
+	Remarks:	The updating of Pending Reasons is all taken care of in USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.
+				USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK is structured to take in a sponsorship opportunity selection to determine which children to check.
+				USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK is also used for the 'Sponsorship Opportunity Eligibility Check' record operation.
+								
+	History:
+	Date			Modified By		Comments
+    21-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<ProcessorComponent AssemblyName="CarySpecs.dll" ClassName="CarySpecs.SponsorshipOpportunityEligibilityProcessBusinessProcess" >
+		<common:GrantExecuteList>
+			<common:GrantExecute>dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS</common:GrantExecute>
+			<common:GrantExecute>dbo.USR_USP_GETIDSETCOUNT</common:GrantExecute>
+			<common:GrantExecute>dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK</common:GrantExecute>
+			<common:GrantExecute>dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY</common:GrantExecute>
+		</common:GrantExecuteList>		
+		<common:GrantSelectList>
+			<common:GrantSelect>dbo.UFN_IDSETREADER_GETRESULTS</common:GrantSelect>
+		</common:GrantSelectList>
+		
+	</ProcessorComponent>
+
+
+</BusinessProcessSpec>

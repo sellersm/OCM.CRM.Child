@@ -1,0 +1,93 @@
+<EditDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="9791a04f-fbd0-4b62-ae77-501820e20dce"
+    Name="TESTINGONLY Edit Form"
+    Description="Used for editing the given TESTINGONLY"
+    Author="memphis-PC\Administrator"
+    RecordType="TESTINGONLY"
+    DataFormInstanceID="e93bb8b3-201e-4370-ae0c-8fcb037ca06b"
+    c:SecurityUIFolder="TESTINGONLY"
+    OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+    xmlns="bb_appfx_editdataformtemplate"
+    >
+    <SPDataForm>
+        <LoadImplementation SPName="USP_DATAFORMTEMPLATE_EDITLOAD_TESTINGONLY">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_TESTINGONLY
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @TESTMEMO nvarchar(max) = null output,
+    @TESTINGTEXT nvarchar(50) = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+        @TESTMEMO = TESTMEMO, 
+        @TESTINGTEXT = TESTINGTEXT
+	from dbo.USR_TESTINGONLY
+	where ID = @ID
+
+	return 0;
+]]>
+</c:CreateProcedureSQL>
+        </LoadImplementation>
+        <SaveImplementation SPName="USP_DATAFORMTEMPLATE_EDIT_TESTINGONLY">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_TESTINGONLY
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+    @TESTMEMO nvarchar(max),
+    @TESTINGTEXT nvarchar(50)
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+						
+	begin try
+		-- handle updating the data
+		update dbo.USR_TESTINGONLY set
+            TESTMEMO = @TESTMEMO,
+            TESTINGTEXT = @TESTINGTEXT,
+
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+		where ID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+]]>
+</c:CreateProcedureSQL>
+        </SaveImplementation>
+    </SPDataForm>
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="TESTMEMO" Caption="Testmemo" />
+            <c:FormField FieldID="TESTINGTEXT" MaxLength="50" Caption="Testingtext" />
+        </c:FormFields>
+        <c:FormUIComponent />
+    </c:FormMetaData>
+</EditDataFormTemplateSpec>

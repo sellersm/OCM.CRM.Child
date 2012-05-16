@@ -1,0 +1,176 @@
+<DataListSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="aa748817-bcc5-4e66-9247-6a97c5be68b0"
+    Name="Child Extension Table List"
+    Description="Returns all Child Extension Table records."
+    Author="memphis-PC\Administrator"
+    c:SecurityUIFolder="Child Extension Table"
+    xmlns="bb_appfx_datalist"
+    >
+    <SPDataList SPName="USP_DATALIST_CHILD_EXTENSION_TABLE">
+        <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATALIST_CHILD_EXTENSION_TABLE
+as
+	set nocount on;
+
+	select 
+        USR_CHILDEXTENSION.[ID],
+        USR_CHILDEXTENSION.[SPONSORSHIPOPPORTUNITYCHILDID],
+        USR_CHILDEXTENSION.[SIBLINGSID],
+        USR_BIRTHDATEACCURACYCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[PROGRAMCOMPLETIONDATE],
+        USR_CHILDNAMESUFFIXCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[CHILDAGE],
+        USR_CHILDLIVESWITHCODE.DESCRIPTION,
+        USR_FATHERWORKSASCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[FATHERWORKSASOTHER],
+        USR_MOTHERWORKSASCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[MOTHERWORKSASOTHER],
+        USR_CAREGIVERRELATIONCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[CAREGIVERRELATIONOTHER],
+        USR_CAREGIVERWORKSASCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[CAREGIVERWORKSASOTHER],
+        USR_CAREGIVERREASONCODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[REASONFORCAREGIVEROTHER],
+        USR_CHILDEXTENSION.[NUMBEROFSISTERS],
+        USR_CHILDEXTENSION.[NUMBEROFBROTHERS],
+        USR_CHILDEXTENSION.[HOUSINGWALLWOOD],
+        USR_CHILDEXTENSION.[HOUSINGWALLMUD],
+        USR_CHILDEXTENSION.[HOUSINGWALLBAMBOO],
+        USR_CHILDEXTENSION.[HOUSINGWALLBLOCK],
+        USR_CHILDEXTENSION.[HOUSINGWALLOTHER],
+        USR_CHILDEXTENSION.[ROOFINGTIN],
+        USR_CHILDEXTENSION.[ROOFINGGRASSLEAVES],
+        USR_CHILDEXTENSION.[ROOFINGWOOD],
+        USR_CHILDEXTENSION.[ROOFINGTILE],
+        USR_CHILDEXTENSION.[ROOFINGOTHER],
+        USR_CHILDEXTENSION.[WATERSOURCEINDOOR],
+        USR_CHILDEXTENSION.[WATERSOURCECOMMUNITYTAP],
+        USR_CHILDEXTENSION.[WATERSOURCEBOREHOLEWELL],
+        USR_CHILDEXTENSION.[WATERSOURCERIVER],
+        USR_CHILDEXTENSION.[WATERSOURCEOTHER],
+        USR_CHILDEXTENSION.[COOKINGSOURCEWOODFIRE],
+        USR_CHILDEXTENSION.[COOKINGSOURCEELECTRICSTOVE],
+        USR_CHILDEXTENSION.[COOKINGSOURCEGASSTOVE],
+        USR_CHILDEXTENSION.[COOKINGSOURCEOTHER],
+        USR_CHILDEXTENSION.[LIGHTSOURCEELECTRICITY],
+        USR_CHILDEXTENSION.[LIGHTSOURCEOILLAMP],
+        USR_CHILDEXTENSION.[LIGHTSOURCEGENERATOR],
+        USR_CHILDEXTENSION.[LIGHTSOURCENONE],
+        USR_CHILDEXTENSION.[LIGHTSOURCEOTHER],
+        USR_CHILDEXTENSION.[AREADESCRIPTION],
+        USR_CHILDEXTENSION.[MYFAVORITETHINGTODO],
+        USR_CHILDEXTENSION.[WHENIPLAYWITHFRIENDSWE],
+        USR_CHILDEXTENSION.[WHENATHOMEIHELPOUTBY],
+        USR_CHILDEXTENSION.[WHENITALKTOGODIASKHIM],
+        USR_CHILDEXTENSION.[WHENIAMATSCHOOLILIKELEARNING],
+        USR_CHILDEXTENSION.[SOMEDAYI],
+        USR_CHILDEXTENSION.[TWOMOSTFAVORITETHINGS],
+        USR_CHILDEXTENSION.[OTHERTHINGSTHECHILDENJOYS],
+        USR_CHILDEXTENSION.[CHILDPERSONALITY],
+        USR_CHILDEXTENSION.[CHILDHEALTH],
+        USR_CHILDEXTENSION.[SPIRITUALDEVELOPMENT],
+        USR_CHILDEXTENSION.[ATTENDINGSCHOOL],
+        USR_CHILDEXTENSION.[REASONNOTATTENDINGSCHOOL],
+        USR_CHILDEXTENSION.[CLASSLEVEL],
+        USR_CHILDEXTENSION.[FAVORITESUBJECT],
+        USR_CHILDEXTENSION.[VOCATIONALSKILLS],
+        USR_CHILDEXTENSION.[ADDITIONALCHILDINFORMATION],
+        USR_CHILDEXTENSION.[CCHENTEREDBY],
+        USR_CHILDEXTENSION.[CHTEMPID],
+        USR_CHILDEXTENSION.[CURRENTPHOTODATE],
+        USR_CHILDEXTENSION.[PHOTOSCANNED],
+        USR_CHILDPROFILESTATUSCODE.DESCRIPTION,
+        USR_CHILDPROFILEUPDATECODE.DESCRIPTION,
+        USR_CHILDEXTENSION.[PROFILEUPDATENOTIFICATION]
+	from 
+        dbo.USR_CHILDEXTENSION
+        left outer join dbo.USR_BIRTHDATEACCURACYCODE on USR_CHILDEXTENSION.[BIRTHDATEACCURACYCODEID] = USR_BIRTHDATEACCURACYCODE.ID
+        left outer join dbo.USR_CHILDNAMESUFFIXCODE on USR_CHILDEXTENSION.[CHILDNAMESUFFIXCODEID] = USR_CHILDNAMESUFFIXCODE.ID
+        left outer join dbo.USR_CHILDLIVESWITHCODE on USR_CHILDEXTENSION.[CHILDLIVESWITHCODEID] = USR_CHILDLIVESWITHCODE.ID
+        inner join dbo.USR_FATHERWORKSASCODE on USR_CHILDEXTENSION.[FATHERWORKSASCODEID] = USR_FATHERWORKSASCODE.ID
+        inner join dbo.USR_MOTHERWORKSASCODE on USR_CHILDEXTENSION.[MOTHERWORKSASCODEID] = USR_MOTHERWORKSASCODE.ID
+        left outer join dbo.USR_CAREGIVERRELATIONCODE on USR_CHILDEXTENSION.[CAREGIVERRELATIONCODEID] = USR_CAREGIVERRELATIONCODE.ID
+        left outer join dbo.USR_CAREGIVERWORKSASCODE on USR_CHILDEXTENSION.[CAREGIVERWORKSASCODEID] = USR_CAREGIVERWORKSASCODE.ID
+        left outer join dbo.USR_CAREGIVERREASONCODE on USR_CHILDEXTENSION.[CAREGIVERREASONCODEID] = USR_CAREGIVERREASONCODE.ID
+        inner join dbo.USR_CHILDPROFILESTATUSCODE on USR_CHILDEXTENSION.[CHILDPROFILESTATUSCODEID] = USR_CHILDPROFILESTATUSCODE.ID
+        left outer join dbo.USR_CHILDPROFILEUPDATECODE on USR_CHILDEXTENSION.[CHILDPROFILEUPDATECODEID] = USR_CHILDPROFILEUPDATECODE.ID
+
+]]>
+</c:CreateProcedureSQL>
+    </SPDataList>
+    <Output>
+        <OutputFields>
+            <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+            <OutputField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid" />
+            <OutputField FieldID="SIBLINGSID" Caption="Siblings" DataType="Guid" />
+            <OutputField FieldID="BIRTHDATEACCURACYCODEID" Caption="Birthdateaccuracy" DataType="Guid" />
+            <OutputField FieldID="PROGRAMCOMPLETIONDATE" Caption="Programcompletiondate" DataType="Date" />
+            <OutputField FieldID="CHILDNAMESUFFIXCODEID" Caption="Childnamesuffix" DataType="Guid" />
+            <OutputField FieldID="CHILDAGE" Caption="Childage" DataType="TinyInt" />
+            <OutputField FieldID="CHILDLIVESWITHCODEID" Caption="Childliveswith" DataType="Guid" />
+            <OutputField FieldID="FATHERWORKSASCODEID" Caption="Fatherworksas" DataType="Guid" />
+            <OutputField FieldID="FATHERWORKSASOTHER" Caption="Fatherworksasother" DataType="String" />
+            <OutputField FieldID="MOTHERWORKSASCODEID" Caption="Motherworksas" DataType="Guid" />
+            <OutputField FieldID="MOTHERWORKSASOTHER" Caption="Motherworksasother" DataType="String" />
+            <OutputField FieldID="CAREGIVERRELATIONCODEID" Caption="Caregiverrelation" DataType="Guid" />
+            <OutputField FieldID="CAREGIVERRELATIONOTHER" Caption="Caregiverrelationother" DataType="String" />
+            <OutputField FieldID="CAREGIVERWORKSASCODEID" Caption="Caregiverworksas" DataType="Guid" />
+            <OutputField FieldID="CAREGIVERWORKSASOTHER" Caption="Caregiverworksasother" DataType="String" />
+            <OutputField FieldID="CAREGIVERREASONCODEID" Caption="Caregiverreason" DataType="Guid" />
+            <OutputField FieldID="REASONFORCAREGIVEROTHER" Caption="Reasonforcaregiverother" DataType="String" />
+            <OutputField FieldID="NUMBEROFSISTERS" Caption="Numberofsisters" DataType="TinyInt" />
+            <OutputField FieldID="NUMBEROFBROTHERS" Caption="Numberofbrothers" DataType="TinyInt" />
+            <OutputField FieldID="HOUSINGWALLWOOD" Caption="Housingwallwood" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="HOUSINGWALLMUD" Caption="Housingwallmud" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="HOUSINGWALLBAMBOO" Caption="Housingwallbamboo" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="HOUSINGWALLBLOCK" Caption="Housingwallblock" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="HOUSINGWALLOTHER" Caption="Housingwallother" DataType="String" />
+            <OutputField FieldID="ROOFINGTIN" Caption="Roofingtin" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="ROOFINGGRASSLEAVES" Caption="Roofinggrassleaves" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="ROOFINGWOOD" Caption="Roofingwood" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="ROOFINGTILE" Caption="Roofingtile" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="ROOFINGOTHER" Caption="Roofingother" DataType="String" />
+            <OutputField FieldID="WATERSOURCEINDOOR" Caption="Watersourceindoor" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="WATERSOURCECOMMUNITYTAP" Caption="Watersourcecommunitytap" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="WATERSOURCEBOREHOLEWELL" Caption="Watersourceboreholewell" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="WATERSOURCERIVER" Caption="Watersourceriver" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="WATERSOURCEOTHER" Caption="Watersourceother" DataType="String" />
+            <OutputField FieldID="COOKINGSOURCEWOODFIRE" Caption="Cookingsourcewoodfire" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="COOKINGSOURCEELECTRICSTOVE" Caption="Cookingsourceelectricstove" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="COOKINGSOURCEGASSTOVE" Caption="Cookingsourcegasstove" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="COOKINGSOURCEOTHER" Caption="Cookingsourceother" DataType="String" />
+            <OutputField FieldID="LIGHTSOURCEELECTRICITY" Caption="Lightsourceelectricity" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="LIGHTSOURCEOILLAMP" Caption="Lightsourceoillamp" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="LIGHTSOURCEGENERATOR" Caption="Lightsourcegenerator" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="LIGHTSOURCENONE" Caption="Lightsourcenone" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="LIGHTSOURCEOTHER" Caption="Lightsourceother" DataType="String" />
+            <OutputField FieldID="AREADESCRIPTION" Caption="Areadescription" DataType="String" />
+            <OutputField FieldID="MYFAVORITETHINGTODO" Caption="Myfavoritethingtodo" DataType="String" />
+            <OutputField FieldID="WHENIPLAYWITHFRIENDSWE" Caption="Wheniplaywithfriendswe" DataType="String" />
+            <OutputField FieldID="WHENATHOMEIHELPOUTBY" Caption="Whenathomeihelpoutby" DataType="String" />
+            <OutputField FieldID="WHENITALKTOGODIASKHIM" Caption="Whenitalktogodiaskhim" DataType="String" />
+            <OutputField FieldID="WHENIAMATSCHOOLILIKELEARNING" Caption="Wheniamatschoolilikelearning" DataType="String" />
+            <OutputField FieldID="SOMEDAYI" Caption="Somedayi" DataType="String" />
+            <OutputField FieldID="TWOMOSTFAVORITETHINGS" Caption="Twomostfavoritethings" DataType="String" />
+            <OutputField FieldID="OTHERTHINGSTHECHILDENJOYS" Caption="Otherthingsthechildenjoys" DataType="String" />
+            <OutputField FieldID="CHILDPERSONALITY" Caption="Childpersonality" DataType="String" />
+            <OutputField FieldID="CHILDHEALTH" Caption="Childhealth" DataType="String" />
+            <OutputField FieldID="SPIRITUALDEVELOPMENT" Caption="Spiritualdevelopment" DataType="String" />
+            <OutputField FieldID="ATTENDINGSCHOOL" Caption="Attendingschool" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="REASONNOTATTENDINGSCHOOL" Caption="Reasonnotattendingschool" DataType="String" />
+            <OutputField FieldID="CLASSLEVEL" Caption="Classlevel" DataType="String" />
+            <OutputField FieldID="FAVORITESUBJECT" Caption="Favoritesubject" DataType="String" />
+            <OutputField FieldID="VOCATIONALSKILLS" Caption="Vocationalskills" DataType="String" />
+            <OutputField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additionalchildinformation" DataType="String" />
+            <OutputField FieldID="CCHENTEREDBY" Caption="Cchenteredby" DataType="String" />
+            <OutputField FieldID="CHTEMPID" Caption="Chtempid" DataType="String" />
+            <OutputField FieldID="CURRENTPHOTODATE" Caption="Currentphotodate" DataType="Date" />
+            <OutputField FieldID="PHOTOSCANNED" Caption="Photoscanned" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="CHILDPROFILESTATUSCODEID" Caption="Childprofilestatus" DataType="Guid" />
+            <OutputField FieldID="CHILDPROFILEUPDATECODEID" Caption="Childprofileupdate" DataType="Guid" />
+            <OutputField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profileupdatenotification" DataType="Boolean" DisplayBooleanAsCheck="true" />
+        </OutputFields>
+    </Output>
+</DataListSpec>

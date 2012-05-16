@@ -1,0 +1,123 @@
+﻿<DataListSpec xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" 
+              Name="Child Bio data List" 
+              Description="The datalist used to display Child Bios" 
+              Author="Bill Elfstrom" 
+              xmlns="bb_appfx_datalist">
+  <MetaTags xmlns="bb_appfx_commontypes">
+    <AdHocQuerySaveDataListRequest xmlns="">
+      &lt;?xml version="1.0" encoding="utf-16"?&gt;
+      <AdHocQuerySaveDataListRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DataListID="37f0f7b5-f222-47dd-8419-a10ea4bae845" AdHocQueryID="00000000-0000-0000-0000-000000000000" QueryViewID="fe4fe1e3-e283-4028-a8d4-e1fc983d1cb2" 
+      DataListName="USR_ChildBioDataList" 
+      DataListDescription="The datalist used to display Child Bios" 
+      ContextRecordType="Sponsorship Opportunity Child" SuppressDuplicateRows="true">
+      <ClientAppInfo REDatabaseToUse="BBInfinity" ClientAppName="Blackbaud Enterprise CRM" SessionKey="9069b4ca-1ba8-4487-82f6-807df073e716" TimeOutSeconds="120" RunAsUserID="00000000-0000-0000-0000-000000000000" xmlns="Blackbaud.AppFx.WebService.API.1" />
+      <SelectFields xmlns="Blackbaud.AppFx.WebService.API.1">
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="TYPE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Type" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="TITLE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Title" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="DATEENTERED" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Date" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="DATEADDED" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Date Added" />
+      <f ObjectName="USR_V_QUERY_USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION" ColumnName="DATE_PROOFED" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes\Sponsorship Opportunity Note Date Proofed" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes\Sponsorship Opportunity Note Date Proofed" AliasName="Date Proofed" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="ADDEDBY_USERNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Added By" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="CHANGEDBY_USERNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Changed By" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" />
+      </SelectFields>
+      <FilterFields xmlns="Blackbaud.AppFx.WebService.API.1">
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="TYPE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" FilterOperator="IsOneOf">
+      <DateFilterTypes />
+      <FuzzyDateFilterTypes />
+      <MonthDayFilterTypes />
+      <Values>
+      <v>44fced0a-9e40-4732-a97f-ba612d5ff3d4</v>
+      <v>75dc6bbf-adae-4ffc-98a0-b59856447992</v>
+      <v>42d20d79-c5fa-436a-bfa5-1db65456eed8</v>
+      </Values>
+      <TranslatedValues>
+      <v>Child Bio</v>
+      <v>Child Bio - Draft</v>
+      <v>Old Child Bio</v>
+      </TranslatedValues>
+      <DataType>String</DataType>
+      </f>
+      </FilterFields>
+      <SortFields xmlns="Blackbaud.AppFx.WebService.API.1">
+      <f AliasName="Date Added" FieldName="DATEADDED" SortOrder="Descending" />
+      </SortFields>
+      <GroupFilterFields xmlns="Blackbaud.AppFx.WebService.API.1" />
+      <DataListOutputFields xmlns="Blackbaud.AppFx.WebService.API.1">
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="TYPE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Type" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="TITLE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Title" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="DATEENTERED" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Date" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="DATEADDED" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Date Added" />
+      <f ObjectName="USR_V_QUERY_USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION" ColumnName="DATE_PROOFED" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes\Sponsorship Opportunity Note Date Proofed" AliasName="Date Proofed" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="ADDEDBY_USERNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Added By" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="CHANGEDBY_USERNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" AliasName="Changed By" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child" IsHidden="true" />
+      <f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Notes" IsHidden="true" />
+      </DataListOutputFields>
+      <DataListParameters xmlns="Blackbaud.AppFx.WebService.API.1" />
+      <ContextRecordIDField ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child" xmlns="Blackbaud.AppFx.WebService.API.1" />
+      </AdHocQuerySaveDataListRequest>
+    </AdHocQuerySaveDataListRequest>
+  </MetaTags>
+  <SPDataList SPName="USP_DATALIST_ADHOCQUERY_2CE06CBB_68C4_4C54_9C59_9F8210B13BD9">
+    <CreateProcedureSQL xmlns="bb_appfx_commontypes">
+      create procedure [dbo].[USP_DATALIST_ADHOCQUERY_2CE06CBB_68C4_4C54_9C59_9F8210B13BD9](
+      @CONTEXTRECORDID uniqueidentifier,
+      @CURRENTAPPUSERID uniqueidentifier,
+      @SECURITYFEATUREID uniqueidentifier,
+      @SECURITYFEATURETYPE tinyint) as
+      set nocount on;
+      with
+      [ROOT_CTE] as (
+      select  distinct 	[V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[TYPE] as [Type],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[TITLE] as [Title],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[DATEENTERED] as [Date],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[DATEADDED] as [Date Added],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes\Sponsorship Opportunity Note Date Proofed].[DATE_PROOFED] as [Date Proofed],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[ADDEDBY_USERNAME] as [Added By],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[CHANGEDBY_USERNAME] as [Changed By],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Child].[ID] as [Child\System record ID],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[ID] as [Notes\System record ID],
+      [V_QUERY_SPONSORSHIPOPPORTUNITY].[ID] as [QUERYRECID]
+      from [V_QUERY_SPONSORSHIPOPPORTUNITY] as [V_QUERY_SPONSORSHIPOPPORTUNITY]
+      inner join [V_QUERY_SPONSORSHIPOPPORTUNITYNOTE] as [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes] on [V_QUERY_SPONSORSHIPOPPORTUNITY].[ID] = [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[SPONSORSHIPOPPORTUNITYID]
+      left outer join [USR_V_QUERY_USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION] as [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes\Sponsorship Opportunity Note Date Proofed] on [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[ID] = [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes\Sponsorship Opportunity Note Date Proofed].[ID]
+      left outer join [V_QUERY_SPONSORSHIPOPPORTUNITYCHILD] as [V_QUERY_SPONSORSHIPOPPORTUNITY\Child] on [V_QUERY_SPONSORSHIPOPPORTUNITY].[ID] = [V_QUERY_SPONSORSHIPOPPORTUNITY\Child].[ID]
+      where [V_QUERY_SPONSORSHIPOPPORTUNITY\Notes].[TYPE] in ('Child Bio', 'Child Bio - Draft', 'Child Bio - Old')
+      )
+
+
+      select [Type],
+      [Title],
+      [Date],
+      [Date Added],
+      [Date Proofed],
+      [Added By],
+      [Changed By],
+      [Child\System record ID],
+      [Notes\System record ID]
+      from [ROOT_CTE] as QUERYRESULTS
+      where QUERYRESULTS.[Child\System record ID] = @CONTEXTRECORDID
+      order by [Date Added] desc
+    </CreateProcedureSQL>
+  </SPDataList>
+  <Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="CONTEXTRECORDID" />
+  <SiteSecurity TableName="SITE" ColumnName="ID" />
+  <Output>
+    <OutputFields>
+      <OutputField FieldID="Type" Caption="Type" DataType="String" />
+      <OutputField FieldID="Title" Caption="Title" DataType="String" />
+      <OutputField FieldID="Date" Caption="Date" DataType="Date" />
+      <OutputField FieldID="Date Added" Caption="Date Added" DataType="Date" />
+      <OutputField FieldID="Date Proofed" Caption="Date Proofed" DataType="Date" />
+      <OutputField FieldID="Added By" Caption="Added By" DataType="String" />
+      <OutputField FieldID="Changed By" Caption="Changed By" DataType="String" />
+      <OutputField FieldID="Child\System record ID" Caption="Child\System record ID" IsHidden="true" DataType="Guid" />
+      <OutputField FieldID="Notes\System record ID" Caption="Notes\System record ID" IsHidden="true" DataType="Guid" />
+    </OutputFields>
+  </Output>
+ 
+</DataListSpec>

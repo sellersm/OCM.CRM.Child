@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="28346e2d-3264-486a-b906-3755be5a286f" 
+	Name="Departure Administrative Code Values"
+	Description="Departure Administrative Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_DEPARTURE_ADMINISTRATIVE_CODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

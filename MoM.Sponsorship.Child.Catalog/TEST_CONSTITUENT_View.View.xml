@@ -1,0 +1,52 @@
+﻿<ViewDataFormTemplateSpec 
+	xmlns="bb_appfx_viewdataformtemplate" 
+	xmlns:common="bb_appfx_commontypes" 
+	ID="9bc0c7e2-8d1f-48b8-8ee5-10eaa9b5155d" 
+	Name="TESTING Constituent Extension"
+	Description="TESTING Constituent Extension"
+	Author="memphis-PC\Administrator"
+	DataFormInstanceID="ecf22bf2-59eb-477d-a432-27e936507f39" 
+	RecordType="Constituent"
+	common:SecurityUIFolder="Constituent"
+	>
+
+	<!-- define the SP that returns the data used by the form -->
+	<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_TESTING_CON_VIEW">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_TESTING_CON_VIEW
+(
+	@ID uniqueidentifier,
+	@DATALOADED bit = 0 output,
+	@FIELD1 nvarchar(1000) = null output,
+	@AGE tinyint = null output
+)
+as
+	set nocount on;
+	
+  declare @SCID uniqueidentifier
+  
+	-- be sure to set this, in case the select returns no rows
+	set @DATALOADED = 1;
+	
+select @AGE = 18
+select @FIELD1 = 'This is the area'
+  
+	return 0;
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataForm>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="FIELD1" Caption="Area Description" DataType="String" MaxLength="1000" />
+			<common:FormField FieldID="AGE" Caption="Age" DataType="TinyInt"  />
+		</common:FormFields>
+	</common:FormMetaData>
+
+  <common:DataFormExtension DataFormInstanceID="48cefdc3-a719-4fef-bd61-3108a5971d2b" RenderStyle="AfterParent" TabCaption="Age of Constituent" />
+  
+  
+</ViewDataFormTemplateSpec>

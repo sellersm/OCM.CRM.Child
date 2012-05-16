@@ -1,0 +1,182 @@
+﻿<EditDataFormTemplateSpec 
+    xmlns="bb_appfx_editdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="7ac4b798-b50f-4104-8d6e-0649a6e091a4"
+    Name="ChildDeparture Social Cognitive Tab Edit Data Form"
+    Description="Edit Form for ChildDeparture Social Cognitive Tab"
+    Author="memphis-PC\Administrator"
+    DataFormInstanceID="4b675cd6-4aed-4c4b-b104-ec9129921e39"
+    RecordType="ChildDeparture"
+    common:SecurityUIFolder="ChildDeparture"
+    >
+
+  <SPDataForm>
+
+    <!-- define the edit load SP, which is used to load the data for the form -->
+    <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTURE_SOCIALCOGNITIVELOAD">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTURE_SOCIALCOGNITIVELOAD(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @CHILDMATUREDCODE tinyint = null output,                      -- these are all the fields on the Social Cognitive Tab Edit Form
+    @LEVELOFMATURITY nvarchar(1000) = null output,
+    @HIGHESTCLASSLEVELCODEID nvarchar(100) = null output,
+    @HIGHESTCLASSLEVELOTHER nvarchar(20) = null output,
+    @COURSEOFSTUDY nvarchar(50) = null output,
+    @SKILLS_BASICLITERACY bit = null output,                      -- All the bit type fields are checkboxes in the UI
+    @SKILLS_BASICNUMERACY bit = null output,
+    @SKILLS_THINKINGPROBLEMSOLVING bit = null output,
+    @SKILLS_SELFHELP bit = null output,
+    @SKILLS_BUSINESS bit = null output,
+    @SKILLS_LIFE bit = null output,
+    @SKILLS_VOCATIONALTECHNICAL bit = null output,
+    @SKILLS_OTHER nvarchar(50) = null output
+)
+as
+
+  set nocount on;
+
+  -- be sure to set these, in case the select returns no rows
+  set @DATALOADED = 0
+  set @TSLONG = 0
+
+  -- populate the output parameters, which correspond to fields on the form.  Note that
+  -- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+  -- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+  -- can be considered.
+  select
+    @DATALOADED = 1,
+    @TSLONG = TSLONG,
+    @CHILDMATUREDCODE = CHILDMATUREDCODE, 
+    @LEVELOFMATURITY = LEVELOFMATURITY, 
+    @HIGHESTCLASSLEVELCODEID = HIGHESTCLASSLEVELCODEID, 
+    @HIGHESTCLASSLEVELOTHER = HIGHESTCLASSLEVELOTHER, 
+    @COURSEOFSTUDY = COURSEOFSTUDY, 
+    @SKILLS_BASICLITERACY = SKILLS_BASICLITERACY, 
+    @SKILLS_BASICNUMERACY = SKILLS_BASICNUMERACY, 
+    @SKILLS_THINKINGPROBLEMSOLVING = SKILLS_THINKINGPROBLEMSOLVING, 
+    @SKILLS_SELFHELP = SKILLS_SELFHELP, 
+    @SKILLS_BUSINESS = SKILLS_BUSINESS, 
+    @SKILLS_LIFE = SKILLS_LIFE, 
+    @SKILLS_VOCATIONALTECHNICAL = SKILLS_VOCATIONALTECHNICAL, 
+    @SKILLS_OTHER = SKILLS_OTHER
+  from dbo.USR_CHILDDEPARTURE
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+
+  return 0;
+        ]]>
+      </common:CreateProcedureSQL>
+    </LoadImplementation>
+
+    <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILDDEPARTURE_SOCIALCOGNITIVESAVE">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDDEPARTURE_SOCIALCOGNITIVESAVE (
+  @ID uniqueidentifier,
+  @CHANGEAGENTID uniqueidentifier = null,
+    @CHILDMATUREDCODE tinyint,
+    @LEVELOFMATURITY nvarchar(1000),
+    @HIGHESTCLASSLEVELCODEID uniqueidentifier,
+    @HIGHESTCLASSLEVELOTHER nvarchar(20),
+    @COURSEOFSTUDY nvarchar(50),
+    @SKILLS_BASICLITERACY bit,
+    @SKILLS_BASICNUMERACY bit,
+    @SKILLS_THINKINGPROBLEMSOLVING bit,
+    @SKILLS_SELFHELP bit,
+    @SKILLS_BUSINESS bit,
+    @SKILLS_LIFE bit,
+    @SKILLS_VOCATIONALTECHNICAL bit,
+    @SKILLS_OTHER nvarchar(50)
+)
+as
+
+  set nocount on;
+
+  if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+        
+  declare @CURRENTDATE datetime
+  set @CURRENTDATE = getdate()
+
+  begin try
+    -- handle updating the data
+    update dbo.USR_CHILDDEPARTURE set
+      CHILDMATUREDCODE = @CHILDMATUREDCODE,
+      LEVELOFMATURITY = @LEVELOFMATURITY,
+      HIGHESTCLASSLEVELCODEID = @HIGHESTCLASSLEVELCODEID,
+      HIGHESTCLASSLEVELOTHER = @HIGHESTCLASSLEVELOTHER,
+      COURSEOFSTUDY = @COURSEOFSTUDY,
+      SKILLS_BASICLITERACY = @SKILLS_BASICLITERACY,
+      SKILLS_BASICNUMERACY = @SKILLS_BASICNUMERACY,
+      SKILLS_THINKINGPROBLEMSOLVING = @SKILLS_THINKINGPROBLEMSOLVING,
+      SKILLS_SELFHELP = @SKILLS_SELFHELP,
+      SKILLS_BUSINESS = @SKILLS_BUSINESS,
+      SKILLS_LIFE = @SKILLS_LIFE,
+      SKILLS_VOCATIONALTECHNICAL = @SKILLS_VOCATIONALTECHNICAL,
+      SKILLS_OTHER = @SKILLS_OTHER,
+      CHANGEDBYID = @CHANGEAGENTID,
+      DATECHANGED = @CURRENTDATE
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+  end try
+  begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+  end catch
+
+return 0;
+        ]]>
+      </common:CreateProcedureSQL>
+    </SaveImplementation>
+
+  </SPDataForm>
+
+  <!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+  like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
+  <common:FormMetaData FixedDialog="true">
+    <common:FormFields>
+      <common:FormField FieldID="CHILDMATUREDCODE" DataType="TinyInt" Caption="Child has matured appropriately for their age" DefaultValueText="0">
+        <common:ValueList>
+          <common:Items>
+            <common:Item>
+              <common:Value>0</common:Value>
+              <common:Label>No</common:Label>
+            </common:Item>
+            <common:Item>
+              <common:Value>1</common:Value>
+              <common:Label>Yes</common:Label>
+            </common:Item>
+          </common:Items>
+        </common:ValueList>
+      </common:FormField>
+      <common:FormField FieldID="LEVELOFMATURITY" MaxLength="1000" DataType="String" Caption="Provide a brief explanation of the chlid's level of maturity and how they relate to others around them" AllowZoom="true" Multiline="true" />
+      <common:FormField FieldID="HIGHESTCLASSLEVELCODEID" DataType="Guid" Caption="Highest Class Level Completed">
+        <common:CodeTable CodeTableName="USR_CHILDCLASSLEVEL_CODE" />
+      </common:FormField>
+      <common:FormField FieldID="HIGHESTCLASSLEVELOTHER" MaxLength="20" DataType="String" Caption="Other" />
+      <common:FormField FieldID="COURSEOFSTUDY" MaxLength="50" DataType="String" Caption="Course of Study" />
+      <common:FormField FieldID="SKILLS_BASICLITERACY" DataType="Boolean" Caption="Basic Literacy" />
+      <common:FormField FieldID="SKILLS_BASICNUMERACY" DataType="Boolean" Caption="Basic Numeracy" />
+      <common:FormField FieldID="SKILLS_THINKINGPROBLEMSOLVING" DataType="Boolean" Caption="Thinking and problem-solving skills" />
+      <common:FormField FieldID="SKILLS_SELFHELP" DataType="Boolean" Caption="Self-help Skills" />
+      <common:FormField FieldID="SKILLS_BUSINESS" DataType="Boolean" Caption="Entrepreneurial (business) skills" />
+      <common:FormField FieldID="SKILLS_LIFE" DataType="Boolean" Caption="Life Skills" />
+      <common:FormField FieldID="SKILLS_VOCATIONALTECHNICAL" DataType="Boolean" Caption="Vocational and Technical Skills" />
+      <common:FormField FieldID="SKILLS_OTHER" MaxLength="50" DataType="String" Caption="Other Skills" />
+    </common:FormFields>
+
+        <common:WebUIComponent>
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildDepartureSocialCognitiveEditDataFormUIModel" />
+            <common:WebUI>
+                <common:ExternalResource Url="browser/htmlforms/custom/ChildDepartureSocialCognitiveEditDataForm.html" />
+            </common:WebUI>
+        </common:WebUIComponent>
+
+    <!-- indicate the client-side component for the user interface -->
+    <!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+      <common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+    </common:FormUIComponent>-->
+  </common:FormMetaData>
+
+</EditDataFormTemplateSpec>
