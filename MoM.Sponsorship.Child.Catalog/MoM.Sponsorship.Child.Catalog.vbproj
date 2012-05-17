@@ -307,13 +307,20 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\ChildBioDataList.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBioNote.EditDataForm.xml" />
+    <EmbeddedResource Include="ChildBio\SponOpNoteAddWithEligCheck.AddDataForm.xml" />
+    <EmbeddedResource Include="ChildBio\SponOpporNoteChildBioDateProofed.Edit.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CURRENTQUOTA.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Quota\USR_USP_CHILD_SETELIGIBILTY.xml" />
-    <EmbeddedResource Include="ChildBio\ChildBio.Package.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="PageExpressions\ChildDeparture.ExpressionDataForm.View.xml" />
     <EmbeddedResource Include="PageExpressions\ChildExtension.ExpressionDataForm.View.xml" />
