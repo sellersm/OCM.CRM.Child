@@ -318,7 +318,6 @@
     <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID.xml" />
     <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
-    <Content Include="Quota\USR_UFN_CHILDPROJECT_CURRENTQUOTA.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>
     </Content>
