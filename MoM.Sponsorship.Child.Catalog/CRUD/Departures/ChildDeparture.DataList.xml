@@ -1,0 +1,136 @@
+<DataListSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="27200d67-8c2a-4f7f-ab5e-52c2b2e49f91"
+    Name="ChildDeparture List"
+    Description="Returns all ChildDeparture records."
+    Author="memphis-PC\Administrator"
+    c:SecurityUIFolder="ChildDeparture"
+    xmlns="bb_appfx_datalist"
+    >
+    <SPDataList SPName="USP_DATALIST_CHILDDEPARTURE">
+        <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATALIST_CHILDDEPARTURE
+as
+	set nocount on;
+
+	select 
+        USR_CHILDDEPARTURE.[ID],
+        USR_CHILDDEPARTURE.[SPONSORSHIPOPPORTUNITYCHILDID],
+        USR_CHILDDEPARTURE.[NODEPARTUREFORM],
+        USR_CHILDDEPARTURE.[RECEIVEDFAREWELLLETTERCODE],
+        USR_CHILDDEPARTURE.[DATEFORMCOMPLETED],
+        USR_CHILDDEPARTURE.[FORMCOMPLETEDBY],
+        USR_CHILDDEPARTURE.[DATEOFDEPARTURE],
+        USR_CHILDDEPARTURE.[DATEPROCESSED],
+        USR_DEPARTURE_ADMINISTRATIVE_CODE.DESCRIPTION,
+        USR_CHILDDEPARTURE.[ADMINISTRATIVEEXPLANATION],
+        USR_CHILDDEPARTURE.[ISDEPARTURE],
+        USR_CHILDDEPARTURE.[ISPROGRAMCOMPLETION],
+        USR_CHILDDEPARTURE.[DEPARTURE_LIVESWITHRELATIVES],
+        USR_CHILDDEPARTURE.[DEPARTURE_FAMILYMOVED],
+        USR_CHILDDEPARTURE.[DEPARTURE_FAMILYNOWPROVIDES],
+        USR_CHILDDEPARTURE.[DEPARTURE_PROJECTTOOFAR],
+        USR_CHILDDEPARTURE.[DEPARTURE_REMOVEDBYPARENTS],
+        USR_CHILDDEPARTURE.[DEPARTURE_LACKOFINTEREST],
+        USR_CHILDDEPARTURE.[DEPARTURE_NEEDEDATHOME],
+        USR_CHILDDEPARTURE.[DEPARTURE_EMPLOYED],
+        USR_CHILDDEPARTURE.[DEPARTURE_TRANSFERRED],
+        USR_CHILDDEPARTURE.[DEPARTURE_FAILED],
+        USR_CHILDDEPARTURE.[DEPARTURE_DEATHOFCHILD],
+        USR_CHILDDEPARTURE.[DEPARTURE_ILLNESS],
+        USR_CHILDDEPARTURE.[DEPARTURE_PREGNANCY],
+        USR_CHILDDEPARTURE.[DEPARTURE_MARRIED],
+        USR_CHILDDEPARTURE.[DEPARTURE_OTHER],
+        USR_CHILDDEPARTURE.[DETAILEDEXPLANATION],
+        USR_CHILDDEPARTURE.[DEPARTURENEWSITUATION],
+        USR_CHILDDEPARTURE.[PROGRAMCOMPLETIONNEWSITUATION],
+        USR_CHILDDEPARTURE.[ISCHILDCHRISTIANCODE],
+        USR_CHILDDEPARTURE.[CHILDCHRISTIANCOMMENTS],
+        USR_CHILDDEPARTURE.[DIDBECOMECHRISTIANCODE],
+        USR_CHILDDEPARTURE.[SHOWSCHRISTIANKNOWLEDGE],
+        USR_CHILDDEPARTURE.[PARTICIPATESCHRISTIANACTIVITIES],
+        USR_CHILDDEPARTURE.[SHOWSCHRISTIANEVIDENCE],
+        USR_CHILDDEPARTURE.[OWNSBIBLEMATERIALS],
+        USR_CHILDDEPARTURE.[CHILDCHRISTIANEXPERIENCE],
+        USR_CHILDDEPARTURE.[HEALTHCONDITIONS],
+        USR_CHILDDEPARTURE.[CHILDMATUREDCODE],
+        USR_CHILDDEPARTURE.[LEVELOFMATURITY],
+        USR_CHILDCLASSLEVEL_CODE.DESCRIPTION,
+        USR_CHILDDEPARTURE.[HIGHESTCLASSLEVELOTHER],
+        USR_CHILDDEPARTURE.[COURSEOFSTUDY],
+        USR_CHILDDEPARTURE.[SKILLS_BASICLITERACY],
+        USR_CHILDDEPARTURE.[SKILLS_BASICNUMERACY],
+        USR_CHILDDEPARTURE.[SKILLS_THINKINGPROBLEMSOLVING],
+        USR_CHILDDEPARTURE.[SKILLS_SELFHELP],
+        USR_CHILDDEPARTURE.[SKILLS_BUSINESS],
+        USR_CHILDDEPARTURE.[SKILLS_LIFE],
+        USR_CHILDDEPARTURE.[SKILLS_VOCATIONALTECHNICAL],
+        USR_CHILDDEPARTURE.[SKILLS_OTHER],
+        USR_CHILDDEPARTURE.[GENERALCOMMENTS]
+	from 
+        dbo.USR_CHILDDEPARTURE
+        left outer join dbo.USR_DEPARTURE_ADMINISTRATIVE_CODE on USR_CHILDDEPARTURE.[ADMINISTRATIVECODEID] = USR_DEPARTURE_ADMINISTRATIVE_CODE.ID
+        left outer join dbo.USR_CHILDCLASSLEVEL_CODE on USR_CHILDDEPARTURE.[HIGHESTCLASSLEVELCODEID] = USR_CHILDCLASSLEVEL_CODE.ID
+
+]]>
+</c:CreateProcedureSQL>
+    </SPDataList>
+    <Output>
+        <OutputFields>
+            <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+            <OutputField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid" />
+            <OutputField FieldID="NODEPARTUREFORM" Caption="Nodepartureform" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="RECEIVEDFAREWELLLETTERCODE" Caption="Receivedfarewellletter" DataType="TinyInt" />
+            <OutputField FieldID="DATEFORMCOMPLETED" Caption="Dateformcompleted" DataType="Date" />
+            <OutputField FieldID="FORMCOMPLETEDBY" Caption="Formcompletedby" DataType="String" />
+            <OutputField FieldID="DATEOFDEPARTURE" Caption="Dateofdeparture" DataType="Date" />
+            <OutputField FieldID="DATEPROCESSED" Caption="Dateprocessed" DataType="Date" />
+            <OutputField FieldID="ADMINISTRATIVECODEID" Caption="Administrative" DataType="Guid" />
+            <OutputField FieldID="ADMINISTRATIVEEXPLANATION" Caption="Administrativeexplanation" DataType="String" />
+            <OutputField FieldID="ISDEPARTURE" Caption="Isdeparture" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="ISPROGRAMCOMPLETION" Caption="Isprogramcompletion" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_LIVESWITHRELATIVES" Caption="Departure liveswithrelatives" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_FAMILYMOVED" Caption="Departure familymoved" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_FAMILYNOWPROVIDES" Caption="Departure familynowprovides" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_PROJECTTOOFAR" Caption="Departure projecttoofar" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_REMOVEDBYPARENTS" Caption="Departure removedbyparents" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_LACKOFINTEREST" Caption="Departure lackofinterest" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_NEEDEDATHOME" Caption="Departure neededathome" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_EMPLOYED" Caption="Departure employed" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_TRANSFERRED" Caption="Departure transferred" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_FAILED" Caption="Departure failed" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_DEATHOFCHILD" Caption="Departure deathofchild" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_ILLNESS" Caption="Departure illness" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_PREGNANCY" Caption="Departure pregnancy" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_MARRIED" Caption="Departure married" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="DEPARTURE_OTHER" Caption="Departure other" DataType="String" />
+            <OutputField FieldID="DETAILEDEXPLANATION" Caption="Detailedexplanation" DataType="String" />
+            <OutputField FieldID="DEPARTURENEWSITUATION" Caption="Departurenewsituation" DataType="String" />
+            <OutputField FieldID="PROGRAMCOMPLETIONNEWSITUATION" Caption="Programcompletionnewsituation" DataType="String" />
+            <OutputField FieldID="ISCHILDCHRISTIANCODE" Caption="Ischildchristian" DataType="TinyInt" />
+            <OutputField FieldID="CHILDCHRISTIANCOMMENTS" Caption="Childchristiancomments" DataType="String" />
+            <OutputField FieldID="DIDBECOMECHRISTIANCODE" Caption="Didbecomechristian" DataType="TinyInt" />
+            <OutputField FieldID="SHOWSCHRISTIANKNOWLEDGE" Caption="Showschristianknowledge" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="PARTICIPATESCHRISTIANACTIVITIES" Caption="Participateschristianactivities" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SHOWSCHRISTIANEVIDENCE" Caption="Showschristianevidence" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="OWNSBIBLEMATERIALS" Caption="Ownsbiblematerials" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="CHILDCHRISTIANEXPERIENCE" Caption="Childchristianexperience" DataType="String" />
+            <OutputField FieldID="HEALTHCONDITIONS" Caption="Healthconditions" DataType="String" />
+            <OutputField FieldID="CHILDMATUREDCODE" Caption="Childmatured" DataType="TinyInt" />
+            <OutputField FieldID="LEVELOFMATURITY" Caption="Levelofmaturity" DataType="String" />
+            <OutputField FieldID="HIGHESTCLASSLEVELCODEID" Caption="Highestclasslevel" DataType="Guid" />
+            <OutputField FieldID="HIGHESTCLASSLEVELOTHER" Caption="Highestclasslevelother" DataType="String" />
+            <OutputField FieldID="COURSEOFSTUDY" Caption="Courseofstudy" DataType="String" />
+            <OutputField FieldID="SKILLS_BASICLITERACY" Caption="Skills basicliteracy" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_BASICNUMERACY" Caption="Skills basicnumeracy" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_THINKINGPROBLEMSOLVING" Caption="Skills thinkingproblemsolving" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_SELFHELP" Caption="Skills selfhelp" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_BUSINESS" Caption="Skills business" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_LIFE" Caption="Skills life" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_VOCATIONALTECHNICAL" Caption="Skills vocationaltechnical" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="SKILLS_OTHER" Caption="Skills other" DataType="String" />
+            <OutputField FieldID="GENERALCOMMENTS" Caption="Generalcomments" DataType="String" />
+        </OutputFields>
+    </Output>
+</DataListSpec>

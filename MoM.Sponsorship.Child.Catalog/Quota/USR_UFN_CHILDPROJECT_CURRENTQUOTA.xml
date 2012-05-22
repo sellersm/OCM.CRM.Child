@@ -1,0 +1,71 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="6d203954-3694-4170-b9d6-8a6bb242cde3"
+	Name="USR_UFN_CHILDPROJECTCURRENTQUOTA"
+	Description="Returns the current quota for a child project"
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILDPROJECTCURRENTQUOTA"
+	>
+
+<!-- 
+Remarks:    This finds the first month with a non zero quota value starting with the current month and going backwards in time.  Future months are ignored
+			If no non-zero value is found, use the Inital Quota value.
+			Used in computed columns in the Child Project Extension table
+
+History:
+Date            Modified By     Comments
+01-May-2012     CMayeda         Initial Version
+*************  NEED TO ACCOUNT FOR COUNTRY QUOTA  ******************
+-->
+
+	<CreateFunctionSQL>
+		<![CDATA[
+		
+create function dbo.USR_UFN_CHILDPROJECTCURRENTQUOTA(@CHILDPROJECTID uniqueidentifier) 
+returns smallint with execute as caller
+as
+BEGIN 
+	declare @currentQuota smallint -- used to store return value
+
+	declare @CalendarMonth tinyint  -- The current calendar month
+	set @CalendarMonth = month(getdate())
+
+	declare @fyMonth tinyint -- The fiscal month number October starts as 1.  Convert the Current Calendar Month to the corresponding fiscal month
+	set @fyMonth = case 
+					 when @CalendarMonth > 9 then @CalendarMonth - 9
+					 else @CalendarMonth + 3
+				   end
+
+	declare @quotaMonths table  -- Because the quotas are stored as separate fields, use a table to store all the current fiscal year quotas
+	(
+	  fyMonthNumber tinyint, 
+	  quota smallint  
+	)
+
+	-- Insert the quota values
+	insert @quotaMonths select 0, APPROVEDQUOTAINITIAL from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 1, APPROVEDQUOTA01OCT from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 2, APPROVEDQUOTA02NOV from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 3, APPROVEDQUOTA03DEC from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 4, APPROVEDQUOTA04JAN from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 5, APPROVEDQUOTA05FEB from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 6, APPROVEDQUOTA06MAR from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 7, APPROVEDQUOTA07APR from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 8, APPROVEDQUOTA08MAY from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 9, APPROVEDQUOTA09JUN from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 10, APPROVEDQUOTA10JUL from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 11, APPROVEDQUOTA11AUG from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+	insert @quotaMonths select 12, APPROVEDQUOTA12SEP from USR_CHILDPROJECTEXTENSION where ID=@CHILDPROJECTID
+
+	-- Find the current quota
+	select @currentQuota = quota from @quotaMonths
+	  where fyMonthNumber = (select MAX (fyMonthNumber) from @quotaMonths where fyMonthNumber <= @fyMonth and quota > 0)
+
+	return @currentQuota
+
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

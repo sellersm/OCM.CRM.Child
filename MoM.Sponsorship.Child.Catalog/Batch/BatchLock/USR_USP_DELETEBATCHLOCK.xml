@@ -1,0 +1,39 @@
+﻿<SQLStoredProcedureSpec
+  xmlns="bb_appfx_sqlstoredprocedure"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="a2e8aa19-a29f-4355-b69a-b69be08a49e0"
+  Name="USR_USP_DELETEBATCHLOCK"
+  Description="Deletes a row from BatchLock table"
+  Author="Memphis"
+  SPName="USR_USP_DELETEBATCHLOCK"
+  >
+
+  <!-- 
+  Remarks:	Used to delete a given BatchLock row.
+  
+  History:
+  Date			    Modified By		Comments
+  04-May-2012		Memphis		    Initial Version
+  -->
+
+
+  <CreateProcedureSQL>
+    <![CDATA[
+CREATE PROCEDURE USR_USP_DELETEBATCHLOCK
+  -- Add the parameters for the stored procedure here
+  @projectId uniqueidentifier,
+  @appUserId nvarchar(100)
+AS
+BEGIN
+  -- SET NOCOUNT ON added to prevent extra result sets from
+  -- interfering with SELECT statements.
+  SET NOCOUNT ON;
+
+  delete from dbo.USR_BATCHLOCK
+  where ProjectId = @projectId
+  and UserID = @appUserId
+END
+    ]]>
+  </CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

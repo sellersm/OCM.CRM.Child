@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="e5b53c1c-d600-4f72-9f89-7c39616c036a" 
+	Name="Housing Wall Structure Codes"
+	Description="Housing Wall Structure Code values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_HOUSINGWALLSTRUCTURECODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>
