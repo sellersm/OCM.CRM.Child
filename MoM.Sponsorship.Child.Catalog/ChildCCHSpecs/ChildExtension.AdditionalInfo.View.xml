@@ -1,0 +1,89 @@
+﻿<ViewDataFormTemplateSpec 
+	xmlns="bb_appfx_viewdataformtemplate" 
+	xmlns:common="bb_appfx_commontypes" 
+	ID="ce8c4111-dffd-4f66-a285-054a2c08bcd6" 
+	Name="ChildExtension Additional Info View Form"
+	Description="View ChildExtension Additional Info"
+	Author="Memphis Sellers"
+	DataFormInstanceID="b9390174-f5b7-4a6a-b73b-9d5b9cb5b1c4" 
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+	>
+
+	<!-- define the SP that returns the data used by the form -->
+	<SPDataForm SPName="USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO
+(
+	@ID uniqueidentifier,
+	@DATALOADED bit = 0 output,
+	@ADDITIONALCHILDINFORMATION nvarchar(max) = null output,
+         @CCHENTEREDBY nvarchar(100) = null output,
+       @CCHTEMPID nvarchar(250) = null output,
+       @CURRENTPHOTODATE datetime = null output,
+       @PHOTOSTORED bit = null output,
+       @CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
+       @CHILDPROFILEUPDATECODEID uniqueidentifier = null output,
+       @PROFILEUPDATENOTIFICATION bit = null output,
+       @FUNDED bit = null output,
+       @REGISTRATIONDATE datetime = null output,
+       @BATCHNUMBER nvarchar(50) = null output
+)
+as
+	set nocount on;
+	
+	-- be sure to set this, in case the select returns no rows
+	set @DATALOADED = 0;
+	
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.
+	select @DATALOADED = 1,
+		   @ADDITIONALCHILDINFORMATION = ADDITIONALCHILDINFORMATION,
+       @CCHENTEREDBY = CCHENTEREDBY,
+       @CCHTEMPID = CCHTEMPID,
+       @CURRENTPHOTODATE = CURRENTPHOTODATE,
+       @PHOTOSTORED = PHOTOSTORED,
+       @CHILDPROFILESTATUSCODEID = CHILDPROFILESTATUSCODEID,
+       @CHILDPROFILEUPDATECODEID = CHILDPROFILEUPDATECODEID,
+       @PROFILEUPDATENOTIFICATION = PROFILEUPDATENOTIFICATION,
+       @FUNDED = FUNDED,
+       @REGISTRATIONDATE = REGISTRATIONDATE,
+       @BATCHNUMBER = BATCHNUMBER
+	from dbo.USR_CHILDEXTENSION
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	--where ID = @ID
+	
+	return 0;
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataForm>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" DataType="String" Multiline="true" />
+      <common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" DataType="String" />      
+      <common:FormField FieldID="CCHENTEREDBY" Caption="CCH Entered By" DataType="String" />
+      <common:FormField FieldID="CCHTEMPID" Caption="CH CCH Temp ID" DataType="String" />
+      <common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" />
+      <common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
+      <common:FormField FieldID="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
+      <common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false"/>
+
+      <common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid" >
+      <common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE"/>
+      </common:FormField>
+      
+      <common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid" >
+        <common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE"/>
+      </common:FormField>
+      
+      <common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
+
+		</common:FormFields>
+	</common:FormMetaData>
+
+</ViewDataFormTemplateSpec>

@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="c99af0f9-241f-40cd-9598-a57d9a603878" 
+	Name="Child Profile Status Values"
+	Description="Values for Child Profile Status"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CHILDPROFILESTATUSCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

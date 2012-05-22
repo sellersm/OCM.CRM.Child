@@ -1,0 +1,160 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="2da52ec9-4f56-485d-b6ba-015500348bbf"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED"
+	Description="Used to add/delete 'Need Bio Updated' pending reasons."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED"
+	>
+	
+	<!-- 
+	Remarks:	The 'Need Bio Updated' pending reason is added to the child/children if a Child Bio note exists and it is over two years old, this is set in @BioValidAge (which is in months)
+				If no Child Bio note exists, the 'Need Bio Updated' pending reason should not be on the child, because it will have the 'Need Bio Created' pending reason.
+				
+				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
+				a Sponsorship Opportunity selection.  
+				
+				This is accomplished with the @ID and @IDSETREGISTERID parameters.
+				If @ID is not null, then the sproc uses @ID to specify the Sponsorship Opportunity ID
+				If @ID is null, then the sproc uses @IDSETREGISTERID to specify the collection of children to check.
+				
+	History:
+	Date			Modified By		Comments
+    26-Mar-2012		CMayeda			Initial Version	
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED (
+	
+	@ID uniqueidentifier,				-- Specify a Sponsorship Opportunity ID (same as the child's ID) if the sproc should only process a single child
+	@IDSETREGISTERID uniqueidentifier,  -- Specify a Selection Set ID if the sproc should process all the children in a query selection
+	@CHANGEAGENTID uniqueidentifier,    -- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@DELETEDROWS int = 0 output,        -- Output parm that specifies how many pending reasons were deleted
+	@INSERTEDROWS int = 0 output)       -- Output parm that specifies how many pending reasons were inserted
+
+as
+begin
+
+	-- How old a bio can be and still be valid in months
+	declare @BioValidAge int
+	set @BioValidAge = 24 
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+	
+		
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
+		declare @ChildBioNoteTypeID uniqueidentifier
+		select @ChildBioNoteTypeID = ID from SPROPPNOTETYPECODE where upper (DESCRIPTION) = 'CHILD BIO'
+		if @ChildBioNoteTypeID is null
+			RAISERROR 1000000 'Couldn''t find the "Child Bio" Note type code'
+    
+    	declare @NeedBioUpdatedID uniqueidentifier
+		select @NeedBioUpdatedID = ID from SPONSORSHIPREASON where UPPER (REASON) = 'NEED BIO UPDATED'
+		if @NeedBioUpdatedID is null
+			RAISERROR 1000000 'Couldn''t find the "Need Bio Updated" Sponsorship Reason'		
+			
+		-- Either @ID or @IDSETREGISTERID must be specified.
+		if @ID is null and @IDSETREGISTERID is null
+			RAISERROR 1000000 '@ID or @IDSETREGISTERID needs to be non-null'		
+		
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	-- This needs to be set to off for the output parms to be set properly
+	SET NOCOUNT OFF
+	
+	-- Remove Need Bio Created pending reasons if a child bio exists for the child/children
+	delete SPONSORSHIPOPPORTUNITYREASON
+	  from SPONSORSHIPOPPORTUNITYREASON so_reason
+	 where 
+			-- Find children who are specified to be reviewed and have the 'Need Bio Updated' pending reason 
+			
+		    -- If a Sponsorship Opportunity ID as passed in @ID, then only process for that child.
+	        -- If a single ID was not passed in @ID, then use all the children in the selection passed in @IDSETREGISTERID
+	       ((@ID is not null and so_reason.SPONSORSHIPOPPORTUNITYID = @ID)  
+	          or (@ID is null and exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so_reason.SPONSORSHIPOPPORTUNITYID)))
+
+	   and so_reason.SPONSORSHIPREASONID = @NeedBioUpdatedID
+	 
+		   -- Check if a child bio exists and is recent enough otherwise check if there is no child bio, since that should have a NEED CHILD BIO CREATED pending reason.
+	   and (exists (select SPONSORSHIPOPPORTUNITYID 
+				      from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+	 			     where ((@ID is not null and so_note.SPONSORSHIPOPPORTUNITYID = @ID)
+					        or (@ID is null and exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so_note.SPONSORSHIPOPPORTUNITYID and ID = so_reason.SPONSORSHIPOPPORTUNITYID)))
+					   and (so_note.SPROPPNOTETYPECODEID = @ChildBioNoteTypeID)
+					   and (so_note.DATEENTERED >= dateadd (mm, (@BioValidAge * -1), getdate())))
+						  
+           or not exists (select SPONSORSHIPOPPORTUNITYID 
+				            from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note         
+	 			           where ((@ID is not null and so_note.SPONSORSHIPOPPORTUNITYID = @ID)
+					              or (@ID is null and exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so_note.SPONSORSHIPOPPORTUNITYID and ID = so_reason.SPONSORSHIPOPPORTUNITYID)))
+						     and (so_note.SPROPPNOTETYPECODEID = @ChildBioNoteTypeID)))
+				
+	set @DELETEDROWS = @@ROWCOUNT
+	
+	-- Insert Need Bio Updated pending reasons if the child/children don't already have it and they have a child bio note, 
+	-- but is not recent enough for the child/children
+	insert dbo.SPONSORSHIPOPPORTUNITYREASON
+				(SPONSORSHIPOPPORTUNITYID,
+				 SPONSORSHIPREASONID,				
+				 ADDEDBYID, 
+				 CHANGEDBYID, 
+				 DATEADDED, 
+				 DATECHANGED)
+				 
+		select  ID,
+				@NeedBioUpdatedID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CurrentDate, 
+				@CurrentDate
+		 from	dbo.SPONSORSHIPOPPORTUNITY so
+		
+		where  
+				-- Either get the child passed in @ID or the children in the selection passed in @IDSETREGISTERID				
+			  ((@ID is not null and so.ID = @ID)
+			     or (@ID is null and exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so.ID )))
+	   
+	          -- Verify that the child/children don't already have a Need Bio Updated pending reason.
+	      and not exists (Select SPONSORSHIPOPPORTUNITYID from SPONSORSHIPOPPORTUNITYREASON so_reason 
+		                   where so_reason.SPONSORSHIPOPPORTUNITYID = so.ID and so_reason.SPONSORSHIPREASONID = @NeedBioUpdatedID)
+	      		  
+			  -- Verify that the child/children has a bio (if they don't have one, then they should have the Need Child Bio Created pending reason instead
+	      and exists (select SPONSORSHIPOPPORTUNITYID 
+				        from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note	           
+	 			       where ((@ID is not null and so_note.SPONSORSHIPOPPORTUNITYID = @ID)
+						     or (@ID is null and exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so_note.SPONSORSHIPOPPORTUNITYID and ID = so.ID)))
+		  			     and (SPROPPNOTETYPECODEID = @ChildBioNoteTypeID))
+					     
+		
+		      -- Verify that the child/children does not have a recent bio
+	      and not exists (select SPONSORSHIPOPPORTUNITYID 
+				            from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+	 			           where ((@ID is not null and so_note.SPONSORSHIPOPPORTUNITYID = @ID)
+						          or (@ID is null and exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so_note.SPONSORSHIPOPPORTUNITYID and ID = so.ID)))
+		  			         and (so_note.SPROPPNOTETYPECODEID = @ChildBioNoteTypeID)
+					         and (so_note.DATEENTERED >= dateadd (mm, (@BioValidAge * -1), getdate())))
+		
+		
+	set @INSERTEDROWS = @@ROWCOUNT
+	
+	return 0
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

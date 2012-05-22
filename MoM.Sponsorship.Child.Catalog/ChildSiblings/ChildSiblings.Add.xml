@@ -1,0 +1,114 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="f9943fc6-6374-44a0-89db-195979f31dad" 
+	Name="ChildSiblings Add Data Form"
+	Description="ChildSiblings Add Data Form" 
+	Author="memphis-PC\Administrator"
+	DataFormInstanceID="173d9386-e5d8-4628-b756-2beac170f91f" 
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child"
+	>
+
+	<SPDataForm>
+		<!-- describe the preload SP (if applicable), which should be used to fetch field default values from the database.  If no
+		preload is needed, then this section can be removed -->
+		<!--<LoadImplementation SPName="USP_DATAFORMTEMPLATE_ADD_CHILDSIBLINGS_PRELOAD">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_ADD_CHILDSIBLINGS_PRELOAD
+(
+	@CONTEXTID uniqueidentifier,
+	@FIELD1 nvarchar(10) = null output
+)
+as
+	set nocount on;
+		
+	//populate the fields that have default values that should be fetched from the database
+	select @FIELD1 = FIELD1
+	from dbo.SOMETABLE
+	where ID = @CONTEXTID
+	
+	return 0;				
+				]]>
+			</common:CreateProcedureSQL>
+		</LoadImplementation>-->
+
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USP_DATAFORMTEMPLATE_ADD_CHILDSIBLINGS">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_ADD_CHILDSIBLINGS
+(
+    @ID uniqueidentifier = null output,
+	  @CHILDEXTENSIONID uniqueidentifier,
+    @CHANGEAGENTID uniqueidentifier = null,
+	  @SIBLINGNAME nvarchar(50) = '',
+	  @SIBLINGGENDERCODE tinyint = 0,
+	  @SIBLINGBIRTHYEAR smallint = null
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_CHILDSIBLINGS
+		(ID, CHILDEXTENSIONID, SIBLINGNAME, SIBLINGGENDERCODE, SIBLINGBIRTHYEAR, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @CHILDEXTENSIONID,  @SIBLINGNAME, @SIBLINGGENDERCODE, @SIBLINGBIRTHYEAR, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+	
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Child Extension" RecordIDParameter="CHILDEXTENSIONID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="SIBLINGNAME" Caption="Sibling Name" DataType="String" MaxLength="50" />
+      <common:FormField FieldID="SIBLINGGENDERCODE" Caption="Gender" DataType="TinyInt" Required="true" DefaultValueText="0" >
+        <common:ValueList>
+          <common:Items>
+            <common:Item>
+              <common:Value>0</common:Value>
+              <common:Label>Male</common:Label>
+            </common:Item>
+            <common:Item>
+              <common:Value>1</common:Value>
+              <common:Label>Female</common:Label>
+            </common:Item>
+          </common:Items>
+        </common:ValueList>
+      </common:FormField>
+			<common:FormField FieldID="SIBLINGBIRTHYEAR" Caption="Sibling Birth Year" DataType="SmallInt" />
+		</common:FormFields>
+
+		<!-- indicate the client-side component for the user interface -->
+		<!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+		</common:FormUIComponent>-->
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

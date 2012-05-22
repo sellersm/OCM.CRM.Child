@@ -1,0 +1,407 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{848010C4-E291-4E6F-842E-5AE1AB2EE7F6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MoM.Sponsorship.Child.UIModel</RootNamespace>
+    <AssemblyName>MoM.Sponsorship.Child.UIModel</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>Off</OptionStrict>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+    <CodeAnalysisRuleSet>Migrated rules for Blackbaud.CustomFx.ChildExtension.UIModel.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Blackbaud.AppFx, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.dll</HintPath>
+    </Reference>
+    <Reference Include="Blackbaud.AppFx.Server, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="Blackbaud.AppFx.UIModeling.Core, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.UIModeling.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Blackbaud.AppFx.XmlTypes, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Blackbaud.AppFx.XmlTypes.XmlSerializers, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="MoM.Common">
+      <HintPath>..\..\..\References\MoM\MoM.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChildCCH\CCHChildExtensionWhereILiveFormUIModel.CodeGen.vb">
+      <DependentUpon>CCHChildExtensionWhereILiveFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\CCHChildExtensionWhereILiveFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureEditPageSummaryDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureEditPageSummaryDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureEditPageSummaryDataFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureAddFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureAddFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureAddFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureEditFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureEditFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureEditFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureGeneralCommentsEditDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureGeneralCommentsEditDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureGeneralCommentsEditDataFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureGeneralCommentsViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureGeneralCommentsViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureGeneralCommentsViewFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureReasonForDepartureTabEditUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureReasonForDepartureTabEditUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureReasonForDepartureTabEditUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureReasonForDepartureTabViewUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureReasonForDepartureTabViewUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureReasonForDepartureTabViewUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureSocialCognitiveEditDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureSocialCognitiveEditDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureSocialCognitiveEditDataFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureSocialCognitiveImpactViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureSocialCognitiveImpactViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureSocialCognitiveImpactViewFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureSpiritualAndPhysicalImpactTabViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabViewFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionAboutMeEditDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionAboutMeEditDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionAboutMeEditDataFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionAboutMeViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionAboutMeViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionAboutMeViewFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionAddCCHFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionAddCCHFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionAddCCHFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionCCHWhereILiveDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionCCHWhereILiveDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionCCHWhereILiveDataFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionDevelopmentEditDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionDevelopmentEditDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionDevelopmentEditDataFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionDevelopmentViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionDevelopmentViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionDevelopmentViewFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionTableAddFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionTableAddFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionTableAddFormUIModel.vb" />
+    <Compile Include="ChildDeparture\ChildDepartureSummaryViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildDepartureSummaryViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildDeparture\ChildDepartureSummaryViewFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionWhoILiveWithEditDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionWhoILiveWithEditDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionWhoILiveWithEditDataFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionWhoILiveWithViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionWhoILiveWithViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionWhoILiveWithViewFormUIModel.vb" />
+    <Compile Include="Helpers\CCHFormsHelper.vb" />
+    <Compile Include="Helpers\DepartureFieldNames.vb" />
+    <Compile Include="Helpers\DepartureFormsHelper.vb" />
+    <Compile Include="Helpers\CCHFieldNames.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrated rules for Blackbaud.CustomFx.ChildExtension.UIModel.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\MyChildExtensionCatalog\CRUD\TESTINGONLY\TESTINGONLY.View.xml">
+      <Link>LinkedSpecs\TESTINGONLY.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.WhoILiveWith.View.xml">
+      <Link>LinkedSpecs\ChildExtension.WhoILiveWith.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.Development.Edit.xml">
+      <Link>LinkedSpecs\ChildExtension.Development.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\CRUD\ChildExtension\Child Extension Table.Add.xml">
+      <Link>LinkedSpecs\Child Extension Table.Add.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtensionAddChild.Add.xml">
+      <Link>LinkedSpecs\ChildExtensionAddChild.Add.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\TestBatch\TestBatchAddRow.Add.xml">
+      <Link>LinkedSpecs\TestBatchAddRow.Add.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\TestBatch\TestBatchEditRow.Edit.xml">
+      <Link>LinkedSpecs\TestBatchEditRow.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.AboutMe.View.xml">
+      <Link>LinkedSpecs\ChildExtension.AboutMe.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\CRUD\Departures\ChildDeparture.Add.xml">
+      <Link>LinkedSpecs\ChildDeparture.Add.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\CRUD\Departures\ChildDeparture.Edit.xml">
+      <Link>LinkedSpecs\ChildDeparture.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDeparture.DepartureReason.View.xml">
+      <Link>LinkedSpecs\ChildDeparture.DepartureReason.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDeparture.SpiritualPhysicalImpactTab.View.xml">
+      <Link>LinkedSpecs\ChildDeparture.SpiritualPhysicalImpactTab.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDeparture.SocialImpact.View.xml">
+      <Link>LinkedSpecs\ChildDeparture.SocialImpact.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDeparture.GeneralComments.View.xml">
+      <Link>LinkedSpecs\ChildDeparture.GeneralComments.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.Development.View.xml">
+      <Link>LinkedSpecs\ChildExtension.Development.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.DepartureReason.Edit.xml">
+      <Link>LinkedSpecs\ChildDeparture.DepartureReason.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.SpiritualPhysicalImpact.Edit.xml">
+      <Link>LinkedSpecs\ChildDeparture.SpiritualPhysicalImpact.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.SocialImpact.Edit.xml">
+      <Link>LinkedSpecs\ChildDeparture.SocialImpact.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.GeneralComments.Edit.xml">
+      <Link>LinkedSpecs\ChildDeparture.GeneralComments.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
+      <Link>LinkedSpecs\ChildDeparture.PageSummaryView.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.PageSummaryView.Edit.xml">
+      <Link>LinkedSpecs\ChildDeparture.PageSummaryView.Edit.xml</Link>
+    </None>
+    <Content Include="ChildDeparture\ChildDepartureEditPageSummaryDataForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureEditPageSummaryDataFormUIModel.xml">
+      <DependentUpon>ChildDepartureEditPageSummaryDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureSummaryViewForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureAddForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureAddFormUIModel.xml">
+      <DependentUpon>ChildDepartureAddFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureEditForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureEditFormUIModel.xml">
+      <DependentUpon>ChildDepartureEditFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureGeneralCommentsEditDataForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureGeneralCommentsEditDataFormUIModel.xml">
+      <DependentUpon>ChildDepartureGeneralCommentsEditDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureGeneralCommentsViewForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureGeneralCommentsViewFormUIModel.xml">
+      <DependentUpon>ChildDepartureGeneralCommentsViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureReasonForDepartureTabEdit.html" />
+    <Content Include="ChildDeparture\ChildDepartureReasonForDepartureTabEditUIModel.xml">
+      <DependentUpon>ChildDepartureReasonForDepartureTabEditUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureReasonForDepartureTabView.html" />
+    <Content Include="ChildDeparture\ChildDepartureReasonForDepartureTabViewUIModel.xml">
+      <DependentUpon>ChildDepartureReasonForDepartureTabViewUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureSocialCognitiveEditDataForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureSocialCognitiveEditDataFormUIModel.xml">
+      <DependentUpon>ChildDepartureSocialCognitiveEditDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureSocialCognitiveImpactViewForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureSocialCognitiveImpactViewFormUIModel.xml">
+      <DependentUpon>ChildDepartureSocialCognitiveImpactViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabEditForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel.xml">
+      <DependentUpon>ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabViewForm.html" />
+    <Content Include="ChildDeparture\ChildDepartureSpiritualAndPhysicalImpactTabViewFormUIModel.xml">
+      <DependentUpon>ChildDepartureSpiritualAndPhysicalImpactTabViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionAboutMeViewForm.html" />
+    <Content Include="ChildCCH\ChildExtensionAboutMeViewFormUIModel.xml">
+      <DependentUpon>ChildExtensionAboutMeViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionAddCCHForm.html" />
+    <Content Include="ChildCCH\ChildExtensionAddCCHFormUIModel.xml">
+      <DependentUpon>ChildExtensionAddCCHFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionDevelopmentEditDataForm.html" />
+    <Content Include="ChildCCH\ChildExtensionDevelopmentEditDataFormUIModel.xml">
+      <DependentUpon>ChildExtensionDevelopmentEditDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionDevelopmentViewForm.html" />
+    <Content Include="ChildCCH\ChildExtensionDevelopmentViewFormUIModel.xml">
+      <DependentUpon>ChildExtensionDevelopmentViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionsAddDataForm.html" />
+    <Content Include="ChildCCH\ChildExtensionSponsorshipOpportunityChildAddFormWrapped.html" />
+    <Content Include="ChildCCH\ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIModel.xml">
+      <DependentUpon>ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionWhoILiveWithViewForm.html" />
+    <Content Include="ChildCCH\ChildExtensionWhoILiveWithViewFormUIModel.xml">
+      <DependentUpon>ChildExtensionWhoILiveWithViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildDeparture\ChildDepartureSummaryViewFormUIModel.xml">
+      <DependentUpon>ChildDepartureSummaryViewFormUIModel.vb</DependentUpon>
+    </Content>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.WhoILiveWith.Edit.xml">
+      <Link>LinkedSpecs\ChildExtension.WhoILiveWith.Edit.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.AboutMe.Edit.xml">
+      <Link>LinkedSpecs\ChildExtension.AboutMe.Edit.xml</Link>
+    </None>
+    <Content Include="ChildCCH\ChildExtensionAboutMeEditDataForm.html" />
+    <Content Include="ChildCCH\ChildExtensionAboutMeEditDataFormUIModel.xml">
+      <DependentUpon>ChildExtensionAboutMeEditDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionWhoILiveWithEditDataForm.html" />
+    <Content Include="ChildCCH\ChildExtensionWhoILiveWithEditDataFormUIModel.xml">
+      <DependentUpon>ChildExtensionWhoILiveWithEditDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.WhereILive.View.xml">
+      <Link>LinkedSpecs\ChildExtension.WhereILive.View.xml</Link>
+    </None>
+    <None Include="..\MyChildExtensionCatalog\ChildExtension.WhereILive.Edit.xml">
+      <Link>LinkedSpecs\ChildExtension.WhereILive.Edit.xml</Link>
+    </None>
+    <Content Include="ChildCCH\CCHChildExtensionWhereILiveForm.html" />
+    <Content Include="ChildCCH\CCHChildExtensionWhereILiveFormUIModel.xml">
+      <DependentUpon>CCHChildExtensionWhereILiveFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionCCHWhereILiveDataForm.html" />
+    <Content Include="ChildCCH\ChildExtensionCCHWhereILiveDataFormUIModel.xml">
+      <DependentUpon>ChildExtensionCCHWhereILiveDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionsEditForm.html" />
+    <Content Include="ChildCCH\ChildExtensionsViewForm.html" />
+    <Content Include="ChildCCH\ChildExtensionTableAddForm.html" />
+    <Content Include="ChildCCH\ChildExtensionTableAddFormUIModel.xml">
+      <DependentUpon>ChildExtensionTableAddFormUIModel.vb</DependentUpon>
+    </Content>
+    <None Include="..\MyChildExtensionCatalog\ChildExtensions.Add.xml">
+      <Link>LinkedSpecs\ChildExtensions.Add.xml</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
