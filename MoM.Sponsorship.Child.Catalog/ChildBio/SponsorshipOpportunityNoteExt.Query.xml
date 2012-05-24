@@ -12,7 +12,7 @@
 	>
 
 	<!-- define the view used to return data for the query -->
-	<ViewImplementation ViewName="USR_V_QUERY_USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION">
+	<ViewImplementation ViewName="USR_V_QUERY_SPONSORSHIPOPPORTUNITYNOTEEXTENSION">
 		<ViewSQL>
 			<![CDATA[
 select
