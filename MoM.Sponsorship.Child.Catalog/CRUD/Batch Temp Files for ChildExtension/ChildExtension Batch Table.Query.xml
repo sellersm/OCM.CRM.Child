@@ -1,0 +1,260 @@
+<QueryViewSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="79603caa-d0f0-4969-a0a4-4cb1fa487ddc"
+    Name="ChildExtension Batch Table"
+    Description="Provides support for querying on ChildExtension Batch Table information."
+    Author="memphis-PC\Administrator"
+    PrimaryKeyField="ID"
+    RecordType="ChildExtension Batch Table"
+    IsRoot="true"
+    c:SecurityUIFolder="ChildExtension Batch Table"
+    xmlns="bb_appfx_queryview"
+    >
+    <ViewImplementation ViewName="USR_V_QUERY_USR_BATCHCHILDEXTENSION">
+        <ViewSQL>
+<![CDATA[
+select
+    USR_BATCHCHILDEXTENSION.ID,
+    USR_BATCHCHILDEXTENSION.[BATCHID],
+    USR_BATCHCHILDEXTENSION.[SEQUENCE],
+    (select USR_BIRTHDATEACCURACYCODE.DESCRIPTION from dbo.USR_BIRTHDATEACCURACYCODE where USR_BIRTHDATEACCURACYCODE.ID = USR_BATCHCHILDEXTENSION.[BIRTHDATEACCURACYCODEID]) as BIRTHDATEACCURACYCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[PROGRAMCOMPLETIONDATE],
+    (select USR_CHILDNAMESUFFIXCODE.DESCRIPTION from dbo.USR_CHILDNAMESUFFIXCODE where USR_CHILDNAMESUFFIXCODE.ID = USR_BATCHCHILDEXTENSION.[CHILDNAMESUFFIXCODEID]) as CHILDNAMESUFFIXCODEID_TRANSLATION,
+    (select USR_CHILDLIVESWITHCODE.DESCRIPTION from dbo.USR_CHILDLIVESWITHCODE where USR_CHILDLIVESWITHCODE.ID = USR_BATCHCHILDEXTENSION.[CHILDLIVESWITHCODEID]) as CHILDLIVESWITHCODEID_TRANSLATION,
+    (select USR_FATHERWORKSASCODE.DESCRIPTION from dbo.USR_FATHERWORKSASCODE where USR_FATHERWORKSASCODE.ID = USR_BATCHCHILDEXTENSION.[FATHERWORKSASCODEID]) as FATHERWORKSASCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[FATHERWORKSASOTHER],
+    (select USR_MOTHERWORKSASCODE.DESCRIPTION from dbo.USR_MOTHERWORKSASCODE where USR_MOTHERWORKSASCODE.ID = USR_BATCHCHILDEXTENSION.[MOTHERWORKSASCODEID]) as MOTHERWORKSASCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[MOTHERWORKSASOTHER],
+    (select USR_CAREGIVERRELATIONCODE.DESCRIPTION from dbo.USR_CAREGIVERRELATIONCODE where USR_CAREGIVERRELATIONCODE.ID = USR_BATCHCHILDEXTENSION.[CAREGIVERRELATIONCODEID]) as CAREGIVERRELATIONCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[CAREGIVERRELATIONOTHER],
+    (select USR_CAREGIVERWORKSASCODE.DESCRIPTION from dbo.USR_CAREGIVERWORKSASCODE where USR_CAREGIVERWORKSASCODE.ID = USR_BATCHCHILDEXTENSION.[CAREGIVERWORKSASCODEID]) as CAREGIVERWORKSASCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[CAREGIVERWORKSASOTHER],
+    (select USR_CAREGIVERREASONCODE.DESCRIPTION from dbo.USR_CAREGIVERREASONCODE where USR_CAREGIVERREASONCODE.ID = USR_BATCHCHILDEXTENSION.[CAREGIVERREASONCODEID]) as CAREGIVERREASONCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[REASONFORCAREGIVEROTHER],
+    USR_BATCHCHILDEXTENSION.[NUMBEROFSISTERS],
+    USR_BATCHCHILDEXTENSION.[NUMBEROFBROTHERS],
+    USR_BATCHCHILDEXTENSION.[HOUSINGWALLWOOD],
+    USR_BATCHCHILDEXTENSION.[HOUSINGWALLMUD],
+    USR_BATCHCHILDEXTENSION.[HOUSINGWALLBAMBOO],
+    USR_BATCHCHILDEXTENSION.[HOUSINGWALLBLOCK],
+    USR_BATCHCHILDEXTENSION.[HOUSINGWALLOTHER],
+    USR_BATCHCHILDEXTENSION.[ROOFINGTIN],
+    USR_BATCHCHILDEXTENSION.[ROOFINGGRASSLEAVES],
+    USR_BATCHCHILDEXTENSION.[ROOFINGWOOD],
+    USR_BATCHCHILDEXTENSION.[ROOFINGTILE],
+    USR_BATCHCHILDEXTENSION.[ROOFINGOTHER],
+    USR_BATCHCHILDEXTENSION.[WATERSOURCEINDOOR],
+    USR_BATCHCHILDEXTENSION.[WATERSOURCECOMMUNITYTAP],
+    USR_BATCHCHILDEXTENSION.[WATERSOURCEBOREHOLEWELL],
+    USR_BATCHCHILDEXTENSION.[WATERSOURCERIVER],
+    USR_BATCHCHILDEXTENSION.[WATERSOURCEOTHER],
+    USR_BATCHCHILDEXTENSION.[COOKINGSOURCEWOODFIRE],
+    USR_BATCHCHILDEXTENSION.[COOKINGSOURCEELECTRICSTOVE],
+    USR_BATCHCHILDEXTENSION.[COOKINGSOURCEGASSTOVE],
+    USR_BATCHCHILDEXTENSION.[COOKINGSOURCEOTHER],
+    USR_BATCHCHILDEXTENSION.[LIGHTSOURCEELECTRICITY],
+    USR_BATCHCHILDEXTENSION.[LIGHTSOURCEOILLAMP],
+    USR_BATCHCHILDEXTENSION.[LIGHTSOURCEGENERATOR],
+    USR_BATCHCHILDEXTENSION.[LIGHTSOURCENONE],
+    USR_BATCHCHILDEXTENSION.[LIGHTSOURCEOTHER],
+    USR_BATCHCHILDEXTENSION.[AREADESCRIPTION],
+    USR_BATCHCHILDEXTENSION.[MYFAVORITETHINGTODO],
+    USR_BATCHCHILDEXTENSION.[WHENIPLAYWITHFRIENDSWE],
+    USR_BATCHCHILDEXTENSION.[WHENATHOMEIHELPOUTBY],
+    USR_BATCHCHILDEXTENSION.[WHENITALKTOGODIASKHIM],
+    USR_BATCHCHILDEXTENSION.[WHENIAMATSCHOOLILIKELEARNING],
+    USR_BATCHCHILDEXTENSION.[SOMEDAYI],
+    USR_BATCHCHILDEXTENSION.[TWOMOSTFAVORITETHINGS],
+    USR_BATCHCHILDEXTENSION.[OTHERTHINGSTHECHILDENJOYS],
+    USR_BATCHCHILDEXTENSION.[CHILDPERSONALITY],
+    USR_BATCHCHILDEXTENSION.[CHILDHEALTH],
+    USR_BATCHCHILDEXTENSION.[SPIRITUALDEVELOPMENT],
+    USR_BATCHCHILDEXTENSION.[ATTENDINGSCHOOL],
+    USR_BATCHCHILDEXTENSION.[REASONNOTATTENDINGSCHOOL],
+    USR_BATCHCHILDEXTENSION.[CLASSLEVEL],
+    USR_BATCHCHILDEXTENSION.[FAVORITESUBJECT],
+    USR_BATCHCHILDEXTENSION.[VOCATIONALSKILLS],
+    USR_BATCHCHILDEXTENSION.[ADDITIONALCHILDINFORMATION],
+    USR_BATCHCHILDEXTENSION.[CCHENTEREDBY],
+    USR_BATCHCHILDEXTENSION.[CCHTEMPID],
+    USR_BATCHCHILDEXTENSION.[CURRENTPHOTODATE],
+    USR_BATCHCHILDEXTENSION.[PHOTOSCANNED],
+    (select USR_CHILDPROFILESTATUSCODE.DESCRIPTION from dbo.USR_CHILDPROFILESTATUSCODE where USR_CHILDPROFILESTATUSCODE.ID = USR_BATCHCHILDEXTENSION.[CHILDPROFILESTATUSCODEID]) as CHILDPROFILESTATUSCODEID_TRANSLATION,
+    (select USR_CHILDPROFILEUPDATECODE.DESCRIPTION from dbo.USR_CHILDPROFILEUPDATECODE where USR_CHILDPROFILEUPDATECODE.ID = USR_BATCHCHILDEXTENSION.[CHILDPROFILEUPDATECODEID]) as CHILDPROFILEUPDATECODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[PROFILEUPDATENOTIFICATION],
+    USR_BATCHCHILDEXTENSION.[FUNDED],
+    USR_BATCHCHILDEXTENSION.[TEMPCHILDID],
+    USR_BATCHCHILDEXTENSION.[FIRSTNAME],
+    USR_BATCHCHILDEXTENSION.[MIDDLENAME],
+    USR_BATCHCHILDEXTENSION.[LASTNAME],
+    USR_BATCHCHILDEXTENSION.[GENDERCODE],
+    USR_BATCHCHILDEXTENSION.[BIRTHDATE],
+    USR_BATCHCHILDEXTENSION.[ISHIVPOSITIVE],
+    (select SPROPPCHILDCONDITIONCODE.DESCRIPTION from dbo.SPROPPCHILDCONDITIONCODE where SPROPPCHILDCONDITIONCODE.ID = USR_BATCHCHILDEXTENSION.[SPROPPCHILDCONDITIONCODEID]) as SPROPPCHILDCONDITIONCODEID_TRANSLATION,
+    USR_BATCHCHILDEXTENSION.[ISORPHANED],
+    USR_BATCHCHILDEXTENSION.[PICTURE],
+	ADDEDBY.APPLICATIONNAME as [ADDEDBY_APPLICATION],
+	ADDEDBY.USERNAME as [ADDEDBY_USERNAME],
+	CHANGEDBY.APPLICATIONNAME as [CHANGEDBY_APPLICATION],
+	CHANGEDBY.USERNAME as [CHANGEDBY_USERNAME],
+	USR_BATCHCHILDEXTENSION.DATEADDED,
+	USR_BATCHCHILDEXTENSION.DATECHANGED,
+	USR_BATCHCHILDEXTENSION.TSLONG
+from 
+    dbo.USR_BATCHCHILDEXTENSION
+    left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_BATCHCHILDEXTENSION.ADDEDBYID
+    left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_BATCHCHILDEXTENSION.CHANGEDBYID
+]]>
+</ViewSQL>
+    </ViewImplementation>
+    <Output>
+        <OutputFields>
+            <OutputField Name="ID" Caption="System record ID" Category="System Fields" DataType="Guid" />
+            <OutputField Name="BATCHID" Caption="Batch" DataType="Guid" />
+            <OutputField Name="SEQUENCE" Caption="Sequence" DataType="Integer" />
+            <OutputField Name="BIRTHDATEACCURACYCODEID_TRANSLATION" Caption="Birthdateaccuracy">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="PROGRAMCOMPLETIONDATE" Caption="Programcompletiondate" DataType="Date" />
+            <OutputField Name="CHILDNAMESUFFIXCODEID_TRANSLATION" Caption="Childnamesuffix">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHILDLIVESWITHCODEID_TRANSLATION" Caption="Childliveswith">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CHILDLIVESWITHCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="FATHERWORKSASCODEID_TRANSLATION" Caption="Fatherworksas">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_FATHERWORKSASCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="FATHERWORKSASOTHER" Caption="Fatherworksasother" />
+            <OutputField Name="MOTHERWORKSASCODEID_TRANSLATION" Caption="Motherworksas">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_MOTHERWORKSASCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="MOTHERWORKSASOTHER" Caption="Motherworksasother" />
+            <OutputField Name="CAREGIVERRELATIONCODEID_TRANSLATION" Caption="Caregiverrelation">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CAREGIVERRELATIONCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CAREGIVERRELATIONOTHER" Caption="Caregiverrelationother" />
+            <OutputField Name="CAREGIVERWORKSASCODEID_TRANSLATION" Caption="Caregiverworksas">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CAREGIVERWORKSASCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CAREGIVERWORKSASOTHER" Caption="Caregiverworksasother" />
+            <OutputField Name="CAREGIVERREASONCODEID_TRANSLATION" Caption="Caregiverreason">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CAREGIVERREASONCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="REASONFORCAREGIVEROTHER" Caption="Reasonforcaregiverother" />
+            <OutputField Name="NUMBEROFSISTERS" Caption="Numberofsisters" DataType="TinyInt" />
+            <OutputField Name="NUMBEROFBROTHERS" Caption="Numberofbrothers" DataType="TinyInt" />
+            <OutputField Name="HOUSINGWALLWOOD" Caption="Housingwallwood" DataType="Boolean" />
+            <OutputField Name="HOUSINGWALLMUD" Caption="Housingwallmud" DataType="Boolean" />
+            <OutputField Name="HOUSINGWALLBAMBOO" Caption="Housingwallbamboo" DataType="Boolean" />
+            <OutputField Name="HOUSINGWALLBLOCK" Caption="Housingwallblock" DataType="Boolean" />
+            <OutputField Name="HOUSINGWALLOTHER" Caption="Housingwallother" />
+            <OutputField Name="ROOFINGTIN" Caption="Roofingtin" DataType="Boolean" />
+            <OutputField Name="ROOFINGGRASSLEAVES" Caption="Roofinggrassleaves" DataType="Boolean" />
+            <OutputField Name="ROOFINGWOOD" Caption="Roofingwood" DataType="Boolean" />
+            <OutputField Name="ROOFINGTILE" Caption="Roofingtile" DataType="Boolean" />
+            <OutputField Name="ROOFINGOTHER" Caption="Roofingother" />
+            <OutputField Name="WATERSOURCEINDOOR" Caption="Watersourceindoor" DataType="Boolean" />
+            <OutputField Name="WATERSOURCECOMMUNITYTAP" Caption="Watersourcecommunitytap" DataType="Boolean" />
+            <OutputField Name="WATERSOURCEBOREHOLEWELL" Caption="Watersourceboreholewell" DataType="Boolean" />
+            <OutputField Name="WATERSOURCERIVER" Caption="Watersourceriver" DataType="Boolean" />
+            <OutputField Name="WATERSOURCEOTHER" Caption="Watersourceother" />
+            <OutputField Name="COOKINGSOURCEWOODFIRE" Caption="Cookingsourcewoodfire" DataType="Boolean" />
+            <OutputField Name="COOKINGSOURCEELECTRICSTOVE" Caption="Cookingsourceelectricstove" DataType="Boolean" />
+            <OutputField Name="COOKINGSOURCEGASSTOVE" Caption="Cookingsourcegasstove" DataType="Boolean" />
+            <OutputField Name="COOKINGSOURCEOTHER" Caption="Cookingsourceother" />
+            <OutputField Name="LIGHTSOURCEELECTRICITY" Caption="Lightsourceelectricity" DataType="Boolean" />
+            <OutputField Name="LIGHTSOURCEOILLAMP" Caption="Lightsourceoillamp" DataType="Boolean" />
+            <OutputField Name="LIGHTSOURCEGENERATOR" Caption="Lightsourcegenerator" DataType="Boolean" />
+            <OutputField Name="LIGHTSOURCENONE" Caption="Lightsourcenone" DataType="Boolean" />
+            <OutputField Name="LIGHTSOURCEOTHER" Caption="Lightsourceother" />
+            <OutputField Name="AREADESCRIPTION" Caption="Areadescription" />
+            <OutputField Name="MYFAVORITETHINGTODO" Caption="Myfavoritethingtodo" />
+            <OutputField Name="WHENIPLAYWITHFRIENDSWE" Caption="Wheniplaywithfriendswe" />
+            <OutputField Name="WHENATHOMEIHELPOUTBY" Caption="Whenathomeihelpoutby" />
+            <OutputField Name="WHENITALKTOGODIASKHIM" Caption="Whenitalktogodiaskhim" />
+            <OutputField Name="WHENIAMATSCHOOLILIKELEARNING" Caption="Wheniamatschoolilikelearning" />
+            <OutputField Name="SOMEDAYI" Caption="Somedayi" />
+            <OutputField Name="TWOMOSTFAVORITETHINGS" Caption="Twomostfavoritethings" />
+            <OutputField Name="OTHERTHINGSTHECHILDENJOYS" Caption="Otherthingsthechildenjoys" />
+            <OutputField Name="CHILDPERSONALITY" Caption="Childpersonality" />
+            <OutputField Name="CHILDHEALTH" Caption="Childhealth" />
+            <OutputField Name="SPIRITUALDEVELOPMENT" Caption="Spiritualdevelopment" />
+            <OutputField Name="ATTENDINGSCHOOL" Caption="Attendingschool" DataType="Boolean" />
+            <OutputField Name="REASONNOTATTENDINGSCHOOL" Caption="Reasonnotattendingschool" />
+            <OutputField Name="CLASSLEVEL" Caption="Classlevel" />
+            <OutputField Name="FAVORITESUBJECT" Caption="Favoritesubject" />
+            <OutputField Name="VOCATIONALSKILLS" Caption="Vocationalskills" />
+            <OutputField Name="ADDITIONALCHILDINFORMATION" Caption="Additionalchildinformation" />
+            <OutputField Name="CCHENTEREDBY" Caption="Cchenteredby" />
+            <OutputField Name="CCHTEMPID" Caption="CCHTEMPID" />
+            <OutputField Name="CURRENTPHOTODATE" Caption="Currentphotodate" DataType="Date" />
+            <OutputField Name="PHOTOSCANNED" Caption="Photoscanned" DataType="Boolean" />
+            <OutputField Name="CHILDPROFILESTATUSCODEID_TRANSLATION" Caption="Childprofilestatus">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHILDPROFILEUPDATECODEID_TRANSLATION" Caption="Childprofileupdate">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="PROFILEUPDATENOTIFICATION" Caption="Profileupdatenotification" DataType="Boolean" />
+            <OutputField Name="FUNDED" Caption="Funded" DataType="Boolean" />
+            <OutputField Name="TEMPCHILDID" Caption="Tempchildid" />
+            <OutputField Name="FIRSTNAME" Caption="Firstname" />
+            <OutputField Name="MIDDLENAME" Caption="Middlename" />
+            <OutputField Name="LASTNAME" Caption="Lastname" />
+            <OutputField Name="GENDERCODE" Caption="Gender" DataType="TinyInt" />
+            <OutputField Name="BIRTHDATE" Caption="Birthdate" DataType="FuzzyDate" />
+            <OutputField Name="ISHIVPOSITIVE" Caption="Ishivpositive" DataType="Boolean" />
+            <OutputField Name="SPROPPCHILDCONDITIONCODEID_TRANSLATION" Caption="Sproppchildcondition">
+                <LookupInfo>
+                    <CodeTable CodeTableName="SPROPPCHILDCONDITIONCODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="ISORPHANED" Caption="Isorphaned" DataType="Boolean" />
+            <OutputField Name="PICTURE" Caption="Picture" DataType="Binary" />
+            <OutputField Name="ADDEDBY_APPLICATION" Caption="Added by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="ADDEDBY_USERNAME" Caption="Added by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_APPLICATION" Caption="Changed by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_USERNAME" Caption="Changed by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
+            <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
+            <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
+        </OutputFields>
+    </Output>
+</QueryViewSpec>

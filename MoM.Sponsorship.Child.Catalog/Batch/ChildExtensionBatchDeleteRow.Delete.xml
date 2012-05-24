@@ -1,0 +1,40 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1e3b48e9-6798-4042-a920-6a8b4da578c9" 
+	Name="ChildExtensionBatch Delete Row Operation" 
+	Description="Delete a Row from ChildExtensionBatch"
+	Author="memphis-PC\Administrator"
+	OperationType="Delete"
+	RecordType="ChildExtensionBatch"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child"
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USP_BATCHCHILDEXTENSIONROW_DELETE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_BATCHCHILDEXTENSIONROW_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_BATCHCHILDEXTENSION_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to delete this Child/ChildExtension row from the Batch?" />
+	</Prompt>
+
+</RecordOperationSpec>

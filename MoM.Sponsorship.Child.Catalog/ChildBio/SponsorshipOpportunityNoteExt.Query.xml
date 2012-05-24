@@ -1,0 +1,39 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="8e007403-64a5-4772-ac00-6b7da3992984"
+	Name="Sponsorship Opportunity Note Extension Query"
+	Description="Query to view Sponsorship Opportunity Note Extension Fields"
+	Author="Bill Elfstrom"
+	IsRoot="true"
+	PrimaryKeyField="ID"
+	RecordType="Sponsorship Opportunity Note"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Note"
+	>
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION">
+		<ViewSQL>
+			<![CDATA[
+select
+    USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION.DATE_PROOFED,
+    USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION.ID
+from 
+    dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
+    join dbo.SPONSORSHIPOPPORTUNITYNOTE on USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION.ID = dbo.SPONSORSHIPOPPORTUNITYNOTE.ID		
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="System record ID" Category="System Fields" Name="ID" DataType="Guid" />
+      <OutputField Name="DATE_PROOFED" Caption="Date Proofed" DataType="Date" />
+		</OutputFields>
+	</Output>
+  <RelationshipOperations>
+    <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ParentViewRelatedField="ID" Field="ID" PathAlias="Sponsorship Opportunity Note Date Proofed" />
+  </RelationshipOperations>
+</QueryViewSpec>
+
