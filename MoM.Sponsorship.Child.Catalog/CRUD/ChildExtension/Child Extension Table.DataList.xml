@@ -78,7 +78,7 @@ as
         USR_CHILDEXTENSION.[VOCATIONALSKILLS],
         USR_CHILDEXTENSION.[ADDITIONALCHILDINFORMATION],
         USR_CHILDEXTENSION.[CCHENTEREDBY],
-        USR_CHILDEXTENSION.[CHTEMPID],
+        USR_CHILDEXTENSION.[CCHTEMPID],
         USR_CHILDEXTENSION.[CURRENTPHOTODATE],
         USR_CHILDEXTENSION.[PHOTOSCANNED],
         USR_CHILDPROFILESTATUSCODE.DESCRIPTION,
@@ -165,7 +165,7 @@ as
             <OutputField FieldID="VOCATIONALSKILLS" Caption="Vocationalskills" DataType="String" />
             <OutputField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additionalchildinformation" DataType="String" />
             <OutputField FieldID="CCHENTEREDBY" Caption="Cchenteredby" DataType="String" />
-            <OutputField FieldID="CHTEMPID" Caption="Chtempid" DataType="String" />
+            <OutputField FieldID="CCHTEMPID" Caption="CCHTEMPID" DataType="String" />
             <OutputField FieldID="CURRENTPHOTODATE" Caption="Currentphotodate" DataType="Date" />
             <OutputField FieldID="PHOTOSCANNED" Caption="Photoscanned" DataType="Boolean" DisplayBooleanAsCheck="true" />
             <OutputField FieldID="CHILDPROFILESTATUSCODEID" Caption="Childprofilestatus" DataType="Guid" />

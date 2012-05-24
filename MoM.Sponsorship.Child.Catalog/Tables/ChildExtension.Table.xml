@@ -114,7 +114,7 @@ IsCustomizable="true">
       Profile Update Notification:  enum Yes/No
     -->
     <TextField Description="CCH Entered By" Name="CCHENTEREDBY" Length="100" Required="false" IsUnique="false" />
-    <TextField Description="CH CCH Temp ID" Name="CHTEMPID" Length="250" Required="false" IsUnique="false" />
+    <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="false" />
     <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="false"/>
     <BooleanField Description="Photo Stored" Name="PHOTOSTORED"/>
     <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="false"/>

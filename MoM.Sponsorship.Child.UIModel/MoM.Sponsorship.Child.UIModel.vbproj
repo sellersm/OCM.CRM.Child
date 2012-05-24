@@ -83,8 +83,8 @@
     <Reference Include="Blackbaud.AppFx.XmlTypes.XmlSerializers, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.XmlSerializers.dll</HintPath>
     </Reference>
-    <Reference Include="MoM.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\References\MoM\MoM.Common.dll</HintPath>
+    <Reference Include="MoM.Common">
+      <HintPath>..\..\..\References\MoM\MoM.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

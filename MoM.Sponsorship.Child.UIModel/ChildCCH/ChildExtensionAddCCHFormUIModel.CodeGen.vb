@@ -87,7 +87,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
     Private WithEvents _vocationalskills As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _additionalchildinformation As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _cchenteredby As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-    Private WithEvents _chtempid As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+    Private WithEvents _cchtempid As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _currentphotodate As Global.Blackbaud.AppFx.UIModeling.Core.DateField
     Private WithEvents _photostored As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
     Private WithEvents _childprofilestatuscodeid As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
@@ -180,7 +180,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
         _vocationalskills = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _additionalchildinformation = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _cchenteredby = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        _chtempid = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
+        _cchtempid = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _currentphotodate = New Global.Blackbaud.AppFx.UIModeling.Core.DateField
         _photostored = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         _childprofilestatuscodeid = New Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
@@ -644,13 +644,13 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
         _cchenteredby.MaxLength = 100
         Me.Fields.Add(_cchenteredby)
         '
-        '_chtempid
+        '_cchtempid
         '
-        _chtempid.Name = "CHTEMPID"
-        _chtempid.Caption = "Ch Tempid"
-        _chtempid.MaxLength = 250
-        _chtempid.MultiLine = True
-        Me.Fields.Add(_chtempid)
+        _cchtempid.Name = "CCHTEMPID"
+        _cchtempid.Caption = "Ch Tempid"
+        _cchtempid.MaxLength = 250
+        _cchtempid.Multiline = True
+        Me.Fields.Add(_cchtempid)
         '
         '_currentphotodate
         '
@@ -1535,11 +1535,11 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
     ''' <summary>
     ''' Ch Tempid
     ''' </summary>
-    <System.ComponentModel.Description("Ch Tempid")> _
+    <System.ComponentModel.Description("CH CCH Tempid")> _
     <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [CHTEMPID]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+    Public ReadOnly Property [CCHTEMPID]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
         Get
-            Return _chtempid
+            Return _cchtempid
         End Get
     End Property
 

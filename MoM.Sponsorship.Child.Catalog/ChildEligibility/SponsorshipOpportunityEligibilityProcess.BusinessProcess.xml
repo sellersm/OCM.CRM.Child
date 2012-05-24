@@ -21,7 +21,7 @@
     21-Mar-2012		CMayeda			Initial Version
 	-->
 	
-	<ProcessorComponent AssemblyName="CarySpecs.dll" ClassName="CarySpecs.SponsorshipOpportunityEligibilityProcessBusinessProcess" >
+	<ProcessorComponent AssemblyName="MoM.Sponsorship.Child.Catalog.dll" ClassName="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcessBusinessProcess" >
 		<common:GrantExecuteList>
 			<common:GrantExecute>dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS</common:GrantExecute>
 			<common:GrantExecute>dbo.USR_USP_GETIDSETCOUNT</common:GrantExecute>

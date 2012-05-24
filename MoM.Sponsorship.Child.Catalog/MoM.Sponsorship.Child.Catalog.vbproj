@@ -11,7 +11,7 @@
     <AssemblyName>MoM.Sponsorship.Child.Catalog</AssemblyName>
     <MyType>Windows</MyType>
     <OptionStrict>Off</OptionStrict>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -31,6 +31,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,16 +70,22 @@
   <ItemGroup>
     <Reference Include="Blackbaud.AppFx, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\References\Third Party\Blackbaud.AppFx.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Blackbaud.AppFx.Server, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\References\Third Party\Blackbaud.AppFx.Server.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Blackbaud.AppFx.UIModeling.Core, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Blackbaud.AppFx.UIModeling.Core, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Blackbaud.AppFx.XmlTypes, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Blackbaud.AppFx.XmlTypes.XmlSerializers, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.XmlSerializers.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,12 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildBio\UtilityPageDefSpec_AddChildBioTab.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.BusinessProcess.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
     <Folder Include="LinkedSpecs\" />
+    <Folder Include="Query Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrated rules for MyChildExtensionCatalog.ruleset" />
@@ -122,6 +129,43 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Add.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.BusinessProcess.vb" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.DataList.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Edit.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Page.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Table.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.Page.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.View.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatusHistory.DataList.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOppotunityEligibilityCheck.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_GETIDSETCOUNT.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT.xml" />
+    <EmbeddedResource Include="PageExpressions\ChildDeparture.ExpressionDataForm.View.xml" />
+    <EmbeddedResource Include="PageExpressions\ChildExtension.ExpressionDataForm.View.xml" />
+    <EmbeddedResource Include="Pages\ChildCCH.Page.xml" />
+    <EmbeddedResource Include="Pages\ChildDeparture.Page.xml" />
+    <EmbeddedResource Include="Pages\ChildDepartures.Page.xml" />
+    <EmbeddedResource Include="Pages\ChildTransfers.Page.xml" />
+    <EmbeddedResource Include="Pages\PageDefinitionSpec1.xml" />
+    <EmbeddedResource Include="Pages\SponsorshipOpportunity.Page.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tables\Code Tables\ChildProfileUpdate.CodeTable.xml" />
     <EmbeddedResource Include="Tables\Code Tables\ChildProfileStatus.CodeTable.xml" />
     <EmbeddedResource Include="Tables\Code Tables\ChildNameSuffix.CodeTable.xml" />
@@ -131,7 +175,7 @@
     <EmbeddedResource Include="ChildSiblings\ChildSiblings.Add.xml" />
     <EmbeddedResource Include="Tables\ChildSiblings.Table.xml" />
     <EmbeddedResource Include="Tables\Code Tables\BirthdayAccuracy.CodeTable.xml" />
-    <EmbeddedResource Include="Tables\Code Tables\CaregiverWorksAs.CodeTable.xml" />
+    <EmbeddedResource Include="Tables\Code Tables\CareGiverWorksAs.CodeTable.xml" />
     <EmbeddedResource Include="Tables\Code Tables\CareGiverReason.CodeTable.xml" />
     <EmbeddedResource Include="Tables\Code Tables\CareGiverRelation.CodeTable.xml" />
     <EmbeddedResource Include="Tables\Code Tables\MotherWorksAs.CodeTable.xml" />
@@ -144,9 +188,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Batch\ChildExtension.Batch.Table.xml" />
-    <EmbeddedResource Include="Pages\ChildCCH.Page.xml" />
-    <EmbeddedResource Include="Pages\ChildDepartures.Page.xml" />
-    <EmbeddedResource Include="Pages\ChildTransfers.Page.xml" />
     <EmbeddedResource Include="Tables\ChildDeparture.Table.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoILiveWith.View.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhereILive.View.xml" />
@@ -173,9 +214,6 @@
     <EmbeddedResource Include="Tables\ChildExtension.Table.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Query Views\ChildExtension.Query.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.SponsorshipOpportunityExt.Query.xml" />
@@ -243,9 +281,6 @@
     <EmbeddedResource Include="TestBatch\TestingOnly.Table.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Pages\PageDefinitionSpec1.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoAmI.Edit.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +292,7 @@
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.View.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ViewDataFormTemplateSpec.View1.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.View.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Add.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Edit.xml" />
@@ -272,34 +308,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.Edit.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\USR_USP_CHILDDEPARTURE_DELETEROW_WITHCHANGEAGENTID.xml" />
-    <EmbeddedResource Include="Pages\SponsorshipOpportunity.Page.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Add.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.BusinessProcess.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.DataList.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Edit.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Page.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.RecordOperation.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Table.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.Page.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.View.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatusHistory.DataList.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOppotunityEligibilityCheck.RecordOperation.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_GETIDSETCOUNT.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.Package.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="ChildCCHSpecs\AddChildOriginal.Task.xml" />
     <EmbeddedResource Include="ChildBio\SponsorshipOpporNoteDelete.RecordOperation.xml" />
     <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.Query.xml" />
@@ -312,29 +320,30 @@
     <EmbeddedResource Include="ChildBio\SponOpporNoteChildBioDateProofed.Edit.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Batch\BatchLock\BatchLock.Table.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
-    <Content Include="Quota\USR_UFN_CHILDPROJECT_CURRENTQUOTA.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Quota\USR_USP_CHILD_SETELIGIBILTY.xml" />
-    <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Content Include="Tables\TESTINGONLY.Table.xml" />
-    <EmbeddedResource Include="PageExpressions\ChildDeparture.ExpressionDataForm.View.xml" />
-    <EmbeddedResource Include="PageExpressions\ChildExtension.ExpressionDataForm.View.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DepartureReason.View.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.SpiritualPhysicalImpact.View.xml" />
-    <EmbeddedResource Include="Pages\ChildDeparture.Page.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.SocialImpact.View.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.GeneralComments.View.xml" />
-    <Content Include="Tables\Code Tables\ChildClassLevel.CodeTable.xml" />
+    <EmbeddedResource Include="Tables\Code Tables\ChildClassLevel.CodeTable.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

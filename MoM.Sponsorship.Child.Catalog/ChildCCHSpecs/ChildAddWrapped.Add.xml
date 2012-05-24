@@ -93,7 +93,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSIONBATCH_WRAPPED
     @VOCATIONALSKILLS nvarchar(1000) = '',
     @ADDITIONALCHILDINFORMATION nvarchar(max) = '',
     @CCHENTEREDBY nvarchar(100) = '',
-    @CHTEMPID nvarchar(250) = '',
+    @CCHTEMPID nvarchar(250) = '',
     @CURRENTPHOTODATE datetime = null,
     @PHOTOSTORED bit = 0,
     @CHILDPROFILESTATUSCODEID uniqueidentifier,
@@ -196,7 +196,7 @@ exec @r = dbo.USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSIONBATCH
   @VOCATIONALSKILLS = @VOCATIONALSKILLS, 
   @ADDITIONALCHILDINFORMATION = @ADDITIONALCHILDINFORMATION, 
   @CCHENTEREDBY = @CCHENTEREDBY, 
-  @CHTEMPID = @CHTEMPID, 
+  @CCHTEMPID = @CCHTEMPID, 
   @CURRENTPHOTODATE = @CURRENTPHOTODATE, 
   @PHOTOSTORED = @PHOTOSTORED, 
   @CHILDPROFILESTATUSCODEID = @CHILDPROFILESTATUSCODEID, 
@@ -403,7 +403,7 @@ return @r;
             <c:FormField FieldID="VOCATIONALSKILLS" MaxLength="1000" Caption="Vocational or Life Skills..." Multiline="true" />
             <c:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" />
             <c:FormField FieldID="CCHENTEREDBY" MaxLength="100" Caption="CCH Entered By" />
-            <c:FormField FieldID="CHTEMPID" MaxLength="250" Caption="Ch Tempid" Multiline="true" />
+            <c:FormField FieldID="CCHTEMPID" MaxLength="250" Caption="CH CCH Tempid" Multiline="true" />
             <c:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Required="true" Caption="Current Photo Date" />
             <c:FormField FieldID="PHOTOSTORED" DataType="Boolean" Caption="Photo Stored" />
             <c:FormField FieldID="CHILDPROFILESTATUSCODEID" DataType="Guid" Required="true" Caption="Child Profile Status">

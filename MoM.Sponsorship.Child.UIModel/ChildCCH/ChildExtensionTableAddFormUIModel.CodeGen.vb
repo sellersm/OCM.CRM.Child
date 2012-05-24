@@ -87,7 +87,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
     Private WithEvents _vocationalskills As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _additionalchildinformation As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _cchenteredby As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-    Private WithEvents _chtempid As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+    Private WithEvents _cchtempid As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _currentphotodate As Global.Blackbaud.AppFx.UIModeling.Core.DateField
     Private WithEvents _photostored As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
     Private WithEvents _childprofilestatuscodeid As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
@@ -174,7 +174,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _vocationalskills = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _additionalchildinformation = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _cchenteredby = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        _chtempid = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
+        _cchtempid = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _currentphotodate = New Global.Blackbaud.AppFx.UIModeling.Core.DateField
         _photostored = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         _childprofilestatuscodeid = New Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
@@ -489,7 +489,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _areadescription.Name = "AREADESCRIPTION"
         _areadescription.Caption = "Area Description"
         _areadescription.MaxLength = 1000
-        _areadescription.MultiLine = True
+        _areadescription.Multiline = True
         Me.Fields.Add(_areadescription)
         '
         '_myfavoritethingtodo
@@ -497,7 +497,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _myfavoritethingtodo.Name = "MYFAVORITETHINGTODO"
         _myfavoritethingtodo.Caption = "My favoritething to do when I am by myself is"
         _myfavoritethingtodo.MaxLength = 1000
-        _myfavoritethingtodo.MultiLine = True
+        _myfavoritethingtodo.Multiline = True
         Me.Fields.Add(_myfavoritethingtodo)
         '
         '_wheniplaywithfriendswe
@@ -505,7 +505,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _wheniplaywithfriendswe.Name = "WHENIPLAYWITHFRIENDSWE"
         _wheniplaywithfriendswe.Caption = "When I play with my friends we"
         _wheniplaywithfriendswe.MaxLength = 1000
-        _wheniplaywithfriendswe.MultiLine = True
+        _wheniplaywithfriendswe.Multiline = True
         Me.Fields.Add(_wheniplaywithfriendswe)
         '
         '_whenathomeihelpoutby
@@ -513,7 +513,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _whenathomeihelpoutby.Name = "WHENATHOMEIHELPOUTBY"
         _whenathomeihelpoutby.Caption = "When at home I help out by"
         _whenathomeihelpoutby.MaxLength = 1000
-        _whenathomeihelpoutby.MultiLine = True
+        _whenathomeihelpoutby.Multiline = True
         Me.Fields.Add(_whenathomeihelpoutby)
         '
         '_whenitalktogodiaskhim
@@ -521,7 +521,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _whenitalktogodiaskhim.Name = "WHENITALKTOGODIASKHIM"
         _whenitalktogodiaskhim.Caption = "When I talk to God I ask Him"
         _whenitalktogodiaskhim.MaxLength = 1000
-        _whenitalktogodiaskhim.MultiLine = True
+        _whenitalktogodiaskhim.Multiline = True
         Me.Fields.Add(_whenitalktogodiaskhim)
         '
         '_wheniamatschoolilikelearning
@@ -530,7 +530,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _wheniamatschoolilikelearning.Caption = "When I am at school I like..."
         _wheniamatschoolilikelearning.Visible = False
         _wheniamatschoolilikelearning.MaxLength = 1000
-        _wheniamatschoolilikelearning.MultiLine = True
+        _wheniamatschoolilikelearning.Multiline = True
         Me.Fields.Add(_wheniamatschoolilikelearning)
         '
         '_somedayi
@@ -538,7 +538,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _somedayi.Name = "SOMEDAYI"
         _somedayi.Caption = "Someday I..."
         _somedayi.MaxLength = 1000
-        _somedayi.MultiLine = True
+        _somedayi.Multiline = True
         Me.Fields.Add(_somedayi)
         '
         '_twomostfavoritethings
@@ -546,7 +546,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _twomostfavoritethings.Name = "TWOMOSTFAVORITETHINGS"
         _twomostfavoritethings.Caption = "Two or more favorite things"
         _twomostfavoritethings.MaxLength = 1000
-        _twomostfavoritethings.MultiLine = True
+        _twomostfavoritethings.Multiline = True
         Me.Fields.Add(_twomostfavoritethings)
         '
         '_otherthingsthechildenjoys
@@ -554,7 +554,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _otherthingsthechildenjoys.Name = "OTHERTHINGSTHECHILDENJOYS"
         _otherthingsthechildenjoys.Caption = "Other things the child enjoys"
         _otherthingsthechildenjoys.MaxLength = 1000
-        _otherthingsthechildenjoys.MultiLine = True
+        _otherthingsthechildenjoys.Multiline = True
         Me.Fields.Add(_otherthingsthechildenjoys)
         '
         '_childpersonality
@@ -562,7 +562,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _childpersonality.Name = "CHILDPERSONALITY"
         _childpersonality.Caption = "Describes the child's personality or qualities that make them unique or special as well as how they interact with and relate to other children"
         _childpersonality.MaxLength = 1000
-        _childpersonality.MultiLine = True
+        _childpersonality.Multiline = True
         Me.Fields.Add(_childpersonality)
         '
         '_childhealth
@@ -570,7 +570,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _childhealth.Name = "CHILDHEALTH"
         _childhealth.Caption = "Describes the child's current health including any special concerns or conditions"
         _childhealth.MaxLength = 1000
-        _childhealth.MultiLine = True
+        _childhealth.Multiline = True
         Me.Fields.Add(_childhealth)
         '
         '_spiritualdevelopment
@@ -578,7 +578,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _spiritualdevelopment.Name = "SPIRITUALDEVELOPMENT"
         _spiritualdevelopment.Caption = "Describes the child's current level of faith, spiritual understanding and Christian activities"
         _spiritualdevelopment.MaxLength = 1000
-        _spiritualdevelopment.MultiLine = True
+        _spiritualdevelopment.Multiline = True
         Me.Fields.Add(_spiritualdevelopment)
         '
         '_attendingschool
@@ -592,7 +592,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _reasonnotattendingschool.Name = "REASONNOTATTENDINGSCHOOL"
         _reasonnotattendingschool.Caption = "If No, give reason"
         _reasonnotattendingschool.MaxLength = 255
-        _reasonnotattendingschool.MultiLine = True
+        _reasonnotattendingschool.Multiline = True
         Me.Fields.Add(_reasonnotattendingschool)
         '
         '_classlevel
@@ -607,7 +607,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _favoritesubject.Name = "FAVORITESUBJECT"
         _favoritesubject.Caption = "Favorite subject or learning activity and why"
         _favoritesubject.MaxLength = 1000
-        _favoritesubject.MultiLine = True
+        _favoritesubject.Multiline = True
         Me.Fields.Add(_favoritesubject)
         '
         '_vocationalskills
@@ -615,7 +615,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _vocationalskills.Name = "VOCATIONALSKILLS"
         _vocationalskills.Caption = "Vocational or life skills..."
         _vocationalskills.MaxLength = 1000
-        _vocationalskills.MultiLine = True
+        _vocationalskills.Multiline = True
         Me.Fields.Add(_vocationalskills)
         '
         '_additionalchildinformation
@@ -631,13 +631,13 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         _cchenteredby.MaxLength = 100
         Me.Fields.Add(_cchenteredby)
         '
-        '_chtempid
+        '_cchtempid
         '
-        _chtempid.Name = "CHTEMPID"
-        _chtempid.Caption = "Ch Tempid"
-        _chtempid.MaxLength = 250
-        _chtempid.MultiLine = True
-        Me.Fields.Add(_chtempid)
+        _cchtempid.Name = "CCHTEMPID"
+        _cchtempid.Caption = "Ch Tempid"
+        _cchtempid.MaxLength = 250
+        _cchtempid.Multiline = True
+        Me.Fields.Add(_cchtempid)
         '
         '_currentphotodate
         '
@@ -1476,11 +1476,11 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
     ''' <summary>
     ''' Ch Tempid
     ''' </summary>
-    <System.ComponentModel.Description("Ch Tempid")> _
+    <System.ComponentModel.Description("CH CCH Tempid")> _
     <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [CHTEMPID]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+    Public ReadOnly Property [CCHTEMPID]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
         Get
-            Return _chtempid
+            Return _cchtempid
         End Get
     End Property
 

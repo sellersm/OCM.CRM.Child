@@ -3,7 +3,7 @@
     ID="93315e9a-bb3b-456c-988a-23087c681189"
     Name="Child Customizations Package"
     Description="Package containing specs for all of the Child Customizations."
-    Author="Memphis"
+    Author="Memphis Sellers"
     xmlns="bb_appfx_package"
     >
   <c:DependencyList>

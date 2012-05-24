@@ -82,7 +82,7 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_CHILDEXTENSIONBATCHROW(
 		@VOCATIONALSKILLS nvarchar(1000) = null output,
 		@ADDITIONALCHILDINFORMATION nvarchar(max) = null output,
 		@CCHENTEREDBY nvarchar(100) = null output,
-		@CHTEMPID nvarchar(250) = null output,
+		@CCHTEMPID nvarchar(250) = null output,
 		@CURRENTPHOTODATE datetime = null output,
 		@PHOTOSCANNED bit = null output,
 		@CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
@@ -177,7 +177,7 @@ as
 				@VOCATIONALSKILLS = VOCATIONALSKILLS, 
 				@ADDITIONALCHILDINFORMATION = ADDITIONALCHILDINFORMATION, 
 				@CCHENTEREDBY = CCHENTEREDBY, 
-				@CHTEMPID = CHTEMPID, 
+				@CCHTEMPID = CCHTEMPID, 
 				@CURRENTPHOTODATE = CURRENTPHOTODATE, 
 				@PHOTOSCANNED = PHOTOSCANNED, 
 				@CHILDPROFILESTATUSCODEID = CHILDPROFILESTATUSCODEID, 
@@ -270,7 +270,7 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_CHILDEXTENSIONBATCHROW (
 		@VOCATIONALSKILLS nvarchar(1000),
 		@ADDITIONALCHILDINFORMATION nvarchar(max),
 		@CCHENTEREDBY nvarchar(100),
-		@CHTEMPID nvarchar(250),
+		@CCHTEMPID nvarchar(250),
 		@CURRENTPHOTODATE datetime,
 		@PHOTOSCANNED bit,
 		@CHILDPROFILESTATUSCODEID uniqueidentifier,
@@ -363,7 +363,7 @@ as
 						VOCATIONALSKILLS = @VOCATIONALSKILLS,
 						ADDITIONALCHILDINFORMATION = @ADDITIONALCHILDINFORMATION,
 						CCHENTEREDBY = @CCHENTEREDBY,
-						CHTEMPID = @CHTEMPID,
+						CCHTEMPID = @CCHTEMPID,
 						CURRENTPHOTODATE = @CURRENTPHOTODATE,
 						PHOTOSCANNED = @PHOTOSCANNED,
 						CHILDPROFILESTATUSCODEID = @CHILDPROFILESTATUSCODEID,
@@ -552,7 +552,7 @@ return 0;
       <common:FormField FieldID="VOCATIONALSKILLS" MaxLength="1000" Caption="Vocational or Life Skills" Multiline="true" />
       <common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" />
       <common:FormField FieldID="CCHENTEREDBY" MaxLength="100" Caption="CCH Entered By" />
-      <common:FormField FieldID="CHTEMPID" MaxLength="250" Caption="Ch Tempid" Multiline="true" />
+      <common:FormField FieldID="CCHTEMPID" MaxLength="250" Caption="CH CCH Tempid" Multiline="true" />
       <common:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Required="true" Caption="Current Photo Date" />
       <common:FormField FieldID="PHOTOSCANNED" DataType="Boolean" Caption="Photo Scanned" />
       <common:FormField FieldID="CHILDPROFILESTATUSCODEID" DataType="Guid" Required="true" Caption="Child Profile Status">

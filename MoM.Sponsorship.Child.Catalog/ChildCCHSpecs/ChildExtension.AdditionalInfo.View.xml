@@ -20,7 +20,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO
 	@DATALOADED bit = 0 output,
 	@ADDITIONALCHILDINFORMATION nvarchar(max) = null output,
          @CCHENTEREDBY nvarchar(100) = null output,
-       @CHTEMPID nvarchar(250) = null output,
+       @CCHTEMPID nvarchar(250) = null output,
        @CURRENTPHOTODATE datetime = null output,
        @PHOTOSTORED bit = null output,
        @CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
@@ -42,7 +42,7 @@ as
 	select @DATALOADED = 1,
 		   @ADDITIONALCHILDINFORMATION = ADDITIONALCHILDINFORMATION,
        @CCHENTEREDBY = CCHENTEREDBY,
-       @CHTEMPID = CHTEMPID,
+       @CCHTEMPID = CCHTEMPID,
        @CURRENTPHOTODATE = CURRENTPHOTODATE,
        @PHOTOSTORED = PHOTOSTORED,
        @CHILDPROFILESTATUSCODEID = CHILDPROFILESTATUSCODEID,
@@ -67,7 +67,7 @@ as
 			<common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" DataType="String" Multiline="true" />
       <common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" DataType="String" />      
       <common:FormField FieldID="CCHENTEREDBY" Caption="CCH Entered By" DataType="String" />
-      <common:FormField FieldID="CHTEMPID" Caption="CH CCH Temp ID" DataType="String" />
+      <common:FormField FieldID="CCHTEMPID" Caption="CH CCH Temp ID" DataType="String" />
       <common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" />
       <common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
       <common:FormField FieldID="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />

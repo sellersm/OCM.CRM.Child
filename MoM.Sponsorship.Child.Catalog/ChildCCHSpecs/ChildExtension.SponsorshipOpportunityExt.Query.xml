@@ -80,7 +80,7 @@ select
     USR_CHILDEXTENSION.[VOCATIONALSKILLS],
     USR_CHILDEXTENSION.[ADDITIONALCHILDINFORMATION],
     USR_CHILDEXTENSION.[CCHENTEREDBY],
-    USR_CHILDEXTENSION.[CHTEMPID],
+    USR_CHILDEXTENSION.[CCHTEMPID],
     USR_CHILDEXTENSION.[CURRENTPHOTODATE],
     USR_CHILDEXTENSION.[PHOTOSTORED],
     (select USR_CHILDPROFILESTATUSCODE.DESCRIPTION from dbo.USR_CHILDPROFILESTATUSCODE where USR_CHILDPROFILESTATUSCODE.ID = USR_CHILDEXTENSION.[CHILDPROFILESTATUSCODEID]) as CHILDPROFILESTATUSCODEID_TRANSLATION,
@@ -204,7 +204,7 @@ from
       <OutputField Name="VOCATIONALSKILLS" Caption="Vocational skills" />
       <OutputField Name="ADDITIONALCHILDINFORMATION" Caption="Additional child information" />
       <OutputField Name="CCHENTEREDBY" Caption="Cch entered by" />
-      <OutputField Name="CHTEMPID" Caption="Ch tempid" />
+      <OutputField Name="CCHTEMPID" Caption="Ch tempid" />
       <OutputField Name="CURRENTPHOTODATE" Caption="Current photo date" DataType="Date" />
       <OutputField Name="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
       <OutputField Name="CHILDPROFILESTATUSCODEID_TRANSLATION" Caption="Child profile status">

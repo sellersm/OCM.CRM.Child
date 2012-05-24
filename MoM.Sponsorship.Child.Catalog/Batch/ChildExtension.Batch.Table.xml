@@ -90,7 +90,7 @@
     <TextField Description="vocational skills text" Name="VOCATIONALSKILLS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <MemoField Description="Additional info" Name="ADDITIONALCHILDINFORMATION" />
     <TextField Description="CCH Entered By" Name="CCHENTEREDBY" Length="100" Required="false" IsUnique="false" />
-    <TextField Description="CH CCH Temp ID" Name="CHTEMPID" Length="250" Required="false" IsUnique="false" />
+    <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="false" />
     <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="true"/>
     <BooleanField Description="Photo Scanned" Name="PHOTOSCANNED"/>
     <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="true"/>

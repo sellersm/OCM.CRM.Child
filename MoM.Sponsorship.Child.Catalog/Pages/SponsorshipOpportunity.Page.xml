@@ -221,7 +221,7 @@
         </Section>
       </Sections>
     </Tab>
-    <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
+	  <!--Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
       <Sections>
         <Section ID="ae830cc2-1d35-4ac1-9665-c25ec0df822b" Caption="Child Bio" Visible="true">
           <DataList ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" ShowRowTotals="False">
@@ -289,6 +289,7 @@
         </Section>
       </Sections>
     </Tab>
+	-->
     <Tab Caption="Sponsorships" ID="a2f561b0-487c-4b01-9a5b-77d548fe976e">
       <Sections>
         <Section ID="7aa09fab-abd1-4cfc-a321-26418ee5806d" Caption="Active Sponsorship">
@@ -754,7 +755,7 @@
           </ShowDataForm>
           <HelpKey>FRCEditCampaignBaseCurrency.html</HelpKey>
         </Action>
-        <Action ID="c1baaf60-e993-47a7-a3f6-b8ffe3723623" Caption="Check Eligibility" ImageKey="RES:RecordOperationSpec">
+		  <!--Action ID="c1baaf60-e993-47a7-a3f6-b8ffe3723623" Caption="Check Eligibility" ImageKey="RES:RecordOperationSpec">
           <ExecuteRecordOperation RecordOperationID="2f8a2891-a7e9-4ba2-a613-01c7b7c849bc" xmlns="bb_appfx_commontypes">
             <ActionContext>
               <PageContextID />
@@ -764,6 +765,7 @@
             </PostActionEvent>
           </ExecuteRecordOperation>
         </Action>
+		-->
         <Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= Not Page.Fields!DEPARTUREEXISTS">
           <ShowAddDataForm DataFormID="ac89e520-149a-4a66-83c2-1e5e906a5809" xmlns="bb_appfx_commontypes">
             <ActionContext>
@@ -819,7 +821,7 @@
   </PageActionGroups>
   <HelpKey>SPSponsorshipOpportunityPage.html</HelpKey>
   <PageExpressionForms>
-    <PageExpressionForm DataFormInstanceID="0656af60-2c61-49be-bced-4c9018b107eb" />
+	  <!--PageExpressionForm DataFormInstanceID="0656af60-2c61-49be-bced-4c9018b107eb" />-->
     <PageExpressionForm DataFormInstanceID="90579643-32b2-48ef-9c53-5ee3e6213ca7" />
     <PageExpressionForm DataFormInstanceID="4c5654c6-93b2-494d-862b-5887bc96f972" />
   </PageExpressionForms>
