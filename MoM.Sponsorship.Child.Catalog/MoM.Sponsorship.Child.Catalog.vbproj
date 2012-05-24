@@ -11,7 +11,7 @@
     <AssemblyName>MoM.Sponsorship.Child.Catalog</AssemblyName>
     <MyType>Windows</MyType>
     <OptionStrict>Off</OptionStrict>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -31,6 +31,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -317,6 +318,7 @@
     <Content Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
     <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID.xml" />
     <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID.xml" />
+    <EmbeddedResource Include="ChildEligibility\SomeFeature.Package1.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>
