@@ -1,0 +1,78 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="2f8a2891-a7e9-4ba2-a613-01c7b7c849bc" 
+	Name="Sponsorship Opportunity Eligibility Check" 
+	Description="This is used to check one child's eligibility."
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship opportunity"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+	>
+
+	<!-- 
+	Remarks:	This checks the eligibility for the current child and adds/deletes pending reasons and also updates the child's eligibility
+	
+				It is a Task on the child page.  It is not associated with the business process.  
+				
+				It uses the sproc USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to actually add/delete the pending reasons, which is the same sproc that the
+				Sponsorship Opportunity Elibility Processs, so any changes to this sproc will change how the business process functions.
+				
+				Then it uses the Blackbaud sprocs USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEELIGIBLE, USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEPENDING 
+				to change the eligibility if necessary.
+				
+	History:
+	Date			Modified By		Comments
+    26-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+				
+create procedure dbo.USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK (
+	@ID uniqueidentifier,				-- Sponsorship Opportunity Child ID (same as Sponsorship Opportunity ID) to check eligibility
+	@ChangeAgentID uniqueidentifier		-- The ChangeAgentID to be used for AddedBy and ModifiedBy fields
+)
+as begin
+    
+
+  	if @ChangeAgentID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @ChangeAgentID output;
+
+	-- Delete / Insert all applicable pending reasons to this child
+	exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ID, NULL, @ChangeAgentID	
+	
+	-- Determine how many pending reasons exist for this child
+	declare @NumberOfPendingReasons int 
+		 
+	 select @NumberOfPendingReasons = count(sreason.ID)
+	   from SPONSORSHIPOPPORTUNITYREASON so_reason
+ inner join SPONSORSHIPREASON sreason on so_reason.SPONSORSHIPREASONID = sreason.ID
+	  where so_reason.SPONSORSHIPOPPORTUNITYID = @ID
+	    and sreason.REASONTYPECODE = 0	 -- Enum REASONTYPECODE 0 = "Child - Mark pending eligibility"
+  
+	-- If there are one or more pending reasons on this child and the child is Eligible, then set them to Pending
+	if @NumberOfPendingReasons > 0 and exists(select ID from dbo.SPONSORSHIPOPPORTUNITY where ID=@ID and ELIGIBILITYCODE=1) -- Eligibility = Eligible
+		exec dbo.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEPENDING @ID, @ChangeAgentID
+	
+	-- If there are no pending reasons on this child and the child is Pending, then set them to Eligible
+	if @NumberOfPendingReasons = 0 and exists(select ID from dbo.SPONSORSHIPOPPORTUNITY where ID=@ID and ELIGIBILITYCODE=0) -- Eligibility = Pending
+		exec dbo.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEELIGIBLE @ID, @ChangeAgentID
+	
+	return 0;
+	
+end
+
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<!-- <Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+    -->
+</RecordOperationSpec>

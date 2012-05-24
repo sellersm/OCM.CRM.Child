@@ -1,0 +1,140 @@
+﻿<TableSpec 
+  xmlns="bb_appfx_table"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="8d1c68b1-6f0d-4b30-ac65-bfa5b044dd0b"
+  Name="ChildDeparture"
+  Description="Child Departure Table"
+  Author="memphis-PC\Administrator"
+  Tablename="USR_CHILDDEPARTURE"		   
+  >
+
+  <!-- define fields on the table -->
+  <Fields>
+    <ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="OneToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
+    <BooleanField Name="NODEPARTUREFORM" Description="No departure form"/>
+    <!--<EnumField DefaultValue="1" Description="ReceivedForm" Name="RECEIVEDFORMCODE" >
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+      </EnumValues>
+    </EnumField>-->
+    <EnumField DefaultValue="1" Description="ReceivedFarewellLetter" Name="RECEIVEDFAREWELLLETTERCODE" >
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+      </EnumValues>
+    </EnumField>
+    <DateField Description="Date Form Completed" IncludeTime="false" Name="DATEFORMCOMPLETED" />
+    <TextField Description="Form Completed By Name" Length="50" Name="FORMCOMPLETEDBY" />
+    <DateField Description="Date of Departure" Name="DATEOFDEPARTURE" IncludeTime="false" />
+    <DateField Description="Date Processed" IncludeTime="false" Name="DATEPROCESSED" />
+    <CodeTableField CodeTable="USR_DEPARTURE_ADMINISTRATIVE_CODE" Description="Administrative" Name="ADMINISTRATIVECODEID" />
+    <TextField Description="Administrative Explanation" Length="50" Name="ADMINISTRATIVEEXPLANATION" />
+    <BooleanField Name="ISDEPARTURE" Description="Child Departed"/>
+    <BooleanField Name="ISPROGRAMCOMPLETION" Description="Program Completion"/>
+    
+    <!-- These hold the departure reason checkbox values-->
+    <BooleanField Name="DEPARTURE_LIVESWITHRELATIVES" Description="Child gone to live with relatives"/>
+    <BooleanField Name="DEPARTURE_FAMILYMOVED" Description="Moved from project area"/>
+    <BooleanField Name="DEPARTURE_FAMILYNOWPROVIDES" Description="Family now provides for child"/>
+    <BooleanField Name="DEPARTURE_PROJECTTOOFAR" Description="Too far for the child to attend"/>
+    <BooleanField Name="DEPARTURE_REMOVEDBYPARENTS" Description="Removed by parents"/>
+    <BooleanField Name="DEPARTURE_LACKOFINTEREST" Description="Lack of interest or commitment"/>
+    <BooleanField Name="DEPARTURE_NEEDEDATHOME" Description="Needed at home to help family"/>
+    <BooleanField Name="DEPARTURE_EMPLOYED" Description="Employed to help family"/>
+    <BooleanField Name="DEPARTURE_TRANSFERRED" Description="Transferred to a different school"/>
+    <BooleanField Name="DEPARTURE_FAILED" Description="Failed school courses"/>
+    <BooleanField Name="DEPARTURE_DEATHOFCHILD" Description="Death of child"/>
+    <BooleanField Name="DEPARTURE_ILLNESS" Description="Illness"/>
+    <BooleanField Name="DEPARTURE_PREGNANCY" Description="Pregnancy"/>
+    <BooleanField Name="DEPARTURE_MARRIED" Description="Married"/>
+    <TextField Name="DEPARTURE_OTHER" Description="Other Departure Reason" Length="250"/>
+    
+    <TextField Name="DETAILEDEXPLANATION" Description="Detailed Explanation" Length="1000" />
+    <TextField Name="DEPARTURENEWSITUATION" Description="Child's New Situation" Length="1000" />
+    <TextField Name="PROGRAMCOMPLETIONNEWSITUATION" Description="Child's New Situation After Program Completion" Length="1000" />
+
+    <!-- These are the Spiritual Impact fields -->
+    <EnumField DefaultValue="2" Description="Is Child A Christian" Name="ISCHILDCHRISTIANCODE">
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+        <EnumValue ID="2" Translation="Unknown"/>
+      </EnumValues>
+    </EnumField>
+    
+    <TextField Description="Child A Christian Comments" Length="50" Name="CHILDCHRISTIANCOMMENTS" />
+    
+    <EnumField DefaultValue="2" Description="Did Child Became A Christian in Program" Name="DIDBECOMECHRISTIANCODE">
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+        <EnumValue ID="2" Translation="Unknown"/>
+      </EnumValues>
+    </EnumField>
+    
+    <!-- These fields hold the Spiritual Impact checkbox values -->
+    <BooleanField Name="SHOWSCHRISTIANKNOWLEDGE" Description="Child shows knowledge of the Christian faith"/>
+    <BooleanField Name="PARTICIPATESCHRISTIANACTIVITIES" Description="Child participates in Christian activities"/>
+    <BooleanField Name="SHOWSCHRISTIANEVIDENCE" Description="Child shows evidence of Christian faith"/>
+    <BooleanField Name="OWNSBIBLEMATERIALS" Description="Child has Scripture materials"/>
+    <TextField Description="Explain Childs Christian Experience" Length="1000" Name="CHILDCHRISTIANEXPERIENCE" />
+
+    <!--<CodeTableField CodeTable="USR_DEPARTURE_SPIRITUALIMPACT_CODE" Description="Departure Spiritual Impact" Name="DEPARTURESPIRITUALIMPACTCODEID" Required="false"/>-->
+    
+    <!-- These fields hold the Physical Impact values -->    
+    <TextField Description="Physical Impact" Length="1000" Name="HEALTHCONDITIONS" />
+    
+    <!-- Social, Emotional and Cognitive Impact -->
+    <EnumField DefaultValue="0" Description="Child Matured" Name="CHILDMATUREDCODE">
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+      </EnumValues>
+    </EnumField>
+    <TextField Description="Childs Level of Maturity" Length="1000" Name="LEVELOFMATURITY" />
+    
+    <CodeTableField CodeTable="USR_CHILDCLASSLEVEL_CODE" Description="Highest Class Level" Name="HIGHESTCLASSLEVELCODEID" />
+    <TextField Description="Highest Class Level Other" Length="20" Name="HIGHESTCLASSLEVELOTHER" />
+    <TextField Description="Child Course of Study" Length="50" Name="COURSEOFSTUDY" />
+    
+    <!--<CodeTableField Description="Child Skills Trained" CodeTable="USR_DEPARTURE_SKILLSTRAINED_CODE" Name="SKILLSTRAINEDCODEID" Required="false"/>-->
+    <!-- These fields hold the Child Skills checkbox values -->
+    <BooleanField Name="SKILLS_BASICLITERACY" Description="Basic literacy"/>
+    <BooleanField Name="SKILLS_BASICNUMERACY" Description="Basic numeracy"/>
+    <BooleanField Name="SKILLS_THINKINGPROBLEMSOLVING" Description="Thinking and problem solving"/>
+    <BooleanField Name="SKILLS_SELFHELP" Description="Self help skills"/>
+    <BooleanField Name="SKILLS_BUSINESS" Description="Entrepreneurial (business) skills"/>
+    <BooleanField Name="SKILLS_LIFE" Description="Life skills"/>
+    <BooleanField Name="SKILLS_VOCATIONALTECHNICAL" Description="Vocational or technical skills"/>
+    <TextField Name="SKILLS_OTHER" Description="Other skills" Length="50"/>
+    
+    <!-- General comments-->
+    <TextField Description="General Comments" Length="1000" Name="GENERALCOMMENTS" />
+    
+    <!-- Memphis added 4/25/12 so user can identify what type of departure this is-->
+    <EnumField Name="DEPARTURETYPECODE" Description="Type of Departure" DefaultValue="0" >
+      <EnumValues>
+        <EnumValue ID="0" Translation="Departure"/>
+        <EnumValue ID="1" Translation="Completion"/>
+        <EnumValue ID="2" Translation="Administrative"/>
+      </EnumValues>
+    </EnumField>
+  </Fields>
+
+  <!-- define any additional check constraints on the table -->
+  <!--<CheckConstraints>
+
+  </CheckConstraints>-->
+
+  <!-- define any indexes on the table -->
+  <!--<Indexes>
+
+  </Indexes>-->
+    
+  <!-- define any triggers on the table -->
+  <!--<Triggers>
+
+  </Triggers>-->
+
+</TableSpec>

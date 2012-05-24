@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="c5a201b6-521f-4003-a932-4c842b7ce95c" 
+	Name="Birthdate Accuracy Codes"
+	Description="Birthdate Accuracy Code values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_BIRTHDATEACCURACYCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

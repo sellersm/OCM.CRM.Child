@@ -1,0 +1,40 @@
+﻿<SQLStoredProcedureSpec
+  xmlns="bb_appfx_sqlstoredprocedure"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="3d2ff5cc-dcc2-4012-b0c4-56299f038585"
+  Name="USP_xxx"
+  Description="REPLACE_WITH_DESCRIPTION"
+  Author="memphis-PC\Administrator"
+  SPName="USP_xxx"
+  >
+  
+  <!-- 
+  Remarks:	Used to get a BatchLock row, if one exists, for a Project and UserId.
+            It's used by the Child Batch Commit process, if we need to find Batch lock
+            rows for the given user.
+  History:
+  Date			    Modified By		Comments
+  04-May-2012		Memphis		    Initial Version
+  -->
+  
+  <CreateProcedureSQL>
+    <![CDATA[
+CREATE PROCEDURE USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID
+  -- Add the parameters for the stored procedure here
+  @projectId uniqueidentifier,             -- ProjectID of the batch
+  @appUserId nvarchar(100)                 -- UserId of the batch user
+AS
+BEGIN
+  -- SET NOCOUNT ON added to prevent extra result sets from
+  -- interfering with SELECT statements.
+  SET NOCOUNT ON;
+
+  select * from USR_BATCHLOCK
+  where ProjectID = @projectId
+  and UserID = @appUserId
+END
+
+    ]]>
+  </CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

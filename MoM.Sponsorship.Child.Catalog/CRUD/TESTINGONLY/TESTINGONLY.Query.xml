@@ -1,0 +1,64 @@
+<QueryViewSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="f0f203a4-d525-4f02-9174-dbffd6c5cff4"
+    Name="TESTINGONLY"
+    Description="Provides support for querying on TESTINGONLY information."
+    Author="memphis-PC\Administrator"
+    PrimaryKeyField="ID"
+    RecordType="TESTINGONLY"
+    IsRoot="true"
+    c:SecurityUIFolder="TESTINGONLY"
+    xmlns="bb_appfx_queryview"
+    >
+    <ViewImplementation ViewName="USR_V_QUERY_USR_TESTINGONLY">
+        <ViewSQL>
+<![CDATA[
+select
+    USR_TESTINGONLY.ID,
+    USR_TESTINGONLY.[TESTMEMO],
+    USR_TESTINGONLY.[TESTINGTEXT],
+	ADDEDBY.APPLICATIONNAME as [ADDEDBY_APPLICATION],
+	ADDEDBY.USERNAME as [ADDEDBY_USERNAME],
+	CHANGEDBY.APPLICATIONNAME as [CHANGEDBY_APPLICATION],
+	CHANGEDBY.USERNAME as [CHANGEDBY_USERNAME],
+	USR_TESTINGONLY.DATEADDED,
+	USR_TESTINGONLY.DATECHANGED,
+	USR_TESTINGONLY.TSLONG
+from 
+    dbo.USR_TESTINGONLY
+    left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_TESTINGONLY.ADDEDBYID
+    left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_TESTINGONLY.CHANGEDBYID
+]]>
+</ViewSQL>
+    </ViewImplementation>
+    <Output>
+        <OutputFields>
+            <OutputField Name="ID" Caption="System record ID" Category="System Fields" DataType="Guid" />
+            <OutputField Name="TESTMEMO" Caption="Testmemo" />
+            <OutputField Name="TESTINGTEXT" Caption="Testingtext" />
+            <OutputField Name="ADDEDBY_APPLICATION" Caption="Added by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="ADDEDBY_USERNAME" Caption="Added by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_APPLICATION" Caption="Changed by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_USERNAME" Caption="Changed by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
+            <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
+            <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
+        </OutputFields>
+    </Output>
+</QueryViewSpec>

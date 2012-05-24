@@ -1,0 +1,133 @@
+<EditDataFormTemplateSpec 
+    xmlns="bb_appfx_editdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="6cb43c6f-955a-4cd8-a561-8ddbe55e9143"
+    Name="TestBatchEditForm Edit Data Form"
+    Description="Edit Form for editing TestBatch records"
+    Author="memphis-PC\Administrator"
+    DataFormInstanceID="92fd5111-7aaa-49bc-987a-bafbc78a1949"
+    RecordType="BATCHTEST"
+    common:SecurityUIFolder="Testing"
+    >
+
+	<SPDataForm>
+
+		<!-- define the edit load SP, which is used to load the data for the form -->
+		<LoadImplementation SPName="USP_DATAFORMTEMPLATE_EDITLOAD_BATCHTESTINGONLY">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_BATCHTESTINGONLY(
+		@ID uniqueidentifier,
+		@DATALOADED bit = 0 output,
+		@TSLONG bigint = 0 output,
+	@SEQUENCE int = null output,
+	@TESTNAME nvarchar(200) = null output,
+	@TESTFLAG bit = null output,
+	@TESTDESCRIPTION nvarchar(100) = null output,
+	@SPONSORSHIPLOCATIONID uniqueidentifier = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+		@SEQUENCE = SEQUENCE,
+	@TESTNAME = TESTNAME,
+	@TESTFLAG = TESTFLAG,
+	@TESTDESCRIPTION = TESTDESCRIPTION,
+	@SPONSORSHIPLOCATIONID = SPONSORSHIPLOCATIONID
+	from dbo.USR_BATCHTESTINGONLY
+	where ID = @ID
+
+	return 0;
+				]]>
+			</common:CreateProcedureSQL>
+		</LoadImplementation>
+
+		<SaveImplementation SPName="USP_DATAFORMTEMPLATE_EDIT_BATCHTESTINGONLY">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_BATCHTESTINGONLY (
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+	@SEQUENCE int,
+	@TESTNAME nvarchar(200),
+	@TESTFLAG bit,
+	@TESTDESCRIPTION nvarchar(100) ,
+	@SPONSORSHIPLOCATIONID uniqueidentifier
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+				
+	declare @CURRENTDATE datetime
+	set @CURRENTDATE = getdate()
+
+	begin try
+		-- handle updating the data
+		update dbo.USR_BATCHTESTINGONLY set
+			SEQUENCE = @SEQUENCE,
+			TESTNAME = @TESTNAME,
+			TESTFLAG = @TESTFLAG,
+			TESTDESCRIPTION = @TESTDESCRIPTION,
+			SPONSORSHIPLOCATIONID = @SPONSORSHIPLOCATIONID,
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = @CURRENTDATE
+		where ID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+
+	</SPDataForm>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="SEQUENCE" Required="true" Hidden="true" Caption="Sequence" />
+			<common:FormField FieldID="TESTNAME" Description="Name" MaxLength="200" DataType="String" Required="true" />
+			<common:FormField FieldID="SPONSORSHIPLOCATIONID" DataType="Guid" Required="true" Caption="Location" CaptionResourceKey="$$location">
+				<common:SearchList SearchListID="7d7ac450-86f7-42f7-9299-e2458592ad14" EnableQuickFind="true">
+					<common:FormFieldOverrides>
+						<common:FormFieldOverride FieldID="INCLUDECHILDNODES" DefaultValueText="1" />
+						<common:FormFieldOverride FieldID="WITHINLOCATION" Hidden="true" />
+						<common:FormFieldOverride FieldID="WITHINLOCATIONDISPLAY" Hidden="true" />
+					</common:FormFieldOverrides>
+				</common:SearchList>
+			</common:FormField>
+			<common:FormField FieldID="TESTFLAG" Caption="Testing?" />
+			<common:FormField FieldID="TESTDESCRIPTION" MaxLength="100" Caption="Description of Test" />
+		</common:FormFields>
+
+        <!--<common:WebUIComponent>
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.TestBatchEditFormEditDataFormUIModel" />
+            <common:WebUI>
+                <common:ExternalResource Url="browser/htmlforms/custom/TestBatchEditFormEditDataForm.html" />
+            </common:WebUI>
+        </common:WebUIComponent>-->
+
+
+	
+	</common:FormMetaData>
+
+</EditDataFormTemplateSpec>

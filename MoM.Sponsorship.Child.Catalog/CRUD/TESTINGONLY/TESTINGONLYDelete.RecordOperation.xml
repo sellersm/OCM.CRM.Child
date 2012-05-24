@@ -1,0 +1,36 @@
+<RecordOperationSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="7336fc9b-5764-42a6-b917-e4ffb18d66a2"
+    Name="TESTINGONLY Delete"
+    Description="Used to delete the given TESTINGONLY"
+    Author="memphis-PC\Administrator"
+    RecordType="TESTINGONLY"
+    OperationType="Delete"
+    c:SecurityUIFolder="TESTINGONLY"
+    xmlns="bb_appfx_recordoperation"
+    >
+    <SPRecord>
+        <SPOperationImplementation SPName="USP_TESTINGONLY_DELETE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_TESTINGONLY_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_USR_TESTINGONLY_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+]]>
+</c:CreateProcedureSQL>
+        </SPOperationImplementation>
+    </SPRecord>
+    <Prompt>
+        <StandardPrompt Text="Are you sure you want to delete this TESTINGONLY" />
+    </Prompt>
+</RecordOperationSpec>

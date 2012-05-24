@@ -1,0 +1,38 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="cc5a9144-9280-4c16-92a1-024e3ec6a129"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS"
+	Description="Used to retrieve the parameters for a particular instance of the Sponsorship Opportunity Eligibility Process"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS"	
+	>
+
+	<!-- 
+	Remarks:	BUSINESSPROCESSVIEW was commented out because no query view is used for the output of the Sponsorship Opportunity Eligibility Process
+				
+	History:
+	Date			Modified By		Comments
+    21-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS(@ID uniqueidentifier)
+as
+begin
+	select
+		so_eligibilityprocess.IDSETREGISTERID
+		-- bp_view.ID as OUTPUTVIEWID
+	from
+		dbo.USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS so_eligibilityprocess
+	--join
+	--	dbo.BUSINESSPROCESSVIEW bp_view on so_eligibilityprocess.QUERYVIEWID = bp_view.QUERYVIEWCATALOGID
+	where
+		so_eligibilityprocess.ID = @ID
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
