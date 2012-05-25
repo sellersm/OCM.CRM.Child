@@ -15,6 +15,7 @@
 	History:
 	Date			Modified By		Comments
     23-Mar-2012		CMayeda			Initial Version
+	25-May-2012		CMayeda			Removed test "Something Else" tab
 	-->
 	
 	<!-- define how the page header should appear -->
@@ -23,19 +24,6 @@
 	<!-- define the tabs for the page - note that if only one tab is present, then that tab's sections are promoted to the page level (ie., the tab
 	itself isn't shown -->
 	<Tabs>
-		<Tab ID="29375D2E-E229-42F9-91FF-2591C01F0991" Caption="Something else">
-			<Sections>
-				<Section ID="2B06AE9F-D56D-4464-BE92-3D79A0C3EF18">
-					<DataList ID="88ab13b1-df31-4970-9a56-71fc4e2fc422">
-						<RenderStyle>
-							<StandardView></StandardView>
-						</RenderStyle>
-					</DataList>
-						
-				</Section>
-			</Sections>
-		</Tab>
-			 
 		<Tab ID="0a50a4f6-8b9c-4c9d-b055-d993b7677f5b" Caption="Sponsorship opportunity eligibility process">
 				<Sections>
 					<Section ID="675674A3-6216-4026-B0AB-1121A28EAD52" Caption="Sponsorship opportunity eligibility processes" >

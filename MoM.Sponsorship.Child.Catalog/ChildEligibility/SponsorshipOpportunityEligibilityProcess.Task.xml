@@ -1,0 +1,27 @@
+﻿
+<TaskSpec 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	ID="34ed60c6-3b8e-4009-8bd4-bd10f5ccb28b" 
+	Name="Check Children Eligibility" 
+	Description="Business process that sets pending reasons on children based on various statuses" 
+	Author="Cary Mayeda" 
+	FunctionalAreaID="9ea48d9c-7e2d-42e6-91cc-210792618017" 
+	TaskGroup="Administration" 
+	Sequence="50" 
+	DisplayAsAction="true" 
+	xmlns="bb_appfx_task"
+>
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	24-May-2012		CMayeda			Initial Version
+
+-->
+
+
+	<ShowPage PageID="c72a0b41-8296-4405-b3d3-2819586da0eb" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes" />
+
+</TaskSpec>
