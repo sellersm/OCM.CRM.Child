@@ -1,0 +1,61 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c61f7601-359a-401a-992e-384c0ebab90f"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK"
+	Description="This calls all the Eligibility checks"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK"
+	>
+
+	<!-- 
+	Remarks:	This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
+				a Sponsorship Opportunity selection.  
+				
+				This is accomplished with the @ID and @IDSETREGISTERID parameters.
+				If @ID is not null, then the sproc uses @ID to specify the Sponsorship Opportunity ID
+				If @ID is null, then the sproc uses @IDSETREGISTERID to specify the collection of children to check.
+				
+	History:
+	Date			Modified By		Comments
+    26-Mar-2012		CMayeda			Initial Version
+	
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK (
+	@ID uniqueidentifier,				-- Specify a Sponsorship Opportunity ID (same as the child's ID) if the sproc should only process a single child
+	@IDSETREGISTERID uniqueidentifier,  -- Specify a Selection Set ID if the sproc should process all the children in a query selection
+	@CHANGEAGENTID uniqueidentifier,    -- Used to specify change agent for ChangedByID and AddedByID fields
+	@DELETEDROWS int = 0 output,        -- Output parm that specifies how many pending reasons were deleted
+	@INSERTEDROWS int = 0 output)       -- Output parm that specifies how many pending reasons were inserted
+
+as
+begin
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+    begin try
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED @ID, @IDSETREGISTERID, @CHANGEAGENTID
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD @ID, @IDSETREGISTERID, @CHANGEAGENTID
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED @ID, @IDSETREGISTERID, @CHANGEAGENTID, @DELETEDROWS output, @INSERTEDROWS output
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE @ID, @IDSETREGISTERID, @CHANGEAGENTID	
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE @ID, @IDSETREGISTERID, @CHANGEAGENTID	
+		exec USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING @ID, @IDSETREGISTERID, @CHANGEAGENTID	
+		exec USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT @ID, @IDSETREGISTERID, @CHANGEAGENTID	
+		exec USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED @ID, @IDSETREGISTERID, @CHANGEAGENTID			
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+end
+
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

@@ -1,0 +1,448 @@
+<EditDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="6ed2f908-ed3e-460e-a200-337ad0fbb469"
+    Name="ChildDeparture Edit Form"
+    Description="Used for editing the given ChildDeparture"
+    Author="Memphis Sellers"
+    RecordType="ChildDeparture"
+    DataFormInstanceID="db61f128-f427-44d8-b2c5-86f73afdc89d"
+    c:SecurityUIFolder="ChildDeparture"
+    OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+    xmlns="bb_appfx_editdataformtemplate"
+    >
+    <SPDataForm>
+        <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTURE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTURE
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+    @NODEPARTUREFORM bit = null output,
+    @RECEIVEDFAREWELLLETTERCODE tinyint = null output,
+    @DATEFORMCOMPLETED datetime = null output,
+    @FORMCOMPLETEDBY nvarchar(50) = null output,
+    @DATEOFDEPARTURE datetime = null output,
+    @DATEPROCESSED datetime = null output,
+    @ADMINISTRATIVECODEID uniqueidentifier = null output,
+    @ADMINISTRATIVEEXPLANATION nvarchar(50) = null output,
+    @ISDEPARTURE bit = null output,
+    @ISPROGRAMCOMPLETION bit = null output,
+    @DEPARTURE_LIVESWITHRELATIVES bit = null output,
+    @DEPARTURE_FAMILYMOVED bit = null output,
+    @DEPARTURE_FAMILYNOWPROVIDES bit = null output,
+    @DEPARTURE_PROJECTTOOFAR bit = null output,
+    @DEPARTURE_REMOVEDBYPARENTS bit = null output,
+    @DEPARTURE_LACKOFINTEREST bit = null output,
+    @DEPARTURE_NEEDEDATHOME bit = null output,
+    @DEPARTURE_EMPLOYED bit = null output,
+    @DEPARTURE_TRANSFERRED bit = null output,
+    @DEPARTURE_FAILED bit = null output,
+    @DEPARTURE_DEATHOFCHILD bit = null output,
+    @DEPARTURE_ILLNESS bit = null output,
+    @DEPARTURE_PREGNANCY bit = null output,
+    @DEPARTURE_MARRIED bit = null output,
+    @DEPARTURE_OTHER nvarchar(250) = null output,
+    @DETAILEDEXPLANATION nvarchar(1000) = null output,
+    @DEPARTURENEWSITUATION nvarchar(1000) = null output,
+    @PROGRAMCOMPLETIONNEWSITUATION nvarchar(1000) = null output,
+    @ISCHILDCHRISTIANCODE tinyint = null output,
+    @CHILDCHRISTIANCOMMENTS nvarchar(50) = null output,
+    @DIDBECOMECHRISTIANCODE tinyint = null output,
+    @SHOWSCHRISTIANKNOWLEDGE bit = null output,
+    @PARTICIPATESCHRISTIANACTIVITIES bit = null output,
+    @SHOWSCHRISTIANEVIDENCE bit = null output,
+    @OWNSBIBLEMATERIALS bit = null output,
+    @CHILDCHRISTIANEXPERIENCE nvarchar(1000) = null output,
+    @HEALTHCONDITIONS nvarchar(1000) = null output,
+    @CHILDMATUREDCODE tinyint = null output,
+    @LEVELOFMATURITY nvarchar(1000) = null output,
+    @HIGHESTCLASSLEVELCODEID uniqueidentifier = null output,
+    @HIGHESTCLASSLEVELOTHER nvarchar(20) = null output,
+    @COURSEOFSTUDY nvarchar(50) = null output,
+    @SKILLS_BASICLITERACY bit = null output,
+    @SKILLS_BASICNUMERACY bit = null output,
+    @SKILLS_THINKINGPROBLEMSOLVING bit = null output,
+    @SKILLS_SELFHELP bit = null output,
+    @SKILLS_BUSINESS bit = null output,
+    @SKILLS_LIFE bit = null output,
+    @SKILLS_VOCATIONALTECHNICAL bit = null output,
+    @SKILLS_OTHER nvarchar(50) = null output,
+    @GENERALCOMMENTS nvarchar(1000) = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+        @SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID, 
+        @NODEPARTUREFORM = NODEPARTUREFORM, 
+        @RECEIVEDFAREWELLLETTERCODE = RECEIVEDFAREWELLLETTERCODE, 
+        @DATEFORMCOMPLETED = DATEFORMCOMPLETED, 
+        @FORMCOMPLETEDBY = FORMCOMPLETEDBY, 
+        @DATEOFDEPARTURE = DATEOFDEPARTURE, 
+        @DATEPROCESSED = DATEPROCESSED, 
+        @ADMINISTRATIVECODEID = ADMINISTRATIVECODEID, 
+        @ADMINISTRATIVEEXPLANATION = ADMINISTRATIVEEXPLANATION, 
+        @ISDEPARTURE = ISDEPARTURE, 
+        @ISPROGRAMCOMPLETION = ISPROGRAMCOMPLETION, 
+        @DEPARTURE_LIVESWITHRELATIVES = DEPARTURE_LIVESWITHRELATIVES, 
+        @DEPARTURE_FAMILYMOVED = DEPARTURE_FAMILYMOVED, 
+        @DEPARTURE_FAMILYNOWPROVIDES = DEPARTURE_FAMILYNOWPROVIDES, 
+        @DEPARTURE_PROJECTTOOFAR = DEPARTURE_PROJECTTOOFAR, 
+        @DEPARTURE_REMOVEDBYPARENTS = DEPARTURE_REMOVEDBYPARENTS, 
+        @DEPARTURE_LACKOFINTEREST = DEPARTURE_LACKOFINTEREST, 
+        @DEPARTURE_NEEDEDATHOME = DEPARTURE_NEEDEDATHOME, 
+        @DEPARTURE_EMPLOYED = DEPARTURE_EMPLOYED, 
+        @DEPARTURE_TRANSFERRED = DEPARTURE_TRANSFERRED, 
+        @DEPARTURE_FAILED = DEPARTURE_FAILED, 
+        @DEPARTURE_DEATHOFCHILD = DEPARTURE_DEATHOFCHILD, 
+        @DEPARTURE_ILLNESS = DEPARTURE_ILLNESS, 
+        @DEPARTURE_PREGNANCY = DEPARTURE_PREGNANCY, 
+        @DEPARTURE_MARRIED = DEPARTURE_MARRIED, 
+        @DEPARTURE_OTHER = DEPARTURE_OTHER, 
+        @DETAILEDEXPLANATION = DETAILEDEXPLANATION, 
+        @DEPARTURENEWSITUATION = DEPARTURENEWSITUATION, 
+        @PROGRAMCOMPLETIONNEWSITUATION = PROGRAMCOMPLETIONNEWSITUATION, 
+        @ISCHILDCHRISTIANCODE = ISCHILDCHRISTIANCODE, 
+        @CHILDCHRISTIANCOMMENTS = CHILDCHRISTIANCOMMENTS, 
+        @DIDBECOMECHRISTIANCODE = DIDBECOMECHRISTIANCODE, 
+        @SHOWSCHRISTIANKNOWLEDGE = SHOWSCHRISTIANKNOWLEDGE, 
+        @PARTICIPATESCHRISTIANACTIVITIES = PARTICIPATESCHRISTIANACTIVITIES, 
+        @SHOWSCHRISTIANEVIDENCE = SHOWSCHRISTIANEVIDENCE, 
+        @OWNSBIBLEMATERIALS = OWNSBIBLEMATERIALS, 
+        @CHILDCHRISTIANEXPERIENCE = CHILDCHRISTIANEXPERIENCE, 
+        @HEALTHCONDITIONS = HEALTHCONDITIONS, 
+        @CHILDMATUREDCODE = CHILDMATUREDCODE, 
+        @LEVELOFMATURITY = LEVELOFMATURITY, 
+        @HIGHESTCLASSLEVELCODEID = HIGHESTCLASSLEVELCODEID, 
+        @HIGHESTCLASSLEVELOTHER = HIGHESTCLASSLEVELOTHER, 
+        @COURSEOFSTUDY = COURSEOFSTUDY, 
+        @SKILLS_BASICLITERACY = SKILLS_BASICLITERACY, 
+        @SKILLS_BASICNUMERACY = SKILLS_BASICNUMERACY, 
+        @SKILLS_THINKINGPROBLEMSOLVING = SKILLS_THINKINGPROBLEMSOLVING, 
+        @SKILLS_SELFHELP = SKILLS_SELFHELP, 
+        @SKILLS_BUSINESS = SKILLS_BUSINESS, 
+        @SKILLS_LIFE = SKILLS_LIFE, 
+        @SKILLS_VOCATIONALTECHNICAL = SKILLS_VOCATIONALTECHNICAL, 
+        @SKILLS_OTHER = SKILLS_OTHER, 
+        @GENERALCOMMENTS = GENERALCOMMENTS
+	from dbo.USR_CHILDDEPARTURE
+	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+
+	return 0;
+]]>
+</c:CreateProcedureSQL>
+        </LoadImplementation>
+        <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILDDEPARTURE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDDEPARTURE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier,
+    @NODEPARTUREFORM bit,
+    @RECEIVEDFAREWELLLETTERCODE tinyint,
+    @DATEFORMCOMPLETED datetime,
+    @FORMCOMPLETEDBY nvarchar(50),
+    @DATEOFDEPARTURE datetime,
+    @DATEPROCESSED datetime,
+    @ADMINISTRATIVECODEID uniqueidentifier,
+    @ADMINISTRATIVEEXPLANATION nvarchar(50),
+    @ISDEPARTURE bit,
+    @ISPROGRAMCOMPLETION bit,
+    @DEPARTURE_LIVESWITHRELATIVES bit,
+    @DEPARTURE_FAMILYMOVED bit,
+    @DEPARTURE_FAMILYNOWPROVIDES bit,
+    @DEPARTURE_PROJECTTOOFAR bit,
+    @DEPARTURE_REMOVEDBYPARENTS bit,
+    @DEPARTURE_LACKOFINTEREST bit,
+    @DEPARTURE_NEEDEDATHOME bit,
+    @DEPARTURE_EMPLOYED bit,
+    @DEPARTURE_TRANSFERRED bit,
+    @DEPARTURE_FAILED bit,
+    @DEPARTURE_DEATHOFCHILD bit,
+    @DEPARTURE_ILLNESS bit,
+    @DEPARTURE_PREGNANCY bit,
+    @DEPARTURE_MARRIED bit,
+    @DEPARTURE_OTHER nvarchar(250),
+    @DETAILEDEXPLANATION nvarchar(1000),
+    @DEPARTURENEWSITUATION nvarchar(1000),
+    @PROGRAMCOMPLETIONNEWSITUATION nvarchar(1000),
+    @ISCHILDCHRISTIANCODE tinyint,
+    @CHILDCHRISTIANCOMMENTS nvarchar(50),
+    @DIDBECOMECHRISTIANCODE tinyint,
+    @SHOWSCHRISTIANKNOWLEDGE bit,
+    @PARTICIPATESCHRISTIANACTIVITIES bit,
+    @SHOWSCHRISTIANEVIDENCE bit,
+    @OWNSBIBLEMATERIALS bit,
+    @CHILDCHRISTIANEXPERIENCE nvarchar(1000),
+    @HEALTHCONDITIONS nvarchar(1000),
+    @CHILDMATUREDCODE tinyint,
+    @LEVELOFMATURITY nvarchar(1000),
+    @HIGHESTCLASSLEVELCODEID uniqueidentifier,
+    @HIGHESTCLASSLEVELOTHER nvarchar(20),
+    @COURSEOFSTUDY nvarchar(50),
+    @SKILLS_BASICLITERACY bit,
+    @SKILLS_BASICNUMERACY bit,
+    @SKILLS_THINKINGPROBLEMSOLVING bit,
+    @SKILLS_SELFHELP bit,
+    @SKILLS_BUSINESS bit,
+    @SKILLS_LIFE bit,
+    @SKILLS_VOCATIONALTECHNICAL bit,
+    @SKILLS_OTHER nvarchar(50),
+    @GENERALCOMMENTS nvarchar(1000)
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+						
+	begin try
+		-- handle updating the data
+		update dbo.USR_CHILDDEPARTURE set
+            SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID,
+            NODEPARTUREFORM = @NODEPARTUREFORM,
+            RECEIVEDFAREWELLLETTERCODE = @RECEIVEDFAREWELLLETTERCODE,
+            DATEFORMCOMPLETED = @DATEFORMCOMPLETED,
+            FORMCOMPLETEDBY = @FORMCOMPLETEDBY,
+            DATEOFDEPARTURE = @DATEOFDEPARTURE,
+            DATEPROCESSED = @DATEPROCESSED,
+            ADMINISTRATIVECODEID = @ADMINISTRATIVECODEID,
+            ADMINISTRATIVEEXPLANATION = @ADMINISTRATIVEEXPLANATION,
+            ISDEPARTURE = @ISDEPARTURE,
+            ISPROGRAMCOMPLETION = @ISPROGRAMCOMPLETION,
+            DEPARTURE_LIVESWITHRELATIVES = @DEPARTURE_LIVESWITHRELATIVES,
+            DEPARTURE_FAMILYMOVED = @DEPARTURE_FAMILYMOVED,
+            DEPARTURE_FAMILYNOWPROVIDES = @DEPARTURE_FAMILYNOWPROVIDES,
+            DEPARTURE_PROJECTTOOFAR = @DEPARTURE_PROJECTTOOFAR,
+            DEPARTURE_REMOVEDBYPARENTS = @DEPARTURE_REMOVEDBYPARENTS,
+            DEPARTURE_LACKOFINTEREST = @DEPARTURE_LACKOFINTEREST,
+            DEPARTURE_NEEDEDATHOME = @DEPARTURE_NEEDEDATHOME,
+            DEPARTURE_EMPLOYED = @DEPARTURE_EMPLOYED,
+            DEPARTURE_TRANSFERRED = @DEPARTURE_TRANSFERRED,
+            DEPARTURE_FAILED = @DEPARTURE_FAILED,
+            DEPARTURE_DEATHOFCHILD = @DEPARTURE_DEATHOFCHILD,
+            DEPARTURE_ILLNESS = @DEPARTURE_ILLNESS,
+            DEPARTURE_PREGNANCY = @DEPARTURE_PREGNANCY,
+            DEPARTURE_MARRIED = @DEPARTURE_MARRIED,
+            DEPARTURE_OTHER = @DEPARTURE_OTHER,
+            DETAILEDEXPLANATION = @DETAILEDEXPLANATION,
+            DEPARTURENEWSITUATION = @DEPARTURENEWSITUATION,
+            PROGRAMCOMPLETIONNEWSITUATION = @PROGRAMCOMPLETIONNEWSITUATION,
+            ISCHILDCHRISTIANCODE = @ISCHILDCHRISTIANCODE,
+            CHILDCHRISTIANCOMMENTS = @CHILDCHRISTIANCOMMENTS,
+            DIDBECOMECHRISTIANCODE = @DIDBECOMECHRISTIANCODE,
+            SHOWSCHRISTIANKNOWLEDGE = @SHOWSCHRISTIANKNOWLEDGE,
+            PARTICIPATESCHRISTIANACTIVITIES = @PARTICIPATESCHRISTIANACTIVITIES,
+            SHOWSCHRISTIANEVIDENCE = @SHOWSCHRISTIANEVIDENCE,
+            OWNSBIBLEMATERIALS = @OWNSBIBLEMATERIALS,
+            CHILDCHRISTIANEXPERIENCE = @CHILDCHRISTIANEXPERIENCE,
+            HEALTHCONDITIONS = @HEALTHCONDITIONS,
+            CHILDMATUREDCODE = @CHILDMATUREDCODE,
+            LEVELOFMATURITY = @LEVELOFMATURITY,
+            HIGHESTCLASSLEVELCODEID = @HIGHESTCLASSLEVELCODEID,
+            HIGHESTCLASSLEVELOTHER = @HIGHESTCLASSLEVELOTHER,
+            COURSEOFSTUDY = @COURSEOFSTUDY,
+            SKILLS_BASICLITERACY = @SKILLS_BASICLITERACY,
+            SKILLS_BASICNUMERACY = @SKILLS_BASICNUMERACY,
+            SKILLS_THINKINGPROBLEMSOLVING = @SKILLS_THINKINGPROBLEMSOLVING,
+            SKILLS_SELFHELP = @SKILLS_SELFHELP,
+            SKILLS_BUSINESS = @SKILLS_BUSINESS,
+            SKILLS_LIFE = @SKILLS_LIFE,
+            SKILLS_VOCATIONALTECHNICAL = @SKILLS_VOCATIONALTECHNICAL,
+            SKILLS_OTHER = @SKILLS_OTHER,
+            GENERALCOMMENTS = @GENERALCOMMENTS,
+
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+		where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+]]>
+</c:CreateProcedureSQL>
+            <c:ExpectedDBExceptions>
+                <c:Constraints>
+                    <c:Constraint Name="FK_USR_CHILDDEPARTURE_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+                    <c:Constraint Name="UC_USR_CHILDDEPARTURE_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="Unique" />
+                    <c:Constraint Name="FK_USR_CHILDDEPARTURE_ADMINISTRATIVECODEID" Field="ADMINISTRATIVECODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDDEPARTURE_HIGHESTCLASSLEVELCODEID" Field="HIGHESTCLASSLEVELCODEID" Type="ForeignKey" />
+                </c:Constraints>
+            </c:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+  
+  
+  
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+          <c:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true" />
+          <c:FormField FieldID="NODEPARTUREFORM" DataType="Boolean" Caption="No Departure Form" />
+          <c:FormField FieldID="RECEIVEDFAREWELLLETTERCODE" DataType="TinyInt" Caption="Received farewell letter" DefaultValueText="1">
+            <c:ValueList>
+              <c:Items>
+                <c:Item>
+                  <c:Value>0</c:Value>
+                  <c:Label>No</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>1</c:Value>
+                  <c:Label>Yes</c:Label>
+                </c:Item>
+              </c:Items>
+            </c:ValueList>
+          </c:FormField>
+          <c:FormField FieldID="DATEFORMCOMPLETED" DataType="Date" Caption="Form Completed Date" />
+          <c:FormField FieldID="FORMCOMPLETEDBY" MaxLength="50" DataType="String" Caption="Form Completed By" />
+          <c:FormField FieldID="DATEOFDEPARTURE" DataType="Date" Caption="Date of the departure or program completion" />
+          <c:FormField FieldID="DATEPROCESSED" DataType="Date" Caption="Date processed" Hidden="true" />
+          <c:FormField FieldID="ADMINISTRATIVECODEID" DataType="Guid" Caption="Administrative">
+            <c:CodeTable CodeTableName="USR_DEPARTURE_ADMINISTRATIVE_CODE" />
+          </c:FormField>
+          <c:FormField FieldID="ADMINISTRATIVEEXPLANATION" MaxLength="50" DataType="String" Caption="Explanation" />
+          <c:FormField FieldID="ISDEPARTURE" DataType="Boolean" Caption="Is Departure" />
+          <c:FormField FieldID="ISPROGRAMCOMPLETION" DataType="Boolean" Caption="Completed Program" />
+          <c:FormField FieldID="DEPARTURE_LIVESWITHRELATIVES" DataType="Boolean" Caption="Gone to live with relatives" />
+          <c:FormField FieldID="DEPARTURE_FAMILYMOVED" DataType="Boolean" Caption="Moved from project area" />
+          <c:FormField FieldID="DEPARTURE_FAMILYNOWPROVIDES" DataType="Boolean" Caption="Family provides for child" />
+          <c:FormField FieldID="DEPARTURE_PROJECTTOOFAR" DataType="Boolean" Caption="Too far for the child to attend" />
+          <c:FormField FieldID="DEPARTURE_REMOVEDBYPARENTS" DataType="Boolean" Caption="Removed by parents" />
+          <c:FormField FieldID="DEPARTURE_LACKOFINTEREST" DataType="Boolean" Caption="Lack of interest or commitment" />
+          <c:FormField FieldID="DEPARTURE_NEEDEDATHOME" DataType="Boolean" Caption="Need at home to help family" />
+          <c:FormField FieldID="DEPARTURE_EMPLOYED" DataType="Boolean" Caption="Employed to help family" />
+          <c:FormField FieldID="DEPARTURE_TRANSFERRED" DataType="Boolean" Caption="Transferred to a different school" />
+          <c:FormField FieldID="DEPARTURE_FAILED" DataType="Boolean" Caption="Failed school courses" />
+          <c:FormField FieldID="DEPARTURE_DEATHOFCHILD" DataType="Boolean" Caption="Death of Child" />
+          <c:FormField FieldID="DEPARTURE_ILLNESS" DataType="Boolean" Caption="Illness" />
+          <c:FormField FieldID="DEPARTURE_PREGNANCY" DataType="Boolean" Caption="Pregnancy" />
+          <c:FormField FieldID="DEPARTURE_MARRIED" DataType="Boolean" Caption="Married" />
+          <c:FormField FieldID="DEPARTURE_OTHER" MaxLength="250" Caption="Other Departure Reason" DataType="String" Multiline="true" />
+          <c:FormField FieldID="DETAILEDEXPLANATION" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of all departure reasons selected" Multiline="true" />
+          <c:FormField FieldID="DEPARTURENEWSITUATION" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of the child's new situation, if known" Multiline="true" />
+          <c:FormField FieldID="PROGRAMCOMPLETIONNEWSITUATION" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered" Multiline="true" />
+          <c:FormField FieldID="ISCHILDCHRISTIANCODE" DataType="TinyInt" Caption="Child is a Christian" DefaultValueText="2">
+            <c:ValueList>
+              <c:Items>
+                <c:Item>
+                  <c:Value>0</c:Value>
+                  <c:Label>No</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>1</c:Value>
+                  <c:Label>Yes</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>2</c:Value>
+                  <c:Label>Unknown</c:Label>
+                </c:Item>
+              </c:Items>
+            </c:ValueList>
+          </c:FormField>
+          <c:FormField FieldID="CHILDCHRISTIANCOMMENTS" MaxLength="50" DataType="String" Caption="Comments" />
+          <c:FormField FieldID="DIDBECOMECHRISTIANCODE" DataType="TinyInt" Caption="Child became a Christian while in the sponsorship program" DefaultValueText="2">
+            <c:ValueList>
+              <c:Items>
+                <c:Item>
+                  <c:Value>0</c:Value>
+                  <c:Label>No</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>1</c:Value>
+                  <c:Label>Yes</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>2</c:Value>
+                  <c:Label>Unknown</c:Label>
+                </c:Item>
+              </c:Items>
+            </c:ValueList>
+          </c:FormField>
+          <c:FormField FieldID="SHOWSCHRISTIANKNOWLEDGE" DataType="Boolean" Caption="Child shows some knowledge of the Christian faith" />
+          <c:FormField FieldID="PARTICIPATESCHRISTIANACTIVITIES" DataType="Boolean" Caption="Child sometimes participates in Christian activities, but does not lead those activities" />
+          <c:FormField FieldID="SHOWSCHRISTIANEVIDENCE" DataType="Boolean" Caption="Child shows some evidence of Christian faith and behavior" />
+          <c:FormField FieldID="OWNSBIBLEMATERIALS" DataType="Boolean" Caption="Child has Scripture materials" />
+          <c:FormField FieldID="CHILDCHRISTIANEXPERIENCE" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of the child's Christian experience" Multiline="true" />
+          <c:FormField FieldID="HEALTHCONDITIONS" MaxLength="1000" DataType="String" Caption="Note any illnesses the child had during their participaton in the program as well as what the child's current health is" AllowZoom="true" Multiline="true" />
+          <c:FormField FieldID="CHILDMATUREDCODE" DataType="TinyInt" Caption="Child has matured appropriately for their age" DefaultValueText="0">
+            <c:ValueList>
+              <c:Items>
+                <c:Item>
+                  <c:Value>0</c:Value>
+                  <c:Label>No</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>1</c:Value>
+                  <c:Label>Yes</c:Label>
+                </c:Item>
+              </c:Items>
+            </c:ValueList>
+          </c:FormField>
+          <c:FormField FieldID="LEVELOFMATURITY" MaxLength="1000" DataType="String" Caption="Provide a brief explanation of the chlid's level of maturity and how they relate to others around them" AllowZoom="true" Multiline="true" />
+          <c:FormField FieldID="HIGHESTCLASSLEVELCODEID" DataType="Guid" Caption="Highest Class Level Completed">
+            <c:CodeTable CodeTableName="USR_CHILDCLASSLEVEL_CODE" />
+          </c:FormField>
+          <c:FormField FieldID="HIGHESTCLASSLEVELOTHER" MaxLength="20" DataType="String" Caption="Other" />
+          <c:FormField FieldID="COURSEOFSTUDY" MaxLength="50" DataType="String" Caption="Course of Study" />
+          <c:FormField FieldID="SKILLS_BASICLITERACY" DataType="Boolean" Caption="Basic Literacy" />
+          <c:FormField FieldID="SKILLS_BASICNUMERACY" DataType="Boolean" Caption="Basic Numeracy" />
+          <c:FormField FieldID="SKILLS_THINKINGPROBLEMSOLVING" DataType="Boolean" Caption="Thinking and problem-solving skills" />
+          <c:FormField FieldID="SKILLS_SELFHELP" DataType="Boolean" Caption="Self-help Skills" />
+          <c:FormField FieldID="SKILLS_BUSINESS" DataType="Boolean" Caption="Entrepreneurial (business) skills" />
+          <c:FormField FieldID="SKILLS_LIFE" DataType="Boolean" Caption="Life Skills" />
+          <c:FormField FieldID="SKILLS_VOCATIONALTECHNICAL" DataType="Boolean" Caption="Vocational and Technical Skills" />
+          <c:FormField FieldID="SKILLS_OTHER" MaxLength="50" DataType="String" Caption="Other Skills" />
+          <c:FormField FieldID="GENERALCOMMENTS" MaxLength="1000" DataType="String" Caption="Summarize the project's overall impact on the child's life and provide any additional comments" AllowZoom="true" Multiline="true" />
+        </c:FormFields>
+        <c:FormUIComponent />
+
+        <c:WebUIComponent>
+            <c:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildDepartureEditFormUIModel" />
+            <c:WebUI>
+                <c:ExternalResource Url="browser/htmlforms/custom/ChildDepartureEditForm.html" />
+            </c:WebUI>
+        </c:WebUIComponent>
+
+      <c:FieldGroups>
+        <c:FieldGroup Caption="General Information" ID="GENERAL_INFO_GROUP">
+          <c:Fields>
+            <c:Field>NODEPARTUREFORM</c:Field>
+            <c:Field>RECEIVEDFAREWELLLETTERCODE</c:Field>
+            <c:Field>DATEFORMCOMPLETED</c:Field>
+            <c:Field>FORMCOMPLETEDBY</c:Field>
+            <c:Field>DATEOFDEPARTURE</c:Field>
+            <c:Field>ADMINISTRATIVECODEID</c:Field>
+            <c:Field>ADMINISTRATIVEEXPLANATION</c:Field>
+            <c:Field>ISDEPARTURE</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+      </c:FieldGroups>
+
+      <c:Tabs>
+        <c:Tab Caption="Reason for Departure" ID="DEPARTURE_REASONS_TAB" />
+        <c:Tab Caption="Spiritual and Physical Impact" ID="SPIRITUAL_PHYSICAL_TAB" />
+        <c:Tab Caption="Social and Cognitive Imapct" ID="SOCIAL_COGNITIVE_TAB" />
+        <c:Tab Caption="General Comments" ID="COMMENTS_TAB" />
+      </c:Tabs>
+        
+    </c:FormMetaData>
+</EditDataFormTemplateSpec>

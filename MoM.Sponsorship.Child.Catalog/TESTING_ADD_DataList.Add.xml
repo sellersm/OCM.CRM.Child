@@ -1,0 +1,111 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="beeef11d-5274-4c12-8a26-77545d0b8a36" 
+	Name="TESTING_ADD_DataList Add Data Form"
+	Description="TESTING_ADD_DataList Add Data Form" 
+	Author="memphis-PC\Administrator"
+	DataFormInstanceID="3d9f7f2e-7b11-44d5-9d9c-87afc35c8a81" 
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child"
+	>
+
+	<SPDataForm>
+		<!-- describe the preload SP (if applicable), which should be used to fetch field default values from the database.  If no
+		preload is needed, then this section can be removed -->
+		<!--<LoadImplementation SPName="USP_DATAFORMTEMPLATE_ADD_xxx_PRELOAD">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_ADD_xxx_PRELOAD
+(
+	@CONTEXTID uniqueidentifier,
+	@FIELD1 nvarchar(10) = null output
+)
+as
+	set nocount on;
+		
+	-- populate the fields that have default values that should be fetched from the database
+	select @FIELD1 = FIELD1
+	from dbo.SOMETABLE
+	where ID = @CONTEXTID
+	
+	return 0;				
+				]]>
+			</common:CreateProcedureSQL>
+		</LoadImplementation>-->
+
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USP_DATAFORMTEMPLATE_ADD_TESTINGONLY">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_ADD_TESTINGONLY
+(
+    @ID uniqueidentifier = null output,
+	@CONTEXTID uniqueidentifier,
+  @CHANGEAGENTID uniqueidentifier = null,
+	@NUMBEROFSISTERS tinyint = 0,
+  @NUMBEROFBROTHERS tinyint = 0,
+  @SIBLINGSLIST xml = null
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_CHILDEXTENSION
+		(ID, SPONSORSHIPOPPORTUNITYCHILDID, SIBLINGSLIST, NUMBEROFSISTERS, NUMBEROFBROTHERS, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @CONTEXTID, @SIBLINGSLIST, @NUMBEROFSISTERS, @NUMBEROFBROTHERS, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+	
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="NUMBEROFBROTHERS" Caption="Number of Brothers" DataType="TinyInt"  />
+			<common:FormField FieldID="NUMBEROFSISTERS" Caption="Number of Sisters" DataType="TinyInt" />
+      <!--<common:FormField FieldID="SIBLINGSLIST" DataType="XML" Caption="Siblings">
+        <common:Collection>
+          <common:Fields>
+            <common:FormField FieldID="FOODITEMID" Caption="Food item" DataType="Guid">
+              <common:SimpleDataList SimpleDataListID="bd0f0cc1-cc60-42e2-b592-f000b4fdfbf4" />
+            </common:FormField>
+            <common:FormField FieldID="FOODITEMAMOUNT" Caption="Amount" DataType="Money" />
+            <common:FormField FieldID="QUANTITY" Caption="Quantity" DataType="Integer" />
+          </common:Fields>
+        </common:Collection>
+      </common:FormField>-->
+		</common:FormFields>
+
+		<!-- indicate the client-side component for the user interface -->
+		<common:FormUIComponent FormUIComponentType="CustomComponent">
+			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+		</common:FormUIComponent>
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>
