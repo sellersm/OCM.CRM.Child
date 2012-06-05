@@ -247,7 +247,9 @@
     <EmbeddedResource Include="Batch\ChildExtensionBatchDeleteRow.Delete.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Batch\ChildExtensionBatch.BatchType.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionBatch.BatchType.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestBatch\TestBatch.BatchType.xml">
@@ -325,6 +327,7 @@
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChildCCHSpecs\AddChild.Task.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>
