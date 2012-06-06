@@ -1,0 +1,43 @@
+<PackageSpec 
+		xmlns="bb_appfx_package"
+		xmlns:common="bb_appfx_commontypes"
+		ID="e0135e33-d4d8-4446-a3f9-0026f4dc68d1"
+		Name="ChildExtensionBatch Package"
+		Description="Batch Package for Custom ChildExtension Batch Type"
+		Author="$author$"
+		>
+
+	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
+	a table that hasn't been loaded, etc.  In general, the following order is recommended:
+	
+Once the Batch Type Spec is complete, we can use LoadSpec to load the dependent specs into the database. Make sure the following specs are loaded prior to loading the BatchTypeSpec. 
+•Batch Add
+•Batch Edit
+•Batch Delete
+•Batch Commit Add
+
+ChildExtension is the Child/CCH information.  It is used to hold the CCH and new Child entry data
+	
+	-->
+	
+	<common:DependencyList>
+		<!-- Batch Table -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.Batch.Table.xml" />
+		
+		<!-- Batch Add -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchAddRow.Add.xml" />
+		
+		<!-- Batch Edit -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchEditRow.Edit.xml" />
+		
+		<!-- Batch Delete -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchDeleteRow.Delete.xml" />
+		
+		<!-- Batch Commit Add -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionAddBatch.Commit.xml" />
+		
+		<!-- Batch Type -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatch.BatchType.xml" />
+		</common:DependencyList>
+
+</PackageSpec>

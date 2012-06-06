@@ -20,7 +20,7 @@
     <ForeignKeyField Description="Foreign Key Field to Siblings Table" Cardinality="ManyToOne" ForeignTable="USR_CHILDSIBLINGS" Name="SIBLINGSID" OnDelete="RaiseError" />-->
 
     <CodeTableField Description="Birthdate Accuracy" Name="BIRTHDATEACCURACYCODEID" CodeTable="USR_BIRTHDATEACCURACYCODE" Required="false" />
-    <DateField Description="Date of Program Completion" Name="PROGRAMCOMPLETIONDATE" Required="false" IncludeTime="false" />
+    <DateField Description="Current Program Completion Date" Name="CURRENTPROGRAMCOMPLETIONDATE" Required="false" IncludeTime="false" />
     <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>
     <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
 
@@ -90,15 +90,18 @@
     <TextField Description="vocational skills text" Name="VOCATIONALSKILLS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <MemoField Description="Additional info" Name="ADDITIONALCHILDINFORMATION" />
     <TextField Description="CCH Entered By" Name="CCHENTEREDBY" Length="100" Required="false" IsUnique="false" />
-    <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="false" />
+    <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="true" />
     <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="true"/>
-    <BooleanField Description="Photo Scanned" Name="PHOTOSCANNED"/>
+    <BooleanField Description="Photo Stored" Name="PHOTOSTORED"/>
     <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="true"/>
     <CodeTableField Description="Profile Update Code" CodeTable="USR_CHILDPROFILEUPDATECODE" Name="CHILDPROFILEUPDATECODEID" Required="false"/>
     <BooleanField Description="Profile Update Notification" Name="PROFILEUPDATENOTIFICATION"/>
+    <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
     <BooleanField Description="Funded" Name="FUNDED"/>
-    <TextField Description="Temporary Child ID" IsUnique="true" Length="50" Name="TEMPCHILDID" Required="true"/>
-    
+    <!--<TextField Description="Temporary Child ID" IsUnique="true" Length="50" Name="TEMPCHILDID" Required="true"/>-->
+    <TextField Description="Batch Number" Name="BATCHNUMBER" Length="50"/>
+    <DateField Description="Registration Date" Name="REGISTRATIONDATE" />
+
     <!-- These are the fields for the sponsorship opportunity child  -->
     <TextField Description="For individuals, stores the first name." Name="FIRSTNAME" Length="50" />
     <TextField Description="For individuals, stores the middle name." Name="MIDDLENAME" Length="50" />
@@ -132,7 +135,7 @@
     <Index IsUnique="true">
       <IndexFields>
         <IndexField Name="BATCHID"/>
-        <IndexField Name="TEMPCHILDID"/>
+        <IndexField Name="CCHTEMPID"/>
       </IndexFields>
     </Index>
   </Indexes>	

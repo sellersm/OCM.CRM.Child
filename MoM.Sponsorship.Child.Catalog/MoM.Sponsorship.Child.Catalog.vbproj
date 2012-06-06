@@ -332,6 +332,7 @@
     <EmbeddedResource Include="ChildBio\ConvertChildBioToChildBioOld.Sproc.xml" />
     <EmbeddedResource Include="ChildBio\ProcessProofedChildBio.RecordOperation.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\AddChild.Task.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionBatch.Package.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>

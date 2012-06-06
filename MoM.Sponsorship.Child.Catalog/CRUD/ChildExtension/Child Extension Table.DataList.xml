@@ -80,7 +80,7 @@ as
         USR_CHILDEXTENSION.[CCHENTEREDBY],
         USR_CHILDEXTENSION.[CCHTEMPID],
         USR_CHILDEXTENSION.[CURRENTPHOTODATE],
-        USR_CHILDEXTENSION.[PHOTOSCANNED],
+        USR_CHILDEXTENSION.[PHOTOSTORED],
         USR_CHILDPROFILESTATUSCODE.DESCRIPTION,
         USR_CHILDPROFILEUPDATECODE.DESCRIPTION,
         USR_CHILDEXTENSION.[PROFILEUPDATENOTIFICATION]
@@ -167,7 +167,7 @@ as
             <OutputField FieldID="CCHENTEREDBY" Caption="Cchenteredby" DataType="String" />
             <OutputField FieldID="CCHTEMPID" Caption="CCHTEMPID" DataType="String" />
             <OutputField FieldID="CURRENTPHOTODATE" Caption="Currentphotodate" DataType="Date" />
-            <OutputField FieldID="PHOTOSCANNED" Caption="Photoscanned" DataType="Boolean" DisplayBooleanAsCheck="true" />
+            <OutputField FieldID="PHOTOSTORED" Caption="Photoscanned" DataType="Boolean" DisplayBooleanAsCheck="true" />
             <OutputField FieldID="CHILDPROFILESTATUSCODEID" Caption="Childprofilestatus" DataType="Guid" />
             <OutputField FieldID="CHILDPROFILEUPDATECODEID" Caption="Childprofileupdate" DataType="Guid" />
             <OutputField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profileupdatenotification" DataType="Boolean" DisplayBooleanAsCheck="true" />

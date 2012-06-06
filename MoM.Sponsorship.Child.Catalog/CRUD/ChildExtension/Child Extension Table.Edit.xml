@@ -83,7 +83,7 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_EXTENSION_TABLE
     @CCHENTEREDBY nvarchar(100) = null output,
     @CCHTEMPID nvarchar(250) = null output,
     @CURRENTPHOTODATE datetime = null output,
-    @PHOTOSCANNED bit = null output,
+    @PHOTOSTORED bit = null output,
     @CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
     @CHILDPROFILEUPDATECODEID uniqueidentifier = null output,
     @PROFILEUPDATENOTIFICATION bit = null output
@@ -167,7 +167,7 @@ as
         @CCHENTEREDBY = CCHENTEREDBY, 
         @CCHTEMPID = CCHTEMPID, 
         @CURRENTPHOTODATE = CURRENTPHOTODATE, 
-        @PHOTOSCANNED = PHOTOSCANNED, 
+        @PHOTOSTORED = PHOTOSTORED, 
         @CHILDPROFILESTATUSCODEID = CHILDPROFILESTATUSCODEID, 
         @CHILDPROFILEUPDATECODEID = CHILDPROFILEUPDATECODEID, 
         @PROFILEUPDATENOTIFICATION = PROFILEUPDATENOTIFICATION
@@ -249,7 +249,7 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_CHILD_EXTENSION_TABLE
     @CCHENTEREDBY nvarchar(100),
     @CCHTEMPID nvarchar(250),
     @CURRENTPHOTODATE datetime,
-    @PHOTOSCANNED bit,
+    @PHOTOSTORED bit,
     @CHILDPROFILESTATUSCODEID uniqueidentifier,
     @CHILDPROFILEUPDATECODEID uniqueidentifier,
     @PROFILEUPDATENOTIFICATION bit
@@ -328,7 +328,7 @@ as
             CCHENTEREDBY = @CCHENTEREDBY,
             CCHTEMPID = @CCHTEMPID,
             CURRENTPHOTODATE = @CURRENTPHOTODATE,
-            PHOTOSCANNED = @PHOTOSCANNED,
+            PHOTOSTORED = @PHOTOSTORED,
             CHILDPROFILESTATUSCODEID = @CHILDPROFILESTATUSCODEID,
             CHILDPROFILEUPDATECODEID = @CHILDPROFILEUPDATECODEID,
             PROFILEUPDATENOTIFICATION = @PROFILEUPDATENOTIFICATION,
@@ -446,7 +446,7 @@ return 0;
             <c:FormField FieldID="CCHENTEREDBY" MaxLength="100" Caption="Cchenteredby" />
             <c:FormField FieldID="CCHTEMPID" MaxLength="250" Caption="CCHTEMPID" Multiline="true" />
             <c:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Required="true" Caption="Currentphotodate" />
-            <c:FormField FieldID="PHOTOSCANNED" DataType="Boolean" Caption="Photoscanned" />
+            <c:FormField FieldID="PHOTOSTORED" DataType="Boolean" Caption="Photoscanned" />
             <c:FormField FieldID="CHILDPROFILESTATUSCODEID" DataType="Guid" Required="true" Caption="Childprofilestatus">
                 <c:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
             </c:FormField>

@@ -108,7 +108,7 @@ IsCustomizable="true">
       Project ID:  REQ  ?????? left msg in teamworkPM
       Project Status:  REQ  ?????? left msg in teamworkPM
       Current Photo Date:  REQ
-      Photo Scanned:   REQ   Enum Yes/No
+      Photo Stored:   REQ   Enum Yes/No
       Profile Status:  CodeTable  REQ   USR_CHILDPROFILESTATUSCODE
       Profile Update:  CodeTable        USR_CHILDPROFILEUPDATECODE
       Profile Update Notification:  enum Yes/No
