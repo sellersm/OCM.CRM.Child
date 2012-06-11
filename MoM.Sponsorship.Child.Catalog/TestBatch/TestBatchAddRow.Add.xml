@@ -1,0 +1,97 @@
+﻿<AddDataFormTemplateSpec 
+    xmlns="bb_appfx_adddataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="b274dd25-a2dc-49ac-b3e2-c0571701909f"
+    Name="TestBatchAddForm Add Data Form"
+    Description="Adds a row to the TestBatch"
+    Author="memphis-PC\Administrator"
+    DataFormInstanceID="d177be42-4c53-4181-8e0e-33ec95bc8090"
+    RecordType="BATCHTEST"
+    common:SecurityUIFolder="Test"
+    >
+
+	<SPDataForm>
+		<!-- describe the preload SP (if applicable), which should be used to fetch field default values from the database.  If no
+		preload is needed, then this section can be removed -->
+		
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USP_DATAFORMTEMPLATE_ADD_BATCHTEST">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_ADD_BATCHTEST
+(
+		@ID uniqueidentifier = null output,
+		@BATCHID uniqueidentifier,
+		@CHANGEAGENTID uniqueidentifier = null,
+		@SEQUENCE int,
+	@TESTNAME nvarchar(200) = '',
+	@TESTFLAG bit = 0,
+	@TESTDESCRIPTION nvarchar(100) = '',
+	@SPONSORSHIPLOCATIONID uniqueidentifier = null
+)
+as
+
+set nocount on;
+
+if @ID is null
+		set @ID = newid()
+
+if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_BATCHTESTINGONLY
+		(ID, BATCHID, SEQUENCE, TESTNAME, TESTFLAG, TESTDESCRIPTION, SPONSORSHIPLOCATIONID, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+		values
+		(@ID, @BATCHID, @SEQUENCE, @TESTNAME, @TESTFLAG, @TESTDESCRIPTION, @SPONSORSHIPLOCATIONID, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+	
+end try
+
+begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+end catch
+
+return 0				
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Batch" RecordIDParameter="BATCHID" />
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="SEQUENCE" Required="true" Hidden="true" Caption="Sequence" />
+			<common:FormField FieldID="TESTNAME" Description="Name" MaxLength="200" DataType="String" Required="true" />
+			<common:FormField FieldID="SPONSORSHIPLOCATIONID" DataType="Guid" Required="true" Caption="Location" CaptionResourceKey="$$location">
+				<common:SearchList SearchListID="7d7ac450-86f7-42f7-9299-e2458592ad14" EnableQuickFind="true">
+					<common:FormFieldOverrides>
+						<common:FormFieldOverride FieldID="INCLUDECHILDNODES" DefaultValueText="1" />
+						<common:FormFieldOverride FieldID="WITHINLOCATION" Hidden="true" />
+						<common:FormFieldOverride FieldID="WITHINLOCATIONDISPLAY" Hidden="true" />
+					</common:FormFieldOverrides>
+				</common:SearchList>
+			</common:FormField>
+			<common:FormField FieldID="TESTFLAG" Caption="Testing?" />
+			<common:FormField FieldID="TESTDESCRIPTION" MaxLength="100" Caption="Description of Test" />
+		</common:FormFields>
+
+    
+
+		<!-- indicate the client-side component for the user interface -->
+		<!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+		</common:FormUIComponent>-->
+		
+		
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

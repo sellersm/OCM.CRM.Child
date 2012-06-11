@@ -1,0 +1,87 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="12db4a1d-41e9-49c1-ac12-ccdd8c7ed879" 
+	Name="Sponsorship Opportunity Eligibility Process History Data List"
+	Description="History of the process execution of the Sponsorship Opportunity Eligibility Process" 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Business Process\Eligibility"
+	>
+
+	<!-- 
+	Remarks:	This uses Blackbaud's standard UFN_BUSINESSPROCESSSTATUS_STANDARDDATALISTVALUES table function to retreive the process history.
+				As such, the Pascal Case in the field names is from Blackbaud.
+				This was copied from SponsorshipTerminate process and modified for the Sponsorship Opportunity Eligibility Process 				
+				
+	History:
+	Date			Modified By		Comments
+    21-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESSHISTORY">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+			
+create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESSHISTORY(@CONTEXTID uniqueidentifier)
+as
+	set nocount on;
+  
+  declare @BUSINESSPROCESSCATALOGID uniqueidentifier = null
+  
+  select @BUSINESSPROCESSCATALOGID = ID from dbo.BUSINESSPROCESSCATALOG where NAME='Sponsorship Opportunity Eligibility Business Process'
+  
+  select ID,
+      ProcessName,
+      Status,
+      StatusMessage,
+      StartedBy,
+      StartedOn,
+      EndedOn,
+      Duration,
+      NumberOfRecordsProcessed,
+      NumberOfExceptionRecords,
+      TotalCount,
+      ServerName,
+      ImageKey,
+      Completed,
+      EnableDownload,
+      EnableLetterMailMerge,
+			EnableLabelMailMerge,
+      EnableMultipleLetterMailMerge,
+      TotalCount Total
+      --case when NumberOfRecordsProcessed &gt; 0 then 1 else 0 end PROCESSREPORT,
+	    --case when NumberOfExceptionRecords &gt; 0 then 1 else 0 end ERRORREPORT
+  from dbo.UFN_BUSINESSPROCESSSTATUS_STANDARDDATALISTVALUES(@BUSINESSPROCESSCATALOGID, @CONTEXTID, -1)
+      order by StartedOn desc
+      
+			]]>
+    </common:CreateProcedureSQL>
+  
+</SPDataList>
+  <Context ContextRecordType="Sponsorship Opportunity Eligibility Process" RecordIDParameter="CONTEXTID" />
+  <Output>
+    <OutputFields>
+      <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" DisplaySequence="1" />
+      <OutputField FieldID="Process" Caption="Process" DataType="String"  DisplaySequence="2" />
+      <OutputField FieldID="Status" Caption="Status" DataType="String"  DisplaySequence="4" />
+      <OutputField FieldID="Status message" Caption="Status message" DataType="String" DisplaySequence="5" />
+      <OutputField FieldID="Started by" Caption="Started by" DataType="String" DisplaySequence="6" />
+      <OutputField FieldID="Started" Caption="Started" DataType="Date" DisplaySequence="7" />
+      <OutputField FieldID="Ended" Caption="Ended" DataType="Date" DisplaySequence="8" />
+      <OutputField FieldID="Duration" Caption="Duration" DataType="String" DisplaySequence="9" />
+      <OutputField FieldID="Number of records processed" Caption="Number of records processed" DataType="String" DisplaySequence="10" />
+      <OutputField FieldID="Number of exception records" Caption="Number of exception records" DataType="String" DisplaySequence="11" />
+      <OutputField FieldID="TotalCount" Caption="Total count" DataType="String" DisplaySequence="12" />
+      <OutputField FieldID="Server name" Caption="Server name" DataType="String" DisplaySequence="13" />
+      <OutputField FieldID="ImageKey" Caption="ImageKey" IsHidden="true" DataType="String" IsImageKey="true" DisplaySequence="14" />
+      <OutputField FieldID="Completed" Caption="Completed" IsHidden="true" DataType="String" DisplaySequence="15" />
+      <OutputField FieldID="EnableDownload" Caption="EnableDownload" IsHidden="true" DataType="String" DisplaySequence="16" />
+      <OutputField FieldID="EnableLetterMailMerge" Caption="Enable Letter Mail Merge" IsHidden="true" DataType="String" DisplaySequence="17" />
+      <OutputField FieldID="EnableLabelMailMerge" Caption="Enable Label Mail Merge" IsHidden="true" DataType="String" DisplaySequence="18" />
+      <OutputField FieldID="EnableMultipleLetterMailMerge" Caption="Enable Multiple Letter Mail Merge" IsHidden="true" DataType="String" DisplaySequence="19" />
+      <OutputField FieldID="Total" Caption="TOTAL" IsHidden="true" DataType="String" DisplaySequence="998" />
+    </OutputFields>
+  </Output>
+
+</DataListSpec>
