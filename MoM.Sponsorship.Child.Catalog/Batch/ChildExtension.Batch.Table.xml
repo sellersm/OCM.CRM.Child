@@ -24,10 +24,10 @@
     <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>
     <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
 
-    <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="true"/>
+    <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="false"/>
     <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
-    <CodeTableField Description="Mother works as code value" CodeTable="USR_MOTHERWORKSASCODE" Name="MOTHERWORKSASCODEID" Required="true"/>
+    <CodeTableField Description="Mother works as code value" CodeTable="USR_MOTHERWORKSASCODE" Name="MOTHERWORKSASCODEID" Required="false"/>
     <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
     <CodeTableField CodeTable="USR_CAREGIVERRELATIONCODE" Description="CareGiver Relation Code Values" Name="CAREGIVERRELATIONCODEID" Required="false"/>
@@ -91,9 +91,9 @@
     <MemoField Description="Additional info" Name="ADDITIONALCHILDINFORMATION" />
     <TextField Description="CCH Entered By" Name="CCHENTEREDBY" Length="100" Required="false" IsUnique="false" />
     <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="true" />
-    <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="true"/>
+    <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="false"/>
     <BooleanField Description="Photo Stored" Name="PHOTOSTORED"/>
-    <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="true"/>
+    <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="false"/>
     <CodeTableField Description="Profile Update Code" CodeTable="USR_CHILDPROFILEUPDATECODE" Name="CHILDPROFILEUPDATECODEID" Required="false"/>
     <BooleanField Description="Profile Update Notification" Name="PROFILEUPDATENOTIFICATION"/>
     <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
