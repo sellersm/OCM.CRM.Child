@@ -239,11 +239,11 @@ return 0
 			<common:FormField FieldID="CHILDLIVESWITHCODEID" DataType="Guid" Caption="Child Lives With">
 				<common:CodeTable CodeTableName="USR_CHILDLIVESWITHCODE" />
 			</common:FormField>
-			<common:FormField FieldID="FATHERWORKSASCODEID" DataType="Guid" Required="true" Caption="Father Works As">
+			<common:FormField FieldID="FATHERWORKSASCODEID" DataType="Guid" Required="false" Caption="Father Works As">
 				<common:CodeTable CodeTableName="USR_FATHERWORKSASCODE" />
 			</common:FormField>
 			<common:FormField FieldID="FATHERWORKSASOTHER" MaxLength="50" Caption="Father Works As Other" />
-			<common:FormField FieldID="MOTHERWORKSASCODEID" DataType="Guid" Required="true" Caption="Mother Works As">
+			<common:FormField FieldID="MOTHERWORKSASCODEID" DataType="Guid" Required="false" Caption="Mother Works As">
 				<common:CodeTable CodeTableName="USR_MOTHERWORKSASCODE" />
 			</common:FormField>
 			<common:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="50" Caption="Mother Works As Other" />
@@ -305,9 +305,9 @@ return 0
 			<common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" />
 			<common:FormField FieldID="CCHENTEREDBY" MaxLength="100" Caption="CCH Entered By" />
 			<common:FormField FieldID="CCHTEMPID" MaxLength="250" Caption="CH CCH Tempid" Multiline="true" />
-			<common:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Required="true" Caption="Current Photo Date" />
+			<common:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Required="false" Caption="Current Photo Date" />
 			<common:FormField FieldID="PHOTOSTORED" DataType="Boolean" Caption="Photo Stored" />
-			<common:FormField FieldID="CHILDPROFILESTATUSCODEID" DataType="Guid" Required="true" Caption="Child Profile Status">
+			<common:FormField FieldID="CHILDPROFILESTATUSCODEID" DataType="Guid" Required="false" Caption="Child Profile Status">
 				<common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
 			</common:FormField>
 			<common:FormField FieldID="CHILDPROFILEUPDATECODEID" DataType="Guid" Caption="Child Profile Update">
