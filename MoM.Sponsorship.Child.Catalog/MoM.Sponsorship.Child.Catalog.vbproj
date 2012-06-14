@@ -242,35 +242,6 @@
     <EmbeddedResource Include="Batch\ChildExtensionBatch.BatchType.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatch.BatchType.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchTable.Table.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchAddRow.Add.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchEditRow.Edit.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchDeleteRow.Delete.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatch.Commit.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestingOnly.Table.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoAmI.Edit.xml" />
   </ItemGroup>
   <ItemGroup>
