@@ -16,7 +16,7 @@ Option Infer On
 ''' </summary>
 <Global.Blackbaud.AppFx.UIModeling.Core.DataFormUIModelMetadata(Global.Blackbaud.AppFx.UIModeling.Core.DataFormMode.Add, "06465927-9d7c-4e8a-8b8e-0defd8cc90ae", "199882b0-1b47-4af7-b1f6-186f88e5c343", "Child Extension Table", "Sponsorship Opportunity Child")> _
 Partial Public Class [ChildExtensionAddCCHFormUIModel]
-	Inherits Global.Blackbaud.AppFx.UIModeling.Core.DataFormUIModel
+    Inherits Global.Blackbaud.AppFx.UIModeling.Core.DataFormUIModel
 
 #Region "Extensibility methods"
 
@@ -647,7 +647,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
         '_cchtempid
         '
         _cchtempid.Name = "CCHTEMPID"
-        _cchtempid.Caption = "Ch Tempid"
+        _cchtempid.Caption = "CCH Tempid"
         _cchtempid.MaxLength = 250
         _cchtempid.Multiline = True
         Me.Fields.Add(_cchtempid)
@@ -1564,7 +1564,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _photostored
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Child Profile Status
     ''' </summary>
@@ -1575,7 +1575,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _childprofilestatuscodeid
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Child Profile Update
     ''' </summary>
@@ -1586,7 +1586,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _childprofileupdatecodeid
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Profile Update Notification
     ''' </summary>
@@ -1597,7 +1597,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _profileupdatenotification
         End Get
     End Property
-    
+
     ''' <summary>
     ''' First or Common Name
     ''' </summary>
@@ -1608,7 +1608,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _firstname
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Second or Middle Name
     ''' </summary>
@@ -1619,7 +1619,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _middlename
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Family Name_Surname_Last Name
     ''' </summary>
@@ -1630,7 +1630,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _lastname
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Gender
     ''' </summary>
@@ -1641,7 +1641,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _gender
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Age
     ''' </summary>
@@ -1652,7 +1652,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _age
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Date of Birth
     ''' </summary>
@@ -1663,7 +1663,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _birthdate
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Add Siblings
     ''' </summary>
@@ -1674,7 +1674,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _addsiblingslabel
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Who Am I
     ''' </summary>
@@ -1685,7 +1685,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _whoamigroup
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Spritual Development
     ''' </summary>
@@ -1696,7 +1696,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _spiritualdevelopmentgroup
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Parental Information
     ''' </summary>
@@ -1707,7 +1707,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _parentalinformationgroup
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Caregiver Information
     ''' </summary>
@@ -1718,7 +1718,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _caregiverinformationgroup
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Sibling Information
     ''' </summary>
@@ -1729,7 +1729,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _siblinginformationgroup
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Attending School
     ''' </summary>
@@ -1740,7 +1740,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _attendingschoolgroup
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Who Am I
     ''' </summary>
@@ -1751,7 +1751,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _whoamitab
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Who I Live With
     ''' </summary>
@@ -1762,7 +1762,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _whoilivewithtab
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Where I Live
     ''' </summary>
@@ -1773,7 +1773,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _whereilivetab
         End Get
     End Property
-    
+
     ''' <summary>
     ''' About Me
     ''' </summary>
@@ -1784,7 +1784,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _aboutmetab
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Development
     ''' </summary>
@@ -1795,7 +1795,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _developmenttab
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Additional Info
     ''' </summary>
@@ -1806,7 +1806,7 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _additionalinfotab
         End Get
     End Property
-    
+
     ''' <summary>
     ''' Add Siblings
     ''' </summary>
@@ -1817,5 +1817,5 @@ Partial Public Class [ChildExtensionAddCCHFormUIModel]
             Return _addsiblings
         End Get
     End Property
-    
+
 End Class

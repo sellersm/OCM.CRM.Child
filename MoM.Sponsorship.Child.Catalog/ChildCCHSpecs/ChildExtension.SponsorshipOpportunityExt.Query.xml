@@ -83,6 +83,7 @@ select
     USR_CHILDEXTENSION.[CCHTEMPID],
     USR_CHILDEXTENSION.[CURRENTPHOTODATE],
     USR_CHILDEXTENSION.[PHOTOSTORED],
+    USR_CHILDEXTENSION.[CCHVALIDATED],
     (select USR_CHILDPROFILESTATUSCODE.DESCRIPTION from dbo.USR_CHILDPROFILESTATUSCODE where USR_CHILDPROFILESTATUSCODE.ID = USR_CHILDEXTENSION.[CHILDPROFILESTATUSCODEID]) as CHILDPROFILESTATUSCODEID_TRANSLATION,
     (select USR_CHILDPROFILEUPDATECODE.DESCRIPTION from dbo.USR_CHILDPROFILEUPDATECODE where USR_CHILDPROFILEUPDATECODE.ID = USR_CHILDEXTENSION.[CHILDPROFILEUPDATECODEID]) as CHILDPROFILEUPDATECODEID_TRANSLATION,
     USR_CHILDEXTENSION.[PROFILEUPDATENOTIFICATION],
@@ -204,9 +205,10 @@ from
       <OutputField Name="VOCATIONALSKILLS" Caption="Vocational skills" />
       <OutputField Name="ADDITIONALCHILDINFORMATION" Caption="Additional child information" />
       <OutputField Name="CCHENTEREDBY" Caption="Cch entered by" />
-      <OutputField Name="CCHTEMPID" Caption="Ch tempid" />
+      <OutputField Name="CCHTEMPID" Caption="CCH Tempid" />
       <OutputField Name="CURRENTPHOTODATE" Caption="Current photo date" DataType="Date" />
       <OutputField Name="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
+      <OutputField Name="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" />
       <OutputField Name="CHILDPROFILESTATUSCODEID_TRANSLATION" Caption="Child profile status">
         <LookupInfo>
           <CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" IncludeInactive="true" />

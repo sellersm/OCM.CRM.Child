@@ -124,6 +124,7 @@ IsCustomizable="true">
     <TextField Description="Batch Number" Name="BATCHNUMBER" Length="50"/>
     <DateField Description="Registration Date" Name="REGISTRATIONDATE" />
     <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
+    <BooleanField Description="CCH Validated" Name="CCHVALIDATED" DefaultValue="false"/>
   </Fields>
   <!--<CheckConstraints />
   <Indexes />

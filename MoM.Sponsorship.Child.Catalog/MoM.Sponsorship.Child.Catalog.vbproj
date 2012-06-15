@@ -212,7 +212,9 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension_Constituent_Ext.Query.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Batch\ChildExtensionAddBatch.Commit.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionAddBatch.Commit.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildAddWrapped.Add.xml" />
@@ -222,15 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Batch\ChildExtensionBatchAddRow.Add.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Package.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Query.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.DataList.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch TableDelete.RecordOperation.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Edit.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Add.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.View.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Batch\ChildExtensionBatchEditRow.Edit.xml" />

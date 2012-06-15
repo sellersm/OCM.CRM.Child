@@ -118,6 +118,7 @@
     <CodeTableField Name="SPROPPCHILDCONDITIONCODEID" CodeTable="SPROPPCHILDCONDITIONCODE" />
     <BooleanField Description="Indicates if a child sponsorship opportunity is an orphan" Name="ISORPHANED" />
     <ImageField Description="A photo or emblem for this child." Name="PICTURE" CreateThumbnail="true" />
+    <BooleanField Description="CCH Validated" Name="CCHVALIDATED" DefaultValue="false"/>
     <!--<ComputedColumnField Description="For child, returns the age." Name="AGE" Expression="dbo.UFN_CONSTITUENT_GETAGE(SPONSORSHIPOPPORTUNITYCHILD.CONSTITUENTID)" />
     <ComputedColumnField Description="Returns the child name (First + Middle Initial + Last (individuals))." Name="NAME" Expression="CASE FIRSTNAME WHEN '' THEN '' ELSE FIRSTNAME + ' ' END    &#xD;&#xA;                    +    &#xD;&#xA;                    CASE MIDDLENAME WHEN '' THEN '' ELSE LEFT(MIDDLENAME,1) + '. ' END    &#xD;&#xA;                    +     LASTNAME" />-->
     <!--<ForeignKeyField Description="Constituent record for this child" Name="CONSTITUENTID" Required="true" ForeignTable="CONSTITUENT" Cardinality="OneToOne" />-->
