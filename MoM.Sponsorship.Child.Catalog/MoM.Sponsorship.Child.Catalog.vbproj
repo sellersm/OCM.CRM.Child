@@ -177,7 +177,9 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.Edit.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Batch\ChildExtension.Batch.Table.xml" />
+    <EmbeddedResource Include="Batch\ChildExtension.Batch.Table.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tables\ChildDeparture.Table.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoILiveWith.View.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhereILive.View.xml" />
@@ -278,8 +280,8 @@
     <Content Include="Batch\BatchLock\BatchLock.Table.xml" />
     <Content Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <Content Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
