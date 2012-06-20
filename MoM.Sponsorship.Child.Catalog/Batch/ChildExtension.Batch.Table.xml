@@ -99,7 +99,7 @@
     <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
     <BooleanField Description="Funded" Name="FUNDED"/>
     <!--<TextField Description="Temporary Child ID" IsUnique="true" Length="50" Name="TEMPCHILDID" Required="true"/>-->
-    <TextField Description="Batch Number" Name="BATCHNUMBER" Length="50"/>
+    <TextField Description="Batch Number" Name="BATCHNUMBER" Length="100" Required="true"/>
     <DateField Description="Registration Date" Name="REGISTRATIONDATE" />
 
     <!-- These are the fields for the sponsorship opportunity child  -->

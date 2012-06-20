@@ -20,7 +20,7 @@
     <![CDATA[
 CREATE PROCEDURE USR_USP_BATCHLOCKINSERT 
   -- Add the parameters for the stored procedure here
-  @projectId uniqueidentifier,             --Guid of the childProject
+  @objectId uniqueidentifier,             --Guid of the object/entity that is being locked: project, country, anything
   @timeStamp DateTime,                     --datetime value, kind of a timestamp
   @appUserId nvarchar(100)                 --userId of the person doing the batch
 AS
@@ -28,8 +28,17 @@ BEGIN
   -- SET NOCOUNT ON added to prevent extra result sets from
   -- interfering with SELECT statements.
   SET NOCOUNT ON;
-
-  	insert into dbo.USR_BATCHLOCK values (newid(), @projectId, @timeStamp, @appUserId)
+    INSERT INTO USR_BATCHLOCK
+           ([ID]
+           ,[LOCKED_TS]
+           ,[USERID]
+           ,[OBJECTID])
+     VALUES
+           (newid()
+           ,@timeStamp
+           ,@appUserId
+           ,@objectId
+           )
 
 END
 

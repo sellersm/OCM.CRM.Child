@@ -2,9 +2,9 @@
 		xmlns="bb_appfx_package"
 		xmlns:common="bb_appfx_commontypes"
 		ID="e0135e33-d4d8-4446-a3f9-0026f4dc68d1"
-		Name="ChildExtensionBatch Package"
-		Description="Batch Package for Custom ChildExtension Batch Type"
-		Author="$author$"
+		Name="Child Extension Batch Package"
+		Description="Batch Package for Custom ChildExtension (CCH) Batch Type"
+		Author="Memphis Sellers"
 		>
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
@@ -38,6 +38,17 @@ ChildExtension is the Child/CCH information.  It is used to hold the CCH and new
 		
 		<!-- Batch Type -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatch.BatchType.xml" />
+		
+		<!-- Batch Lock -->
+		<!-- Table -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.BatchLock.Table.xml" />
+
+		<!-- Sprocs -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_BATCHLOCKINSERT.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_DELETEBATCHLOCK.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
+		
 		</common:DependencyList>
 
 </PackageSpec>
