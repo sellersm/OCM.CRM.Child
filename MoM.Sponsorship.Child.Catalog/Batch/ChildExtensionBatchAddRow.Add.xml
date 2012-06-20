@@ -98,7 +98,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSIONBATCHROW
 		@CHILDPROFILESTATUSCODEID uniqueidentifier = null,
 		@CHILDPROFILEUPDATECODEID uniqueidentifier = null,
 		@PROFILEUPDATENOTIFICATION bit = 0,
-		@FUNDED bit = 0
+		@FUNDED bit = 0,
+		@BATCHNUMBER nvarchar(100) = null
 )
 as
 
@@ -114,7 +115,7 @@ declare @CURRENTDATE datetime
 set @CURRENTDATE = getdate()
 
 -- Get the batch number of this batch & update the row:
-declare @BATCHNUMBER nvarchar(100)
+--declare @BATCHNUMBER nvarchar(100)
 select @BATCHNUMBER =  BATCHNUMBER from BATCH
 where ID = @BATCHID;
 
@@ -323,6 +324,7 @@ return 0
 			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" DataType="Boolean" Caption="Profile Update Notification" />
 			<!--<common:FormField FieldID="AGE" DataType="TinyInt" Caption="Age" ReadOnly="true" />-->
 			<common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
+			<common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" Hidden="true"  DataType="String" />
 		</common:FormFields>
 
 
