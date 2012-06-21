@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="006883d2-8acd-4a0a-b3e3-2fafa2373e93" 
+	Name="Child Name Suffix Code Table"
+	Description="Child Name Suffix Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CHILDNAMESUFFIXCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

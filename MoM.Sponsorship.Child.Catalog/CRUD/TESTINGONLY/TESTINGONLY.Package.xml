@@ -1,0 +1,18 @@
+<PackageSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="6628bf7b-9941-4993-b739-24b15c9972e5"
+    Name="TESTINGONLY Package"
+    Description="Package containing CRUD specs generated from the TESTINGONLY table."
+    Author="memphis-PC\Administrator"
+    xmlns="bb_appfx_package"
+    >
+    <c:DependencyList>
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLY.Table.xml" />
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLY.View.xml" />
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLY.Add.xml" />
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLY.Edit.xml" />
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLYDelete.RecordOperation.xml" />
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLY.DataList.xml" />
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.TESTINGONLY.Query.xml" />
+    </c:DependencyList>
+</PackageSpec>

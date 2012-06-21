@@ -1,0 +1,40 @@
+﻿<TableSpec 
+  xmlns="bb_appfx_table"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="3e18ba33-46c7-4bb6-8aa3-3e7fabc0885d"
+  Name="BatchLock"
+  Description="Batch Lock table used to lock the batch commit insert"
+  Author="Memphis"
+  Tablename="USR_BATCHLOCK"		
+  EnableAuditTrail="false"
+  >
+
+  <!-- define fields on the table -->
+  <Fields>
+    <GuidField Description="Project ID" IsUnique="true" Name="PROJECTID" Required="true" />
+    <DateField Description="Locked datetime timestamp" Name="LOCKED_TS" Required="true"/>
+    <TextField Description="UserId of the user that has this row locked" Length="100" Name="USERID" Required="true"/>
+  </Fields>
+
+  
+  <!-- define any additional check constraints on the table -->
+  <!--<CheckConstraints>
+    <CheckConstraint CheckExpression="CONSTRAINT [CK_PK_PROJECTID] PRIMARY KEY CLUSTERED" Name="CK_PK_PROJECTID"/>
+    <CheckConstraint CheckExpression="CONSTRAINT [CK_ID_PROJECTID] UNIQUE NONCLUSTERED" Name="CK_ID_PROJECTID"/>
+  </CheckConstraints>-->
+
+  <!-- define any indexes on the table -->
+  <Indexes>
+    <Index IsUnique="true">
+      <IndexFields>
+        <IndexField Name="PROJECTID"/>
+      </IndexFields>
+    </Index>
+  </Indexes>
+    
+  <!-- define any triggers on the table --><!--
+  <Triggers>
+
+  </Triggers>-->
+
+</TableSpec>

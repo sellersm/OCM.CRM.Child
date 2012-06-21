@@ -1,0 +1,40 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="427ffb7f-253e-4f8a-bb25-e52865cc04f9" 
+	Name="TestBatch Delete Operation" 
+	Description="Deletes a record in the TestBatch"
+	Author="memphis-PC\Administrator"
+	OperationType="Delete"
+	RecordType="BATCHTEST"
+	common:SecurityUIFolder="Testing"
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USP_USR_BATCHTESTINGONLY_DELETE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_USR_BATCHTESTINGONLY_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_BATCHTESTINGONLY_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to delete this record?" />
+	</Prompt>
+
+</RecordOperationSpec>

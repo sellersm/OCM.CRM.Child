@@ -1,0 +1,79 @@
+﻿<BatchTypeSpec
+  xmlns="bb_appfx_batchtype"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="c4037ff0-60d1-4e72-af42-2c5057d9ac65" 
+  Name="ChildExtensionBatch Batch"
+  Description="Batch Type for New Child and related ChildExtension" 
+  Author="memphis-PC\Administrator"
+  BaseTableName="USR_BATCHCHILDEXTENSION" 
+  Category="ChildExtension" 
+  >
+
+
+  
+  <common:DependencyList>
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchAddRow.Add.xml" />
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchEditRow.Edit.xml" />
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchDeleteRow.Delete.xml" />
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionAddBatch.Commit.xml" />
+  </common:DependencyList>
+  
+  <!-- indicate the form used to add a row to the batch (note that this is the template ID, not the instance ID) -->
+  <AddRowDataFormTemplate CatalogItemID="9e3f4f58-5114-4d83-ab9b-6804424ce977" />
+
+  <!-- indicate the form used to edit a row in the batch (note that this is the template ID, not the instance ID) -->
+  <EditRowDataFormTemplate CatalogItemID="759e5bbe-9f75-4ce0-af31-da4472382c20" />
+
+  <!-- indicate the form used to commit a row in the batch (note that this is the template ID, not the instance ID) -->
+  <CommitRowDataForms>
+    <CommitRowAddDataFormTemplate CatalogItemID="b3f7ec55-3ddb-46c4-9fc8-787ce275f486" />
+  </CommitRowDataForms>
+  
+  <!-- indicate the record operation used to delete a row from the batch -->
+  <BatchDeleteRowRecordOperation CatalogItemID="1e3b48e9-6798-4042-a920-6a8b4da578c9" />
+
+  <!-- optionally, you can override the default 'batch delete' behavior by specifying the record operation to use deleting a batch of this type -->
+  <!--<DeleteBatchRecordOperation CatalogItemID="REPLACE_WITH_RECORDOPERATIONID" />-->
+
+  <!-- optionally, describe the batch row context window -->
+  <!--<RowContextWindow Caption="REPLACE_WITH_CAPTION" 
+              ViewDataFormTemplateID="REPLACE_WITH_FORMID" 
+            EditDataFormTemplateID="REPLACE_WITH_FORMID" 
+            ImageKey="REPLACE_WITH_IMAGEKEY" 
+            RecordType="REPLACE_WITH_RECORDTYPE" 
+            ContextFieldID="REPLACE_WITH_CONTEXTFIELDID" 
+            />-->
+
+  <!-- optionally, you can indicate a report to use as the validation report for the batch -->
+  <!--<ValidationReport CatalogItemID="REPLACE_WITH_REPORTID" />-->
+
+  <!-- optionally, describe a control report for batches of this type -->
+  <!--<ControlReport QueryViewSpecID="REPLACE_WITH_QUERYID" 
+           QueryViewJoinField="REPLACE_WITH_JOINFIELD" 
+           ReportSpecID="REPLACE_WITH_REPORTID" />-->
+
+  <!-- optionally, describe an exception report for batches of this type -->
+  <!--<ExceptionReport QueryViewSpecID="REPLACE_WITH_QUERYID" 
+             QueryViewJoinField="REPLACE_WITH_JOINFIELD" 
+           ReportSpecID="REPLACE_WITH_REPORTID" />-->
+
+  <!-- optionally, describe the client-side summary panel for batches of this type.  This should refer to a class that inherits 
+  from Browser.Batch.BatchSummaryPanelHandler -->
+  <!--<SummaryPanelHandler AssemblyName="REPLACE_WITH_FULLASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />-->
+
+  <!-- optionally, list any client-side event handlers that will be plugged into the event model for the batch data entry form.  Each handler
+  refers to a class that inherits from Browser.Batch.BatchEntryHandler -->
+  <!--<EventHandlers>
+    <BatchEventHandler AssemblyName="REPLACE_WITH_FULLASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+  </EventHandlers>-->
+
+  <!-- optionally, indicate a list of fields from the Add/Edit form that should be included by default in the batch design.  This list
+  does not need to include required or hidden fields, as they are already included by default.	
+  -->
+  <!--<DefaultSelectedFields>
+    <Field>FIELD1</Field>
+    <Field>FIELD2</Field>
+    <Field>FIELD3</Field>
+  </DefaultSelectedFields>-->
+
+</BatchTypeSpec>
