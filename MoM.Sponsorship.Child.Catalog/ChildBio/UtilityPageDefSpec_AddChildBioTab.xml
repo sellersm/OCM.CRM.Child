@@ -7,7 +7,7 @@
     Author="Bill Elfstrom"
     ContextRecordType="none"	
     >
-
+  
 	<!-- Note:  A page can optionally have a view form associated with it as the "Expression form".  While implemented as a view data form,
 	this form has no UI in this context, and is simply used as a way of loading additional information associated with the page.  The fields
 	returned by the expression form can be used as expressions in various properties throughout the page.  To specify an expression form for this
@@ -56,6 +56,16 @@
                       </ShowDataForm>
                       <HelpKey>GLBEditNotes.html</HelpKey>
                     </Action>
+                    <Action ID="d43f4f3b-bc3d-4f2d-904e-a76e1ce4ede8" Caption="Date Proofed" ImageKey="RES:Edit">
+                      <ShowDataForm DataFormID="b296c8f2-9235-4be3-8401-2bf063a8025f" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <SectionField>Notes\System record ID</SectionField>
+                        </ActionContext>
+                        <PostActionEvent>
+                          <RefreshPage />
+                        </PostActionEvent>
+                      </ShowDataForm>
+                    </Action>
                     <Action ID="f00cab6f-d634-4d1b-b3b9-5584a867a50c" Caption="Delete" ImageKey="res:delete" CaptionResourceKey="$$delete" Enabled="true">
                       <ExecuteRecordOperation RecordOperationID="27fe9cf7-b2e9-4d20-ab0d-b21028db413a" xmlns="bb_appfx_commontypes">
                         <ActionContext>
@@ -67,6 +77,16 @@
                       </ExecuteRecordOperation>
                       <HelpKey>SPAttributesDelete.html</HelpKey>
                     </Action>
+                    <Action ID="886db648-0d65-4c81-bba6-35defa854302" Caption="One Click Proof" ImageKey="RES:actions">
+                      <ExecuteRecordOperation RecordOperationID="1e807895-f729-4b37-90cb-d8c41c564a30" ShowPrompt="false" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <SectionField>Notes\System record ID</SectionField>
+                        </ActionContext>
+                        <PostActionEvent>
+                          <RefreshPage />
+                        </PostActionEvent>
+                      </ExecuteRecordOperation>
+                    </Action>
                   </Actions>
                 </Section>
               </Sections>
@@ -76,5 +96,4 @@
       </AlterPage>
     </AlterPages>
   </AlterExistingPages>
-
 </PageDefinitionSpec>
