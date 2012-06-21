@@ -80,7 +80,7 @@ create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSION_BATCH_TABLE
     @CCHENTEREDBY nvarchar(100) = null output,
     @CCHTEMPID nvarchar(250) = null output,
     @CURRENTPHOTODATE datetime = null output,
-    @PHOTOSCANNED bit = null output,
+    @PHOTOSTORED bit = null output,
     @CHILDPROFILESTATUSCODE nvarchar(100) = null output,
     @CHILDPROFILEUPDATECODE nvarchar(100) = null output,
     @PROFILEUPDATENOTIFICATION bit = null output,
@@ -169,7 +169,7 @@ as
            @CCHENTEREDBY = CCHENTEREDBY, 
            @CCHTEMPID = CCHTEMPID, 
            @CURRENTPHOTODATE = CURRENTPHOTODATE, 
-           @PHOTOSCANNED = PHOTOSCANNED, 
+           @PHOTOSTORED = PHOTOSTORED, 
            @CHILDPROFILESTATUSCODE = (select DESCRIPTION from dbo.USR_CHILDPROFILESTATUSCODE where ID = CHILDPROFILESTATUSCODEID), 
            @CHILDPROFILEUPDATECODE = (select DESCRIPTION from dbo.USR_CHILDPROFILEUPDATECODE where ID = CHILDPROFILEUPDATECODEID), 
            @PROFILEUPDATENOTIFICATION = PROFILEUPDATENOTIFICATION, 
@@ -256,7 +256,7 @@ as
             <c:FormField FieldID="CCHENTEREDBY" MaxLength="100" Caption="Cchenteredby" />
             <c:FormField FieldID="CCHTEMPID" MaxLength="250" Caption="CCHTEMPID" Multiline="true" />
             <c:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Required="true" Caption="Currentphotodate" />
-            <c:FormField FieldID="PHOTOSCANNED" DataType="Boolean" Caption="Photoscanned" />
+            <c:FormField FieldID="PHOTOSTORED" DataType="Boolean" Caption="Photoscanned" />
             <c:FormField FieldID="CHILDPROFILESTATUSCODE" MaxLength="100" Caption="Childprofilestatus" />
             <c:FormField FieldID="CHILDPROFILEUPDATECODE" MaxLength="100" Caption="Childprofileupdate" />
             <c:FormField FieldID="PROFILEUPDATENOTIFICATION" DataType="Boolean" Caption="Profileupdatenotification" />

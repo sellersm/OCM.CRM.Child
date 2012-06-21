@@ -11,7 +11,7 @@
 
   <!-- define fields on the table -->
   <Fields>
-    <GuidField Description="Project ID" IsUnique="true" Name="PROJECTID" Required="true" />
+    <GuidField Description="Object ID" IsUnique="true" Name="OBJECTID" Required="true" />
     <DateField Description="Locked datetime timestamp" Name="LOCKED_TS" Required="true"/>
     <TextField Description="UserId of the user that has this row locked" Length="100" Name="USERID" Required="true"/>
   </Fields>
@@ -27,7 +27,7 @@
   <Indexes>
     <Index IsUnique="true">
       <IndexFields>
-        <IndexField Name="PROJECTID"/>
+        <IndexField Name="OBJECTID"/>
       </IndexFields>
     </Index>
   </Indexes>

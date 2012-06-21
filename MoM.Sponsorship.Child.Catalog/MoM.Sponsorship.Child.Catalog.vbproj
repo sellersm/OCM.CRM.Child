@@ -68,23 +68,13 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Blackbaud.AppFx, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Blackbaud.AppFx.Server, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.Server.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Blackbaud.AppFx.UIModeling.Core, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Blackbaud.AppFx.Server">
+      <HintPath>..\..\..\References\Third Party\Blackbaud.AppFx.Server.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Blackbaud.AppFx.XmlTypes, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Blackbaud.AppFx.XmlTypes.XmlSerializers, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.XmlSerializers.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -187,7 +177,9 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.Edit.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Batch\ChildExtension.Batch.Table.xml" />
+    <EmbeddedResource Include="Batch\ChildExtension.Batch.Table.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tables\ChildDeparture.Table.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoILiveWith.View.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhereILive.View.xml" />
@@ -222,7 +214,9 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension_Constituent_Ext.Query.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Batch\ChildExtensionAddBatch.Commit.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionAddBatch.Commit.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildAddWrapped.Add.xml" />
@@ -234,15 +228,6 @@
     <EmbeddedResource Include="Batch\ChildExtensionBatchAddRow.Add.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Package.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Query.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.DataList.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch TableDelete.RecordOperation.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Edit.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.Add.xml" />
-    <EmbeddedResource Include="CRUD\Batch Temp Files for ChildExtension\ChildExtension Batch Table.View.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Batch\ChildExtensionBatchEditRow.Edit.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -250,35 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Batch\ChildExtensionBatch.BatchType.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatch.BatchType.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchTable.Table.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchAddRow.Add.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchEditRow.Edit.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatchDeleteRow.Delete.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestBatch.Commit.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestBatch\TestingOnly.Table.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoAmI.Edit.xml" />
@@ -324,13 +280,17 @@
     <Content Include="Batch\BatchLock\BatchLock.Table.xml" />
     <Content Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <Content Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
+    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\ConvertChildBioToChildBioOld.Sproc.xml" />
     <EmbeddedResource Include="ChildBio\ProcessProofedChildBio.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\AddChild.Task.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionBatch.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Quota\USR_UFN_CHILDPROJECT_CHILDRENAWAITINGREGISTRATION.xml" />
     <Content Include="Quota\USR_UFN_CHILDPROJECT_QUOTAVARIANCE.xml">
       <SubType>Designer</SubType>

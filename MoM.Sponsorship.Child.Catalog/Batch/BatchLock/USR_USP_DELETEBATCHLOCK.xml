@@ -21,7 +21,7 @@
     <![CDATA[
 CREATE PROCEDURE USR_USP_DELETEBATCHLOCK
   -- Add the parameters for the stored procedure here
-  @projectId uniqueidentifier,
+  @objectId uniqueidentifier,
   @appUserId nvarchar(100)
 AS
 BEGIN
@@ -30,8 +30,8 @@ BEGIN
   SET NOCOUNT ON;
 
   delete from dbo.USR_BATCHLOCK
-  where ProjectId = @projectId
-  and UserID = @appUserId
+  where OBJECTID = @objectId
+  and USERID = @appUserId
 END
     ]]>
   </CreateProcedureSQL>

@@ -1695,7 +1695,7 @@ Partial Public Class [ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIM
     End Property
 
     ''' <summary>
-    ''' Photo Scanned
+    ''' Photo Stored
     ''' </summary>
     <System.ComponentModel.Description("Photo Stored")> _
     <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _

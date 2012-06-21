@@ -2,26 +2,27 @@
   xmlns="bb_appfx_sqlstoredprocedure"
   xmlns:common="bb_appfx_commontypes" 
   ID="3d2ff5cc-dcc2-4012-b0c4-56299f038585"
-  Name="USP_xxx"
-  Description="REPLACE_WITH_DESCRIPTION"
-  Author="memphis-PC\Administrator"
-  SPName="USP_xxx"
+  Name="USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID"
+  Description="Get Batch Lock by ObjectID and UserID"
+  Author="Memphis Sellers"
+  SPName="USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID"
   >
   
   <!-- 
-  Remarks:	Used to get a BatchLock row, if one exists, for a Project and UserId.
+  Remarks:	Used to get a BatchLock row, if one exists, for a objectId and UserId.
             It's used by the Child Batch Commit process, if we need to find Batch lock
             rows for the given user.
   History:
   Date			    Modified By		Comments
   04-May-2012		Memphis		    Initial Version
+  20-Jun-2012   Memphis       Refactored changing ProjectId to ObjectId so we can lock any type of entity
   -->
   
   <CreateProcedureSQL>
     <![CDATA[
-CREATE PROCEDURE USR_USP_GETBATCHLOCKBYPROJECTID_APPUSERID
+CREATE PROCEDURE USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID
   -- Add the parameters for the stored procedure here
-  @projectId uniqueidentifier,             -- ProjectID of the batch
+  @objectId uniqueidentifier,             -- objectID of the batch
   @appUserId nvarchar(100)                 -- UserId of the batch user
 AS
 BEGIN
@@ -30,7 +31,7 @@ BEGIN
   SET NOCOUNT ON;
 
   select * from USR_BATCHLOCK
-  where ProjectID = @projectId
+  where OBJECTID = @objectId
   and UserID = @appUserId
 END
 

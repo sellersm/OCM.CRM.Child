@@ -271,7 +271,7 @@ Public Class ChildExtensionAddCCHFormUIModel
 
     'Private Sub PhotoStored_ValueChanged(ByVal sender As Object, ByVal e As AppFx.UIModeling.Core.ValueChangedEventArgs) Handles _photostored.ValueChanged
 
-    '    ' set the Current Photo Date required based on the Photo Scanned checkbox
+    '    ' set the Current Photo Date required based on the Photo Stored checkbox
     '    If Me.PHOTOSTORED.HasValue Then
     '        Me.CURRENTPHOTODATE.Required = (Me.PHOTOSTORED.Value)
     '        Me.CURRENTPHOTODATE.Enabled = (Me.PHOTOSTORED.Value)

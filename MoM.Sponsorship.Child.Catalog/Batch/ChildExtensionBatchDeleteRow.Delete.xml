@@ -11,10 +11,10 @@
 	>
 
 	<SPRecord>
-		<SPOperationImplementation SPName="USP_BATCHCHILDEXTENSIONROW_DELETE">
+		<SPOperationImplementation SPName="USR_USP_BATCHCHILDEXTENSIONROW_DELETE">
 			<common:CreateProcedureSQL>
 				<![CDATA[
-create procedure dbo.USP_BATCHCHILDEXTENSIONROW_DELETE
+create procedure dbo.USR_USP_BATCHCHILDEXTENSIONROW_DELETE
 (
 	@ID uniqueidentifier,
 	@CHANGEAGENTID uniqueidentifier
