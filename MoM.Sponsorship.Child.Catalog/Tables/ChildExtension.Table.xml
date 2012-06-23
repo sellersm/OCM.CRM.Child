@@ -1,0 +1,132 @@
+<TableSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns="bb_appfx_table"
+xmlns:common="bb_appfx_commontypes"
+ID="1c0af01f-9ca2-4fe7-ba20-b36093440527"
+Name="Child Extension Table"
+Description="Child Extension Table for BPR CCH"
+Author="Mark Sellers"
+Tablename="USR_CHILDEXTENSION"
+IsCustomizable="true">
+  <Fields>
+    <!--<GuidField Description="SPONSORSHIPOPPORTUNITYID" IsUnique="true" Name="SPONSORSHIPOPPORTUNITYID" Required="true" />-->
+    <!--<GuidField Description="SPONSORSHIPOPPORTUNITYGROUPID" IsUnique="false" Name="SPONSORSHIPOPPORTUNITYGROUPID" Required="true"/>-->
+    <!-- Will need a foreignkey field possibly to Child Departures table -->
+    <ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="OneToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
+    <ForeignKeyField Description="Foreign Key Field to Siblings Table" Cardinality="ManyToOne" ForeignTable="USR_CHILDSIBLINGS" Name="SIBLINGSID" OnDelete="RaiseError" />
+
+    <CodeTableField Description="Birthdate Accuracy" Name="BIRTHDATEACCURACYCODEID" CodeTable="USR_BIRTHDATEACCURACYCODE" Required="false" />
+    <DateField Description="Current Program Completion Date" Name="CURRENTPROGRAMCOMPLETIONDATE" Required="false" IncludeTime="false" />
+    <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>
+    <!--<ComputedColumnField Description="Age of Child" Name="CHILDAGE" Persisted="false" Expression="Select DateDIFF(yy,@DOB,@later)-CASE WHEN @later>=DateAdd(yy,DateDIFF(yy,@DOB,@later), @DOB) THEN 0 ELSE 1 END"/>-->
+    <!--<NumberField Description="Age of Child" Name="CHILDAGE" Type="tinyint" />-->
+    
+    <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
+
+    <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="false"/>
+    <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField Description="Mother works as code value" CodeTable="USR_MOTHERWORKSASCODE" Name="MOTHERWORKSASCODEID" Required="false"/>
+    <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_CAREGIVERRELATIONCODE" Description="CareGiver Relation Code Values" Name="CAREGIVERRELATIONCODEID" Required="false"/>
+    <TextField Description="Caregiver relation other value" Name="CAREGIVERRELATIONOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_CAREGIVERWORKSASCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERWORKSASCODEID" Required="false"/>
+    <TextField Description="Caregiver Works As Other value" Name="CAREGIVERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_CAREGIVERREASONCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERREASONCODEID" Required="false"/>
+    <TextField Description="ReasonForCaregiverOther" Name="REASONFORCAREGIVEROTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <NumberField Description="Number of sisters" Name="NUMBEROFSISTERS" Type="tinyint" DefaultValue="0" />
+    <NumberField Description="Number of brothers" Name="NUMBEROFBROTHERS" Type="tinyint" DefaultValue="0" />
+
+    <!--<CodeTableField CodeTable="USR_HOUSINGWALLSTRUCTURECODE" Description="Housing Wall Material values" Name="HOUSINGWALLSTRUCTURECODEID" Required="true"/>-->
+    <BooleanField Description="Housing Wall Wood" Name="HOUSINGWALLWOOD" />
+    <BooleanField Description="Housing Wall Mud" Name="HOUSINGWALLMUD" />
+    <BooleanField Description="Housing Wall Bamboo" Name="HOUSINGWALLBAMBOO" />
+    <BooleanField Description="Housing Wall Block" Name="HOUSINGWALLBLOCK" />
+    <TextField Description="Housing Wall Other" Name="HOUSINGWALLOTHER"  Length="50"/>
+
+    <BooleanField Description="Roofing Tin" Name="ROOFINGTIN" />
+    <BooleanField Description="Roofing Grass_Leaves" Name="ROOFINGGRASSLEAVES" />
+    <BooleanField Description="Roofing Wood" Name="ROOFINGWOOD" />
+    <BooleanField Description="Roofing Tile" Name="ROOFINGTILE" />
+    <TextField Description="Roofing Other" Name="ROOFINGOTHER" Length="50"/>
+
+    <BooleanField Description="Water Source Indoor" Name="WATERSOURCEINDOOR" />
+    <BooleanField Description="Water Source Community Tap" Name="WATERSOURCECOMMUNITYTAP" />
+    <BooleanField Description="Water Source Borehole_Well" Name="WATERSOURCEBOREHOLEWELL" />
+    <BooleanField Description="Water Source River" Name="WATERSOURCERIVER" />
+    <TextField Description="Water Source Other" Name="WATERSOURCEOTHER" Length="50" />
+
+    <BooleanField Description="Cooking Source WoodFire" Name="COOKINGSOURCEWOODFIRE" />
+    <BooleanField Description="Cooking Source Electric Stove" Name="COOKINGSOURCEELECTRICSTOVE" />
+    <BooleanField Description="Cooking Source Gas Stove" Name="COOKINGSOURCEGASSTOVE" />
+    <TextField Description="Cooking Source Other" Name="COOKINGSOURCEOTHER" Length="50"  />
+
+    <BooleanField Description="Light Source Elictricity" Name="LIGHTSOURCEELECTRICITY" />
+    <BooleanField Description="Light Source Oil Lamp" Name="LIGHTSOURCEOILLAMP" />
+    <BooleanField Description="Light Source Generator" Name="LIGHTSOURCEGENERATOR" />
+    <BooleanField Description="Light Source None" Name="LIGHTSOURCENONE" />
+    <TextField Description="Light Source Other" Name="LIGHTSOURCEOTHER" Length="50"  />
+    
+    <!--<TextField Description="Wall structure other value" Name="HOUSINGWALLSTRUCTUREOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_HOUSINGROOFINGMATERIALCODE" Description="Housing Roof Material values" Name="HOUSINGROOFINGMATERIALCODEID" Required="true"/>
+    <TextField Description="HousingRoofingMaterial Other value" Name="HOUSINGROOFINGMATERIALOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    
+    <CodeTableField CodeTable="USR_WATERSOURCECODE" Description="Water source values" Name="WATERSOURCECODEID" Required="true"/>
+    <TextField Description="Water Source other value" Name="WATERSOURCEOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_COOKINGSOURCECODE" Description="Cooking source values" Name="COOKINGSOURCECODEID" Required="true"/>
+    <TextField Description="Cooking Source Other Value" Name="COOKINGSOURCEOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_LIGHTSOURCECODE" Description="Light source values" Name="LIGHTSOURCECODEID" Required="true"/>
+    <TextField Description="LightSource Other value" Name="LIGHTSOURCEOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />-->
+
+    <TextField Description="Area Description" Name="AREADESCRIPTION" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Favorite thing" Name="MYFAVORITETHINGTODO" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Playing with friends text" Name="WHENIPLAYWITHFRIENDSWE" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Help out at home text" Name="WHENATHOMEIHELPOUTBY" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Prayer text" Name="WHENITALKTOGODIASKHIM" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="School likes" Name="WHENIAMATSCHOOLILIKELEARNING" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Dreams of future text" Name="SOMEDAYI" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="2 favorite things" Name="TWOMOSTFAVORITETHINGS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Other likes" Name="OTHERTHINGSTHECHILDENJOYS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Personality" Name="CHILDPERSONALITY" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Health" Name="CHILDHEALTH" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Spiritual development text" Name="SPIRITUALDEVELOPMENT" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <BooleanField Description="Attending school" Name="ATTENDINGSCHOOL" DefaultValue="false" />
+    <TextField Description="reason not attending school" Name="REASONNOTATTENDINGSCHOOL" Length="255" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Class level" Name="CLASSLEVEL" Length="20" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="childs favorite subject " Name="FAVORITESUBJECT" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="vocational skills text" Name="VOCATIONALSKILLS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <MemoField Description="Additional info" Name="ADDITIONALCHILDINFORMATION" />
+    <!--  These are new from the googledoc sheet:
+      CCH Entered By:
+      CCH Temp ID:
+      Project ID:  REQ  ?????? left msg in teamworkPM
+      Project Status:  REQ  ?????? left msg in teamworkPM
+      Current Photo Date:  REQ
+      Photo Stored:   REQ   Enum Yes/No
+      Profile Status:  CodeTable  REQ   USR_CHILDPROFILESTATUSCODE
+      Profile Update:  CodeTable        USR_CHILDPROFILEUPDATECODE
+      Profile Update Notification:  enum Yes/No
+    -->
+    <TextField Description="CCH Entered By" Name="CCHENTEREDBY" Length="100" Required="false" IsUnique="false" />
+    <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="false" />
+    <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="false"/>
+    <BooleanField Description="Photo Stored" Name="PHOTOSTORED"/>
+    <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="false"/>
+    <CodeTableField Description="Profile Update Code" CodeTable="USR_CHILDPROFILEUPDATECODE" Name="CHILDPROFILEUPDATECODEID" Required="false"/>
+    <BooleanField Description="Profile Update Notification" Name="PROFILEUPDATENOTIFICATION"/>
+    <BooleanField Description="Funded" Name="FUNDED"/>
+    <TextField Description="Batch Number" Name="BATCHNUMBER" Length="50"/>
+    <DateField Description="Registration Date" Name="REGISTRATIONDATE" />
+    <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
+    <BooleanField Description="CCH Validated" Name="CCHVALIDATED" DefaultValue="false"/>
+  </Fields>
+  <!--<CheckConstraints />
+  <Indexes />
+  <Triggers />-->
+</TableSpec>

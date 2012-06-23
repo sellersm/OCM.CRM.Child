@@ -1,0 +1,56 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="27fe9cf7-b2e9-4d20-ab0d-b21028db413a" 
+	Name="Child Bio Record Delete" 
+	Description="Child Bio Record Delete"
+	Author="Bill Elfstrom"
+	OperationType="Delete"
+	RecordType="SPONSORSHIPOPPORTUNITYNOTE"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Documentation\Note"
+	>
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_CHILD_BIO_RECORD_DELETE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_CHILD_BIO_RECORD_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	
+    -- Don't leave orphaned Date Proofed extension records
+
+     /* get the Child ID */
+    declare @ChildID as uniqueidentifier
+
+    SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
+    if @ChildID is null
+    RAISERROR 1000000 'Couldn''t find the "Child ID'
+
+    if exists (select ID from dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION where ID = @ID) 
+      delete USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION where  ID = @ID;
+
+    -- Delete the note record
+	  -- use the system generated delete routine to allow proper recording of the deleting agent
+	  exec USP_SPONSORSHIPOPPORTUNITYNOTE_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	
+    /* Eligibility check */
+    exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK
+    @ChildID, @CHANGEAGENTID
+  
+  return 0;
+  
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to delete this note?" />
+	</Prompt>
+
+</RecordOperationSpec>
