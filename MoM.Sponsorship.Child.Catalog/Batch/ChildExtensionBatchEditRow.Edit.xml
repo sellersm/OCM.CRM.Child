@@ -98,7 +98,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDEXTENSIONBATCHROW(
 		@ISHIVPOSITIVE bit = null output,
 		@SPROPPCHILDCONDITIONCODEID uniqueidentifier = null output,
 		@ISORPHANED bit = null output,
-		@PICTURE varbinary(max) = null output
+		@PICTURE varbinary(max) = null output,
+		@BATCHNUMBER nvarchar(100) = null output
 )
 as
 
@@ -193,7 +194,8 @@ as
 				@ISHIVPOSITIVE = ISHIVPOSITIVE, 
 				@SPROPPCHILDCONDITIONCODEID = SPROPPCHILDCONDITIONCODEID, 
 				@ISORPHANED = ISORPHANED, 
-				@PICTURE = PICTURE
+				@PICTURE = PICTURE,
+				@BATCHNUMBER = BATCHNUMBER
 	from dbo.USR_BATCHCHILDEXTENSION
 	where ID = @ID
 
@@ -208,6 +210,7 @@ as
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDEXTENSIONBATCHROW (
 	@ID uniqueidentifier,
 	@CHANGEAGENTID uniqueidentifier = null,
+	@BATCHNUMBER nvarchar(100),
 		@SEQUENCE int,
 		@SPONSORSHIPOPPORTUNITYGROUPID uniqueidentifier,
 		@SPONSORSHIPLOCATIONID uniqueidentifier,
@@ -380,6 +383,7 @@ as
 						SPROPPCHILDCONDITIONCODEID = @SPROPPCHILDCONDITIONCODEID,
 						ISORPHANED = @ISORPHANED,
 						PICTURE = @PICTURE,
+						BATCHNUMBER = @BATCHNUMBER,
 			CHANGEDBYID = @CHANGEAGENTID,
 			DATECHANGED = getdate()
 		where ID = @ID
@@ -562,9 +566,7 @@ return 0;
 			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" DataType="Boolean" Caption="Profile Update Notification" />
 			<!--<common:FormField FieldID="AGE" DataType="TinyInt" Caption="Age" ReadOnly="true" />-->
 			<common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
-			
-			<!-- commented out 6/22 to try fix template create error
-			<common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" Required="true" Hidden="true" DataType="String" />-->
+			<common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" Required="true" DataType="String" />
 		</common:FormFields>
 
 
