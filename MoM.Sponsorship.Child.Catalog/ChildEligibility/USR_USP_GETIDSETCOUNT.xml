@@ -16,6 +16,12 @@
 	Date			Modified By		Comments
     03-Apr-2012		CMayeda			Initial Version
 	-->
+
+	<common:DependencyList>
+		<common:Dependency CatalogAssembly="" CatalogItem="UFN_IDSETREADER_GETRESULTS"/>
+		<common:Dependency CatalogAssembly="" CatalogItem="USP_RAISE_ERROR" />
+	</common:DependencyList>
+
 	
 	<CreateProcedureSQL>
 		<![CDATA[

@@ -20,27 +20,10 @@
 	<!-- define fields on the table -->
 	<Fields>
 		
-		<TextField
-			Name="NAME"
-			Length="100"
-			Required="true"
-			IsUnique="true"
-			Description="The name of the parameter set"/>
-		<TextField
-			Name="DESCRIPTION"
-			Length="255"
-			Description="Details describing this parameter set"/>
-		<ForeignKeyField
-			Name="IDSETREGISTERID"
-			ForeignTable="IDSETREGISTER"
-			Cardinality="ManyToOne"
-			Required="true"
-			OnDelete="CascadeDelete"/>
-		<ForeignKeyField
-			Name="QUERYVIEWID"
-			Cardinality="ManyToOne"
-			ForeignTable="QUERYVIEWCATALOG"
-			Required="false"/>
+		<TextField Name="NAME" Length="100" Required="true" IsUnique="true" Description="The name of the parameter set"/>
+		<TextField Name="DESCRIPTION" Length="255" Description="Details describing this parameter set"/>
+		<ForeignKeyField Name="IDSETREGISTERID" ForeignTable="IDSETREGISTER" Cardinality="ManyToOne" Required="true" OnDelete="CascadeDelete"/>
+		<ForeignKeyField Name="QUERYVIEWID" Cardinality="ManyToOne" ForeignTable="QUERYVIEWCATALOG" Required="false"/>
 		
 	</Fields>
 

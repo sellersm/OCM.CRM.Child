@@ -19,80 +19,80 @@
   <AlterExistingPages xmlns="bb_appfx_pagedefinition">
     <AlterPages>
       <AlterPage PageID="0f392d71-5884-4363-b6e3-a75755f8402a">
-        <AlterTabs>
-          <AddTab Sequence="999">
-            <!--Bio Tab-->
-            <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
-              <Sections>
-                <Section ID="ae830cc2-1d35-4ac1-9665-c25ec0df822b" Caption="Child Bio" Visible="true">
-                  <DataList ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" ShowRowTotals="False">
-                    <RenderStyle>
-                      <StandardView>
-                        <DetailViewForm ViewDataFormID="664ad089-af34-423f-9e53-33ada21f42ef" RecordIDField="Notes\System record ID" />
-                      </StandardView>
-                    </RenderStyle>
-                  </DataList>
-                  <Actions>
-                    <Action ID="848edc9d-78fa-4e3a-8433-ad04e41d8c6d" Caption="Date Proofed" ImageKey="RES:Edit" CaptionResourceKey="$$Edit">
-                      <ShowDataForm DataFormID="b93eed4c-0a5d-4d13-9973-04a41d9fe30d" xmlns="bb_appfx_commontypes">
-                        <ActionContext>
-                          <SectionField>Notes\System record ID</SectionField>
-                        </ActionContext>
-                      </ShowDataForm>
-                    </Action>
-                    <Action ID="b9c30bdf-c63b-41ae-9172-bffea2e2dd5e" Caption="Add" ImageKey="RES:NewItem" CaptionResourceKey="$$note">
-                      <ShowAddDataForm DataFormID="bd3f4bc6-51d6-409c-98f3-90927c533465" xmlns="bb_appfx_commontypes">
-                        <ActionContext>
-                          <PageContextID />
-                        </ActionContext>
-                      </ShowAddDataForm>
-                      <HelpKey>GLBEditNotes.html</HelpKey>
-                    </Action>
-                    <Action ID="cb3411c0-f0f4-4fce-bdff-cc587a94e261" Caption="Edit" ImageKey="RES:Edit" DefaultAction="True" CaptionResourceKey="$$edit">
-                      <ShowDataForm DataFormID="6ae14992-c9f8-4760-bb0f-225ab86eba96" xmlns="bb_appfx_commontypes">
-                        <ActionContext>
-                          <SectionField>Notes\System record ID</SectionField>
-                        </ActionContext>
-                      </ShowDataForm>
-                      <HelpKey>GLBEditNotes.html</HelpKey>
-                    </Action>
-                    <Action ID="d43f4f3b-bc3d-4f2d-904e-a76e1ce4ede8" Caption="Date Proofed" ImageKey="RES:Edit">
-                      <ShowDataForm DataFormID="b296c8f2-9235-4be3-8401-2bf063a8025f" xmlns="bb_appfx_commontypes">
-                        <ActionContext>
-                          <SectionField>Notes\System record ID</SectionField>
-                        </ActionContext>
-                        <PostActionEvent>
-                          <RefreshPage />
-                        </PostActionEvent>
-                      </ShowDataForm>
-                    </Action>
-                    <Action ID="f00cab6f-d634-4d1b-b3b9-5584a867a50c" Caption="Delete" ImageKey="res:delete" CaptionResourceKey="$$delete" Enabled="true">
-                      <ExecuteRecordOperation RecordOperationID="27fe9cf7-b2e9-4d20-ab0d-b21028db413a" xmlns="bb_appfx_commontypes">
-                        <ActionContext>
-                          <SectionField>Notes\System record ID</SectionField>
-                        </ActionContext>
-                        <PostActionEvent>
-                          <RefreshSection />
-                        </PostActionEvent>
-                      </ExecuteRecordOperation>
-                      <HelpKey>SPAttributesDelete.html</HelpKey>
-                    </Action>
-                    <Action ID="886db648-0d65-4c81-bba6-35defa854302" Caption="One Click Proof" ImageKey="RES:actions">
-                      <ExecuteRecordOperation RecordOperationID="1e807895-f729-4b37-90cb-d8c41c564a30" ShowPrompt="false" xmlns="bb_appfx_commontypes">
-                        <ActionContext>
-                          <SectionField>Notes\System record ID</SectionField>
-                        </ActionContext>
-                        <PostActionEvent>
-                          <RefreshPage />
-                        </PostActionEvent>
-                      </ExecuteRecordOperation>
-                    </Action>
-                  </Actions>
-                </Section>
-              </Sections>
-            </Tab>
-          </AddTab>
-        </AlterTabs>
+		  <AlterTabs>
+			  <AddTab Sequence="999">
+				  <!--Bio Tab-->
+				  <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
+					  <Sections>
+						  <Section ID="ae830cc2-1d35-4ac1-9665-c25ec0df822b" Caption="Child Bio" Visible="true">
+							  <DataList ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" ShowRowTotals="False">
+								  <RenderStyle>
+									  <StandardView>
+										  <DetailViewForm ViewDataFormID="664ad089-af34-423f-9e53-33ada21f42ef" RecordIDField="Notes\System record ID" />
+									  </StandardView>
+								  </RenderStyle>
+							  </DataList>
+							  <Actions>
+								  <Action ID="848edc9d-78fa-4e3a-8433-ad04e41d8c6d" Caption="Date Proofed" ImageKey="RES:Edit" CaptionResourceKey="$$Edit">
+									  <ShowDataForm DataFormID="b93eed4c-0a5d-4d13-9973-04a41d9fe30d" xmlns="bb_appfx_commontypes">
+										  <ActionContext>
+											  <SectionField>Notes\System record ID</SectionField>
+										  </ActionContext>
+									  </ShowDataForm>
+								  </Action>
+								  <Action ID="b9c30bdf-c63b-41ae-9172-bffea2e2dd5e" Caption="Add" ImageKey="RES:NewItem" CaptionResourceKey="$$note">
+									  <ShowAddDataForm DataFormID="bd3f4bc6-51d6-409c-98f3-90927c533465" xmlns="bb_appfx_commontypes">
+										  <ActionContext>
+											  <PageContextID />
+										  </ActionContext>
+									  </ShowAddDataForm>
+									  <HelpKey>GLBEditNotes.html</HelpKey>
+								  </Action>
+								  <Action ID="cb3411c0-f0f4-4fce-bdff-cc587a94e261" Caption="Edit" ImageKey="RES:Edit" DefaultAction="True" CaptionResourceKey="$$edit">
+									  <ShowDataForm DataFormID="6ae14992-c9f8-4760-bb0f-225ab86eba96" xmlns="bb_appfx_commontypes">
+										  <ActionContext>
+											  <SectionField>Notes\System record ID</SectionField>
+										  </ActionContext>
+									  </ShowDataForm>
+									  <HelpKey>GLBEditNotes.html</HelpKey>
+								  </Action>
+								  <Action ID="d43f4f3b-bc3d-4f2d-904e-a76e1ce4ede8" Caption="Date Proofed" ImageKey="RES:Edit">
+									  <ShowDataForm DataFormID="b296c8f2-9235-4be3-8401-2bf063a8025f" xmlns="bb_appfx_commontypes">
+										  <ActionContext>
+											  <SectionField>Notes\System record ID</SectionField>
+										  </ActionContext>
+										  <PostActionEvent>
+											  <RefreshPage />
+										  </PostActionEvent>
+									  </ShowDataForm>
+								  </Action>
+								  <Action ID="f00cab6f-d634-4d1b-b3b9-5584a867a50c" Caption="Delete" ImageKey="res:delete" CaptionResourceKey="$$delete" Enabled="true">
+									  <ExecuteRecordOperation RecordOperationID="27fe9cf7-b2e9-4d20-ab0d-b21028db413a" xmlns="bb_appfx_commontypes">
+										  <ActionContext>
+											  <SectionField>Notes\System record ID</SectionField>
+										  </ActionContext>
+										  <PostActionEvent>
+											  <RefreshSection />
+										  </PostActionEvent>
+									  </ExecuteRecordOperation>
+									  <HelpKey>SPAttributesDelete.html</HelpKey>
+								  </Action>
+								  <Action ID="886db648-0d65-4c81-bba6-35defa854302" Caption="One Click Proof" ImageKey="RES:actions">
+									  <ExecuteRecordOperation RecordOperationID="1e807895-f729-4b37-90cb-d8c41c564a30" ShowPrompt="false" xmlns="bb_appfx_commontypes">
+										  <ActionContext>
+											  <SectionField>Notes\System record ID</SectionField>
+										  </ActionContext>
+										  <PostActionEvent>
+											  <RefreshPage />
+										  </PostActionEvent>
+									  </ExecuteRecordOperation>
+								  </Action>
+							  </Actions>
+						  </Section>
+					  </Sections>
+				  </Tab>
+				  </AddTab>
+			  </AlterTabs>
       </AlterPage>
     </AlterPages>
   </AlterExistingPages>

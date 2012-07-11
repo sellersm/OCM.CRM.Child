@@ -1,0 +1,65 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="6192f9b1-d4b6-4f8e-8064-705b2d14dd69"
+	Name="USR_USP_CHILDREN_SETINELIGIBLE"
+	Description="Set a list of chidlren to be ineligible with a specific reason"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDREN_SETINELIGIBLE" >
+
+	<!-- 
+	Remarks:    Sets the child's eligibility to Ineligible for the children passed in @childIDList
+				It does not update children that are already Ineligible for the same reason passed in @sponsorshipReasonID
+				
+	History:
+	Date            Modified By     Comments
+	19-Jun-2012		CMayeda			Initial Version
+	-->
+	
+	<common:DependencyList>
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll"  CatalogItem="USR_UDT_CHILDIDLIST"/>
+		<common:Dependency CatalogAssembly="" CatalogItem="USP_CHANGEAGENT_GETORCREATECHANGEAGENT"/>
+		<common:Dependency CatalogAssembly="" CatalogItem="USP_RAISE_ERROR" />
+	</common:DependencyList>
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+		
+create procedure dbo.USR_USP_CHILDREN_SETINELIGIBLE (	
+	@childIDList USR_UDT_CHILDIDLIST readonly,		-- The children to be set ineligible
+	@sponsorshipReasonID uniqueidentifier,		-- Used to specify the sponsorship reason to add
+	@changeAgentID uniqueidentifier)			-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	
+as
+begin	
+	-- Eligibility code value constant
+	declare @eligibilityCode_Ineligible tinyint = 2
+	
+	
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+    -- Used for setting date fields to today's date
+	declare @currentDate datetime = null  
+	set @currentDate = getdate()	
+	
+		
+	-- Update sponsorship opportunity to set child/children to ineligble and set the reason to what was passed in
+	update dbo.SPONSORSHIPOPPORTUNITY
+		set ELIGIBILITYCODE = @eligibilityCode_Ineligible,
+			SPONSORSHIPREASONID = @sponsorshipReasonID,
+			CHANGEDBYID = @changeAgentID,
+			DATECHANGED = @currentDate
+
+      where exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITY.ID)
+        and not (ELIGIBILITYCODE = @eligibilityCode_Ineligible and SPONSORSHIPREASONID = @sponsorshipReasonID)	-- Filter out those already ineligible with the same reason
+		
+
+	return 0
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
