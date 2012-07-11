@@ -221,7 +221,7 @@
         </Section>
       </Sections>
     </Tab>
-	  <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
+	  <!-- <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
       <Sections>
         <Section ID="ae830cc2-1d35-4ac1-9665-c25ec0df822b" Caption="Child Bio" Visible="true">
           <DataList ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" ShowRowTotals="False">
@@ -243,7 +243,7 @@
               </ShowAddDataForm>
               <HelpKey>GLBEditNotes.html</HelpKey>
             </Action>
-			  <!--Action ID="dc12eee9-2147-4857-8eea-33f86c41cf28" Caption="One Click Proof" ImageKey="RES:actions" Enabled="=Fields!Type=&quot;Child Bio - Draft&quot;">
+			  <Action ID="dc12eee9-2147-4857-8eea-33f86c41cf28" Caption="One Click Proof" ImageKey="RES:actions" Enabled="=Fields!Type=&quot;Child Bio - Draft&quot;">
               <ExecuteRecordOperation RecordOperationID="1e807895-f729-4b37-90cb-d8c41c564a30" xmlns="bb_appfx_commontypes">
                 <ActionContext>
                   <SectionField>Notes\System record ID</SectionField>
@@ -253,7 +253,7 @@
                 </PostActionEvent>
               </ExecuteRecordOperation>
             </Action>
-			-->
+			
             <Action ID="cb3411c0-f0f4-4fce-bdff-cc587a94e261" Caption="Edit" ImageKey="RES:Edit" DefaultAction="True" CaptionResourceKey="$$edit">
               <ShowDataForm DataFormID="741f3d26-7bcd-4026-9df9-29ffa45c09ae" xmlns="bb_appfx_commontypes">
                 <ActionContext>
@@ -289,7 +289,7 @@
           </Actions>
         </Section>
       </Sections>
-    </Tab>
+    </Tab> -->
     <Tab Caption="Sponsorships" ID="a2f561b0-487c-4b01-9a5b-77d548fe976e">
       <Sections>
         <Section ID="7aa09fab-abd1-4cfc-a321-26418ee5806d" Caption="Active Sponsorship">
