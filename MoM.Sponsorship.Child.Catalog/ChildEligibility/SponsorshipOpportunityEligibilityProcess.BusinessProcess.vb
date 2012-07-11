@@ -6,9 +6,9 @@ Imports System.Data.SqlClient
 Public NotInheritable Class SponsorshipOpportunityEligibilityProcessBusinessProcess
     Inherits AppCatalog.AppBusinessProcess
 
-    Private _parameters As SponsorshipOpportunityEligibilityProcessParameters = Nothing
+    Private _parameters As InventoryParameters = Nothing
 
-    Private ReadOnly Property Parameters As SponsorshipOpportunityEligibilityProcessParameters
+    Private ReadOnly Property Parameters As InventoryParameters
         Get
             If _parameters Is Nothing Then
                 Throw New Exception("No parameters were set")
@@ -21,7 +21,7 @@ Public NotInheritable Class SponsorshipOpportunityEligibilityProcessBusinessProc
 
 
     ' This is a class used for the inventory process instance parameters.
-    Private Class SponsorshipOpportunityEligibilityProcessParameters
+    Private Class InventoryParameters
         Public ReadOnly OUTPUTVIEWID As Guid = Guid.Empty
         Public ReadOnly IDSETID As Guid = Guid.Empty
 
@@ -54,7 +54,7 @@ Public NotInheritable Class SponsorshipOpportunityEligibilityProcessBusinessProc
         MyBase.Validate()
 
         ' Get our business process parameters
-        _parameters = New SponsorshipOpportunityEligibilityProcessParameters(RequestArgs.ParameterSetID, Me.RequestContext)
+        _parameters = New InventoryParameters(RequestArgs.ParameterSetID, Me.RequestContext)
 
         If _parameters Is Nothing Then
             Throw New Exception("No parameters found with the given parameter")

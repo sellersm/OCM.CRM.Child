@@ -8,41 +8,81 @@
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY"
 	>
 
-	<!-- 
-	Remarks:    This is used to process a Selection Set, which is used in the Sponsorship Eligibility Business Process.
-				The s
-
-	History:
-	Date            Modified By     Comments
-    21-Mar-2012		CMayeda			Initial Version
-	09-Jul-2012		CMayeda			Modified this to call USR_USP_CHILDREN_SETELIGIBLEORPENDING instead of handling the same logic in this sproc
-	-->
-
 	<CreateProcedureSQL>
 		<![CDATA[
 		
 create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY (
-	@idSetRegisterID uniqueidentifier,		-- Specify a Selection Set ID if the sproc should process all the children in a query selection
-	@changeAgentID uniqueidentifier,		-- Used to specify change agent for ChangedByID and AddedByID fields
-	@changedToEligible int = 0 output,      -- Output parm that specifies how many children were set to Eligible
-	@changedToPending int = 0 output)       -- Output parm that specifies how many children were set to Pending
+	@IDSETREGISTERID uniqueidentifier,  -- Specify a Selection Set ID if the sproc should process all the children in a query selection
+	@CHANGEAGENTID uniqueidentifier,    -- Used to specify change agent for ChangedByID and AddedByID fields
+	@CHANGEDTOELIGIBLE int = 0 output,      -- Output parm that specifies how many children were set to Eligible
+	@CHANGEDTOPENDING int = 0 output)       -- Output parm that specifies how many children were set to Pending
 
 as
 begin
 	-- Get ChangeAgent if none was passed into the sproc
-  	if @changeAgentID is null  
+  	if @CHANGEAGENTID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
 
-	-- Insert the children in the selection set to the child list table to pass to USR_USP_CHILDREN_SETELIGIBLEORPENDING
-	declare @childList USR_UDT_CHILDIDLIST
-	insert @childList 
-	select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) 
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+	
+	-- This needs to be set to off for the output parms to be set properly
+	SET NOCOUNT OFF
+	
+	begin try	
+		-- Set Eligibility to Pending if the child is Eligible and has at least one pending reason
+		update  so
+		   set	ELIGIBILITYCODE = 0,   -- Eligibility = Pending
+				CHANGEDBYID = @CHANGEAGENTID,
+				DATECHANGED = @CURRENTDATE
+		  from  dbo.SPONSORSHIPOPPORTUNITY so
+		 where	-- Child is in Selection
+				exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so.ID)
+			
+				-- Child has at least one pending reason
+		   and  exists (select sreason.ID			
+						  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+					inner join dbo.SPONSORSHIPREASON sreason on sreason.ID = so_reason.SPONSORSHIPREASONID
+						 where so_reason.SPONSORSHIPOPPORTUNITYID = so.ID
+						   and sreason.REASONTYPECODE = 0)	 -- REASONTYPECODE = "Child - Mark pending eligibility"
+					   
+				-- Child is Eligible
+		   and	exists (select ID from dbo.SPONSORSHIPOPPORTUNITY where ID=so.ID and ELIGIBILITYCODE=1) -- Eligibility = Eligible
+
+		set @CHANGEDTOPENDING= @@ROWCOUNT
 
 	
-	exec USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, 0, @changeAgentID, @changedToEligible output, @changedToPending output
+		-- Set Eligibility to Eligible if the child is Pending and has at no pending reasons
+		update  so
+		   set	ELIGIBILITYCODE = 1,   -- Eligibility = Eligible
+				CHANGEDBYID = @CHANGEAGENTID,
+				DATECHANGED = @CURRENTDATE
+		  from  dbo.SPONSORSHIPOPPORTUNITY so
+		 where	-- Child is in Selection
+				exists (Select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) where ID = so.ID)
+			
+				-- Child has no pending reasons
+		   and  not exists (select sreason.ID			
+							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+						inner join dbo.SPONSORSHIPREASON sreason on sreason.ID = so_reason.SPONSORSHIPREASONID
+							 where so_reason.SPONSORSHIPOPPORTUNITYID = so.ID
+							   and sreason.REASONTYPECODE = 0)	 -- REASONTYPECODE = "Child - Mark pending eligibility"
+
+				-- Child is Pending						   
+		   and	exists (select ID from dbo.SPONSORSHIPOPPORTUNITY where ID=so.ID and ELIGIBILITYCODE=0) -- Eligibility = Pending
+
+		set @CHANGEDTOELIGIBLE = @@ROWCOUNT
+
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
 	
 	return 0
 end
+
 		]]>
 	</CreateProcedureSQL>
 

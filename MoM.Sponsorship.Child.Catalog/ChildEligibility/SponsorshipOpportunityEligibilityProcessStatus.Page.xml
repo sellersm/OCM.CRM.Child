@@ -134,7 +134,7 @@
 				<Action ID="9116E1B2-AC1C-4D39-8DA5-E9CAEDA38256" Caption="Create job schedule" ImageKey="RES:calendarschedule" ToolTipText="Creates a SQL Server Agent job using an ActiveX script to run the selected business process." >
 					<ShowAddDataForm xmlns="bb_appfx_commontypes" DataFormID="f96dff68-2bf5-46fc-9427-e87d2b3afc29">
 						<ActionContext>
-							<Expression>= IIf(String.IsNullOrEmpty(Page.Fields!PARAMETERSID.ToString()), "", String.Concat("Sponsorship Opportunity Eligibility Process|c0c3662a-2586-4104-a1db-638e9e9950b0|", Page.Fields!PARAMETERSID.ToString())).ToString()</Expression>
+							<Expression>= IIf(String.IsNullOrEmpty(Page.Fields!PARAMETERSID.ToString()), "", String.Concat("Sponsorship Terminate Business Process|69C2165C-F0D6-446D-9B59-5208E27FB71C|", Page.Fields!PARAMETERSID.ToString())).ToString()</Expression> 
 						</ActionContext>
 						<PostActionEvent>
 							<RefreshPage />
