@@ -24,12 +24,7 @@
 
 	<ProcessorComponent AssemblyName="MoM.Sponsorship.Child.Catalog" ClassName="MoM.Sponsorship.Child.Catalog.ChildQuotaWaitingListBusinessProcess" >
 		<common:GrantExecuteList>
-			<common:GrantExecute>dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT</common:GrantExecute>
-			<common:GrantExecute>dbo.USR_USP_CHILDQUOTA_PROCESSWAITINGLIST</common:GrantExecute>
-			<common:GrantExecute>dbo.USR_USP_CHILDREN_REGISTER</common:GrantExecute>
-			<common:GrantExecute>dbo.USR_UFN_CHILDPROJECT_QUOTAOVERRIDE</common:GrantExecute>
-			<common:GrantExecute>dbo.USR_USP_CHILDPROJECT_DETERMINEQUOTAELIGIBILITY</common:GrantExecute>
-			<common:GrantExecute>dbo.USR_USP_CHILDREN_SETINELIGIBLE</common:GrantExecute>
+			<common:GrantExecute>dbo.USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST</common:GrantExecute>			
 		</common:GrantExecuteList>
 		
 	</ProcessorComponent>

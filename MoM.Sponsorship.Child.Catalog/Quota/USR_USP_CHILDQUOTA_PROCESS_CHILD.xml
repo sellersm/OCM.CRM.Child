@@ -19,8 +19,9 @@
 	<CreateProcedureSQL>
 		<![CDATA[
 create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_CHILD(
-	@sponsorshipOpportunityChildID uniqueidentifier
-	@changeAgentID uniqueidentifier		-- Used to specify change agent for ChangedByID and AddedByID fields
+	@sponsorshipOpportunityChildID uniqueidentifier,	-- Child ID,
+	@locked bit,										-- Whether or not the child's project / country was successfully locked
+	@changeAgentID uniqueidentifier						-- Used to specify change agent for ChangedByID and AddedByID fields	
 )
 
 as
@@ -29,101 +30,12 @@ begin
   	if @changeAgentID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
 
-	declare @changeAgentUserName nvarchar(128)
-	select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
-
 	
-	declare @currentDateTime datetime							-- Used to store the current Date / Time
-	set @currentDateTime  = getdate()
-
-
-	-- ** Had to use temp tables instead of just referencing the table vars because of permission issues when called from the business process
-	-- ** The EXECUTE permission was denied on the object 'USR_UDT_CHILDIDLIST'
-
-	declare @lockMaxAttempts tinyint = 5						-- How many times to retry attempting acquiring a lock
-	declare @lockDelayString char(8) = '00:00:02'				-- How long to wait in between lock attempts.  Delay uses a string formatted as time - hh:mm:ss
-	
-
-	declare @childProjectID uniqueidentifier					-- Used to store the child project being processed 
-
-		-- Used to store the children on the waiting list
-	declare @WaitingListChildren USR_UDT_WAITINGLISTCHILDREN
-	insert @WaitingListChildren  
-	select  sl.FIELDOFFICEID,
-			so.ID,
-			so.DATEADDED
-		from dbo.SPONSORSHIPOPPORTUNITY so
-		join dbo.USR_CHILDEXTENSION ce on
-				so.ID = ce.SPONSORSHIPOPPORTUNITYCHILDID
-	    join dbo.SPONSORSHIPREASON sr on
-				so.SPONSORSHIPREASONID = sr.id
-		join dbo.SPONSORSHIPLOCATION sl on
-				so.SPONSORSHIPLOCATIONID = sl.ID 	
-					
-		where so.ID = @sponsorshipOpportunityChildID
-		and ce.REGISTRATIONDATE is null
-	
-	-- ** verify that there is only one row
- 		declare @lockFailed table (quotaType tinyint,  -- 0 = project, 1 = country
-					   objectID uniqueidentifier)
-
-	declare @lockObjectID uniqueidentifier
-	declare @objectLocked bit
-
-	select @childProjectID = childProjectID 
-	 from @WaitingListChildren
-	
-	
-
--- ** get quota type
+	declare @childList USR_UDT_QUOTAPROCESSCHILDREN
+	insert @childList
+	select @sponsorshipOpportunityChildID, @sponsorshipOpportunityChildID, getdate()
 		
-		-- Try to lock the current child project
-		if 0=0 -- ** child project
-			set @lockObjectID = @childProjectID
-		else
-			set @lockObjectID = @childProjectID  -- ** CHANGE TO COUNTRYID
-		
-		set @objectLocked = 0
-		declare @lockAttempts int = 0
-		while @lockAttempts < @lockMaxAttempts and @objectLocked = 0
-		begin
-			set @lockAttempts = @lockAttempts + 1
-			set @objectLocked = 1
-			begin try
-				exec dbo.USR_USP_BATCHLOCKINSERT @lockObjectID, @currentDateTime, @changeAgentUserName
-			end try
-			begin catch
-				set @objectLocked = 0
-				if @lockAttempts < @lockMaxAttempts
-					waitfor delay @lockDelayString
-			end catch	
-		end 
-	
-		if @objectLocked = 0
-		begin
-			-- Child Project could not be locked, so we need to log this in the output parm @lockFailed and the business process exception table
-			if 0=0 -- **child project
-			begin
-				--** Lock failed			
-			end
-			else
-			begin
-				--** Lock failed			
-			end
-		end 
-		else
-		begin
-			if 0=0 -- **child project
-				exec dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT @childProjectID, @WaitingListChildren, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm
-
-			else
-				exec dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT @childProjectID, @WaitingListChildren, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm  -- ** FIX FOR COUNTRY
-
-			-- Unlock project / country
-			exec dbo.USR_USP_DELETEBATCHLOCK @lockObjectID, @changeAgentUserName
-			
-		end
-		
+	exec dbo.USR_USP_CHILDQUOTA_PROCESS_CHILDLIST @childList, @changeAgentID, '', ''
 
 	return 0
 

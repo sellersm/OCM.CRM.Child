@@ -17,7 +17,7 @@
 	-->
 	
 	<common:DependencyList>
-		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll"  CatalogItem="USR_UDT_CHILDIDLIST"/>
+		<common:Dependency CatalogAssembly=""  CatalogItem="USR_UDT_CHILDIDLIST"/>
 		<common:Dependency CatalogAssembly="" CatalogItem="USP_CHANGEAGENT_GETORCREATECHANGEAGENT"/>
 		<common:Dependency CatalogAssembly="" CatalogItem="USP_RAISE_ERROR" />
 	</common:DependencyList>

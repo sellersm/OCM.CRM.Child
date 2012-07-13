@@ -1,0 +1,327 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="131f1693-7d4f-4d5a-a5b4-598afacabbec" 
+	Name="Interaction Add Form 2 - Verification Failed"
+	Description="REPLACE_WITH_DESCRIPTION" 
+	Author="BETHESDA\cmayeda"
+	DataFormInstanceID="4f66a807-2a74-417d-995d-8c49c8521153" 
+	RecordType="REPLACE_WITH_RECORD_TYPE"
+	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER"
+	>
+	
+		<ImpliedSecurityList xmlns="bb_appfx_commontypes">
+			<ImpliedSecurity Type="SimpleDataList" ID="e6029069-05cf-4f62-901e-78c7852a459f" />
+			<ImpliedSecurity Type="SimpleDataList" ID="7fba76fa-b1ea-4c01-b841-edb18f03fe8c" />
+			<ImpliedSecurity Type="SimpleDataList" ID="0b84c2ab-1163-4181-86d9-ec8a96b0b292" />
+		</ImpliedSecurityList>
+		<InstalledProductList xmlns="bb_appfx_commontypes">
+			<InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+			<InstalledProduct ID="42c15648-749e-4859-a56d-3a6474814cc7" />
+			<InstalledProduct ID="f5ac53c4-d0ce-4e20-bca6-aacdfc01b302" />
+		</InstalledProductList>
+		<ResourceFile AssemblyName="Blackbaud.AppFx.Constituent.Catalog.dll" ClassName="Blackbaud.AppFx.Constituent.Catalog.Interaction.Add.2" />
+		<SPDataForm>
+			<LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_INTERACTION_VERIFICATION_FAILED_ADD_PRELOAD_2">
+				<CreateProcedureSQL xmlns="bb_appfx_commontypes">
+
+					create procedure dbo.USR_USP_DATAFORMTEMPLATE_INTERACTION_VERIFICATION_FAILED_ADD_PRELOAD_2
+					(
+					@CONSTITUENTID uniqueidentifier,
+					@CONSTITUENTNAME nvarchar(700) = null output,
+					@CURRENTAPPUSERID uniqueidentifier,
+					@SITEREQUIRED bit = null output,
+					@SITES xml = null output
+					)
+					as
+					begin
+					set nocount on;
+
+					select
+					@CONSTITUENTNAME = NF.NAME
+					from
+					dbo.UFN_CONSTITUENT_DISPLAYNAME(@CONSTITUENTID) NF
+
+
+					set @SITEREQUIRED = dbo.UFN_SITEREQUIREDFORUSER(@CURRENTAPPUSERID)
+
+					declare @USERSITEID uniqueidentifier = dbo.UFN_APPUSER_DEFAULTSITEFORUSER(@CURRENTAPPUSERID)
+					if @USERSITEID is not null
+					begin
+					set @SITES = (
+					select newid() ID, @USERSITEID SITEID
+					for xml raw('ITEM'),type,elements,root('SITES'),BINARY BASE64
+					)
+					end
+					end
+
+				</CreateProcedureSQL>
+			</LoadImplementation>
+			<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_INTERACTION_VERIFICATION_FAILED_ADD">
+				<CreateProcedureSQL xmlns="bb_appfx_commontypes">
+
+					create procedure dbo.USR_USP_DATAFORMTEMPLATE_INTERACTION_VERIFICATION_FAILED_ADD
+					(
+					@ID uniqueidentifier = null output,
+					@CHANGEAGENTID uniqueidentifier = null,
+					@CONSTITUENTID uniqueidentifier,
+					@EXPECTEDDATE datetime = null,
+					@ACTUALDATE datetime = null,
+					@FUNDRAISERID uniqueidentifier = null,
+					@INTERACTIONTYPECODEID uniqueidentifier,
+					@OBJECTIVE nvarchar(100) = '',
+					@STATUSCODE tinyint = 0,
+					@COMMENT nvarchar(max) = '',
+					@EVENTID uniqueidentifier = null,
+					@PARTICIPANTS xml = null,
+					@INTERACTIONCATEGORYID uniqueidentifier = null,
+					@INTERACTIONSUBCATEGORYID uniqueidentifier = null,
+					@SITES xml = null,
+					@SELECTEDCONSTITUENTID uniqueidentifier = null,
+					@EXPECTEDSTARTTIME dbo.UDT_HOURMINUTE = null,
+					@EXPECTEDENDTIME dbo.UDT_HOURMINUTE = null,
+					@ISALLDAYEVENT bit = null,
+					@TIMEZONEENTRYID uniqueidentifier = null,
+					@ACTUALSTARTTIME dbo.UDT_HOURMINUTE = null,
+					@ACTUALENDTIME dbo.UDT_HOURMINUTE = null
+					)
+					as begin
+					set nocount on;
+
+					if @CONSTITUENTID = '3b1ac3d7-10a4-4e8e-a11f-eef07c1a7202'
+					set @CONSTITUENTID = @SELECTEDCONSTITUENTID;
+
+					if @ID is null
+					set @ID = newid();
+
+					if @CHANGEAGENTID is null
+					exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+
+					begin try
+					insert into dbo.INTERACTION (
+					ID,
+					ADDEDBYID,
+					CHANGEDBYID,
+					CONSTITUENTID,
+					EXPECTEDDATE,
+					ACTUALDATE,
+					FUNDRAISERID,
+					INTERACTIONTYPECODEID,
+					OBJECTIVE,
+					STATUSCODE,
+					COMMENT,
+					EVENTID,
+					INTERACTIONSUBCATEGORYID,
+					EXPECTEDSTARTTIME,
+					EXPECTEDENDTIME,
+					ISALLDAYEVENT,
+					TIMEZONEENTRYID,
+					ACTUALSTARTTIME,
+					ACTUALENDTIME
+					) values (
+					@ID,
+					@CHANGEAGENTID,
+					@CHANGEAGENTID,
+					@CONSTITUENTID,
+					@EXPECTEDDATE,
+					@ACTUALDATE,
+					@FUNDRAISERID,
+					@INTERACTIONTYPECODEID,
+					@OBJECTIVE,
+					@STATUSCODE,
+					@COMMENT,
+					@EVENTID,
+					@INTERACTIONSUBCATEGORYID,
+					@EXPECTEDSTARTTIME,
+					@EXPECTEDENDTIME,
+					@ISALLDAYEVENT,
+					@TIMEZONEENTRYID,
+					@ACTUALSTARTTIME,
+					@ACTUALENDTIME
+					);
+
+					declare @CURRENTDATE datetime;
+					set @CURRENTDATE = getdate();
+					exec dbo.USP_CONSTITUENTINTERACTION_GETSITES_ADDFROMXML @ID, @SITES, @CHANGEAGENTID, @CURRENTDATE;
+
+					exec dbo.USP_INTERACTION_PARTICIPANTS_ADDFROMXML @ID, @PARTICIPANTS, @CHANGEAGENTID;
+
+					update	childext
+					   set	CCHVALIDATED = 1,
+							FUNDED = 0,
+							DATECHANGED =  getdate(),
+							CHANGEDBYID = @CHANGEAGENTID
+					  from	dbo.USR_CHILDEXTENSION childext
+					  join	dbo.SPONSORSHIPOPPORTUNITYCHILD sochild on
+								childext.SPONSORSHIPOPPORTUNITYCHILDID = sochild.ID
+					 where sochild.CONSTITUENTID = @CONSTITUENTID
+
+					end try
+					begin catch
+					exec dbo.USP_RAISE_ERROR;
+					return 1;
+					end catch;
+					return 0;
+
+					end;
+
+				</CreateProcedureSQL>
+				<ExpectedDBExceptions xmlns="bb_appfx_commontypes">
+					<Constraints>
+						<Constraint Name="INTERACTION.OBJECTIVE" Field="OBJECTIVE" Type="Required" />
+						<Constraint Name="INTERACTION.EXPECTEDDATE" Field="EXPECTEDDATE" Type="Required" />
+						<Constraint Name="FK_INTERACTION_INTERACTIONTYPECODEID" Field="INTERACTIONTYPECODEID" Type="ForeignKey" />
+						<Constraint Name="FK_INTERACTION_FUNDRAISERID" Field="FUNDRAISERID" Type="ForeignKey" />
+						<Constraint Name="CK_INTERACTION_STATUSCODE" Field="STATUSCODE" Type="Format" />
+						<Constraint Name="CK_INTERACTION_ISPLANNEDONLYWHENSTEP" Field="STATUSCODE" Type="Format">
+							<CustomErrorMsg>Status code 'Planned' is reserved for use on step interactions.</CustomErrorMsg>
+						</Constraint>
+						<Constraint Name="CK_INTERACTION_INTERACTIONTYPECODEPRESENTWHENNOTSTEP" Field="INTERACTIONTYPECODEID" Type="Required" />
+						<Constraint Name="FK_INTERACTION_EVENTID" Field="EVENTID" Type="ForeignKey" />
+						<Constraint Name="UIX_INTERACTIONPARTICIPANT_INTERACTIONID_CONSTITUENTID" Field="PARTICIPANTS" Type="Unique">
+							<CustomErrorMsg>The participant can only be added to an interaction once.</CustomErrorMsg>
+						</Constraint>
+						<Constraint Name="FK_INTERACTIONPARTICIPANT_CONSTITUENTID" Field="PARTICIPANTS" Type="ForeignKey" />
+						<Constraint Name="FK_INTERACTIONPARTICIPANT_INTERACTIONID" Field="PARTICIPANTS" Type="ForeignKey" />
+						<Constraint Name="INTERACTIONPARTICIPANT.CONSTITUENTID" Field="PARTICIPANTS" Type="Required" />
+						<Constraint Name="UIX_INTERACTIONSITE_INTERACTIONID_SITEID" Field="SITES" Type="Unique">
+							<CustomErrorMsg>A site cannot be assigned to an interaction more than once.</CustomErrorMsg>
+						</Constraint>
+						<Constraint Name="CK_INTERACTION_VALIDEXPECTEDTIMERANGE" Field="EXPECTEDSTARTTIME" Type="Format">
+							<CustomErrorMsg>The expected start time must be before or the same as the expected end time.</CustomErrorMsg>
+						</Constraint>
+						<Constraint Name="CK_INTERACTION_VALIDACTUALTIMERANGE" Field="ACTUALSTARTTIME" Type="Format">
+							<CustomErrorMsg>The actual start time must be before or the same as the actual end time.</CustomErrorMsg>
+						</Constraint>
+					</Constraints>
+				</ExpectedDBExceptions>
+			</SaveImplementation>
+		</SPDataForm>
+		<Context ContextRecordType="Constituent" RecordIDParameter="CONSTITUENTID" />
+		<FormMetaData xmlns="bb_appfx_commontypes">
+			<FormFields>
+				<FormField FieldID="INTERACTIONTYPECODEID" DataType="Guid" Required="true" Caption="Contact method" CaptionResourceKey="$$contact_method">
+					<CodeTable CodeTableName="INTERACTIONTYPECODE" />
+				</FormField>
+				<FormField FieldID="OBJECTIVE" Required="true" MaxLength="100" Caption="Summary" DefaultValueText="" CaptionResourceKey="$$summary" />
+				<FormField FieldID="FUNDRAISERID" DataType="Guid" Caption="Owner" CaptionResourceKey="$$owner">
+					<SearchList SearchListID="23c5c603-d7d8-4106-aecc-65392b563887" EnableQuickFind="true">
+						<FormFieldOverrides>
+							<FormFieldOverride FieldID="INCLUDEORGANIZATIONS" Caption="Organizations" ReadOnly="true" DefaultValueText="False" />
+							<FormFieldOverride FieldID="EXCLUDEHOUSEHOLDS" Caption="EXCLUDEHOUSEHOLDS" Hidden="true" DefaultValueText="True" />
+							<FormFieldOverride FieldID="INCLUDENONCONSTITUENTRECORDS" DefaultValueText="true" />
+							<FormFieldOverride FieldID="FORMHEADER" DefaultValueText="Record Search" />
+						</FormFieldOverrides>
+					</SearchList>
+				</FormField>
+				<FormField FieldID="EXPECTEDDATE" DataType="Date" Required="true" Caption="Expected date" CaptionResourceKey="$$expected_date" />
+				<FormField FieldID="ACTUALDATE" DataType="Date" Caption="Actual date" CaptionResourceKey="$$actual_date" />
+				<FormField FieldID="STATUSCODE" DataType="TinyInt" Required="true" Caption="Status" DefaultValueText="0" CaptionResourceKey="$$status">
+					<ValueList>
+						<Items>
+							<Item>
+								<Value>1</Value>
+								<Label>Pending</Label>
+							</Item>
+							<Item>
+								<Value>2</Value>
+								<Label>Completed</Label>
+							</Item>
+							<Item>
+								<Value>4</Value>
+								<Label>Canceled</Label>
+							</Item>
+							<Item>
+								<Value>5</Value>
+								<Label>Declined</Label>
+							</Item>
+						</Items>
+					</ValueList>
+				</FormField>
+				<FormField FieldID="COMMENT" Caption="Comment" DefaultValueText="" CaptionResourceKey="$$comment" />
+				<FormField FieldID="EVENTID" DataType="Guid" Caption="Event" CaptionResourceKey="$$event">
+					<SearchList SearchListID="21452a39-7c7d-4334-8b89-6c0ea619acec" EnableQuickFind="true" />
+				</FormField>
+				<FormField FieldID="CONSTITUENTNAME" ReadOnly="true" MaxLength="700" Caption="Constituent name" CaptionResourceKey="$$constituent_name" />
+				<FormField FieldID="PARTICIPANTS" DataType="XML" Caption="Participants" CaptionResourceKey="$$participants">
+					<Collection>
+						<Fields>
+							<FormField FieldID="ID" DataType="Guid" Hidden="true" Caption="ID" />
+							<FormField FieldID="CONSTITUENTID" DataType="Guid" Caption="Participant" CaptionResourceKey="$$participant">
+								<SimpleDataList SimpleDataListID="eec723dc-3ed3-425b-9ef2-8ba1ccc190d1">
+									<Params>
+										<Param ID="CONSTITUENTID">
+											<Value>PARENT.FIELDS!CONTEXTID</Value>
+										</Param>
+									</Params>
+									<SearchList SearchListID="23c5c603-d7d8-4106-aecc-65392b563887" EnableQuickFind="true">
+										<FormFieldOverrides>
+											<FormFieldOverride FieldID="INCLUDENONCONSTITUENTRECORDS" DefaultValueText="true" />
+											<FormFieldOverride FieldID="FORMHEADER" DefaultValueText="Record Search" />
+										</FormFieldOverrides>
+									</SearchList>
+								</SimpleDataList>
+							</FormField>
+						</Fields>
+					</Collection>
+				</FormField>
+				<FormField FieldID="INTERACTIONCATEGORYID" DataType="Guid" Caption="Category" CaptionResourceKey="$$category">
+					<SimpleDataList SimpleDataListID="cbba7545-b66f-44ac-aa24-d9c2f8cbc4ec" />
+				</FormField>
+				<FormField FieldID="INTERACTIONSUBCATEGORYID" DataType="Guid" Caption="Subcategory" CaptionResourceKey="$$subcategory">
+					<SimpleDataList SimpleDataListID="0eacc39b-07d1-4641-8774-e319559535a7">
+						<Params>
+							<Param ID="INTERACTIONCATEGORYID">
+								<Value>Fields!INTERACTIONCATEGORYID</Value>
+							</Param>
+						</Params>
+					</SimpleDataList>
+				</FormField>
+				<FormField FieldID="SITES" DataType="XML" Caption="Sites" CaptionResourceKey="$$sites">
+					<Collection>
+						<Fields>
+							<FormField FieldID="ID" DataType="Guid" Hidden="true" />
+							<FormField FieldID="SITEID" DataType="Guid" Required="true" Caption="Site" CaptionResourceKey="$$site">
+								<SimpleDataList SimpleDataListID="c8e8d3ba-2725-421f-a796-e2fcc1202780">
+									<SearchList SearchListID="27a63ede-a0d4-4074-a85a-196df4adc0dd" />
+								</SimpleDataList>
+							</FormField>
+						</Fields>
+					</Collection>
+					<InstalledProductList>
+						<InstalledProduct ID="133f9bca-00f1-4007-9792-586b931340c6" />
+					</InstalledProductList>
+				</FormField>
+				<FormField FieldID="SITEREQUIRED" DataType="Boolean" ReadOnly="true" Caption="Site required" CaptionResourceKey="$$site_required" />
+				<FormField FieldID="SELECTEDCONSTITUENTID" DataType="Guid" Caption="Constituent" CaptionResourceKey="$$constituent">
+					<SearchList SearchListID="23c5c603-d7d8-4106-aecc-65392b563887" EnableQuickFind="true" />
+				</FormField>
+				<FormField FieldID="EXPECTEDSTARTTIME" DataType="HourMinute" Caption="Expected start time" CaptionResourceKey="$$expected_start_time" />
+				<FormField FieldID="EXPECTEDENDTIME" DataType="HourMinute" Caption="Expected end time" CaptionResourceKey="$$expected_end_time" />
+				<FormField FieldID="ISALLDAYEVENT" DataType="Boolean" />
+				<FormField FieldID="TIMEZONEENTRYID" DataType="Guid" Caption="Time zone" CaptionResourceKey="$$time_zone">
+					<SimpleDataList SimpleDataListID="7fba76fa-b1ea-4c01-b841-edb18f03fe8c" />
+				</FormField>
+				<FormField FieldID="ACTUALSTARTTIME" DataType="HourMinute" Caption="Actual start time" CaptionResourceKey="$$actual_start_time" />
+				<FormField FieldID="ACTUALENDTIME" DataType="HourMinute" Caption="Actual end time" CaptionResourceKey="$$actual_end_time" />
+			</FormFields>
+			<WebUIComponent>
+				<UIModel AssemblyName="Blackbaud.AppFx.Constituent.UIModel.dll" ClassName="Blackbaud.AppFx.Constituent.UIModel.Interaction.InteractionAddForm2UIModel" />
+				<WebUI>
+					<ExternalResource Url="browser/htmlforms/constituent/interaction/InteractionAddForm2.html" />
+				</WebUI>
+			</WebUIComponent>
+			<FieldGroups>
+				<FieldGroup ID="COMMENTGROUP" Caption="Comments" CaptionResourceKey="$$comments">
+					<Fields>
+						<Field>COMMENT</Field>
+					</Fields>
+				</FieldGroup>
+				<FieldGroup ID="PARTICIPANTSGROUP" Caption="Participants" CaptionResourceKey="$$participants">
+					<Fields>
+						<Field>PARTICIPANTS</Field>
+					</Fields>
+				</FieldGroup>
+			</FieldGroups>
+		</FormMetaData>
+	</AddDataFormTemplateSpec>

@@ -1,0 +1,47 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="52a8adec-c332-4f8f-9865-4e3d738f8193"
+	Name="USR_USP_CHILD_SETPENDINGREASON"
+	Description="Add a pending sponsorship reason to a child"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILD_SETPENDINGREASON"
+	>
+
+	<!-- 
+	Remarks:    It will only add the pending reason if it doesn't already exist on a child
+				Either the guid for the sponsorship reason can be passed in @sponsorshipReasonID or the text of the sponsorship reason in @sponsorshipReasonText.
+				If both are provided the @sponsorshipReasonID parm is used.
+				
+				This calls creates a child list of the one child and calls USR_USP_CHILDREN_SETPENDINGREASON to do that actual
+
+	History:
+	Date            Modified By     Comments
+	12-Jul-2012		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+
+create procedure dbo.USR_USP_CHILD_SETPENDINGREASON (
+	@sponsorshipChildID uniqueidentifier = null,		-- The child to add a pending reason
+	@sponsorshipReasonID uniqueidentifier = null,		-- Used to specify the sponsorship reason to add by sponsorshipreason id guid. If guid is not null, guid is used instead of text
+	@sponsorshipReasonText nvarchar(100) = '',			-- Used to specify the sponsorship reason to add by case insensitive string - case is ignored when finding the sponsorship reason
+	@changeAgentID uniqueidentifier = null,				-- Used to specify change agent for ChangedByID and AddedByID fields
+	@insertRowcount int = 0 output						-- Output parm that specifies how many pending reasons were added
+	)
+as
+begin
+	declare @childIDList USR_UDT_CHILDIDLIST
+	insert @childIDList 
+	select @sponsorshipChildID
+	
+	exec dbo.USR_USP_CHILDREN_SETPENDINGREASON @childIDList, @sponsorshipReasonID, @sponsorshipReasonText, @changeAgentID, @insertRowcount output	
+	
+	return 0
+	end
+
+	]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

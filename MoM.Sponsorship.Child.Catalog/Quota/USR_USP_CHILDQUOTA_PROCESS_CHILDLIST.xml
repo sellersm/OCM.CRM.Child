@@ -2,10 +2,10 @@
 	xmlns="bb_appfx_sqlstoredprocedure"
 	xmlns:common="bb_appfx_commontypes" 
 	ID="4f2f1a96-ab58-47fd-95ec-54752f26a21e"
-	Name="USR_USP_CHILDQUOTA_PROCESSWAITINGLIST"
-	Description="This is used to in the business process to check waiting list children"
+	Name="USR_USP_CHILDQUOTA_PROCESS_CHILDLIST"
+	Description="This is used to in the business process to check the children passed in @childList"
 	Author="Cary Mayeda"
-	SPName="USR_USP_CHILDQUOTA_PROCESSWAITINGLIST"
+	SPName="USR_USP_CHILDQUOTA_PROCESS_CHILDLIST"
 	>
 
 	<!-- 
@@ -18,12 +18,13 @@
 
 	<CreateProcedureSQL>
 		<![CDATA[
-create procedure dbo.USR_USP_CHILDQUOTA_PROCESSWAITINGLIST (
-	@changeAgentID uniqueidentifier,		-- Used to specify change agent for ChangedByID and AddedByID fields
-	@successTableName nvarchar(128),        -- Table Name to insert children successfuly registered, pass empty string if no table needs to be populated
-	@exceptionTableName nvarchar(128),		-- Table Name to insert exceptions, pass empty string if no table needs to be populated
-	@successCount int = 0 output,			-- Number of children successfully registered
-	@exceptionCount int = 0 output			-- Number of exceptions - this isn't always the number children, because only one row is entered for a lock failure
+create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_CHILDLIST (
+	@childList USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- Used to specify the children to process
+	@changeAgentID uniqueidentifier,					-- Used to specify change agent for ChangedByID and AddedByID fields
+	@successTableName nvarchar(128) = '',					-- Table Name to insert children successfuly registered, pass empty string if no table needs to be populated
+	@exceptionTableName nvarchar(128) = '',					-- Table Name to insert exceptions, pass empty string if no table needs to be populated
+	@successCount int = 0 output,						-- Number of children successfully registered
+	@exceptionCount int = 0 output						-- Number of exceptions - this isn't always the number children, because only one row is entered for a lock failure
 )
 
 as
@@ -39,6 +40,8 @@ begin
 	declare @currentDateTime datetime							-- Used to store the current Date / Time
 	set @currentDateTime  = getdate()
 
+	declare @quotaType_Project as tinyint = 0					-- Code value for Project Quota 
+	declare @quotaType_Country as tinyint = 1					-- Code value for Country Quota 
 
 	-- ** Had to use temp tables instead of just referencing the table vars because of permission issues when called from the business process
 	-- ** The EXECUTE permission was denied on the object 'USR_UDT_CHILDIDLIST'
@@ -49,14 +52,12 @@ begin
 		set @insertSuccessSQL  = 'insert ' + @successTableName + ' select @projectID, @countryID, SPONSORSHIPOPPORTUNITYCHILDID from #registeredChildren' -- @childList'
 	declare @insertSuccessSQLParms nvarchar(255) = '@projectID uniqueidentifier, @countryID uniqueidentifier'--, @childList dbo.USR_UDT_CHILDIDLIST readonly'
 
--- Used to insert exceptions into the Exception Table
+	-- Used to insert exceptions into the Exception Table
 	declare @insertExceptionsSQL nvarchar(max) = ''
 	if @exceptionTableName <> '' 
 		set	@insertExceptionsSQL = 'insert ' + @exceptionTableName + ' select @projectID, @countryID, SPONSORSHIPOPPORTUNITYCHILDID, SPONSORSHIPREASONID from #ineligibleChildren'--@childList'
 	declare @insertExceptionsSQLParm nvarchar(255) = '@projectID uniqueidentifier, @countryID uniqueidentifier'--, @childList dbo.USR_UDT_CHILDIDLISTWITHREASON readonly'
-	
-	
-	
+		
 	-- Used to get the count of successfully registered children
 	declare @countSuccessSQL nvarchar(max) = 'select @successCount=count(*) from ' + @successTableName 
 	declare @countSuccessSQLParms nvarchar(255) = '@successCount int output'
@@ -75,43 +76,43 @@ begin
 	
 
 	declare @childProjectID uniqueidentifier					-- Used to store the child project being processed 
-
-		-- Used to store the children on the waiting list
-	declare @WaitingListChildren USR_UDT_WAITINGLISTCHILDREN
-	insert @WaitingListChildren  
-	select childProjectID,
-		   sponsorshipOpportunityChildID,
-		   dateAdded 
-	  from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLIST ()
-
- 		declare @lockFailed table (quotaType tinyint,  -- 0 = project, 1 = country
-					   objectID uniqueidentifier)
+	declare @countryID uniqueidentifier							-- Used to store the country being processed if it is country quota
+	
+	declare @quotaType tinyint
+	
+ 	declare @lockFailed table (quotaType tinyint,  -- 0 = project, 1 = country
+							   objectID uniqueidentifier)
 
 	declare @lockObjectID uniqueidentifier
 	declare @objectLocked bit
 	
-	-- Cursor of projects included in the waiting list
-	declare waitingListCursor cursor for
-	select distinct childProjectID from @WaitingListChildren
+	-- Cursor of projects included in the child list
+	declare childListCursor cursor for
+	select distinct childProjectID from @childList
 
-	open waitingListCursor 
-	fetch next from waitingListCursor 
+	open childListCursor 
+	fetch next from childListCursor 
 		into @childProjectID
 		
-	-- Process each project on the waiting list
+	-- Process each project on the child list
 	while @@FETCH_STATUS = 0
 	begin
-		-- ** get quota type
+
+		set @quotaType = dbo.USR_UFN_CHILDPROJECT_QUOTATYPE (@childProjectID)
 		
 		-- Try to lock the current child project
-		if 0=0 -- ** child project
+		if @quotaType = @quotaType_Project
 			set @lockObjectID = @childProjectID
 		else
-			set @lockObjectID = @childProjectID  -- ** CHANGE TO COUNTRYID
+		begin
+			set @countryID = dbo.USR_UFN_CHILDPROJECT_GETCOUNTRYID (@childProjectID)
+			-- ******** CHECK FOR NULL
+			set @lockObjectID = @countryID
+		end
 		
 		set @objectLocked = 0
 		declare @lockAttempts int = 0
-		while @lockAttempts < @lockMaxAttempts and @objectLocked = 0
+		while @lockAttempts < @lockMaxAttempts and @objectLocked = 0 
 		begin
 			set @lockAttempts = @lockAttempts + 1
 			set @objectLocked = 1
@@ -128,10 +129,10 @@ begin
 		if @objectLocked = 0
 		begin
 			-- Child Project could not be locked, so we need to log this in the output parm @lockFailed and the business process exception table
-			if 0=0 -- **child project
+			if @quotaType = @quotaType_Project
 			begin
 				insert @lockFailed
-				select 0, @childProjectID  -- 0 = Project Quota
+				select @quotaType_Project, @childProjectID 
 			
 				if @exceptionTableName <> ''	-- If an exception table was specific, insert a row for the lock failure
 					exec sp_executesql @insertSingleExceptionSQL, @insertSingleExceptionSQLParm, @projectID=@childProjectID,@countryID=NULL,@childID=NULL, @exceptionReason='Child Project could not be locked'
@@ -139,32 +140,33 @@ begin
 			else
 			begin
 				insert @lockFailed
-				select 1, @childProjectID  -- 0 = Country Quota  ** CHANGE TO COUNTRY
+				select @quotaType_Country, @countryID  
+				
 				if @exceptionTableName <> ''	-- If an exception table was specific, insert a row for the lock failure
-					exec sp_executesql @insertSingleExceptionSQL, @insertSingleExceptionSQLParm, @projectID=@childProjectID,@countryID=NULL,@childID=NULL, @exceptionReason='Country could not be locked' --** CHANGE TO COUNTRY
+					exec sp_executesql @insertSingleExceptionSQL, @insertSingleExceptionSQLParm, @projectID=@childProjectID,@countryID=@countryID,@childID=NULL, @exceptionReason='Country could not be locked' 
 			end
 		end 
 		else
 		begin
-			if 0=0 -- **child project
-				exec dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT @childProjectID, @WaitingListChildren, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm
+			if @quotaType = @quotaType_Project
+				exec dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT @childProjectID, @childList, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm
 
 			else
-				exec dbo.USR_USP_CHILDQUOTA_PROCESS_COUNTRY @childProjectID, @WaitingListChildren, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm  
+				exec dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT_WITHCOUNTRYQUOTA @childProjectID, @countryID, @childList, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm  
 
 			-- Unlock project / country
 			exec dbo.USR_USP_DELETEBATCHLOCK @lockObjectID, @changeAgentUserName
 			
 		end
 		
-		fetch next from waitingListCursor 
+		fetch next from childListCursor 
 		into @childProjectID
 
 	end
 	
 
-	close waitingListCursor
-	deallocate waitingListCursor
+	close childListCursor
+	deallocate childListCursor
 
 
 	if @successTableName <> ''

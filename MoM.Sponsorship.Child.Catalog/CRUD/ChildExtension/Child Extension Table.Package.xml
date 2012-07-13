@@ -4,9 +4,18 @@
     Name="Child Customizations Package"
     Description="Package containing specs for all of the Child Customizations."
     Author="Memphis Sellers"
-    xmlns="bb_appfx_package"
-    >
-  <c:DependencyList>
+    xmlns="bb_appfx_package" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	11-Jul-2012		CMayeda			Added "Other Tabs" data lists
+
+-->
+
+	<c:DependencyList>
     <!-- Codetables -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.BirthdayAccuracy.CodeTable.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CareGiverReason.CodeTable.xml" />

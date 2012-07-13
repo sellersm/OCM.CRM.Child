@@ -9,6 +9,15 @@
 	RecordType="Sponsorship Opportunity"
 	common:SecurityUIFolder="Sponsorship\Opportunity\Child\Child Extension"
 	>
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	02-Jul-2012		CMayeda			Added CCHVALIDATED 
+
+	-->
 
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USR_USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSIONEXPRESSION">
@@ -17,21 +26,24 @@
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSIONEXPRESSION
 (
 	@ID uniqueidentifier,
-	@DATALOADED bit = 0 output,         -- used by the framework, see below
-  @CCHEXISTS bit = null output           -- used to determine if a record exists or not
+	@DATALOADED bit = 0 output,				-- used by the framework, see below
+	@CCHEXISTS bit = null output,			-- used to determine if a record exists or not
+	@CCHVALIDATED bit = null output			-- used to determine if the CCH has been validated for a new child
 )
 as
 	set nocount on;
 	
 	-- be sure to set this, in case the select returns no rows
 	set @DATALOADED = 1;     -- force this to 1 or CRM won't display the child page!
-  set @CCHEXISTS = 0;
+	set @CCHEXISTS = 0;
 	
 	-- populate the output parameters, which correspond to fields on the form.  Note that
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
 	-- will display a "no data loaded" message.
 	select 
-         @CCHEXISTS = 1
+		@CCHEXISTS = 1,
+		@CCHVALIDATED = CCHVALIDATED
+			 
 	from dbo.USR_CHILDEXTENSION
 	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	
@@ -45,6 +57,7 @@ as
 	<common:FormMetaData FixedDialog="true">
 		<common:FormFields>
 			<common:FormField FieldID="CCHEXISTS" Caption="ChildExtension Record Found" DataType="Boolean" />
+			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" />
 		</common:FormFields>
 	</common:FormMetaData>
 

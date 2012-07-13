@@ -1,0 +1,26 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="81ed965d-c605-401b-9baa-05c796beaea0"
+	Name="USR_UFN_CHILDQUOTA_LOCKFAILED"
+	Description="REPLACE_WITH_DESCRIPTION"
+	Author="BETHESDA\cmayeda"
+	DBFunctionName="USR_UFN_CHILDQUOTA_LOCKFAILED"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILDQUOTA_LOCKFAILED (
+	@sponsorshipOpportunityChildID uniqueidentifier,
+	@lockTable USR_UDT_LOCKFAILURE readonly
+)
+returns bit
+with execute as caller
+as begin
+	-- do work here and return a value
+	return 1
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

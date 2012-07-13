@@ -775,7 +775,28 @@
             </PostActionEvent>
           </ShowAddDataForm>
         </Action>
-      </Actions>
+		<Action ID="05D8F10A-AF50-486A-BC5F-0896C9E94F53" Caption="CCH - Verified" ImageKey="RES:RecordOperationSpec" Visible="=(not Page.Fields!CCHVALIDATED) AndAlso Page.Fields!CCHEXISTS">
+			<ExecuteRecordOperation RecordOperationID="193bf623-e113-40cb-b66f-ceb346b7b60f" xmlns="bb_appfx_commontypes">
+				<ActionContext>
+					<PageContextID />
+				</ActionContext>
+				<PostActionEvent>
+					<RefreshPage />
+				</PostActionEvent>
+			</ExecuteRecordOperation>
+		</Action>
+		<Action ID="A56EA60A-3922-480D-98AA-01484E9AFE22" Caption="CCH - Verification Failed" ImageKey="RES:RecordOperationSpec" Visible="=(not Page.Fields!CCHVALIDATED) AndAlso Page.Fields!CCHEXISTS">
+			<ExecuteRecordOperation RecordOperationID="193bf623-e113-40cb-b66f-ceb346b7b60f" xmlns="bb_appfx_commontypes">
+				<ActionContext>
+					<PageContextID />
+				</ActionContext>
+				<PostActionEvent>
+					<RefreshPage />
+				</PostActionEvent>
+			</ExecuteRecordOperation>
+		</Action>
+
+	  </Actions>
     </PageActionGroup>
     <PageActionGroup ID="87a91e84-628d-4733-8d9d-18456f014674" Caption="Go to" CaptionResourceKey="$$go_to">
       <Actions>
@@ -801,7 +822,9 @@
             </ActionContext>
           </ShowPage>
         </Action>
-      </Actions>
+	
+	  </Actions>
+		
     </PageActionGroup>
     <PageActionGroup ID="1382d02d-f410-42d5-91dc-0a417e72ace0" Caption="CCH">
       <Actions>

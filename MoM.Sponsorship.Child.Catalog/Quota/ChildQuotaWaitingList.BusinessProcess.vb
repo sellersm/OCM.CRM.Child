@@ -68,7 +68,7 @@ Public NotInheritable Class ChildQuotaWaitingListBusinessProcess
                         .Transaction = Transaction
 
                         .CommandType = CommandType.StoredProcedure
-                        .CommandText = "dbo.USR_USP_CHILDQUOTA_PROCESSWAITINGLIST"
+                        .CommandText = "dbo.USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST"
                         .CommandTimeout = Me.ProcessCommandTimeout
                         .Parameters.AddWithValue("changeAgentID", DBNull.Value)             ' The sproc will get the Change Agent ID if we pass in null
                         .Parameters.AddWithValue("successTableName", outputTableName)       ' The table to insert the kids registered

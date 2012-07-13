@@ -1,0 +1,45 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="193bf623-e113-40cb-b66f-ceb346b7b60f" 
+	Name="CCH Verified" 
+	Description="This updates the status of a CCH to verified"
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship opportunity child"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USP_CHILDEXTENSION_CCHVERIFIED_UPDATE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_CHILDEXTENSION_CCHVERIFIED_UPDATE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+		
+	update	dbo.USR_CHILDEXTENSION 
+	   set	CCHVALIDATED = 1,
+			DATECHANGED =  getdate(),
+			CHANGEDBYID = @CHANGEAGENTID
+	 where	SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Click Yes to verify the CCH form." />
+	</Prompt>
+
+</RecordOperationSpec>
