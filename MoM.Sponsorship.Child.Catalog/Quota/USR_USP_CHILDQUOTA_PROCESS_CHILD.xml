@@ -31,7 +31,7 @@ begin
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
 
 	
-	declare @childList USR_UDT_QUOTAPROCESSCHILDREN
+	declare @childList dbo.USR_UDT_QUOTAPROCESSCHILDREN
 	insert @childList
 	select @sponsorshipOpportunityChildID, @sponsorshipOpportunityChildID, getdate()
 		

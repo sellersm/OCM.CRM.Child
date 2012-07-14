@@ -12,7 +12,7 @@
 		<![CDATA[
 create function dbo.USR_UFN_CHILDQUOTA_LOCKFAILED (
 	@sponsorshipOpportunityChildID uniqueidentifier,
-	@lockTable USR_UDT_LOCKFAILURE readonly
+	@lockTable dbo.USR_UDT_LOCKFAILURE readonly
 )
 returns bit
 with execute as caller

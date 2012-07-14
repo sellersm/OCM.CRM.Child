@@ -34,7 +34,7 @@ begin
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
 
 	-- Insert the children in the selection set to the child list table to pass to USR_USP_CHILDREN_SETELIGIBLEORPENDING
-	declare @childList USR_UDT_CHILDIDLIST
+	declare @childList dbo.USR_UDT_CHILDIDLIST
 	insert @childList 
 	select ID from UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) 
 

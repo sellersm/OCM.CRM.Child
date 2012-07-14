@@ -19,12 +19,12 @@
 	<CreateProcedureSQL>
 		<![CDATA[
 create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_CHILDLIST (
-	@childList USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- Used to specify the children to process
-	@changeAgentID uniqueidentifier,					-- Used to specify change agent for ChangedByID and AddedByID fields
+	@childList dbo.USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- Used to specify the children to process
+	@changeAgentID uniqueidentifier,						-- Used to specify change agent for ChangedByID and AddedByID fields
 	@successTableName nvarchar(128) = '',					-- Table Name to insert children successfuly registered, pass empty string if no table needs to be populated
 	@exceptionTableName nvarchar(128) = '',					-- Table Name to insert exceptions, pass empty string if no table needs to be populated
-	@successCount int = 0 output,						-- Number of children successfully registered
-	@exceptionCount int = 0 output						-- Number of exceptions - this isn't always the number children, because only one row is entered for a lock failure
+	@successCount int = 0 output,							-- Number of children successfully registered
+	@exceptionCount int = 0 output							-- Number of exceptions - this isn't always the number children, because only one row is entered for a lock failure
 )
 
 as

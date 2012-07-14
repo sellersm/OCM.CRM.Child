@@ -26,9 +26,9 @@
 		<![CDATA[
 		
 create procedure dbo.USR_USP_CHILDREN_SETINELIGIBLE (	
-	@childIDList USR_UDT_CHILDIDLIST readonly,		-- The children to be set ineligible
-	@sponsorshipReasonID uniqueidentifier,		-- Used to specify the sponsorship reason to add
-	@changeAgentID uniqueidentifier)			-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,		-- The children to be set ineligible
+	@sponsorshipReasonID uniqueidentifier,				-- Used to specify the sponsorship reason to add
+	@changeAgentID uniqueidentifier)					-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
 	
 as
 begin	

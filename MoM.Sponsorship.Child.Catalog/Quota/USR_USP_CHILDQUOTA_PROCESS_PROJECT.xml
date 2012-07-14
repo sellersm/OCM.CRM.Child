@@ -25,13 +25,13 @@
 		<CreateProcedureSQL>
 		<![CDATA[
 create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT (
-	@childProjectID uniqueidentifier,					-- The child project to process
-	@childList USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- The list of children to process, all of the children (not necessarily just in a single project, therefore the queries need to include @childProjectID in the where clause
-	@changeAgentID uniqueidentifier,					-- Used to specify change agent for ChangedByID and AddedByID fields
-	@insertSuccessSQL nvarchar(max),					-- Dynamic SQL string to run to log the children successful registered
-	@insertSuccessSQLParms nvarchar(255),				-- Parameters for dynamic SQL string to run to log the children successful registered
-	@insertExceptionsSQL nvarchar(max),					-- Dynamic SQL string to run to log the children put on the waiting list or that had an exception
-	@insertExceptionsSQLParm nvarchar(255)				-- Parameters for dynamic SQL string to run to log the children put on the waiting list or that had an exception
+	@childProjectID uniqueidentifier,						-- The child project to process
+	@childList dbo.USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- The list of children to process, all of the children (not necessarily just in a single project, therefore the queries need to include @childProjectID in the where clause
+	@changeAgentID uniqueidentifier,						-- Used to specify change agent for ChangedByID and AddedByID fields
+	@insertSuccessSQL nvarchar(max),						-- Dynamic SQL string to run to log the children successful registered
+	@insertSuccessSQLParms nvarchar(255),					-- Parameters for dynamic SQL string to run to log the children successful registered
+	@insertExceptionsSQL nvarchar(max),						-- Dynamic SQL string to run to log the children put on the waiting list or that had an exception
+	@insertExceptionsSQLParm nvarchar(255)					-- Parameters for dynamic SQL string to run to log the children put on the waiting list or that had an exception
 )
 as
 begin
@@ -76,12 +76,13 @@ begin
 		begin
 			-- Quota Override trigger is Yes, so add all waiting list kids
 			insert @ChildListToRegister
-			select sponsorshipOpportunityChildID
+			select SPONSORSHIPOPPORTUNITYCHILDID
 				from @childList  
 				where childProjectID = @childProjectID 
 
 			exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
-				
+			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
+
 		end
 			
 		else
@@ -94,12 +95,12 @@ begin
 				-- Project cannot take new kids, so all the kids need to be added to the waiting list
 								
 				insert @ChildListIneligible 
-				select sponsorshipOpportunityChildID from @childList where childProjectID = @childProjectID
+				select SPONSORSHIPOPPORTUNITYCHILDID from @childList where childProjectID = @childProjectID
 				
 				exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @ChildListIneligible, @childProjectIneligibleReasonID, @changeAgentID
 					
 				insert @ChildListIneligibleWithReason
-				select sponsorshipOpportunityChildID, @childProjectIneligibleReasonID from @ChildListIneligible
+				select SPONSORSHIPOPPORTUNITYCHILDID, @childProjectIneligibleReasonID from @ChildListIneligible
 			end
 			else
 			begin
@@ -109,15 +110,16 @@ begin
 				if @quotaRoom > 0 
 				begin
 					insert @ChildListToRegister
-					select top (@quotaRoom) sponsorshipOpportunityChildID 
+					select top (@quotaRoom) SPONSORSHIPOPPORTUNITYCHILDID 
 						from @childList  
 						where childProjectID = @childProjectID 
 		  				order by dateAdded 
 
-					exec USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
-
+					exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
+					exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
+	
 					insert @ChildListIneligible 
-					select sponsorshipOpportunityChildID 
+					select SPONSORSHIPOPPORTUNITYCHILDID 
 						from @childList  wlc
 						where wlc.childProjectID = @childProjectID 
 						and not exists (select SPONSORSHIPOPPORTUNITYCHILDID from @ChildListToRegister where SPONSORSHIPOPPORTUNITYCHILDID = wlc.sponsorshipOpportunityChildID)
@@ -125,21 +127,19 @@ begin
 					exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @ChildListIneligible, @waitingListMaximumQuotaReachedID, @changeAgentID				
 
 					insert @ChildListIneligibleWithReason
-					select sponsorshipOpportunityChildID, @waitingListMaximumQuotaReachedID from @ChildListIneligible
+					select SPONSORSHIPOPPORTUNITYCHILDID, @waitingListMaximumQuotaReachedID from @ChildListIneligible
 				   
 				end
 				
 				else
 				begin
-					--print 'No room for kids'
-					--select sponsorshipOpportunityChildID from @childList where childProjectID = @childProjectID
 					insert @ChildListIneligible 
-					select sponsorshipOpportunityChildID from @childList where childProjectID = @childProjectID
+					select SPONSORSHIPOPPORTUNITYCHILDID from @childList where childProjectID = @childProjectID
 							
 					exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @ChildListIneligible, @waitingListMaximumQuotaReachedID, @changeAgentID				
 	
 					insert @ChildListIneligibleWithReason
-					select sponsorshipOpportunityChildID, @waitingListMaximumQuotaReachedID from @ChildListIneligible
+					select SPONSORSHIPOPPORTUNITYCHILDID, @waitingListMaximumQuotaReachedID from @ChildListIneligible
 				end
 			end
 		end
@@ -151,16 +151,16 @@ begin
 		-- Write Successes to Output table if it was specified
 		if @insertSuccessSQL <> ''
 		begin
-			select * into #registeredChildren from @ChildListToRegister
-			exec sp_executesql @insertSuccessSQL, @insertSuccessSQLParms, @projectID=@childProjectID, @countryID=NULL--, @ChildList=@ChildListToRegister
+			select SPONSORSHIPOPPORTUNITYCHILDID into #registeredChildren from @ChildListToRegister
+			exec sp_executesql @insertSuccessSQL, @insertSuccessSQLParms, @projectID=@childProjectID, @countryID=NULL
 			drop table #registeredChildren 
 		end
 			
 		-- Write exceptions to Output table if it was specified
 		if @insertExceptionsSQL <> ''	
 		begin
-			select * into #ineligibleChildren from @ChildListIneligibleWithReason
-			exec sp_executesql @insertExceptionsSQL, @insertExceptionsSQLParm, @projectID=@childProjectID, @countryID=NULL--, @childList=@ChildListIneligibleWithReason
+			select SPONSORSHIPOPPORTUNITYCHILDID, SPONSORSHIPREASONID into #ineligibleChildren from @ChildListIneligibleWithReason
+			exec sp_executesql @insertExceptionsSQL, @insertExceptionsSQLParm, @projectID=@childProjectID, @countryID=NULL
 			drop table #ineligibleChildren 
 		end
 	end try

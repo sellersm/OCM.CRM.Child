@@ -20,7 +20,7 @@
 	<CreateProcedureSQL>
 		<![CDATA[
 create procedure dbo.USR_USP_CHILDREN_SETPENDINGREASON (	
-	@childIDList USR_UDT_CHILDIDLIST readonly,			-- The children to add a pending reason
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,		-- The children to add a pending reason
 	@sponsorshipReasonID uniqueidentifier = null,		-- Used to specify the sponsorship reason to add by sponsorshipreason id guid. If guid is not null, guid is used instead of text
 	@sponsorshipReasonText nvarchar(100) = '',			-- Used to specify the sponsorship reason to add by case insensitive string - case is ignored when finding the sponsorship reason 
 	@changeAgentID uniqueidentifier = null,				-- Used to specify change agent for ChangedByID and AddedByID fields

@@ -32,7 +32,7 @@ create procedure dbo.USR_USP_CHILD_SETPENDINGREASON (
 	)
 as
 begin
-	declare @childIDList USR_UDT_CHILDIDLIST
+	declare @childIDList dbo.USR_UDT_CHILDIDLIST
 	insert @childIDList 
 	select @sponsorshipChildID
 	

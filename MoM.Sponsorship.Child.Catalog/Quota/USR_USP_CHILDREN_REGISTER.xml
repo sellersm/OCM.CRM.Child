@@ -21,8 +21,8 @@
 		<![CDATA[
 
 create procedure dbo.USR_USP_CHILDREN_REGISTER (
-	@childIDList USR_UDT_CHILDIDLIST readonly,		-- The list of children to register
-	@changeAgentID uniqueidentifier)			-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,		-- The list of children to register
+	@changeAgentID uniqueidentifier)					-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
 	
 as
 begin
@@ -43,8 +43,6 @@ begin
 				DATECHANGED = @currentDate
 		 where exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID)
 
-		exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @childIDList, 1, @changeAgentID
-		
 	end try
 	begin catch
 		exec dbo.USP_RAISE_ERROR

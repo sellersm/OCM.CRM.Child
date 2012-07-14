@@ -2,9 +2,9 @@
     xmlns="bb_appfx_package"
     xmlns:common="bb_appfx_commontypes"
     ID="1d9d2229-dd8a-434d-8da7-4194903f697e"
-    Name="ChildQuota Package"
-    Description="REPLACE_WITH_DESCRIPTION"
-    Author="$author$"
+    Name="Child Quota Package"
+    Description="Specs related to the child quota process"
+    Author="Cary Mayeda"
     >
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 

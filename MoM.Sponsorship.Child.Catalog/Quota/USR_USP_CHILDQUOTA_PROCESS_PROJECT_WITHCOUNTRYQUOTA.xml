@@ -26,14 +26,14 @@
 	<CreateProcedureSQL>
 		<![CDATA[
 create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT_WITHCOUNTRYQUOTA (
-	@childProjectID uniqueidentifier,					-- The child project that the children passed in @childList are attempting to be registered at
-	@countryID uniqueidentifier,						-- The child country to process
-	@childList USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- The list of children to process, all of the children (not necessarily just in a single project, therefore the queries need to include @childProjectID in the where clause
-	@changeAgentID uniqueidentifier,					-- Used to specify change agent for ChangedByID and AddedByID fields
-	@insertSuccessSQL nvarchar(max),					-- Dynamic SQL string to run to log the children successful registered
-	@insertSuccessSQLParms nvarchar(255),				-- Parameters for dynamic SQL string to run to log the children successful registered
-	@insertExceptionsSQL nvarchar(max),					-- Dynamic SQL string to run to log the children put on the waiting list or that had an exception
-	@insertExceptionsSQLParm nvarchar(255)				-- Parameters for dynamic SQL string to run to log the children put on the waiting list or that had an exception
+	@childProjectID uniqueidentifier,						-- The child project that the children passed in @childList are attempting to be registered at
+	@countryID uniqueidentifier,							-- The child country to process
+	@childList dbo.USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- The list of children to process, all of the children (not necessarily just in a single project, therefore the queries need to include @childProjectID in the where clause
+	@changeAgentID uniqueidentifier,						-- Used to specify change agent for ChangedByID and AddedByID fields
+	@insertSuccessSQL nvarchar(max),						-- Dynamic SQL string to run to log the children successful registered
+	@insertSuccessSQLParms nvarchar(255),					-- Parameters for dynamic SQL string to run to log the children successful registered
+	@insertExceptionsSQL nvarchar(max),						-- Dynamic SQL string to run to log the children put on the waiting list or that had an exception
+	@insertExceptionsSQLParm nvarchar(255)					-- Parameters for dynamic SQL string to run to log the children put on the waiting list or that had an exception
 )
 as
 begin
@@ -64,6 +64,7 @@ begin
 	-- Get ChangeAgent if none was passed into the sproc
   	if @changeAgentID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
 
 	
 	
@@ -83,7 +84,8 @@ begin
 				where childProjectID = @childProjectID 
 
 			exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
-				
+			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
+
 		end
 			
 		else
@@ -122,6 +124,7 @@ begin
 		  				order by dateAdded 
 
 					exec USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
+					exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
 
 					insert @ChildListIneligible 
 					select sponsorshipOpportunityChildID 
@@ -157,7 +160,7 @@ begin
 		if @insertSuccessSQL <> ''
 		begin
 			select * into #registeredChildren from @ChildListToRegister
-			exec sp_executesql @insertSuccessSQL, @insertSuccessSQLParms, @projectID=@childProjectID, @countryID=@countryID--, @ChildList=@ChildListToRegister
+			exec sp_executesql @insertSuccessSQL, @insertSuccessSQLParms, @projectID=@childProjectID, @countryID=@countryID		--, @ChildList=@ChildListToRegister
 			drop table #registeredChildren 
 		end
 			
@@ -165,7 +168,7 @@ begin
 		if @insertExceptionsSQL <> ''	
 		begin
 			select * into #ineligibleChildren from @ChildListIneligibleWithReason
-			exec sp_executesql @insertExceptionsSQL, @insertExceptionsSQLParm, @projectID=@childProjectID, @countryID=@countryID--, @childList=@ChildListIneligibleWithReason
+			exec sp_executesql @insertExceptionsSQL, @insertExceptionsSQLParm, @projectID=@childProjectID, @countryID=@countryID		--, @childList=@ChildListIneligibleWithReason
 			drop table #ineligibleChildren 
 		end
 

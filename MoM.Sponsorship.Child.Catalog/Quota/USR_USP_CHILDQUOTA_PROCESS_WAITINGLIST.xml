@@ -20,7 +20,7 @@ create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST (
 as
 begin
 	-- Used to store the children on the waiting list
-	declare @waitingListChildren USR_UDT_QUOTAPROCESSCHILDREN
+	declare @waitingListChildren dbo.USR_UDT_QUOTAPROCESSCHILDREN
 	insert @waitingListChildren  
 	select childProjectID,
 		   sponsorshipOpportunityChildID,

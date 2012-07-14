@@ -39,7 +39,7 @@ begin
   	if @CHANGEAGENTID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
 
-	declare @childList USR_UDT_CHILDIDLIST
+	declare @childList dbo.USR_UDT_CHILDIDLIST
 	
 	begin try	
 		if @childID is null 

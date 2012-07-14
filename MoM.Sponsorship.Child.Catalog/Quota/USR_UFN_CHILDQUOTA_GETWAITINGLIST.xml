@@ -38,12 +38,12 @@ with execute as caller
 as begin
 
 	declare @numberSponsorshipReasons tinyint		-- The number of sponsorship reasons (waiting list and batch commit) that should be checked to include children with that sponsorship reason in the returned set of children
-	set @numberSponsorshipReasons = 5  
+	set @numberSponsorshipReasons = 6 
 	
 	declare @sponsorhipReasonsToInclude table
 		(
 			sponsorshipReasonID uniqueidentifier
-			--reasonType tinyint					-- Not needed - This is used to sort the waiting list kids before the batch commit kids
+			--reasonType tinyint					-- Not needed anymore - This is used to sort the waiting list kids before the batch commit kids
 													--   0 - A waiting list reason
 													--   1 - batch commit reason
 		)
