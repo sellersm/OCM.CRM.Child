@@ -1,0 +1,43 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c1199cc6-5a8e-4ed1-a060-365db9b7e294" 
+	Name="QuotaPackageVersion Data List"
+	Description="REPLACE_WITH_DESCRIPTION." 
+	Author="BETHESDA\cmayeda"
+	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION
+as
+begin
+	set nocount on;
+
+	select 'Version 0.1.9'
+
+end 
+]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="Version" Caption="Child Quota Package Version" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>
