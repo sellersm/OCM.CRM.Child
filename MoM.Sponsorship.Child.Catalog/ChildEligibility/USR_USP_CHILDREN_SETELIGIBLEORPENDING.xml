@@ -16,11 +16,11 @@
 	09-Jul-2012		CMayeda			Added @doNotUpdateIneligible parm to consolidate sprocs performing this function			
 	-->
 
-	<common:DependencyList>
+	<!--common:DependencyList>
 		<common:Dependency CatalogAssembly=""  CatalogItem="USR_UDT_CHILDIDLIST"/>
 		<common:Dependency CatalogAssembly="" CatalogItem="USP_CHANGEAGENT_GETORCREATECHANGEAGENT"/>
 		<common:Dependency CatalogAssembly="" CatalogItem="USP_RAISE_ERROR" />
-	</common:DependencyList>
+	</common:DependencyList-->
 
 
 	<CreateProcedureSQL>

@@ -15,12 +15,12 @@
 	Date            Modified By     Comments
 	19-Jun-2012		CMayeda			Initial Version
 	-->
-	
-	<common:DependencyList>
+
+	<!--common:DependencyList>
 		<common:Dependency CatalogAssembly=""  CatalogItem="USR_UDT_CHILDIDLIST"/>
 		<common:Dependency CatalogAssembly="" CatalogItem="USP_CHANGEAGENT_GETORCREATECHANGEAGENT"/>
 		<common:Dependency CatalogAssembly="" CatalogItem="USP_RAISE_ERROR" />
-	</common:DependencyList>
+	</common:DependencyList-->
 	
 	<CreateProcedureSQL>
 		<![CDATA[

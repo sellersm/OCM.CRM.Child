@@ -137,7 +137,9 @@
     <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
     <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
     <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
     <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
@@ -272,7 +274,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\ChildBioDataList.xml" />
-    <EmbeddedResource Include="ChildBio\ChildBioNote.EditDataForm.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBioNote.EditDataForm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\SponOpNoteAddWithEligCheck.AddDataForm.xml" />
     <EmbeddedResource Include="ChildBio\SponOpporNoteChildBioDateProofed.Edit.xml">
       <SubType>Designer</SubType>
@@ -306,23 +310,39 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILD.xml" />
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT_WITHCOUNTRYQUOTA.xml" />
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT.xml" />
-    <EmbeddedResource Include="Quota\USR_USP_CHILDREN_REGISTER.xml" />
+    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT_WITHCOUNTRYQUOTA.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quota\USR_USP_CHILDREN_REGISTER.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quota\USR_USP_CHILD_REGISTER.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.BusinessProcess.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Task.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETELIGIBLEORPENDING.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETINELIGIBLE.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETELIGIBLEORPENDING.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETINELIGIBLE.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETELIGIBLEORPENDING.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETINELIGIBLE.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETELIGIBLEORPENDING.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETINELIGIBLE.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
     <EmbeddedResource Include="Quota\USR_UFN_CHILDQUOTA_LOCKFAILED.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificationFailedInteraction.Add.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETPENDINGREASON.xml" />
+    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETPENDINGREASON.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -333,6 +353,9 @@
     <EmbeddedResource Include="Quota\ChildQuota.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Quota\ChildQuotaPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcess.Task.xml" />
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>
