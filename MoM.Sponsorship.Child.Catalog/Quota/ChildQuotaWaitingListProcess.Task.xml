@@ -1,0 +1,20 @@
+﻿<TaskSpec 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	ID="3a7425ff-ed11-4eab-a76a-8f1c56086896"
+	Name="Child Quota Process Status Page" 
+	Description="Child Quota Process Status Page" 
+	Author="Cary Mayeda" 
+	FunctionalAreaID="9ea48d9c-7e2d-42e6-91cc-210792618017" 
+	TaskGroup="Administration" 
+	Sequence="50" 
+	DisplayAsAction="true" 
+	xmlns="bb_appfx_task">
+	
+	<ShowPage PageID="7ac222ec-ded6-4394-b330-77cedaf860c3" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+		<ActionContext>
+			<Expression>2A580C34-C5DD-415D-BB60-0AC3E30BEB78</Expression>
+		</ActionContext>
+	</ShowPage>
+	
+</TaskSpec>
