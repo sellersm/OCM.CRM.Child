@@ -1,0 +1,36 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="2eac9e4f-121a-4de6-8cee-12a35597a899"
+	Name="USR_UFN_CHILD_GETCOUNTRYID"
+	Description="REPLACE_WITH_DESCRIPTION"
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILD_GETCOUNTRYID"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETCOUNTRYID (
+	@sponsorshipOpportunityChildID uniqueidentifier
+)
+returns uniqueidentifier
+with execute as caller
+as 
+begin
+	declare @projectID uniqueidentifier
+	declare @countryID uniqueidentifier
+	
+	select	@projectID = slocation.FIELDOFFICEID
+	  from	dbo.SPONSORSHIPOPPORTUNITY so
+inner join	dbo.SPONSORSHIPLOCATION slocation on
+				so.SPONSORSHIPLOCATIONID = slocation.ID 						
+	 where	so.ID = @sponsorshipOpportunityChildID
+	
+	set @countryID = dbo.USR_UFN_CHILDPROJECT_GETCOUNTRYID (@projectID)
+	
+	return  @countryID 
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>
