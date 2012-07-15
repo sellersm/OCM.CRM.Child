@@ -8,12 +8,15 @@
 	DBFunctionName="USR_UFN_CHILDQUOTA_GETWAITINGLIST">
 	
 	<!-- 
-	Remarks:    This will return 0 rows if either the Waiting List or Batch Commit - Locked Failed sponsorship reason ids are not found.
+	Remarks:    This will return 0 rows if any of the Waiting List or Batch Commit - Locked Failed sponsorship reason ids are not found.
 				The table is sorted by project and date added.  There is no preference for waiting list children or batch commit kids.
 				The reason for this is that the "Batch Commit - locked failed" error indicates that the child could not be checked to determine 
 				if they should be registered or placed on the waiting list, because the lock of the project failed when processing the waiting list 
 				when committing the batch.
 				
+				If the project and the country quota types do not match, the children in that project are excluded.
+				
+				@awaitingKids table matches 
 				Initially the waiting list and batch commit kids would be processed all at once, so the waiting list kids needed to be handled first.
 				However, there wasn't a way to make the call after all kids were added to CRM, so the waiting list process is called first and then
 				each child is checked separately prior to entry.
@@ -27,12 +30,11 @@
 		<![CDATA[
 create function dbo.USR_UFN_CHILDQUOTA_GETWAITINGLIST()
 returns @awaitingKids table
-		(
+		(quotaTypeCode tinyint,
 		 childProjectID uniqueidentifier,
+		 countryID uniqueidentifier,
 		 sponsorshipOpportunityChildID uniqueidentifier,
 		 dateAdded datetime
---		 reasonType tinyint,
---		 ineligibleReasonID uniqueidentifier
 		)
 with execute as caller
 as begin
@@ -43,9 +45,6 @@ as begin
 	declare @sponsorhipReasonsToInclude table
 		(
 			sponsorshipReasonID uniqueidentifier
-			--reasonType tinyint					-- Not needed anymore - This is used to sort the waiting list kids before the batch commit kids
-													--   0 - A waiting list reason
-													--   1 - batch commit reason
 		)
 	
 	-- Waiting List reasons - finding these individually instead of all the start with 'Waiting List' in order to minimize accidental data entry issues
@@ -72,29 +71,33 @@ as begin
 	declare @reasonCount tinyint
 	select @reasonCount = count(*) from @sponsorhipReasonsToInclude
 	
-	if @reasonCount > 0 --  = @numberSponsorshipReasons  ****************  NEED TO SET THIS WHEN DEPLOYING TO DEV ***********************
+	if @reasonCount = @numberSponsorshipReasons  
 		insert	@awaitingKids
-		select  sl.FIELDOFFICEID,
+		select	projectext.QUOTATYPECODE,
+				projectext.ID,
+				countryext.ID,
 				so.ID,
-				so.DATEADDED
---				reasonstoinclude.reasonType as WAITINGLISTREASONTYPE,
---				so.SPONSORSHIPREASONID
-		  from dbo.SPONSORSHIPOPPORTUNITY so
-		  join dbo.USR_CHILDEXTENSION ce on
-					so.ID = ce.SPONSORSHIPOPPORTUNITYCHILDID
-	      join dbo.SPONSORSHIPREASON sr on
-					so.SPONSORSHIPREASONID = sr.id
-		  join @sponsorhipReasonsToInclude reasonstoinclude on 
+				childext.DATEADDED
+		  from	dbo.SPONSORSHIPOPPORTUNITY so
+    inner join	dbo.USR_CHILDEXTENSION childext on
+					so.ID = childext.SPONSORSHIPOPPORTUNITYCHILDID
+	inner join	dbo.SPONSORSHIPREASON sreason on
+					so.SPONSORSHIPREASONID = sreason.id
+	inner join	@sponsorhipReasonsToInclude reasonstoinclude on 
 					so.SPONSORSHIPREASONID = reasonstoinclude.sponsorshipReasonID
-		  join dbo.SPONSORSHIPLOCATION sl on
-					so.SPONSORSHIPLOCATIONID = sl.ID 	
+	inner join	dbo.SPONSORSHIPLOCATION slocation on
+					so.SPONSORSHIPLOCATIONID = slocation.ID 	
+	inner join	dbo.USR_CHILDPROJECTEXTENSION projectext on
+					slocation.FIELDOFFICEID = projectext.ID
+	inner join	dbo.USR_COUNTRYEXTENSION countryext on
+					countryext.ID = dbo.USR_UFN_CHILDPROJECT_GETCOUNTRYID (projectext.ID)
 					
-		 where ce.REGISTRATIONDATE  is null
-
-		order by sl.FIELDOFFICEID, so.DATEADDED
+		 where	childext.REGISTRATIONDATE is null
+		   and	projectext.QUOTATYPECODE = countryext.QUOTATYPECODE
+		   
+		 order by projectext.QUOTATYPECODE, projectext.ID, childext.DATEADDED
 	
 	return
-	
 end
 		]]>
 	</CreateFunctionSQL>

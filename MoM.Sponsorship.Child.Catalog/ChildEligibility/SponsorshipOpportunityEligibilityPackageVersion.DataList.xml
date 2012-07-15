@@ -16,7 +16,7 @@ as
 begin
 	set nocount on;
 
-	select 'Version 0.1.9'
+	select 'Version 0.1.10'
 
 end 
 ]]>

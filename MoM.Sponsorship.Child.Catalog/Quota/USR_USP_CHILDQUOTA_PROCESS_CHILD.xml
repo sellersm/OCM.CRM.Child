@@ -2,14 +2,17 @@
 	xmlns="bb_appfx_sqlstoredprocedure"
 	xmlns:common="bb_appfx_commontypes" 
 	ID="f268f6ac-6069-48a6-997e-0780af7d5313"
-	Name="USR_USP_CHILDQUOTA_PROCESSCHILDREN"
-	Description="REPLACE_WITH_DESCRIPTION"
+	Name="USR_USP_CHILDQUOTA_PROCESS_CHILD"
+	Description="Process one child to check for quota room and register or put on waiting list"
 	Author="Cary Mayeda"
 	SPName="USR_USP_CHILDQUOTA_PROCESS_CHILD"
 	>
 	
 	<!-- 
-	Remarks:    
+	Remarks:    This merely packages the child id with other info into a table to pass to USR_USP_CHILDQUOTA_PROCESS_CHILDLIST to perform the actual tasks.
+				The assumptions are:
+					The child has been inserted into CRM and linked to a location
+					USR_USP_CHILDQUOTA_PROCESS_CHILDLIST fixes the a null @changeAgentID, so it isn't checked here.
 
 	History:
 	Date            Modified By     Comments
@@ -20,23 +23,58 @@
 		<![CDATA[
 create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_CHILD(
 	@sponsorshipOpportunityChildID uniqueidentifier,	-- Child ID,
-	@locked bit,										-- Whether or not the child's project / country was successfully locked
+	@lockFailed bit,										-- Whether or not the child's project / country was successfully locked
 	@changeAgentID uniqueidentifier						-- Used to specify change agent for ChangedByID and AddedByID fields	
 )
 
 as
 begin
-	-- Get ChangeAgent if none was passed into the sproc
-  	if @changeAgentID is null  
-	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
-
+	-- ** TODO validate parms)
 	
-	declare @childList dbo.USR_UDT_QUOTAPROCESSCHILDREN
-	insert @childList
-	select @sponsorshipOpportunityChildID, @sponsorshipOpportunityChildID, getdate()
+	if @lockFailed = 1  
+	begin
+		declare @reasonTypeCode_ChildMarkIneligibile tinyint = 1 --Child - Mark ineligible
+		declare @BatchCommitLockedFailedText nvarchar(100) = 'Batch Commit - lock failed'
 		
-	exec dbo.USR_USP_CHILDQUOTA_PROCESS_CHILDLIST @childList, @changeAgentID, '', ''
+		-- ** TODO ** Put this into SETINELIGIBLE sprocs
+		
+		declare @BatchCommitLockedFailedID uniqueidentifier
+		select @BatchCommitLockedFailedID = ID		
+		  from	dbo.SPONSORSHIPREASON 
+		 where	lower (REASON) = lower (@BatchCommitLockedFailedText) 
+		   and	REASONTYPECODE = @reasonTypeCode_ChildMarkIneligibile 
+		
+		exec dbo.USR_USP_CHILD_SETINELIGIBLE @sponsorshipOpportunityChildID, @BatchCommitLockedFailedID, @changeAgentID
+	end
+	else
+	begin
+	
+		declare @childList dbo.USR_UDT_QUOTAPROCESSCHILDREN
 
+		insert @childList
+		select	dbo.USR_UFN_CHILDPROJECT_QUOTATYPE(slocation.FIELDOFFICEID), 
+				slocation.FIELDOFFICEID,
+				dbo.USR_UFN_CHILD_GETCOUNTRYID (child.SPONSORSHIPOPPORTUNITYCHILDID),
+				child.SPONSORSHIPOPPORTUNITYCHILDID, 
+				child.DATEADDED
+		  from	dbo.USR_CHILDEXTENSION child
+	inner join	dbo.SPONSORSHIPOPPORTUNITY sopp on
+					sopp.ID = child.SPONSORSHIPOPPORTUNITYCHILDID
+	inner join 	dbo.SPONSORSHIPLOCATION slocation on
+					sopp.SPONSORSHIPLOCATIONID = slocation.ID 
+		 where	child.SPONSORSHIPOPPORTUNITYCHILDID = @sponsorshipOpportunityChildID
+
+
+		begin try
+			exec dbo.USR_USP_CHILDQUOTA_PROCESS_CHILDLIST @childList, @changeAgentID, '', ''
+		end try
+		begin catch
+			exec dbo.USP_RAISE_ERROR
+			return 1	
+		end catch
+			
+	end
+	
 	return 0
 
 end

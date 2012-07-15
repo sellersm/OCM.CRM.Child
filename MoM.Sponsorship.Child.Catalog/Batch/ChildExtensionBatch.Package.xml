@@ -7,18 +7,24 @@
 		Author="Memphis Sellers"
 		>
 
-	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
+	<!-- 
+	Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
 	a table that hasn't been loaded, etc.  In general, the following order is recommended:
 	
-Once the Batch Type Spec is complete, we can use LoadSpec to load the dependent specs into the database. Make sure the following specs are loaded prior to loading the BatchTypeSpec. 
-•Batch Add
-•Batch Edit
-•Batch Delete
-•Batch Commit Add
+	Once the Batch Type Spec is complete, we can use LoadSpec to load the dependent specs into the database. Make sure the following specs are loaded prior to loading the BatchTypeSpec. 
+	•Batch Add
+	•Batch Edit
+	•Batch Delete
+	•Batch Commit Add
 
-ChildExtension is the Child/CCH information.  It is used to hold the CCH and new Child entry data
-	
+	ChildExtension is the Child/CCH information.  It is used to hold the CCH and new Child entry data
+
+	History:
+	Date            Modified By     Comments
+	14-Jul-2012		CMayeda			Added USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml
+
 	-->
+
 	
 	<common:DependencyList>
 		<!-- Batch Table -->
@@ -46,6 +52,7 @@ ChildExtension is the Child/CCH information.  It is used to hold the CCH and new
 		<!-- Sprocs -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_BATCHLOCKINSERT.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_DELETEBATCHLOCK.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
 		

@@ -250,6 +250,9 @@
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.View.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Utilities\ChildUtilities.Package.xml" />
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCOUNTRYID.xml" />
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETPROJECTID.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.View.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Add.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Edit.xml" />
@@ -283,6 +286,7 @@
     </EmbeddedResource>
     <Content Include="Batch\BatchLock\BatchLock.Table.xml" />
     <Content Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
     <Content Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
     <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
     <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
@@ -310,7 +314,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILD.xml" />
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT_WITHCOUNTRYQUOTA.xml">
+    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_COUNTRY.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT.xml">

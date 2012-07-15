@@ -31,11 +31,14 @@ begin
 	declare @tableGUIDString nvarchar(50) = replace (convert (nvarchar(50),@contextID), '-', '_')	-- Convert the guid to have underscores instead of dashes
 
 	declare @selectSuccessSQL as nvarchar(max)
-	set @selectSuccessSQL = 'select p.LOOKUPID as ProjectID, p.NAME as ProjectName, ch.LOOKUPID as ChildID, ch.NAME as ChildName ' +
+	set @selectSuccessSQL = 'select countryc.LOOKUPID as CountryID, countryc.NAME as CountryName, ' +
+							'       projectc.LOOKUPID as ProjectID, projectc.NAME as ProjectName, ' +
+							'       childc.LOOKUPID as ChildID, childc.NAME as ChildName ' +
 							'  from ' + @tablePrefix + @tableGUIDString + ' cq' + 
-							'  inner join CONSTITUENT p on cq.CHILDPROJECTID = p.ID' + 
-							'  inner join CONSTITUENT ch on cq.SPONSORSHIPOPPORTUNITYCHILDID = ch.ID' +
-							'  order by ProjectID, ChildID'
+							'  inner join CONSTITUENT childc on cq.SPONSORSHIPOPPORTUNITYCHILDID = childc.ID' +
+							'   left join CONSTITUENT countryc on cq.COUNTRYID = countryc.ID' + 
+							'   left join CONSTITUENT projectc on cq.CHILDPROJECTID = projectc.ID' + 
+							'    order by CountryID, ProjectID, ChildID'
                         
 	exec (@selectSuccessSQL)
 
@@ -60,6 +63,8 @@ end
 	<!-- define the output fields in the list -->
 	<Output>
 		<OutputFields>
+			<OutputField FieldID="CountryID" Caption="Country ID" DataType="String" />
+			<OutputField FieldID="CountryName" Caption="Country Name" DataType="String" />
 			<OutputField FieldID="ProjectID" Caption="Project ID" DataType="String" />
 			<OutputField FieldID="ProjectName" Caption="Project Name" DataType="String" />
 			<OutputField FieldID="ChildID" Caption="Child ID" DataType="String" />

@@ -7,8 +7,8 @@
 	Author="Cary Mayeda"
 	SPName="USR_USP_CHILD_REGISTER">
 	<!-- 
-	Remarks:    This will set the child passed in @childiD to registered (REGISTRATIONDATE = today's date, and FUNDED = 1)
-				After the child is registered, the child will be set to either Eligible or Pending depending on if there are any pending reasons on the child.
+	Remarks:    This merely packages the child id into a table to pass to USR_USP_CHILDREN_REGISTER to perform the actual tasks.
+				The assumption is USR_USP_CHILDREN_REGISTER fixes the a null @changeAgentID, so it isn't checked here.
 
 	History:
 	Date            Modified By     Comments
@@ -24,28 +24,17 @@ create procedure dbo.USR_USP_CHILD_REGISTER (
 	
 as
 begin
-	-- Get ChangeAgent if none was passed into the sproc
-  	if @changeAgentID is null  
-	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
 
-    -- Used for setting date fields to today's date
-	declare @currentDate datetime = null  
-	set @currentDate = getdate()	
+	declare @childIDList dbo.USR_UDT_CHILDIDLIST 
 
 	begin try
-		if @childID is null 
+		if @childID is null
 			RAISERROR 1000000 '@childID cannot be null'		
 
-		update dbo.USR_CHILDEXTENSION
-			set REGISTRATIONDATE = @currentDate,
-				FUNDED = 1,
-				CHANGEDBYID = @changeAgentID,
-				DATECHANGED = @currentDate
-	 		-- Either get the child passed in @childID or the children in the table passed in @childIDList
-		 where USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID = @childID
-				
-
-	 --** FIX THIS	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING  @childIDList, @changeAgentID
+		insert @childIDList 
+		select @childID
+	
+		exec dbo.USR_USP_CHILDREN_REGISTER @childIDList, @changeAgentID
 		
 	end try
 	begin catch

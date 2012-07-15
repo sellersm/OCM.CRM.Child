@@ -62,15 +62,9 @@ begin
 	-- Get ChangeAgent if none was passed into the sproc
   	if @changeAgentID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
-
 	
 	
 	begin try
-			
-		-- Clear child list tables
-		delete @ChildListToRegister 
-		delete @ChildListIneligible 
-		delete @ChildListIneligibleWithReason
 			
 		if dbo.USR_UFN_CHILDPROJECT_QUOTAOVERRIDE (@childProjectID) = 1
 		begin

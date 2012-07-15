@@ -3,10 +3,17 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="1b65a760-a8d2-46c2-801c-04bd38480db8"
 	Name="USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST"
-	Description="This is used to in the business process to check waiting list children"
+	Description="This is used to in the business process and cch batch to check waiting list children"
 	Author="Cary Mayeda"
-	SPName="USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST"
-	>
+	SPName="USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST" >
+	<!-- 
+	Remarks:    This merely packages the waiting list children returned from USR_UFN_CHILDQUOTA_GETWAITINGLIST 
+				into a table to pass to USR_USP_CHILDQUOTA_PROCESS_CHILDLIST to perform the actual tasks.
+				
+	History:
+	Date            Modified By     Comments
+	10-Jul-2012		CMayeda			Initial Version
+	-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -21,11 +28,13 @@ as
 begin
 	-- Used to store the children on the waiting list
 	declare @waitingListChildren dbo.USR_UDT_QUOTAPROCESSCHILDREN
-	insert @waitingListChildren  
-	select childProjectID,
-		   sponsorshipOpportunityChildID,
-		   dateAdded 
-	  from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLIST ()
+	insert	@waitingListChildren  
+	select	quotaTypeCode,
+			childProjectID,
+			countryID,
+			sponsorshipOpportunityChildID,
+			dateAdded 
+	  from	dbo.USR_UFN_CHILDQUOTA_GETWAITINGLIST ()
 
 
 	exec USR_USP_CHILDQUOTA_PROCESS_CHILDLIST @waitingListChildren, @changeAgentID, @successTableName, @exceptionTableName, @successCount output, @exceptionCount output 
