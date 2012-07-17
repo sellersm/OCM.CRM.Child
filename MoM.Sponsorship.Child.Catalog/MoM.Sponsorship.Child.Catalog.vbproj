@@ -286,12 +286,12 @@
     <EmbeddedResource Include="ChildBio\SponOpporNoteChildBioDateProofed.Edit.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Batch\BatchLock\BatchLock.Table.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\BatchLock.Table.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
-    <Content Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
