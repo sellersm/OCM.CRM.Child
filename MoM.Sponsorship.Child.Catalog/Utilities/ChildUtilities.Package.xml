@@ -3,9 +3,16 @@
     xmlns:common="bb_appfx_commontypes"
     ID="8bc02425-3981-45af-8c01-d3e24aee192c"
     Name="Child Utilities Package"
-    Description="REPLACE_WITH_DESCRIPTION"
-    Author="Cary Mayeda"
-    >
+    Description="Utility sprocs/funcions for a specific child"
+    Author="Cary Mayeda" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	12-Jul-2012		CMayeda			Initial Version
+	-->
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
 	a table that hasn't been loaded, etc.  In general, the following order is recommended:

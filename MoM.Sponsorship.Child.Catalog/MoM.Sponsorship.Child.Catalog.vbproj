@@ -250,7 +250,9 @@
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.View.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Utilities\ChildUtilities.Package.xml" />
+    <EmbeddedResource Include="Utilities\ChildUtilities.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCOUNTRYID.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETPROJECTID.xml" />
     <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.View.xml" />
@@ -307,13 +309,17 @@
     <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatus.View.xml" />
     <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusHistory.DataList.xml" />
     <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReport.Page.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReportExceptions.DataList.xml" />
+    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReportExceptions.DataList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReportSuccesses.DataList.xml" />
     <EmbeddedResource Include="Quota\USR_UFN_CHILDQUOTA_GETWAITINGLIST.xml" />
     <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILDLIST.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILD.xml" />
+    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILD.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_COUNTRY.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

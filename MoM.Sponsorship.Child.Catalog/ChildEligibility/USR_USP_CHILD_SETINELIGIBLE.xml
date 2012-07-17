@@ -16,12 +16,6 @@
 	09-Jul-2012		CMayeda			Modified this to call USR_USP_CHILDREN_SETINELIGIBLE instead of handling the same logic in this sproc
 	-->
 
-	<!--common:DependencyList>
-		<common:Dependency CatalogAssembly=""  CatalogItem="USR_UDT_CHILDIDLIST"/>
-		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDREN_SETINELIGIBLE"/>
-		<common:Dependency CatalogAssembly="" CatalogItem="USP_CHANGEAGENT_GETORCREATECHANGEAGENT"/>
-		<common:Dependency CatalogAssembly="" CatalogItem="USP_RAISE_ERROR" />
-	</common:DependencyList-->
 
 	<CreateProcedureSQL>
 		<![CDATA[

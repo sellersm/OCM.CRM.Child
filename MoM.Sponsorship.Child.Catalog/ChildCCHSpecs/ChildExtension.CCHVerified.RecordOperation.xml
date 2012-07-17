@@ -19,6 +19,8 @@ create procedure dbo.USP_CHILDEXTENSION_CCHVERIFIED_UPDATE
 	@CHANGEAGENTID uniqueidentifier
 )
 as begin
+	declare @pendingReasonString_NewChildVerification nvarchar(100) = 'New Child Verification'
+	
 	-- Get ChangeAgent if none was passed into the sproc
   	if @CHANGEAGENTID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
@@ -28,6 +30,9 @@ as begin
 			DATECHANGED =  getdate(),
 			CHANGEDBYID = @CHANGEAGENTID
 	 where	SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	
+	exec dbo.USR_USP_CHILD_REMOVEPENDINGREASON @ID, null, @pendingReasonString_NewChildVerification, @CHANGEAGENTID
+	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @ID, 1, @CHANGEAGENTID 	-- 1 - Leave ineligible status, only update those pending or eligible
 	
 	return 0;
 	

@@ -14,9 +14,8 @@
 create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPACKAGEVERSION
 as
 begin
-	set nocount on;
 
-	select 'Version 0.1.10'
+	select 'Version 0.1.11'
 
 end 
 ]]>

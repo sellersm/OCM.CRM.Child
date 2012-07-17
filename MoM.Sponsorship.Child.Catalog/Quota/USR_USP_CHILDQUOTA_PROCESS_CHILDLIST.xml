@@ -85,12 +85,12 @@ begin
 	
 	declare @objectLocked bit
 	
- 	declare @lockFailed dbo.USR_UDT_LOCKFAILURE2   --**table (quotaTypeCode tinyint,  -- 0 = project, 1 = country
+ 	declare @lockFailed dbo.USR_UDT_LOCKFAILURE   --**table (quotaTypeCode tinyint,  -- 0 = project, 1 = country
 												--**objectID uniqueidentifier)
 
 
-	declare @projectQuotaChildList USR_UDT_QUOTAPROCESSCHILDREN
-	declare @countryQuotaChildList USR_UDT_QUOTAPROCESSCHILDREN
+	declare @projectQuotaChildList dbo.USR_UDT_QUOTAPROCESSCHILDREN
+	declare @countryQuotaChildList dbo.USR_UDT_QUOTAPROCESSCHILDREN
 	
 	insert @projectQuotaChildList
 	select * from @childList where QUOTATYPECODE = @quotaTypeCode_Project 

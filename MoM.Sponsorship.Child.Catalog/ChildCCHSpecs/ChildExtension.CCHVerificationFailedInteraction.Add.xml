@@ -167,6 +167,7 @@
 					where SPONSORSHIPOPPORTUNITYCHILDID = @sponsorshipOpportunityChildID
 
 					exec dbo.USR_USP_CHILD_SETPENDINGREASON  @sponsorshipOpportunityChildID, NULL, @pendingReasonString_NeedInformationVerified
+					exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @ID, 1, @CHANGEAGENTID 	-- 1 specifies to leave ineligible status, only update those pending or eligible
 
 					end try
 					begin catch

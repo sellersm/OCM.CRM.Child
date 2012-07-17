@@ -4,8 +4,15 @@
     ID="7a56df2d-beb0-4c87-b943-df6b4e3a66a1"
     Name="Child Eligibility Check Package"
     Description="Package that includes all the specs related to the Eligibility check - both for the chid action and the business process."
-    Author="Cary Mayeda"
-    >
+    Author="Cary Mayeda" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	16-Jul-2012		CMayeda			Added Version spec and comments / section headers
+	-->
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
 	a table that hasn't been loaded, etc.  In general, the following order is recommended:
@@ -50,11 +57,17 @@
 	-->
 	
 	<common:DependencyList>
+		<!-- General Eligibility / pending reason utility sprocs -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDREN_SETPENDINGREASON.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILD_SETPENDINGREASON.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDREN_SETELIGIBLEORPENDING.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILD_SETELIGIBLEORPENDING.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDREN_SETINELIGIBLE.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILD_SETINELIGIBLE.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDREN_REMOVEPENDINGREASON.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILD_REMOVEPENDINGREASON.xml" />
+		
+		<!-- Sprocs specific to the Sponsorship Eligibility Business Process / Task-->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
@@ -67,19 +80,34 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml" />
+		
+		<!-- Business Process Table-->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.Table.xml" />
+		
+		<!-- Record Operations -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOppotunityEligibilityCheck.RecordOperation.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.RecordOperation.xml" />
+		
+		<!-- Data Lists -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.DataList.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcessStatusHistory.DataList.xml" />
+		
+		<!-- Forms -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.Add.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.Edit.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcessStatus.View.xml" />
+		
+		<!-- Business Process Spec -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.BusinessProcess.xml" />
+		
+		<!-- Pages -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.Page.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcessStatus.Page.xml" />
+		
+		<!-- Tasks -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityProcess.Task.xml" />
 		
+		<!-- Package Versions -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityEligibilityPackageVersion.DataList.xml" />
 
 	</common:DependencyList>

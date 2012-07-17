@@ -29,9 +29,9 @@
 		<![CDATA[
 
 create procedure dbo.USR_USP_CHILD_SETELIGIBLEORPENDING (
-	@childID uniqueidentifier,				-- Specify a Sponsorship Opportunity ID (same as the child's ID) if the sproc should only process a single child
-	@doNotUpdateIneligible bit = 0,			-- Whether to include Ineligible children in updates.  0 = Include Ineligible children, 1 = Do Not Include Ineligible children
-	@changeAgentID uniqueidentifier)		-- Used to specify change agent for CHANGEDBYID fields
+	@sponsorshipOpportunityChildID uniqueidentifier,		-- Specify a Sponsorship Opportunity ID (same as the child's ID) if the sproc should only process a single child
+	@doNotUpdateIneligible bit = 0,							-- Whether to include Ineligible children in updates.  0 = Include Ineligible children, 1 = Do Not Include Ineligible children
+	@changeAgentID uniqueidentifier)						-- Used to specify change agent for CHANGEDBYID fields
 
 as
 begin
@@ -42,11 +42,11 @@ begin
 	declare @childList dbo.USR_UDT_CHILDIDLIST
 	
 	begin try	
-		if @childID is null 
-			RAISERROR 1000000 '@childID cannot be null'		
+		if @sponsorshipOpportunityChildID is null 
+			RAISERROR 1000000 '@sponsorshipOpportunityChildID cannot be null'		
 
 		insert @childList
-		select @childID 
+		select @sponsorshipOpportunityChildID 
 		
 		exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, @doNotUpdateIneligible, @changeAgentID
 		

@@ -69,32 +69,23 @@ inner join  dbo.SPONSORSHIPREASON sreason (nolock) on
 end
 
 ]]>
-			</common:CreateProcedureSQL>
-		</SPDataList>
+		</common:CreateProcedureSQL>
+	</SPDataList>
 
-		<!-- describe the context ID parameter for the SP (if applicable)-->
-		<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="contextID"/>
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Business process instance" RecordIDParameter="contextID"/>  <!-- Not sure what the record type is for this -->
 
-		<!-- describe any parameters (other than the context ID) defined on the SP
-	<Parameters>
-		<common:FormMetaData>
-			<common:FormFields>
-				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
-			</common:FormFields>
-		</common:FormMetaData>
-	</Parameters>-->
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="CountryID" Caption="Country ID" DataType="String" />
+			<OutputField FieldID="CountryName" Caption="Country Name" DataType="String" />
+			<OutputField FieldID="ProjectID" Caption="Project ID" DataType="String" />
+			<OutputField FieldID="ProjectName" Caption="Project Name" DataType="String" />
+			<OutputField FieldID="ChildID" Caption="Child ID" DataType="String" />
+			<OutputField FieldID="ChildName" Caption="Child Name" DataType="String" />
+			<OutputField FieldID="WaitingListReason" Caption="Waiting List Reason" DataType="String" />
+		</OutputFields>
+	</Output>
 
-		<!-- define the output fields in the list -->
-		<Output>
-			<OutputFields>
-				<OutputField FieldID="CountryID" Caption="Country ID" DataType="String" />
-				<OutputField FieldID="CountryName" Caption="Country Name" DataType="String" />
-				<OutputField FieldID="ProjectID" Caption="Project ID" DataType="String" />
-				<OutputField FieldID="ProjectName" Caption="Project Name" DataType="String" />
-				<OutputField FieldID="ChildID" Caption="Child ID" DataType="String" />
-				<OutputField FieldID="ChildName" Caption="Child Name" DataType="String" />
-				<OutputField FieldID="WaitingListReason" Caption="Waiting List Reason" DataType="String" />
-			</OutputFields>
-		</Output>
-
-	</DataListSpec>
+</DataListSpec>
