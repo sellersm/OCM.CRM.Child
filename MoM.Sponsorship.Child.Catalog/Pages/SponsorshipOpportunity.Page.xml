@@ -1,5 +1,14 @@
 ﻿<PageDefinitionSpec xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="0f392d71-5884-4363-b6e3-a75755f8402a" Name="Sponsorship Opportunity Page" Description="Displays all the information on a given sponsorship opportunity" Author="Blackbaud Product Development" ExpressionDataFormID="2c5e91ff-ec60-4f8a-9361-9eae6549aa69" ContextRecordType="Sponsorship opportunity" xmlns="bb_appfx_pagedefinition">
-  <InstalledProductList xmlns="bb_appfx_commontypes">
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	16-Jul-2012		CMayeda			Added Pamela's temporary Reservation tab
+	-->
+
+	<InstalledProductList xmlns="bb_appfx_commontypes">
     <InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
   </InstalledProductList>
   <ResourceFile AssemblyName="Blackbaud.AppFx.Sponsorship.Catalog.dll" ClassName="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunity.Page" />
@@ -390,7 +399,19 @@
         </Section>
       </Sections>
     </Tab>
-    <Tab Caption="Status" ID="eccc5cb7-39e2-4bea-a05c-ecea2fc08e51" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=2" CaptionResourceKey="$$status">
+	<Tab Caption="Reservation" ID="3a30af81-fa37-4e87-b728-b5ecdca7235a">
+		<Sections>
+			<Section ID="53971005-938c-46d3-a2db-408879f34f13" Caption="Reservations">
+				<DataList ID="bbd211b6-9593-4f30-bea2-7572e447b9ee">
+					<RenderStyle>
+						<StandardView />
+					</RenderStyle>
+				</DataList>
+			</Section>
+		</Sections>
+	</Tab>
+
+	  <Tab Caption="Status" ID="eccc5cb7-39e2-4bea-a05c-ecea2fc08e51" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=2" CaptionResourceKey="$$status">
       <Sections>
         <Section ID="8e85c555-3c13-41f0-b609-ff3e26cfb44a" Caption="Pending reasons" Visible="=Page.Fields!ELIGIBILITYCODE=0 Or Page.Fields!ELIGIBILITYCODE=1" CaptionResourceKey="$$pending_reasons">
           <DataList ID="4df2fbeb-32ba-4fd0-99c9-474b165387b1">

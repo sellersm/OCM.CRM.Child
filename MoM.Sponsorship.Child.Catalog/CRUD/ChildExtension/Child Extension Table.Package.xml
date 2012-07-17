@@ -100,7 +100,9 @@
     
     <!-- Tasks -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AddChild.Task.xml" />
-    
 
-  </c:DependencyList>
+	<!-- Pamela's temporary data list -->
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.PamelasChildReservations.DataList.xml" />
+	
+	</c:DependencyList>
 </PackageSpec>
