@@ -367,6 +367,11 @@
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityPackageVersion.DataList.xml" />
     <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcess.Task.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\PamelasChildReservations.DataList.xml" />
+    <EmbeddedResource Include="Quota\TEMPSetChildCCHValidatedFalse.RecordOperation.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quota\TEMPSetChildRegistrationDateNull.RecordOperation.xml" />
+    <EmbeddedResource Include="Quota\TEMPSetChildFundedNo.RecordOperation.xml" />
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>

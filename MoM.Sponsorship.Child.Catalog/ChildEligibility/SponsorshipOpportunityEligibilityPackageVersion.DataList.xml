@@ -1,23 +1,25 @@
-﻿<DataListSpec 
+﻿<DataListSpec
 	xmlns="bb_appfx_datalist"
-	xmlns:common="bb_appfx_commontypes" 
-	ID="3db0165b-41c6-400c-b8aa-fd2f99a4dfaa" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="3db0165b-41c6-400c-b8aa-fd2f99a4dfaa"
 	Name="Sponsorship Opportunity Eligibility Package Version Data List"
-	Description="REPLACE_WITH_DESCRIPTION." 
-	Author="BETHESDA\cmayeda"
-	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER">
+	Description="Used to display the version of the package deployment."
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Business Process\Eligibility" >
 
 	<!-- define the SP that returns the data for the datalist -->
 	<SPDataList SPName="USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPACKAGEVERSION">
 		<common:CreateProcedureSQL>
 			<![CDATA[
+			
 create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPACKAGEVERSION
 as
 begin
 
-	select 'Version 0.1.11'
+	select '#VersionNumber#'
 
-end 
+end
+
 ]]>
 		</common:CreateProcedureSQL>
 	</SPDataList>

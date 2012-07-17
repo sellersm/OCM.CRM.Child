@@ -230,75 +230,68 @@
         </Section>
       </Sections>
     </Tab>
-	  <!-- <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
-      <Sections>
-        <Section ID="ae830cc2-1d35-4ac1-9665-c25ec0df822b" Caption="Child Bio" Visible="true">
-          <DataList ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" ShowRowTotals="False">
-            <RenderStyle>
-              <StandardView>
-                <DetailViewForm ViewDataFormID="664ad089-af34-423f-9e53-33ada21f42ef" RecordIDField="Notes\System record ID" />
-              </StandardView>
-            </RenderStyle>
-          </DataList>
-          <Actions>
-            <Action ID="b9c30bdf-c63b-41ae-9172-bffea2e2dd5e" Caption="Add" ImageKey="RES:NewItem" CaptionResourceKey="$$note">
-              <ShowAddDataForm DataFormID="d22d309b-33e8-440e-9acc-c60a1b52931c" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <PageContextID />
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshPage />
-                </PostActionEvent>
-              </ShowAddDataForm>
-              <HelpKey>GLBEditNotes.html</HelpKey>
-            </Action>
-			  <Action ID="dc12eee9-2147-4857-8eea-33f86c41cf28" Caption="One Click Proof" ImageKey="RES:actions" Enabled="=Fields!Type=&quot;Child Bio - Draft&quot;">
-              <ExecuteRecordOperation RecordOperationID="1e807895-f729-4b37-90cb-d8c41c564a30" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>Notes\System record ID</SectionField>
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshPage />
-                </PostActionEvent>
-              </ExecuteRecordOperation>
-            </Action>
-			
-            <Action ID="cb3411c0-f0f4-4fce-bdff-cc587a94e261" Caption="Edit" ImageKey="RES:Edit" DefaultAction="True" CaptionResourceKey="$$edit">
-              <ShowDataForm DataFormID="741f3d26-7bcd-4026-9df9-29ffa45c09ae" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>Notes\System record ID</SectionField>
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshPage />
-                </PostActionEvent>
-              </ShowDataForm>
-              <HelpKey>GLBEditNotes.html</HelpKey>
-            </Action>
-            <Action ID="d43f4f3b-bc3d-4f2d-904e-a76e1ce4ede8" Caption="Date Proofed" ImageKey="RES:Edit">
-              <ShowDataForm DataFormID="b296c8f2-9235-4be3-8401-2bf063a8025f" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>Notes\System record ID</SectionField>
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshPage />
-                </PostActionEvent>
-              </ShowDataForm>
-            </Action>
-            <Action ID="f00cab6f-d634-4d1b-b3b9-5584a867a50c" Caption="Delete" ImageKey="res:delete" Enabled="true" CaptionResourceKey="$$delete">
-              <ExecuteRecordOperation RecordOperationID="27fe9cf7-b2e9-4d20-ab0d-b21028db413a" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>Notes\System record ID</SectionField>
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshPage />
-                </PostActionEvent>
-              </ExecuteRecordOperation>
-              <HelpKey>SPAttributesDelete.html</HelpKey>
-            </Action>
-          </Actions>
-        </Section>
-      </Sections>
-    </Tab> -->
+	 <Tab Caption="Bio" ID="c4b6c594-3009-4078-a6d1-e8bf1055aa70" Visible="true">
+		 <Sections>
+			 <Section ID="ae830cc2-1d35-4ac1-9665-c25ec0df822b" Caption="Child Bio" Visible="true">
+				 <DataList ID="37f0f7b5-f222-47dd-8419-a10ea4bae845" ShowRowTotals="False">
+					 <RenderStyle>
+						 <StandardView>
+							 <DetailViewForm ViewDataFormID="664ad089-af34-423f-9e53-33ada21f42ef" RecordIDField="Notes\System record ID" />
+						 </StandardView>
+					 </RenderStyle>
+				 </DataList>
+				 <Actions>
+					 <Action ID="b9c30bdf-c63b-41ae-9172-bffea2e2dd5e" Caption="Add" ImageKey="RES:NewItem" CaptionResourceKey="$$note">
+						 <ShowAddDataForm DataFormID="bd3f4bc6-51d6-409c-98f3-90927c533465" xmlns="bb_appfx_commontypes">
+							 <ActionContext>
+								 <PageContextID />
+							 </ActionContext>
+						 </ShowAddDataForm>
+						 <HelpKey>GLBEditNotes.html</HelpKey>
+					 </Action>
+					 <Action ID="cb3411c0-f0f4-4fce-bdff-cc587a94e261" Caption="Edit" ImageKey="RES:Edit" DefaultAction="True" CaptionResourceKey="$$edit">
+						 <ShowDataForm DataFormID="6ae14992-c9f8-4760-bb0f-225ab86eba96" xmlns="bb_appfx_commontypes">
+							 <ActionContext>
+								 <SectionField>Notes\System record ID</SectionField>
+							 </ActionContext>
+						 </ShowDataForm>
+						 <HelpKey>GLBEditNotes.html</HelpKey>
+					 </Action>
+					 <Action ID="d43f4f3b-bc3d-4f2d-904e-a76e1ce4ede8" Caption="Date Proofed" ImageKey="RES:Edit">
+						 <ShowDataForm DataFormID="b296c8f2-9235-4be3-8401-2bf063a8025f" xmlns="bb_appfx_commontypes">
+							 <ActionContext>
+								 <SectionField>Notes\System record ID</SectionField>
+							 </ActionContext>
+							 <PostActionEvent>
+								 <RefreshPage />
+							 </PostActionEvent>
+						 </ShowDataForm>
+					 </Action>
+					 <Action ID="f00cab6f-d634-4d1b-b3b9-5584a867a50c" Caption="Delete" ImageKey="res:delete" CaptionResourceKey="$$delete" Enabled="true">
+						 <ExecuteRecordOperation RecordOperationID="27fe9cf7-b2e9-4d20-ab0d-b21028db413a" xmlns="bb_appfx_commontypes">
+							 <ActionContext>
+								 <SectionField>Notes\System record ID</SectionField>
+							 </ActionContext>
+							 <PostActionEvent>
+								 <RefreshSection />
+							 </PostActionEvent>
+						 </ExecuteRecordOperation>
+						 <HelpKey>SPAttributesDelete.html</HelpKey>
+					 </Action>
+					 <Action ID="886db648-0d65-4c81-bba6-35defa854302" Caption="One Click Proof" ImageKey="RES:actions">
+						 <ExecuteRecordOperation RecordOperationID="1e807895-f729-4b37-90cb-d8c41c564a30" ShowPrompt="false" xmlns="bb_appfx_commontypes">
+							 <ActionContext>
+								 <SectionField>Notes\System record ID</SectionField>
+							 </ActionContext>
+							 <PostActionEvent>
+								 <RefreshPage />
+							 </PostActionEvent>
+						 </ExecuteRecordOperation>
+					 </Action>
+				 </Actions>
+			 </Section>
+		 </Sections>
+	 </Tab>
     <Tab Caption="Sponsorships" ID="a2f561b0-487c-4b01-9a5b-77d548fe976e">
       <Sections>
         <Section ID="7aa09fab-abd1-4cfc-a321-26418ee5806d" Caption="Active Sponsorship">
@@ -857,6 +850,40 @@
         </Action>
       </Actions>
     </PageActionGroup>
+	<PageActionGroup ID="6a23ead0-0148-430b-baaf-7aa5697d3ec8" Caption="Testing Tasks" Visible="= Globals.CurrentAppUserIsSysAdmin()">
+		<Actions>
+			<Action ID="a19f46b8-eb61-45bc-a117-2aeb0726dbc9" Caption="Set CCH Validated to False">
+				<ExecuteRecordOperation RecordOperationID="5e80b7c0-bff0-40a5-8af7-e6cfe1ae8e1b" xmlns="bb_appfx_commontypes">
+					<ActionContext>
+						<PageContextID />
+					</ActionContext>
+					<PostActionEvent>
+						<RefreshPage />
+					</PostActionEvent>
+				</ExecuteRecordOperation>
+			</Action>
+			<Action ID="1ad98ac3-7924-40bc-bead-2cb9117b5786" Caption="Set Registration Date to blank">
+				<ExecuteRecordOperation RecordOperationID="a1ae9878-6227-4436-9965-fe73b0bc4463" xmlns="bb_appfx_commontypes">
+					<ActionContext>
+						<PageContextID />
+					</ActionContext>
+					<PostActionEvent>
+						<RefreshPage />
+					</PostActionEvent>
+				</ExecuteRecordOperation>
+			</Action>
+			<Action ID="e7dbe98c-7776-4cfb-8870-3da13e8e37b6" Caption="Set Funded to No">
+				<ExecuteRecordOperation RecordOperationID="cffa3f8c-8112-4b95-9ace-906129da9653" xmlns="bb_appfx_commontypes">
+					<ActionContext>
+						<PageContextID />
+					</ActionContext>
+					<PostActionEvent>
+						<RefreshPage />
+					</PostActionEvent>
+				</ExecuteRecordOperation>
+			</Action>
+		</Actions>
+	</PageActionGroup>
   </PageActionGroups>
   <HelpKey>SPSponsorshipOpportunityPage.html</HelpKey>
   <PageExpressionForms>

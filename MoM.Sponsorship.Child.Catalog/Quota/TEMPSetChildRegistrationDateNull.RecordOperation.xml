@@ -1,0 +1,37 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a1ae9878-6227-4436-9965-fe73b0bc4463"
+	Name="Set Child Registration Date to Blank Record Operation"
+	Description="Temporary record operation to test the Child Quota Waiting List process"
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship opportunity child"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child">
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_TEMPSETCHILDREGISTRATIONDATENULL_UPDATE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_TEMPSETCHILDREGISTRATIONDATENULL_UPDATE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	update dbo.USR_CHILDEXTENSION set REGISTRATIONDATE = null where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+	
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+
+</RecordOperationSpec>

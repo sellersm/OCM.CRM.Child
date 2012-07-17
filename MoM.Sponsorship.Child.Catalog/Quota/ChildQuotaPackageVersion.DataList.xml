@@ -2,23 +2,26 @@
 	xmlns="bb_appfx_datalist"
 	xmlns:common="bb_appfx_commontypes" 
 	ID="c1199cc6-5a8e-4ed1-a060-365db9b7e294" 
-	Name="QuotaPackageVersion Data List"
-	Description="REPLACE_WITH_DESCRIPTION." 
-	Author="BETHESDA\cmayeda"
-	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER">
+	Name="Quota Package Version Data List"
+	Description="Used to display the version of the package deployment."
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
+
 
 	<!-- define the SP that returns the data for the datalist -->
 	<SPDataList SPName="USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION">
 		<common:CreateProcedureSQL>
 			<![CDATA[
+			
 create procedure dbo.USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION
 as
 begin
 	set nocount on;
 
-	select 'Version 0.1.11'
+	select '#VersionNumber#'
 
 end 
+
 ]]>
 		</common:CreateProcedureSQL>
 	</SPDataList>

@@ -17,7 +17,8 @@
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponOpNoteAddWithEligCheck.AddDataForm.xml" />
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildBioNote.EditDataForm.xml" />
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponOpporNoteChildBioDateProofed.Edit.xml" />
-        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.UtilityPageDefSpec_AddChildBioTab.xml" />
+		<!-- This was put in the SponsorshipOpportunity.Page.xml -->
+		<!--<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.UtilityPageDefSpec_AddChildBioTab.xml" />-->
   </common:DependencyList>
 
 </PackageSpec>
