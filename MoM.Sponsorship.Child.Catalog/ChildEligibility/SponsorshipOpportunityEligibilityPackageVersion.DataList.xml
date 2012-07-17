@@ -16,7 +16,7 @@ create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPACKAGEVE
 as
 begin
 
-	select '#VersionNumber#'
+	select 'Version #VersionNumber#'
 
 end
 

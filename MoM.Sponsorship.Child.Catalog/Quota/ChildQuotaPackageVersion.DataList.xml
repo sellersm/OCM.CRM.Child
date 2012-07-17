@@ -18,7 +18,7 @@ as
 begin
 	set nocount on;
 
-	select '#VersionNumber#'
+	select 'Version #VersionNumber#'
 
 end 
 
