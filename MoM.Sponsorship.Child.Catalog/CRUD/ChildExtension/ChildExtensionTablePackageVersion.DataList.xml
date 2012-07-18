@@ -1,11 +1,11 @@
 ﻿<DataListSpec
 	xmlns="bb_appfx_datalist"
 	xmlns:common="bb_appfx_commontypes"
-	ID="3db0165b-41c6-400c-b8aa-fd2f99a4dfaa"
-	Name="Child Eligibility Check Package Version Data List"
+	ID="b72a2008-44a0-4808-8447-5071e5d75f9d"
+	Name="Child Customizations Package Version Data List"
 	Description="Used to display the version of the package deployment."
 	Author="Cary Mayeda"
-	common:SecurityUIFolder="Sponsorship\Business Process\Eligibility" >
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
 
 	<!-- 
 	Remarks:    This is used to view the package version that has been loaded.  #VersionNumber# is modifed automatically on the build machine to match the build version number.
@@ -16,11 +16,11 @@
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
-	<SPDataList SPName="USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPACKAGEVERSION">
+	<SPDataList SPName="USR_USP_DATALIST_CHILDEXTENSIONTABLEPACKAGEVERSION">
 		<common:CreateProcedureSQL>
 			<![CDATA[
 			
-create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPACKAGEVERSION
+create procedure dbo.USR_USP_DATALIST_CHILDEXTENSIONTABLEPACKAGEVERSION
 as
 begin
 	select 'Version #VersionNumber#' as version
@@ -30,10 +30,11 @@ end
 		</common:CreateProcedureSQL>
 	</SPDataList>
 
+
 	<!-- define the output fields in the list -->
 	<Output>
 		<OutputFields>
-			<OutputField FieldID="version" Caption="Child Eligibility Check Package" DataType="String" />
+			<OutputField FieldID="version" Caption="Child Customizations Package" DataType="String" />
 		</OutputFields>
 	</Output>
 

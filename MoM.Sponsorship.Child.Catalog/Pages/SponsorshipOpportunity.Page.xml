@@ -28,7 +28,7 @@
     <DataForm ID="20a1c198-6745-49f0-984d-3751558113f2" />
   </SummarySection>
   <Tabs>
-    <Tab Caption="Who Am I" ID="b6cecb36-a9ab-4f9b-a9f5-c4e2cf10e790" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1">
+    <Tab Caption="Who Am I test 1" ID="b6cecb36-a9ab-4f9b-a9f5-c4e2cf10e790" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1">
       <Sections>
         <Section ID="c3587b66-6801-4e42-83b2-066a43ccc1b4" HideCaption="true" DisplayStyle="Inline">
           <DataForm ID="2c5e91ff-ec60-4f8a-9361-9eae6549aa69" />

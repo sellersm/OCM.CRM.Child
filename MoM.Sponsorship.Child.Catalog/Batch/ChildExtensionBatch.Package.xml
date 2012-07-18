@@ -55,7 +55,10 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
-		
-		</common:DependencyList>
+
+
+		<!-- Package Versions -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchPackageVersion.DataList.xml" />
+	</common:DependencyList>
 
 </PackageSpec>

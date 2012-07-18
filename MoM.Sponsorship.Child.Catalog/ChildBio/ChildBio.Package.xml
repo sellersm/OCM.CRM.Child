@@ -19,6 +19,11 @@
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponOpporNoteChildBioDateProofed.Edit.xml" />
 		<!-- This was put in the SponsorshipOpportunity.Page.xml -->
 		<!--<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.UtilityPageDefSpec_AddChildBioTab.xml" />-->
-  </common:DependencyList>
+
+
+		<!-- Package Versions -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildBioPackageVersion.DataList.xml" />		
+
+	</common:DependencyList>
 
 </PackageSpec>

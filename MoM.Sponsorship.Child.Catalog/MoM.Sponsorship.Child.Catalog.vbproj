@@ -364,7 +364,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Quota\ChildQuotaPackageVersion.DataList.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityPackageVersion.DataList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcess.Task.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\PamelasChildReservations.DataList.xml" />
     <EmbeddedResource Include="Quota\TEMPSetChildCCHValidatedFalse.RecordOperation.xml">

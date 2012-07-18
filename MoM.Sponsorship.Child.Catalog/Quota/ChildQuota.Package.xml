@@ -87,8 +87,8 @@
 		<!-- Tasks -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildQuotaWaitingListProcess.Task.xml" />
 		
-		<!-- Package Versions -->
 
+		<!-- Package Versions -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildQuotaPackageVersion.DataList.xml" />
 
 	</common:DependencyList>
