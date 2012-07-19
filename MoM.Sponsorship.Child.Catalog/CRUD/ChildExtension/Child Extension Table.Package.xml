@@ -97,13 +97,14 @@
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ExpressionDataForm.View.xml" />
 
     <!-- Pages -->
-    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildCCH.Page.xml" />
-    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Page.xml" />
-	<!-- Temporariliy removed so that we an test package load-->
-	<!--c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Page.xml" /-->
+	<!-- Moved to Child Extension TablePagesTasks.Package.xml -->
+		<!-- c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildCCH.Page.xml" /-->
+	    <!-- c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Page.xml" /-->
+		<!-- c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Page.xml" /-->
     
     <!-- Tasks -->
-    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AddChild.Task.xml" />
+		<!-- Moved to Child Extension TablePagesTasks.Package.xml -->
+		<!-- c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AddChild.Task.xml" /-->
 
 
 	<!-- Package Versions -->
