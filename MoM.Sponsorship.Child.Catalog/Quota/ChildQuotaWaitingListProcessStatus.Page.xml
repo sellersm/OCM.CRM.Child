@@ -65,6 +65,13 @@
 						</Action>
 					</Actions>
 				</Section>
+			</Sections>			
+		</Tab>
+		<Tab ID="BB8D78FF-61D9-46AF-B9C1-68DABE8031F7" Caption="Test Version uimodel">
+			<Sections>
+				<Section ID="4734F347-2444-46A7-B4CB-20249986FFB7">
+					<DataForm ID="238619d4-7f2b-4441-a7d1-36908e9e5300"/>					
+				</Section>
 			</Sections>
 		</Tab>
 

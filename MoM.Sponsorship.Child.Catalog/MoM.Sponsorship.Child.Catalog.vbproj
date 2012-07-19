@@ -250,6 +250,7 @@
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.View.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Utilities\ChildUtilitiesPackageVersion.DataList.xml" />
     <EmbeddedResource Include="Utilities\ChildUtilities.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -374,6 +375,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Quota\TEMPSetChildRegistrationDateNull.RecordOperation.xml" />
     <EmbeddedResource Include="Quota\TEMPSetChildFundedNo.RecordOperation.xml" />
+    <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPage.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtensionTablePackageVersion.DataList.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBioPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionBatchPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildUIModelVersion.View.xml" />
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>
