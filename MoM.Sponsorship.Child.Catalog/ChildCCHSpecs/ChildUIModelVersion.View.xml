@@ -3,13 +3,13 @@
     xmlns:common="bb_appfx_commontypes"
     ID="7e898b45-9536-432b-a7e0-4909313ce134"
     Name="Child UI Model Version"
-    Description="REPLACE_WITH_DESCRIPTION"
+    Description="Used to display the version of the ui model assembly."
     Author="Cary Mayeda"
     DataFormInstanceID="238619d4-7f2b-4441-a7d1-36908e9e5300"
-    RecordType="REPLACE_WITH_RECORDTYPE"
-    common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER"
-    >
+    RecordType="Child Extension"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
 
+	
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_CHILDUIMODELVERSION">
 		<common:CreateProcedureSQL>
@@ -27,7 +27,7 @@ as
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
 	-- will display a "no data loaded" message.
 	select @DATALOADED = 1,
-		   @VERSION = 'test'
+		   @VERSION = ''
 	
 	return 0;
 			]]>
@@ -38,7 +38,7 @@ as
 	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
 	<common:FormMetaData FixedDialog="true">
 		<common:FormFields>
-			<common:FormField FieldID="VERSION" Caption="Child UI Model" DataType="String" MaxLength="50" />
+			<common:FormField FieldID="VERSION" Caption="Child UI Model:" DataType="String" MaxLength="50" />
 		</common:FormFields>
 
         <common:WebUIComponent>

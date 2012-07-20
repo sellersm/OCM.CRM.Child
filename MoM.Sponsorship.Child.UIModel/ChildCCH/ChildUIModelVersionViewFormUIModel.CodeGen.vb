@@ -14,7 +14,7 @@ Option Infer On
 ''' <summary>
 ''' Represents the UI model for the 'Child UI Model Version' data form
 ''' </summary>
-<Global.Blackbaud.AppFx.UIModeling.Core.DataFormUIModelMetadata(Global.Blackbaud.AppFx.UIModeling.Core.DataFormMode.View, "7e898b45-9536-432b-a7e0-4909313ce134", "238619d4-7f2b-4441-a7d1-36908e9e5300", "REPLACE_WITH_RECORDTYPE")> _
+<Global.Blackbaud.AppFx.UIModeling.Core.DataFormUIModelMetadata(Global.Blackbaud.AppFx.UIModeling.Core.DataFormMode.View, "7e898b45-9536-432b-a7e0-4909313ce134", "238619d4-7f2b-4441-a7d1-36908e9e5300", "Child Extension")> _
 Partial Public Class [ChildUIModelVersionViewFormUIModel]
 	Inherits Global.Blackbaud.AppFx.UIModeling.Core.DataFormUIModel
 
@@ -36,7 +36,7 @@ Partial Public Class [ChildUIModelVersionViewFormUIModel]
         MyBase.Mode = Global.Blackbaud.AppFx.UIModeling.Core.DataFormMode.View
         MyBase.DataFormTemplateId = New Guid("7e898b45-9536-432b-a7e0-4909313ce134")
         MyBase.DataFormInstanceId = New Guid("238619d4-7f2b-4441-a7d1-36908e9e5300")
-        MyBase.RecordType = "REPLACE_WITH_RECORDTYPE"
+        MyBase.RecordType = "Child Extension"
         MyBase.FixedDialog = True
         MyBase.UserInterfaceUrl = "browser/htmlforms/ChildUIModelVersion.ViewForm.html"
 

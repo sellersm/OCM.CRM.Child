@@ -210,7 +210,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.SponsorshipOpportunityExt.Query.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.SponsorshipOpportunityExt.Query.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension_Constituent_Ext.Query.xml" />
@@ -383,7 +385,9 @@
     <EmbeddedResource Include="Batch\ChildExtensionBatchPackageVersion.DataList.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildUIModelVersion.View.xml" />
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension TablePagesTasks.Package.xml" />
-    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtensionTablePagesTasksPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtensionTablePagesTasksPackageVersion.DataList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>
