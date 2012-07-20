@@ -2,7 +2,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	ID="a129e399-232f-4cec-b425-3ba66aa4e7a6" 
-	Name="Child - Former Sponsorships" 
+	Name="Child Former Sponsorships" 
 	Description="List of former (inactive) sponsorships for a child" 
 	Author="Cary Mayeda"
 	xmlns="bb_appfx_datalist">

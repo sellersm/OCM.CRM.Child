@@ -25,6 +25,10 @@
 		<!-- Tasks -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AddChild.Task.xml" />
 
+		
+		<!-- Package Versions -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.PagesTasksPackageVersion.DataList.xml" />
+	
 	</common:DependencyList>
 
 </PackageSpec>

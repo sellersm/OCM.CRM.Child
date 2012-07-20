@@ -1,9 +1,9 @@
 ﻿<UIModelWizardMetadata>
-  <SpecFileName>ChildUIModelVersion.View.xml</SpecFileName>
+  <SpecFileName>ChildExtension.UIModelVersion.View.xml</SpecFileName>
   <Namespace></Namespace>
   <ClassName>ChildUIModelVersionViewFormUIModel</ClassName>
   <HtmlInfo GenerateHtml="true">
-    <HtmlFile>ChildUIModelVersion.ViewForm.html</HtmlFile>
+    <HtmlFile>ChildExtension.UIModelVersion.ViewForm.html</HtmlFile>
     <HtmlFolder></HtmlFolder>
   </HtmlInfo>
   <GenerateFromDatabase>true</GenerateFromDatabase>

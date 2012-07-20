@@ -90,7 +90,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Quota\ChildQuotaWaitingList.BusinessProcess.vb" />
+    <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
     <EmbeddedResource Include="ChildBio\UtilityPageDefSpec_AddChildBioTab.xml" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
@@ -133,21 +133,21 @@
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.Page.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.View.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatusHistory.DataList.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOppotunityEligibilityCheck.RecordOperation.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml">
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT.xml" />
     <EmbeddedResource Include="PageExpressions\ChildDeparture.ExpressionDataForm.View.xml" />
     <EmbeddedResource Include="PageExpressions\ChildExtension.ExpressionDataForm.View.xml" />
     <EmbeddedResource Include="Pages\ChildCCH.Page.xml" />
@@ -304,88 +304,92 @@
     <EmbeddedResource Include="Batch\ChildExtensionBatch.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="OtherTabs\ChildActiveSponsorships.DataList.xml" />
-    <EmbeddedResource Include="OtherTabs\ChildFormerSponsorships.DataList.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingList.BusinessProcess.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcess.Table.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatus.Page.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatus.View.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusHistory.DataList.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReport.Page.xml" />
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReportExceptions.DataList.xml">
+    <EmbeddedResource Include="OtherTabs\ChildExtension.ActiveSponsorships.DataList.xml" />
+    <EmbeddedResource Include="OtherTabs\ChildExtension.FormerSponsorships.DataList.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcess.Table.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatus.Page.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatus.View.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatusHistory.DataList.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatusReport.Page.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatusReportExceptions.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcessStatusReportSuccesses.DataList.xml" />
-    <EmbeddedResource Include="Quota\USR_UFN_CHILDQUOTA_GETWAITINGLIST.xml" />
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILDLIST.xml">
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatusReportSuccesses.DataList.xml" />
+    <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLIST.xml" />
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_CHILDLIST.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_CHILD.xml">
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_CHILD.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_COUNTRY.xml">
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_COUNTRY.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_PROJECT.xml">
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_PROJECT.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILDREN_REGISTER.xml">
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILDREN_REGISTER.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILD_REGISTER.xml" />
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILD_REGISTER.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.BusinessProcess.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Task.xml" />
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETELIGIBLEORPENDING.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILDREN_SETELIGIBLEORPENDING.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETINELIGIBLE.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILDREN_SETINELIGIBLE.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETELIGIBLEORPENDING.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_SETELIGIBLEORPENDING.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETINELIGIBLE.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_SETINELIGIBLE.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
-    <EmbeddedResource Include="Quota\USR_UFN_CHILDQUOTA_LOCKFAILED.xml" />
+    <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
+    <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_LOCKFAILED.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificationFailedInteraction.Add.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_SETPENDINGREASON.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_SETPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_SETPENDINGREASON.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILDREN_SETPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILDREN_REMOVEPENDINGREASON.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILDREN_REMOVEPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\USR_USP_CHILD_REMOVEPENDINGREASON.xml" />
-    <EmbeddedResource Include="Quota\ChildQuota.Package.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_REMOVEPENDINGREASON.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\ChildQuotaPackageVersion.DataList.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityPackageVersion.DataList.xml">
+    <EmbeddedResource Include="ChildQuota\ChildQuota.PackageVersion.DataList.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibility.PackageVersion.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\ChildQuotaWaitingListProcess.Task.xml" />
+    <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcess.Task.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\PamelasChildReservations.DataList.xml" />
-    <EmbeddedResource Include="Quota\TEMPSetChildCCHValidatedFalse.RecordOperation.xml">
+    <EmbeddedResource Include="ChildQuota\TEMPSetChildCCHValidatedFalse.RecordOperation.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quota\TEMPSetChildRegistrationDateNull.RecordOperation.xml" />
-    <EmbeddedResource Include="Quota\TEMPSetChildFundedNo.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildQuota\TEMPSetChildRegistrationDateNull.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildQuota\TEMPSetChildFundedNo.RecordOperation.xml" />
     <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPage.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtensionTablePackageVersion.DataList.xml" />
+    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtension.PackageVersion.DataList.xml" />
     <EmbeddedResource Include="ChildBio\ChildBioPackageVersion.DataList.xml" />
     <EmbeddedResource Include="Batch\ChildExtensionBatchPackageVersion.DataList.xml" />
-    <EmbeddedResource Include="ChildCCHSpecs\ChildUIModelVersion.View.xml" />
-    <EmbeddedResource Include="CRUD\ChildExtension\Child Extension TablePagesTasks.Package.xml" />
-    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtensionTablePagesTasksPackageVersion.DataList.xml">
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.UIModelVersion.View.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.PagesTasks.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRUD\ChildExtension\ChildExtension.PagesTasksPackageVersion.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Tables\TESTINGONLY.Table.xml" />

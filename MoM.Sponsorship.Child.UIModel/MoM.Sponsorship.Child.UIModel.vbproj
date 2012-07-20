@@ -110,10 +110,13 @@
       <DependentUpon>CCHChildExtensionWhereILiveFormUIModel.vb</DependentUpon>
     </Compile>
     <Compile Include="ChildCCH\CCHChildExtensionWhereILiveFormUIModel.vb" />
-    <Compile Include="ChildCCH\ChildUIModelVersionViewFormUIModel.CodeGen.vb">
-      <DependentUpon>ChildUIModelVersion.ViewForm.UIModel.vb</DependentUpon>
+    <Compile Include="ChildCCH\ChildExtensionUIModelVersionViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtension.UIModelVersion.ViewForm.UIModel.vb</DependentUpon>
     </Compile>
-    <Compile Include="ChildCCH\ChildUIModelVersion.ViewForm.UIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtension.UIModelVersion.ViewForm.UIModel.vb" />
+    <Compile Include="ChildCCH\ChildUIModelVersionViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtension.UIModelVersion.ViewForm.UIModel.vb</DependentUpon>
+    </Compile>
     <Compile Include="ChildDeparture\ChildDepartureEditPageSummaryDataFormUIModel.CodeGen.vb">
       <DependentUpon>ChildDepartureEditPageSummaryDataFormUIModel.vb</DependentUpon>
     </Compile>
@@ -215,10 +218,10 @@
     <None Include="Migrated rules for Blackbaud.CustomFx.ChildExtension.UIModel.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MoM.Sponsorship.Child.Catalog\ChildCCHSpecs\ChildUIModelVersion.View.xml">
-      <Link>LinkedSpecs\ChildUIModelVersion.View.xml</Link>
+    <None Include="..\MoM.Sponsorship.Child.Catalog\ChildCCHSpecs\ChildExtension.UIModelVersion.View.xml">
+      <Link>LinkedSpecs\ChildExtension.UIModelVersion.View.xml</Link>
     </None>
-    <Content Include="ChildCCH\ChildUIModelVersion.ViewForm.html" />
+    <Content Include="ChildCCH\ChildExtension.UIModelVersion.ViewForm.html" />
     <None Include="..\MyChildExtensionCatalog\CRUD\TESTINGONLY\TESTINGONLY.View.xml">
       <Link>LinkedSpecs\TESTINGONLY.View.xml</Link>
     </None>
@@ -282,8 +285,8 @@
     <None Include="..\MyChildExtensionCatalog\ChildDepartureSpecs\ChildDeparture.PageSummaryView.Edit.xml">
       <Link>LinkedSpecs\ChildDeparture.PageSummaryView.Edit.xml</Link>
     </None>
-    <Content Include="ChildCCH\ChildUIModelVersion.ViewForm.UIModel.xml">
-      <DependentUpon>ChildUIModelVersion.ViewForm.UIModel.vb</DependentUpon>
+    <Content Include="ChildCCH\ChildExtension.UIModelVersion.ViewForm.UIModel.xml">
+      <DependentUpon>ChildExtension.UIModelVersion.ViewForm.UIModel.vb</DependentUpon>
     </Content>
     <Content Include="ChildDeparture\ChildDepartureEditPageSummaryDataForm.html" />
     <Content Include="ChildDeparture\ChildDepartureEditPageSummaryDataFormUIModel.xml">

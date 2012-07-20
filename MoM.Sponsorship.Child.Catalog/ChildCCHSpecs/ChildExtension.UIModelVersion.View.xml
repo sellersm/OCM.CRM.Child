@@ -3,13 +3,21 @@
     xmlns:common="bb_appfx_commontypes"
     ID="7e898b45-9536-432b-a7e0-4909313ce134"
     Name="Child UI Model Version"
-    Description="Used to display the version of the ui model assembly."
+    Description="Used to display the version of the ui model assembly and html file."
     Author="Cary Mayeda"
     DataFormInstanceID="238619d4-7f2b-4441-a7d1-36908e9e5300"
     RecordType="Child Extension"
 	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
 
-	
+	<!-- 
+	Remarks:    This is used to view the ui model assembly and html version that has been loaded. The version numbers reside in the uimodel class and html file.
+
+	History:
+	Date            Modified By     Comments
+	19-Jul-2012		CMayeda			Initial Version
+	-->
+
+
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_CHILDUIMODELVERSION">
 		<common:CreateProcedureSQL>
@@ -42,9 +50,9 @@ as
 		</common:FormFields>
 
         <common:WebUIComponent>
-            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildUIModelVersionViewFormUIModel" />
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildExtensionUIModelVersionViewFormUIModel" />
             <common:WebUI>
-                <common:ExternalResource Url="browser/htmlforms/custom/ChildUIModelVersion.ViewForm.html" />
+                <common:ExternalResource Url="browser/htmlforms/custom/ChildExtension.UIModelVersion.ViewForm.html" />
             </common:WebUI>
         </common:WebUIComponent>
 	</common:FormMetaData>
