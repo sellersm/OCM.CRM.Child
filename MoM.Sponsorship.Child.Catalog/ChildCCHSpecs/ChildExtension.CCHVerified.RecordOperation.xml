@@ -32,6 +32,7 @@ as begin
 	 where	SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	
 	exec dbo.USR_USP_CHILD_REMOVEPENDINGREASON @ID, null, @pendingReasonString_NewChildVerification, @CHANGEAGENTID
+	exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ID, null, @CHANGEAGENTID
 	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @ID, 1, @CHANGEAGENTID 	-- 1 - Leave ineligible status, only update those pending or eligible
 	
 	return 0;

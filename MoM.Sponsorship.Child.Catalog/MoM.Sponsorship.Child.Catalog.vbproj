@@ -123,7 +123,9 @@
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Add.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Add.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.BusinessProcess.vb" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.DataList.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcess.Edit.xml" />
@@ -133,7 +135,9 @@
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.Page.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatus.View.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityProcessStatusHistory.DataList.xml" />
-    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.RecordOperation.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
@@ -152,7 +156,6 @@
     <EmbeddedResource Include="PageExpressions\ChildExtension.ExpressionDataForm.View.xml" />
     <EmbeddedResource Include="Pages\ChildCCH.Page.xml" />
     <EmbeddedResource Include="Pages\ChildDeparture.Page.xml" />
-    <EmbeddedResource Include="Pages\ChildDepartures.Page.xml" />
     <EmbeddedResource Include="Pages\ChildTransfers.Page.xml" />
     <EmbeddedResource Include="Pages\PageDefinitionSpec1.xml" />
     <EmbeddedResource Include="Pages\SponsorshipOpportunity.Page.xml">
@@ -305,7 +308,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="OtherTabs\ChildExtension.ActiveSponsorships.DataList.xml" />
-    <EmbeddedResource Include="OtherTabs\ChildExtension.FormerSponsorships.DataList.xml" />
+    <EmbeddedResource Include="OtherTabs\ChildExtension.FormerSponsorships.DataList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.xml" />
     <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcess.Table.xml" />
     <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcessStatus.Page.xml" />
@@ -350,9 +355,6 @@
     <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_LOCKFAILED.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml" />
-    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificationFailedInteraction.Add.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_SETPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -392,6 +394,11 @@
     <EmbeddedResource Include="CRUD\ChildExtension\ChildExtension.PagesTasksPackageVersion.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChildCCHSpecs\Blackbaud.ConstituentInteraction2.Add.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificaitonFailedInterationWrapped.Add.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPackageVersion.DataList.xml" />
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>

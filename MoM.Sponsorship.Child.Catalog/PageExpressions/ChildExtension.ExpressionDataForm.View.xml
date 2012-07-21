@@ -26,9 +26,10 @@
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSIONEXPRESSION
 (
 	@ID uniqueidentifier,
-	@DATALOADED bit = 0 output,				-- used by the framework, see below
-	@CCHEXISTS bit = null output,			-- used to determine if a record exists or not
-	@CCHVALIDATED bit = null output			-- used to determine if the CCH has been validated for a new child
+	@DATALOADED bit = 0 output,						-- used by the framework, see below
+	@CCHEXISTS bit = null output,					-- used to determine if a record exists or not
+	@CCHVALIDATED bit = null output,				-- used to determine if the CCH has been validated for a new child
+	@CONSTITUENTID uniqueidentifier = null output	-- used to pass to constituent forms
 )
 as
 	set nocount on;
@@ -40,13 +41,15 @@ as
 	-- populate the output parameters, which correspond to fields on the form.  Note that
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
 	-- will display a "no data loaded" message.
-	select 
-		@CCHEXISTS = 1,
-		@CCHVALIDATED = CCHVALIDATED
+	select 	@CCHEXISTS = 1,
+			@CCHVALIDATED = ch_ext.CCHVALIDATED,
+			@CONSTITUENTID = so_child.CONSTITUENTID
 			 
-	from dbo.USR_CHILDEXTENSION
-	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
-	
+ 	  from	dbo.USR_CHILDEXTENSION ch_ext
+ left join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on 
+				ch_ext.SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID
+	 where	ch_ext.SPONSORSHIPOPPORTUNITYCHILDID = @ID
+		
 	return 0;
 			]]>
 		</common:CreateProcedureSQL>
@@ -58,6 +61,7 @@ as
 		<common:FormFields>
 			<common:FormField FieldID="CCHEXISTS" Caption="ChildExtension Record Found" DataType="Boolean" />
 			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" />
+			<common:FormField FieldID="CONSTITUENTID" Caption="Constituent ID (not lookup id)" DataType="Guid" />
 		</common:FormFields>
 	</common:FormMetaData>
 
