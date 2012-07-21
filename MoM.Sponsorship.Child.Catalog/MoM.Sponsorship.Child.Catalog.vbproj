@@ -398,7 +398,9 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificaitonFailedInterationWrapped.Add.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPackageVersion.DataList.xml" />
+    <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPackageVersion.DataList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>

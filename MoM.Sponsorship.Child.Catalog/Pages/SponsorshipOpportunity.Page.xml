@@ -802,8 +802,11 @@
 		  <Action ID="A56EA60A-3922-480D-98AA-01484E9AFE22" Caption="CCH - Verification Failed" ImageKey="RES:RecordOperationSpec" Visible="=(not Page.Fields!CCHVALIDATED) AndAlso Page.Fields!CCHEXISTS">
 			  <ShowAddDataForm DataFormID="d9220d34-7ccd-4551-8144-6943dc19bebc" xmlns="bb_appfx_commontypes">
 				  <ActionContext>
-					  <PageContextID />
+					  <Expression>=Page.Fields!CONSTITUENTID</Expression>
 				  </ActionContext>
+				  <PostActionEvent>
+					  <RefreshPage />
+				  </PostActionEvent>
 			  </ShowAddDataForm>
 		  </Action>
 	  </Actions>
