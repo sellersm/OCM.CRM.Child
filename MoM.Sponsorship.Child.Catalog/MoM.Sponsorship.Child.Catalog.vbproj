@@ -401,6 +401,7 @@
     <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPackageVersion.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Batch\USR_UFN_ISBATCHCOMMITTED.xml" />
     <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>
