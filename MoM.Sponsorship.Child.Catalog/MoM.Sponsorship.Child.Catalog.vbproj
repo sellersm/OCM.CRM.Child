@@ -261,13 +261,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCOUNTRYID.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETPROJECTID.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.View.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Add.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Edit.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLYDelete.RecordOperation.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.DataList.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Query.xml" />
-    <EmbeddedResource Include="CRUD\TESTINGONLY\TESTINGONLY.Package.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DepartureReason.Edit.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.SpiritualPhysicalImpact.Edit.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.SocialImpact.Edit.xml" />
@@ -402,7 +395,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Batch\USR_UFN_ISBATCHCOMMITTED.xml" />
-    <Content Include="Tables\TESTINGONLY.Table.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.PageSummaryView.View.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
