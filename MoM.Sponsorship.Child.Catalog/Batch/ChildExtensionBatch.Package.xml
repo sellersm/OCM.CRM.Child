@@ -56,8 +56,10 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
 
-
-		<!-- Package Versions -->
+    <!-- User Function -->
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_ISBATCHCOMMITTED.xml" />
+                       
+    <!-- Package Versions -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchPackageVersion.DataList.xml" />
 	</common:DependencyList>
 
