@@ -1,13 +1,23 @@
 <TableSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-xmlns="bb_appfx_table"
-xmlns:common="bb_appfx_commontypes"
-ID="1c0af01f-9ca2-4fe7-ba20-b36093440527"
-Name="Child Extension Table"
-Description="Child Extension Table for BPR CCH"
-Author="Mark Sellers"
-Tablename="USR_CHILDEXTENSION"
-IsCustomizable="true">
-  <Fields>
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes"
+	ID="1c0af01f-9ca2-4fe7-ba20-b36093440527"
+	Name="Child Extension Table"
+	Description="Child Extension Table for BPR CCH"
+	Author="Mark Sellers"
+	Tablename="USR_CHILDEXTENSION"
+	IsCustomizable="true">
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	25-Jul-2012		CMayeda			Added trigger for Child Lookup IDs
+
+	-->
+
+	<Fields>
     <!--<GuidField Description="SPONSORSHIPOPPORTUNITYID" IsUnique="true" Name="SPONSORSHIPOPPORTUNITYID" Required="true" />-->
     <!--<GuidField Description="SPONSORSHIPOPPORTUNITYGROUPID" IsUnique="false" Name="SPONSORSHIPOPPORTUNITYGROUPID" Required="true"/>-->
     <!-- Will need a foreignkey field possibly to Child Departures table -->
@@ -127,6 +137,23 @@ IsCustomizable="true">
     <BooleanField Description="CCH Validated" Name="CCHVALIDATED" DefaultValue="false"/>
   </Fields>
   <!--<CheckConstraints />
-  <Indexes />
-  <Triggers />-->
+  <Indexes /-->
+	
+	<Triggers>
+		<Trigger Name="TR_CHILDEXTENSION_LOOKUPID_INSERT">
+			<CreateTriggerSQL>
+				<![CDATA[				
+				
+				create trigger TR_CHILDEXTENSION_LOOKUPID_INSERT on dbo.USR_CHILDEXTENSION after insert not for replication
+				as begin
+					update	SPONSORSHIPOPPORTUNITY
+					   set	CUSTOMIDENTIFIER = 'C' + cast ((SPONSORSHIPOPPORTUNITY.SEQUENCEID - 10000000 + 400000) as varchar(6))
+					 where	exists (select ID from SPONSORSHIPOPPORTUNITYCHILD sop_child where sop_child.ID = SPONSORSHIPOPPORTUNITY.ID)
+					   and	exists (select ID from inserted where inserted.SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITY.ID)
+				end
+				 ]]>
+			</CreateTriggerSQL>
+		</Trigger>	  
+	</Triggers>	  
+  
 </TableSpec>

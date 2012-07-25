@@ -9,10 +9,19 @@
   PrimaryKeyField="ID"
   RecordType="Sponsorship Opportunity"
   common:SecurityUIFolder="Sponsorship\Opportunity"
-  UseInReportModelGenerator="true"  
-  >
+  UseInReportModelGenerator="true" >
 
-  <!-- define the view used to return data for the query -->
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	25-Jul-2012		CMayeda			Removed V_QUERY_CONSTITUENT from related views, since it contains ISCONSTITUENT = 1 in the where clause
+									Added related view for USR_V_QUERY_INTERACTION to include interactions on the child's queries
+
+	-->
+
+	<!-- define the view used to return data for the query -->
   <ViewImplementation ViewName="USR_V_QUERY_USR_CHILDEXTENSION_SPONSORSHIPOPPORTUNITY_EXT">
     <ViewSQL>
       <![CDATA[
@@ -95,7 +104,7 @@ select
   USR_CHILDEXTENSION.DATECHANGED,
   USR_CHILDEXTENSION.TSLONG,
   USR_CHILDEXTENSION.FUNDED,
-  CONSTITUENTID
+  soc.CONSTITUENTID
 from 
     dbo.USR_CHILDEXTENSION
     join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
@@ -111,7 +120,8 @@ from
     <OutputFields>
       <OutputField Name="ID" Caption="System record ID" Category="System Fields" DataType="Guid" />
       <OutputField Name="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid" />
-      <OutputField Name="SIBLINGSID" Caption="Siblings" DataType="Guid" />
+	  <OutputField Name="CONSTITUENTID" Caption="Constituent ID" DataType="Guid" IsHidden="true" />
+	  <OutputField Name="SIBLINGSID" Caption="Siblings" DataType="Guid" />
       <OutputField Name="BIRTHDATEACCURACYCODEID_TRANSLATION" Caption="Birthdate accuracy">
         <LookupInfo>
           <CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE" IncludeInactive="true" />
@@ -252,8 +262,9 @@ from
 
   <RelationshipOperations>    
     <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="SPONSORSHIPOPPORTUNITYCHILDID" PathAlias="Child Extension"/>
-    <!--<AddToParentView ParentView="V_QUERY_CONSTITUENT" ParentViewRelatedField="ID" Field="CONSTITUENTID" PathAlias="Constituent"/>-->
-    <AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="CONSTITUENTID" PathAlias="Constituent" />
+	<AddRelatedView RelatedView="USR_V_QUERY_INTERACTION" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Interactions"/>
+	  
+
   </RelationshipOperations>
 </QueryViewSpec>
 
