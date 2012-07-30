@@ -144,7 +144,9 @@
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
@@ -289,7 +291,9 @@
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_DELETEBATCHLOCK.xml" />
-    <EmbeddedResource Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
+    <EmbeddedResource Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
@@ -405,6 +409,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.GeneralComments.View.xml" />
     <EmbeddedResource Include="Tables\Code Tables\ChildClassLevel.CodeTable.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

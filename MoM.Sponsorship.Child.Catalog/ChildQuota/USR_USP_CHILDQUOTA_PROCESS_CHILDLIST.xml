@@ -13,6 +13,7 @@
 	History:
 	Date            Modified By     Comments
 	02-Jul-2012		CMayeda			Initial Version
+	29-Jul-2012		CMayeda			Added a check on the @changeAgentUserName, because sometimes the @changeAgentID is not null, but also not valid.
 	-->
 
 	<CreateProcedureSQL>
@@ -39,17 +40,26 @@ begin
 	-- Get ChangeAgent if none was passed into the sproc
   	if @changeAgentID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
- 
-	-- Get the User Name
-	declare @changeAgentUserName nvarchar(128)
-	select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
-  if @changeAgentUserName IS NULL
-  BEGIN
-    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
-  	select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
-    if @changeAgentUserName IS NULL
-      RAISERROR ('Unable to determine USERNAME value.', 13, 1)
-  END
+
+	declare @changeAgentUserName nvarchar(128) = null
+
+	begin try
+		-- Get the User Name
+		select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
+		
+		-- Added this check because sometimes the @changeAgentID is not null, but also not valid.
+		if @changeAgentUserName is null
+		begin
+			exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+  			select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
+			if @changeAgentUserName is null
+			  raiserror ('Unable to determine USERNAME value.', 13, 1)
+		end
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
 
 	-- Store current date/time
 	declare @currentDateTime datetime							
