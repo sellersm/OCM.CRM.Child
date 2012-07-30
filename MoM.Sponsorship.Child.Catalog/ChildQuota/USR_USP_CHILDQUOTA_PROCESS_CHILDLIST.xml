@@ -43,7 +43,13 @@ begin
 	-- Get the User Name
 	declare @changeAgentUserName nvarchar(128)
 	select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
-
+  if @changeAgentUserName IS NULL
+  BEGIN
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+  	select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
+    if @changeAgentUserName IS NULL
+      RAISERROR ('Unable to determine USERNAME value.', 13, 1)
+  END
 
 	-- Store current date/time
 	declare @currentDateTime datetime							
