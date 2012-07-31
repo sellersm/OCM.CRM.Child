@@ -146,17 +146,11 @@ end
 
 begin try
   DECLARE @ERRORMSG nvarchar(100)
-  IF @VALIDATEONLY = 1 
-  BEGIN
-    IF (1=1)
-    BEGIN
-    print 'Validated';
-      --SET @ERRORMSG = 'this is a test, if the validation did not pass you would see this message with real data!'
-      --RAISERROR (@ERRORMSG, 13, 1)
-    END
-  END
-  ELSE
-  BEGIN
+  
+  /*
+  *** Took out the @VALIDATEONLY test because the requirements call for no validation of the child
+  */
+  
   
   -- *******************************************************************************
   -- ** NOTE: this is where the logic goes for the quota and everything else goes **
@@ -183,7 +177,7 @@ begin try
     end
   
   --Get default eligibility
-  declare @ELIGIBILITYCODE bit = null;
+  declare @ELIGIBILITYCODE tinyint = null;
   set @ELIGIBILITYCODE = 2;
   --select @ELIGIBILITYCODE = DEFAULTCHILDELIGIBILITYCODE from dbo.SPONSORSHIPINFO order by DATEADDED;
   -- NEED function to get the pending reason of 'Batch Commit'
@@ -196,6 +190,7 @@ begin try
     (ID, SPONSORSHIPOPPORTUNITYGROUPID,SPONSORSHIPLOCATIONID,ELIGIBILITYCODE,AVAILABILITYCODE,ADDEDBYID,CHANGEDBYID,DATEADDED,DATECHANGED,SPONSORSHIPREASONID)
     values
     (@ID,@SPONSORSHIPOPPORTUNITYGROUPID,@SPONSORSHIPLOCATIONID,@ELIGIBILITYCODE,@AVAILABILITYCODE,@CHANGEAGENTID,@CHANGEAGENTID,@CURRENTDATE,@CURRENTDATE,@SPONSORSHIPREASONID)
+  
   
   insert into dbo.SPONSORSHIPOPPORTUNITYLOCK
     (ID,ADDEDBYID,CHANGEDBYID,DATEADDED,DATECHANGED)
@@ -236,10 +231,6 @@ begin try
    -- For each child
    set @QUOTALOCKFAILED = dbo.USR_UFN_CHILDQUOTA_LOCKFAILED  (@SPONSORSHIPOPPORTUNITYCHILDID, @lockFailed)
    exec dbo.USR_USP_CHILDQUOTA_PROCESS_CHILD @SPONSORSHIPOPPORTUNITYCHILDID, @QUOTALOCKFAILED, @CHANGEAGENTID
-   
-
-   END   -- end of IF above @VALIDATEONLY = 1, if only validating without doing the inserting
-
    
 end try
 
