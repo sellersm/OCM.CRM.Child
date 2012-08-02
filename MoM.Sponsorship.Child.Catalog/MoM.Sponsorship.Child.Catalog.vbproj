@@ -424,6 +424,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
