@@ -262,7 +262,7 @@ from
 
   <RelationshipOperations>    
     <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="SPONSORSHIPOPPORTUNITYCHILDID" PathAlias="Child Extension"/>
-	<AddRelatedView RelatedView="USR_V_QUERY_INTERACTION" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Interactions"/>
+	<!--<AddRelatedView RelatedView="USR_V_QUERY_INTERACTION" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Interactions"/>-->
 	  
 
   </RelationshipOperations>
