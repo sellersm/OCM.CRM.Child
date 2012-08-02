@@ -1,0 +1,51 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="81ed965d-c605-401b-9baa-05c796beaea0"
+	Name="USR_UFN_CHILDQUOTA_LOCKFAILED"
+	Description="Determine if a project or country failed to get a lock"
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILDQUOTA_LOCKFAILED" >
+	
+	<!-- 
+	Remarks:    This takes in a USR_UDT_LOCKFAILURE table, which was returned from one of the sproces USR_USP_CHILDQUOTA_PROCESS_*****
+				It contains the rows of any projects/countries that were not locked.
+				These need to be ignored in any subsequent batch processing, because it could cause children being registered out of turn.
+				To make it easy for the batch process, this sproc takes in a sponsorship opportunity child id and finds the project / country that the child belongs to
+				This sproc returns
+					0	if the project/country was either not processed or locked correctly.  Batch processing can continue normally on this child.
+					1	if the project/country could not be found or if a lock attempt failed for the project/country
+
+	History:
+	Date            Modified By     Comments
+	12-Jul-2012		CMayeda			Initial Version
+
+	-->
+	
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILDQUOTA_LOCKFAILED (
+	@sponsorshipOpportunityChildID uniqueidentifier,
+	@lockTable dbo.USR_UDT_LOCKFAILURE readonly
+)
+returns bit
+with execute as caller
+as begin
+		declare @lockFailureExists bit = 0
+		declare @projectID uniqueidentifier = null
+		declare @countryID uniqueidentifier = null
+		
+		set @projectID = dbo.USR_UFN_CHILD_GETPROJECTID (@sponsorshipOpportunityChildID)
+		set @countryID  = dbo.USR_UFN_CHILD_GETCOUNTRYID (@sponsorshipOpportunityChildID)
+		
+		select @lockFailureExists = 1
+		  from @lockTable
+		 where OBJECTID in (@projectID, @countryID)
+			
+	
+	return @lockFailureExists
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

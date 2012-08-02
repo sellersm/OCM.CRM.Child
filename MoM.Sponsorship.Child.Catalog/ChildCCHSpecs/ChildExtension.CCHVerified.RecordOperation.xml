@@ -1,0 +1,60 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="193bf623-e113-40cb-b66f-ceb346b7b60f" 
+	Name="CCH Verified" 
+	Description="This updates the status of a CCH to verified"
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship opportunity child"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	01-Jul-2012		CMayeda			Initial Version
+	01-Aug-2012		CMayeda			Modified for the changed signature of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to use USR_USP_CHILD_CHECKELIGIBILITY instead
+	-->
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USP_CHILDEXTENSION_CCHVERIFIED_UPDATE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_CHILDEXTENSION_CCHVERIFIED_UPDATE
+(
+	@id uniqueidentifier,
+	@changeAgentID uniqueidentifier
+)
+as begin
+	declare @pendingReasonString_NewChildVerification nvarchar(100) = 'New Child Verification'
+	
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+		
+	update	dbo.USR_CHILDEXTENSION 
+	   set	CCHVALIDATED = 1,
+			DATECHANGED =  getdate(),
+			CHANGEDBYID = @CHANGEAGENTID
+	 where	SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	
+	exec dbo.USR_USP_CHILD_REMOVEPENDINGREASON @id, null, @pendingReasonString_NewChildVerification, @changeAgentID
+	exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @id, @changeAgentID
+	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @id, 1, @changeAgentID 	-- 1 - Leave ineligible status, only update those pending or eligible
+	
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Click Yes to verify the CCH form." />
+	</Prompt>
+
+</RecordOperationSpec>

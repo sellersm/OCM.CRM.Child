@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="4dc3ecaf-684e-4560-85e6-1fbd1f1d3f05" 
+	Name="Housing Roof Materials Codes"
+	Description="Housing Roof Materials Code values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_HOUSINGROOFINGMATERIALCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

@@ -1,0 +1,41 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="982b1623-afed-4eb4-9e5a-5deb0801585c"
+	Name="TestBatchTable"
+	Description="TestBatch table for testing a batch"
+	Author="memphis-PC\Administrator"
+	Tablename="USR_BATCHTESTINGONLY"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+		<ForeignKeyField Name="BATCHID" ForeignTable="BATCH" Description="The primary ID from the batch table." OnDelete="CascadeDelete" Required="true"/>
+		<SequenceField Name="SEQUENCE" Description="The incremental sequence number to identify each record in a batch."/>
+		<TextField Name="TESTNAME" Description="Test Name Field" Length="200" Required="true"/>
+		<BooleanField Name="TESTFLAG" Description="Test Switch" DefaultValue="false"/>
+		<TextField Name="TESTDESCRIPTION" Description="Description of Test Switch" Length="100"/>
+		<ForeignKeyField Description="The location for this test." Name="SPONSORSHIPLOCATIONID" Required="true" ForeignTable="SPONSORSHIPLOCATION" />
+	</Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!--<CheckConstraints>
+
+	</CheckConstraints>-->
+
+	<!-- define any indexes on the table -->
+	<Indexes>
+		<Index IsUnique="true">
+			<IndexFields>
+				<IndexField Name="BATCHID"/>
+				<IndexField Name="TESTNAME"/>
+			</IndexFields>
+		</Index>
+	</Indexes>
+		
+	<!-- define any triggers on the table -->
+	<!--<Triggers>
+
+	</Triggers>-->
+
+</TableSpec>

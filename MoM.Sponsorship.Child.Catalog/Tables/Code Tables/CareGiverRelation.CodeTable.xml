@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="ce8d1a90-6c14-40fb-b9c1-06c335e6e406" 
+	Name="Care Giver Relation Code Values"
+	Description="Care Giver Relation Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CAREGIVERRELATIONCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

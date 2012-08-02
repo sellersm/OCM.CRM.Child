@@ -1,0 +1,58 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="5e556a0b-6799-49da-b61d-57e4ffe81fec"
+	Name="USR_USP_CHILDREN_REGISTER"
+	Description="Used to register a set of children"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDREN_REGISTER">
+
+	<!-- 
+	Remarks:    This will set all the children in @childList to registered (REGISTRATIONDATE = today's date, and FUNDED = 1)
+				This does not change the eligibility status on the child.  Call USR_USP_CHILDREN_SETELIGIBLEORPENDING to set eligibility of the child.
+
+	History:
+	Date            Modified By     Comments
+	02-Jul-2012		CMayeda			Initial Version
+
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+
+create procedure dbo.USR_USP_CHILDREN_REGISTER (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,		-- The list of children to register
+	@changeAgentID uniqueidentifier)					-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	
+as
+begin
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+    -- Used for setting date fields to today's date
+	declare @currentDate datetime = null  
+	set @currentDate = getdate()	
+
+	begin try
+		update dbo.USR_CHILDEXTENSION
+			set REGISTRATIONDATE = @currentDate,
+				FUNDED = 1,
+				CHANGEDBYID = @changeAgentID,
+				DATECHANGED = @currentDate	
+		 where exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID)
+
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	return 0
+	
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

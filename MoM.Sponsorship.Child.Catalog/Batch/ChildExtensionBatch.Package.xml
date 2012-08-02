@@ -1,0 +1,66 @@
+<PackageSpec 
+		xmlns="bb_appfx_package"
+		xmlns:common="bb_appfx_commontypes"
+		ID="e0135e33-d4d8-4446-a3f9-0026f4dc68d1"
+		Name="Child Extension Batch Package"
+		Description="Batch Package for Custom ChildExtension (CCH) Batch Type"
+		Author="Memphis Sellers"
+		>
+
+	<!-- 
+	Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
+	a table that hasn't been loaded, etc.  In general, the following order is recommended:
+	
+	Once the Batch Type Spec is complete, we can use LoadSpec to load the dependent specs into the database. Make sure the following specs are loaded prior to loading the BatchTypeSpec. 
+	•Batch Add
+	•Batch Edit
+	•Batch Delete
+	•Batch Commit Add
+
+	ChildExtension is the Child/CCH information.  It is used to hold the CCH and new Child entry data
+
+	History:
+	Date            Modified By     Comments
+	14-Jul-2012		CMayeda			Added USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml
+
+	-->
+
+	
+	<common:DependencyList>
+		<!-- Batch Table -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.Batch.Table.xml" />
+		
+		<!-- Batch Add -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchAddRow.Add.xml" />
+		
+		<!-- Batch Edit -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchEditRow.Edit.xml" />
+		
+		<!-- Batch Delete -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchDeleteRow.Delete.xml" />
+		
+		<!-- Batch Commit Add -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionAddBatch.Commit.xml" />
+		
+		<!-- Batch Type -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatch.BatchType.xml" />
+		
+		<!-- Batch Lock -->
+		<!-- Table -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.BatchLock.Table.xml" />
+
+		<!-- Sprocs -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_BATCHLOCKINSERT.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_DELETEBATCHLOCK.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_GETBATCHLOCKBYOBJECTID_APPUSERID.xml" />
+
+    <!-- User Function -->
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_ISBATCHCOMMITTED.xml" />
+                       
+    <!-- Package Versions -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionBatchPackageVersion.DataList.xml" />
+	</common:DependencyList>
+
+</PackageSpec>

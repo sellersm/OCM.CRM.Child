@@ -1,0 +1,367 @@
+<AddDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="06465927-9d7c-4e8a-8b8e-0defd8cc90ae"
+    Name="Child Extension Table Add Form"
+    Description="Used for adding a new Child Extension Table"
+    Author="Memphis Sellers"
+    RecordType="Child Extension Table"
+    DataFormInstanceID="199882b0-1b47-4af7-b1f6-186f88e5c343"
+    c:SecurityUIFolder="Child Extension Table"
+    xmlns="bb_appfx_adddataformtemplate"
+    >
+    <SPDataForm>
+      <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSION_PRELOAD">
+        <c:CreateProcedureSQL>
+          <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSION_PRELOAD
+(
+	@CONTEXTID uniqueidentifier,
+  @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+	@FIRSTNAME nvarchar(100) = null output,
+  @MIDDLENAME nvarchar(100) = null output,
+  @LASTNAME nvarchar(100) = null output,
+  @GENDER nvarchar(10) = null output,
+  @AGE tinyint = null output,
+  @BIRTHDATE datetime = null output
+)
+as
+	set nocount on;
+		
+	--populate the fields that have default values that should be fetched from the database
+	--select @FIELD1 = FIELD1
+  
+  select @FIRSTNAME = soc.FIRSTNAME, 
+	   @MIDDLENAME = soc.MIDDLENAME, 
+	   @LASTNAME = soc.LASTNAME, 
+	   @GENDER = soc.GENDER, 
+	   @AGE = soc.AGE,
+	   @BIRTHDATE = soc.BIRTHDATE,
+     @SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
+from dbo.SponsorshipOpportunityChild soc
+left outer join dbo.USR_CHILDEXTENSION ce on ce.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
+where soc.ID = @CONTEXTID
+	
+	return 0;				
+				]]>
+        </c:CreateProcedureSQL>
+      </LoadImplementation>
+
+
+      <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILD_EXTENSION_TABLE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILD_EXTENSION_TABLE
+(
+    @ID uniqueidentifier = null output,
+    @CHANGEAGENTID uniqueidentifier = null,
+    @CONTEXTID uniqueidentifier,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null,
+    @SIBLINGSID uniqueidentifier = null,
+    @BIRTHDATEACCURACYCODEID uniqueidentifier = null,
+    @CURRENTPROGRAMCOMPLETIONDATE datetime = null,
+    @CHILDNAMESUFFIXCODEID uniqueidentifier = null,
+    @CHILDLIVESWITHCODEID uniqueidentifier = null,
+    @FATHERWORKSASCODEID uniqueidentifier = null,
+    @FATHERWORKSASOTHER nvarchar(50) = '',
+    @MOTHERWORKSASCODEID uniqueidentifier = null,
+    @MOTHERWORKSASOTHER nvarchar(50) = '',
+    @CAREGIVERRELATIONCODEID uniqueidentifier = null,
+    @CAREGIVERRELATIONOTHER nvarchar(50) = '',
+    @CAREGIVERWORKSASCODEID uniqueidentifier = null,
+    @CAREGIVERWORKSASOTHER nvarchar(50) = '',
+    @CAREGIVERREASONCODEID uniqueidentifier = null,
+    @REASONFORCAREGIVEROTHER nvarchar(50) = '',
+    @NUMBEROFSISTERS tinyint = 0,
+    @NUMBEROFBROTHERS tinyint = 0,
+    @HOUSINGWALLWOOD bit = 0,
+    @HOUSINGWALLMUD bit = 0,
+    @HOUSINGWALLBAMBOO bit = 0,
+    @HOUSINGWALLBLOCK bit = 0,
+    @HOUSINGWALLOTHER nvarchar(50) = '',
+    @ROOFINGTIN bit = 0,
+    @ROOFINGGRASSLEAVES bit = 0,
+    @ROOFINGWOOD bit = 0,
+    @ROOFINGTILE bit = 0,
+    @ROOFINGOTHER nvarchar(50) = '',
+    @WATERSOURCEINDOOR bit = 0,
+    @WATERSOURCECOMMUNITYTAP bit = 0,
+    @WATERSOURCEBOREHOLEWELL bit = 0,
+    @WATERSOURCERIVER bit = 0,
+    @WATERSOURCEOTHER nvarchar(50) = '',
+    @COOKINGSOURCEWOODFIRE bit = 0,
+    @COOKINGSOURCEELECTRICSTOVE bit = 0,
+    @COOKINGSOURCEGASSTOVE bit = 0,
+    @COOKINGSOURCEOTHER nvarchar(50) = '',
+    @LIGHTSOURCEELECTRICITY bit = 0,
+    @LIGHTSOURCEOILLAMP bit = 0,
+    @LIGHTSOURCEGENERATOR bit = 0,
+    @LIGHTSOURCENONE bit = 0,
+    @LIGHTSOURCEOTHER nvarchar(50) = '',
+    @AREADESCRIPTION nvarchar(1000) = '',
+    @MYFAVORITETHINGTODO nvarchar(1000) = '',
+    @WHENIPLAYWITHFRIENDSWE nvarchar(1000) = '',
+    @WHENATHOMEIHELPOUTBY nvarchar(1000) = '',
+    @WHENITALKTOGODIASKHIM nvarchar(1000) = '',
+    @WHENIAMATSCHOOLILIKELEARNING nvarchar(1000) = '',
+    @SOMEDAYI nvarchar(1000) = '',
+    @TWOMOSTFAVORITETHINGS nvarchar(1000) = '',
+    @OTHERTHINGSTHECHILDENJOYS nvarchar(1000) = '',
+    @CHILDPERSONALITY nvarchar(1000) = '',
+    @CHILDHEALTH nvarchar(1000) = '',
+    @SPIRITUALDEVELOPMENT nvarchar(1000) = '',
+    @ATTENDINGSCHOOL bit = 0,
+    @REASONNOTATTENDINGSCHOOL nvarchar(255) = '',
+    @CLASSLEVEL nvarchar(20) = '',
+    @FAVORITESUBJECT nvarchar(1000) = '',
+    @VOCATIONALSKILLS nvarchar(1000) = '',
+    @ADDITIONALCHILDINFORMATION nvarchar(max) = '',
+    @CCHENTEREDBY nvarchar(100) = '',
+    @CCHTEMPID nvarchar(250) = '',
+    @CURRENTPHOTODATE datetime = null,
+    @PHOTOSTORED bit = 0,
+    @CHILDPROFILESTATUSCODEID uniqueidentifier = null,
+    @CHILDPROFILEUPDATECODEID uniqueidentifier = null,
+    @PROFILEUPDATENOTIFICATION bit = 0
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_CHILDEXTENSION
+		(ID, SPONSORSHIPOPPORTUNITYCHILDID, SIBLINGSID, BIRTHDATEACCURACYCODEID, CURRENTPROGRAMCOMPLETIONDATE, CHILDNAMESUFFIXCODEID, CHILDLIVESWITHCODEID, FATHERWORKSASCODEID, FATHERWORKSASOTHER, MOTHERWORKSASCODEID, MOTHERWORKSASOTHER, CAREGIVERRELATIONCODEID, CAREGIVERRELATIONOTHER, CAREGIVERWORKSASCODEID, CAREGIVERWORKSASOTHER, CAREGIVERREASONCODEID, REASONFORCAREGIVEROTHER, NUMBEROFSISTERS, NUMBEROFBROTHERS, HOUSINGWALLWOOD, HOUSINGWALLMUD, HOUSINGWALLBAMBOO, HOUSINGWALLBLOCK, HOUSINGWALLOTHER, ROOFINGTIN, ROOFINGGRASSLEAVES, ROOFINGWOOD, ROOFINGTILE, ROOFINGOTHER, WATERSOURCEINDOOR, WATERSOURCECOMMUNITYTAP, WATERSOURCEBOREHOLEWELL, WATERSOURCERIVER, WATERSOURCEOTHER, COOKINGSOURCEWOODFIRE, COOKINGSOURCEELECTRICSTOVE, COOKINGSOURCEGASSTOVE, COOKINGSOURCEOTHER, LIGHTSOURCEELECTRICITY, LIGHTSOURCEOILLAMP, LIGHTSOURCEGENERATOR, LIGHTSOURCENONE, LIGHTSOURCEOTHER, AREADESCRIPTION, MYFAVORITETHINGTODO, WHENIPLAYWITHFRIENDSWE, WHENATHOMEIHELPOUTBY, WHENITALKTOGODIASKHIM, WHENIAMATSCHOOLILIKELEARNING, SOMEDAYI, TWOMOSTFAVORITETHINGS, OTHERTHINGSTHECHILDENJOYS, CHILDPERSONALITY, CHILDHEALTH, SPIRITUALDEVELOPMENT, ATTENDINGSCHOOL, REASONNOTATTENDINGSCHOOL, CLASSLEVEL, FAVORITESUBJECT, VOCATIONALSKILLS, ADDITIONALCHILDINFORMATION, CCHENTEREDBY, CCHTEMPID, CURRENTPHOTODATE, PHOTOSTORED, CHILDPROFILESTATUSCODEID, CHILDPROFILEUPDATECODEID, PROFILEUPDATENOTIFICATION, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @CONTEXTID, @SIBLINGSID, @BIRTHDATEACCURACYCODEID, @CURRENTPROGRAMCOMPLETIONDATE, @CHILDNAMESUFFIXCODEID, @CHILDLIVESWITHCODEID, @FATHERWORKSASCODEID, @FATHERWORKSASOTHER, @MOTHERWORKSASCODEID, @MOTHERWORKSASOTHER, @CAREGIVERRELATIONCODEID, @CAREGIVERRELATIONOTHER, @CAREGIVERWORKSASCODEID, @CAREGIVERWORKSASOTHER, @CAREGIVERREASONCODEID, @REASONFORCAREGIVEROTHER, @NUMBEROFSISTERS, @NUMBEROFBROTHERS, @HOUSINGWALLWOOD, @HOUSINGWALLMUD, @HOUSINGWALLBAMBOO, @HOUSINGWALLBLOCK, @HOUSINGWALLOTHER, @ROOFINGTIN, @ROOFINGGRASSLEAVES, @ROOFINGWOOD, @ROOFINGTILE, @ROOFINGOTHER, @WATERSOURCEINDOOR, @WATERSOURCECOMMUNITYTAP, @WATERSOURCEBOREHOLEWELL, @WATERSOURCERIVER, @WATERSOURCEOTHER, @COOKINGSOURCEWOODFIRE, @COOKINGSOURCEELECTRICSTOVE, @COOKINGSOURCEGASSTOVE, @COOKINGSOURCEOTHER, @LIGHTSOURCEELECTRICITY, @LIGHTSOURCEOILLAMP, @LIGHTSOURCEGENERATOR, @LIGHTSOURCENONE, @LIGHTSOURCEOTHER, @AREADESCRIPTION, @MYFAVORITETHINGTODO, @WHENIPLAYWITHFRIENDSWE, @WHENATHOMEIHELPOUTBY, @WHENITALKTOGODIASKHIM, @WHENIAMATSCHOOLILIKELEARNING, @SOMEDAYI, @TWOMOSTFAVORITETHINGS, @OTHERTHINGSTHECHILDENJOYS, @CHILDPERSONALITY, @CHILDHEALTH, @SPIRITUALDEVELOPMENT, @ATTENDINGSCHOOL, @REASONNOTATTENDINGSCHOOL, @CLASSLEVEL, @FAVORITESUBJECT, @VOCATIONALSKILLS, @ADDITIONALCHILDINFORMATION, @CCHENTEREDBY, @CCHTEMPID, @CURRENTPHOTODATE, @PHOTOSTORED, @CHILDPROFILESTATUSCODEID, @CHILDPROFILEUPDATECODEID, @PROFILEUPDATENOTIFICATION, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+
+]]>
+</c:CreateProcedureSQL>
+            <c:ExpectedDBExceptions>
+                <c:Constraints>
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+                    <c:Constraint Name="UC_USR_CHILDEXTENSION_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="Unique" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_SIBLINGSID" Field="SIBLINGSID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_BIRTHDATEACCURACYCODEID" Field="BIRTHDATEACCURACYCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CHILDNAMESUFFIXCODEID" Field="CHILDNAMESUFFIXCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CHILDLIVESWITHCODEID" Field="CHILDLIVESWITHCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_FATHERWORKSASCODEID" Field="FATHERWORKSASCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_MOTHERWORKSASCODEID" Field="MOTHERWORKSASCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CAREGIVERRELATIONCODEID" Field="CAREGIVERRELATIONCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CAREGIVERWORKSASCODEID" Field="CAREGIVERWORKSASCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CAREGIVERREASONCODEID" Field="CAREGIVERREASONCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CHILDPROFILESTATUSCODEID" Field="CHILDPROFILESTATUSCODEID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDEXTENSION_CHILDPROFILEUPDATECODEID" Field="CHILDPROFILEUPDATECODEID" Type="ForeignKey" />
+                </c:Constraints>
+            </c:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+
+  <!--  This must be re-added if regenerated -->
+  <Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="CONTEXTID" />
+
+  <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true" />
+            <c:FormField FieldID="SIBLINGSID" DataType="Guid" Caption="Siblings" />
+            <c:FormField FieldID="BIRTHDATEACCURACYCODEID" DataType="Guid" Caption="Birthdate Accuracy">
+                <c:CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE" />
+            </c:FormField>
+            <c:FormField FieldID="CURRENTPROGRAMCOMPLETIONDATE" DataType="Date" Caption="Current Program Completion Date" />
+            <c:FormField FieldID="CHILDNAMESUFFIXCODEID" DataType="Guid" Caption="Child Name Suffix">
+                <c:CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE" />
+            </c:FormField>
+            <!--<c:FormField FieldID="CHILDAGE" DataType="TinyInt" Caption="Child Age" Hidden="true" />-->
+            <c:FormField FieldID="CHILDLIVESWITHCODEID" DataType="Guid" Caption="Child Lives With">
+                <c:CodeTable CodeTableName="USR_CHILDLIVESWITHCODE" />
+            </c:FormField>
+            <c:FormField FieldID="FATHERWORKSASCODEID" DataType="Guid" Caption="Father Works As">
+                <c:CodeTable CodeTableName="USR_FATHERWORKSASCODE" />
+            </c:FormField>
+            <c:FormField FieldID="FATHERWORKSASOTHER" MaxLength="50" Caption="Details/Other" />
+            <c:FormField FieldID="MOTHERWORKSASCODEID" DataType="Guid" Caption="Mother Works As">
+                <c:CodeTable CodeTableName="USR_MOTHERWORKSASCODE" />
+            </c:FormField>
+            <c:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="50" Caption="Details/Other" />
+            <c:FormField FieldID="CAREGIVERRELATIONCODEID" DataType="Guid" Caption="Caregiver Relation">
+                <c:CodeTable CodeTableName="USR_CAREGIVERRELATIONCODE" />
+            </c:FormField>
+            <c:FormField FieldID="CAREGIVERRELATIONOTHER" MaxLength="50" Caption="Details/Other" />
+            <c:FormField FieldID="CAREGIVERWORKSASCODEID" DataType="Guid" Caption="Caregiver Works As">
+                <c:CodeTable CodeTableName="USR_CAREGIVERWORKSASCODE" />
+            </c:FormField>
+            <c:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="50" Caption="Details/Other" />
+            <c:FormField FieldID="CAREGIVERREASONCODEID" DataType="Guid" Caption="Caregiver Reason">
+                <c:CodeTable CodeTableName="USR_CAREGIVERREASONCODE" />
+            </c:FormField>
+            <c:FormField FieldID="REASONFORCAREGIVEROTHER" MaxLength="50" Caption="Details/Other" />
+            <c:FormField FieldID="NUMBEROFSISTERS" DataType="TinyInt" Caption="Number of sisters" />
+            <c:FormField FieldID="NUMBEROFBROTHERS" DataType="TinyInt" Caption="Number of brothers" />
+            <c:FormField FieldID="HOUSINGWALLWOOD" DataType="Boolean" Caption="Wood" />
+            <c:FormField FieldID="HOUSINGWALLMUD" DataType="Boolean" Caption="Mud" />
+            <c:FormField FieldID="HOUSINGWALLBAMBOO" DataType="Boolean" Caption="Bamboo" />
+            <c:FormField FieldID="HOUSINGWALLBLOCK" DataType="Boolean" Caption="Block" />
+            <c:FormField FieldID="HOUSINGWALLOTHER" MaxLength="50" Caption="Other" />
+            <c:FormField FieldID="ROOFINGTIN" DataType="Boolean" Caption="Tin" />
+            <c:FormField FieldID="ROOFINGGRASSLEAVES" DataType="Boolean" Caption="Grass/leaves" />
+            <c:FormField FieldID="ROOFINGWOOD" DataType="Boolean" Caption="Roofing Wood" />
+            <c:FormField FieldID="ROOFINGTILE" DataType="Boolean" Caption="Tile" />
+            <c:FormField FieldID="ROOFINGOTHER" MaxLength="50" Caption="Roofing Other" />
+            <c:FormField FieldID="WATERSOURCEINDOOR" DataType="Boolean" Caption="Indoor" />
+            <c:FormField FieldID="WATERSOURCECOMMUNITYTAP" DataType="Boolean" Caption="Community Tap" />
+            <c:FormField FieldID="WATERSOURCEBOREHOLEWELL" DataType="Boolean" Caption="Borehole/Well" />
+            <c:FormField FieldID="WATERSOURCERIVER" DataType="Boolean" Caption="River" />
+            <c:FormField FieldID="WATERSOURCEOTHER" MaxLength="50" Caption="Water Source Other" />
+            <c:FormField FieldID="COOKINGSOURCEWOODFIRE" DataType="Boolean" Caption="Wood Fire" />
+            <c:FormField FieldID="COOKINGSOURCEELECTRICSTOVE" DataType="Boolean" Caption="Electric Stove" />
+            <c:FormField FieldID="COOKINGSOURCEGASSTOVE" DataType="Boolean" Caption="Gas Stove" />
+            <c:FormField FieldID="COOKINGSOURCEOTHER" MaxLength="50" Caption="Cooking Source Other" />
+            <c:FormField FieldID="LIGHTSOURCEELECTRICITY" DataType="Boolean" Caption="Electricity" />
+            <c:FormField FieldID="LIGHTSOURCEOILLAMP" DataType="Boolean" Caption="Oil Lamp" />
+            <c:FormField FieldID="LIGHTSOURCEGENERATOR" DataType="Boolean" Caption="Generator" />
+            <c:FormField FieldID="LIGHTSOURCENONE" DataType="Boolean" Caption="None" />
+            <c:FormField FieldID="LIGHTSOURCEOTHER" MaxLength="50" Caption="Light Source Other" />
+            <c:FormField FieldID="AREADESCRIPTION" MaxLength="1000" Caption="Area Description" Multiline="true" />
+            <c:FormField FieldID="MYFAVORITETHINGTODO" MaxLength="1000" Caption="My favorite thing to do when I am by myself is" Multiline="true" />
+            <c:FormField FieldID="WHENIPLAYWITHFRIENDSWE" MaxLength="1000" Caption="When I play with my friends we" Multiline="true" />
+            <c:FormField FieldID="WHENATHOMEIHELPOUTBY" MaxLength="1000" Caption="When at home I help out by" Multiline="true" />
+            <c:FormField FieldID="WHENITALKTOGODIASKHIM" MaxLength="1000" Caption="When I talk to God I ask Him" Multiline="true" />
+            <c:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" MaxLength="1000" Caption="When I am at school I like..." Multiline="true" Hidden="true" />
+            <c:FormField FieldID="SOMEDAYI" MaxLength="1000" Caption="Someday I would like" Multiline="true" />
+            <c:FormField FieldID="TWOMOSTFAVORITETHINGS" MaxLength="1000" Caption="My most favorite things" Multiline="true" />
+            <c:FormField FieldID="OTHERTHINGSTHECHILDENJOYS" MaxLength="1000" Caption="Other things the child enjoys" Multiline="true" />
+            <c:FormField FieldID="CHILDPERSONALITY" MaxLength="1000" Caption="Describes the child's personality or qualities that make them unique or special as well as how they interact with and relate to other children" Multiline="true" />
+            <c:FormField FieldID="CHILDHEALTH" MaxLength="1000" Caption="Describes the child's current health including any special concerns or conditions" Multiline="true" />
+            <c:FormField FieldID="SPIRITUALDEVELOPMENT" MaxLength="1000" Caption="Describes the child's current level of faith, spiritual understanding and Christian activities" Multiline="true" />
+            <c:FormField FieldID="ATTENDINGSCHOOL" DataType="Boolean" Caption="Attending School" />
+            <c:FormField FieldID="REASONNOTATTENDINGSCHOOL" MaxLength="255" Caption="Reason for Not Attending School" Multiline="true" />
+            <c:FormField FieldID="CLASSLEVEL" MaxLength="20" Caption="Class Level" />
+            <c:FormField FieldID="FAVORITESUBJECT" MaxLength="1000" Caption="Favorite Subject or Activity" Multiline="true" />
+            <c:FormField FieldID="VOCATIONALSKILLS" MaxLength="1000" Caption="Vocational or Life Skills..." Multiline="true" />
+            <c:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" />
+            <c:FormField FieldID="CCHENTEREDBY" MaxLength="100" Caption="CCH Entered By" />
+            <c:FormField FieldID="CCHTEMPID" MaxLength="250" Caption="CCH Tempid" Multiline="true" />
+            <c:FormField FieldID="CURRENTPHOTODATE" DataType="Date" Caption="Current Photo Date" />
+            <c:FormField FieldID="PHOTOSTORED" DataType="Boolean" Caption="Photo Stored" />
+            <c:FormField FieldID="CHILDPROFILESTATUSCODEID" DataType="Guid" Caption="Child Profile Status">
+                <c:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
+            </c:FormField>
+            <c:FormField FieldID="CHILDPROFILEUPDATECODEID" DataType="Guid" Caption="Child Profile Update">
+                <c:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE" />
+            </c:FormField>
+            <c:FormField FieldID="PROFILEUPDATENOTIFICATION" DataType="Boolean" Caption="Profile Update Notification" />
+          
+          <!-- These must be re-added if regenerated from CRUD wizard: -->
+          <c:FormField FieldID="FIRSTNAME" DataType="String" Caption="First or Common Name" ReadOnly="true" />
+          <c:FormField FieldID="MIDDLENAME" DataType="String" Caption="Second or Middle Name" ReadOnly="true" />
+          <c:FormField FieldID="LASTNAME" DataType="String" Caption="Family Name/Surname/Last Name" ReadOnly="true" />
+          <c:FormField FieldID="GENDER" DataType="String" Caption="Gender" ReadOnly="true" />
+          <c:FormField FieldID="AGE" DataType="TinyInt" Caption="Age" ReadOnly="true" />
+          <c:FormField FieldID="BIRTHDATE" DataType="Date" IncludeTimeOnDate="false" Caption="Date of Birth" ReadOnly="true" />
+        </c:FormFields>
+        <c:FormUIComponent />
+
+        <c:WebUIComponent>
+            <c:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildExtensionAddCCHFormUIModel" />
+            <c:WebUI>
+                <c:ExternalResource Url="browser/htmlforms/custom/ChildExtensionAddCCHForm.html" />
+            </c:WebUI>
+        </c:WebUIComponent>
+
+        
+
+
+      <c:FieldGroups>
+        <c:FieldGroup Caption="Who Am I" ID="WHOAMI_GROUP">
+          <c:Fields>
+            <c:Field>FIRSTNAME</c:Field>
+            <c:Field>MIDDLENAME</c:Field>
+            <c:Field>LASTNAME</c:Field>
+            <c:Field>CHILDNAMESUFFIXCODEID</c:Field>
+            <c:Field>GENDER</c:Field>
+            <c:Field>AGE</c:Field>
+            <c:Field>BIRTHDATEACCURACYCODEID</c:Field>
+            <c:Field>BIRTHDATE</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup Caption="Spritual Development" ID="SPIRITUAL_DEVELOPMENT_GROUP">
+          <c:Fields>
+            <c:Field>SPIRITUALDEVELOPMENT</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup Caption="Parental Information" ID="PARENTAL_INFORMATION_GROUP">
+          <c:Fields>
+            <c:Field>CHILDLIVESWITHCODEID</c:Field>
+            <c:Field>FATHERWORKSASCODEID</c:Field>
+            <c:Field>FATHERWORKSASOTHER</c:Field>
+            <c:Field>MOTHERWORKSASCODEID</c:Field>
+            <c:Field>MOTHERWORKSASOTHER</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup Caption="Caregiver Information" ID="CAREGIVER_INFORMATION_GROUP">
+          <c:Fields>
+            <c:Field>CAREGIVERRELATIONCODEID</c:Field>
+            <c:Field>CAREGIVERRELATIONOTHER</c:Field>
+            <c:Field>CAREGIVERWORKSASCODEID</c:Field>
+            <c:Field>CAREGIVERWORKSASOTHER</c:Field>
+            <c:Field>CAREGIVERREASONCODEID</c:Field>
+            <c:Field>REASONFORCAREGIVEROTHER</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup Caption="Sibling Information" ID="SIBLING_INFORMATION_GROUP">
+          <c:Fields>
+            <c:Field>NUMBEROFSISTERS</c:Field>
+            <c:Field>NUMBEROFBROTHERS</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup Caption="Attending School" ID="ATTENDING_SCHOOL_GROUP">
+          <c:Fields>
+            <c:Field>ATTENDINGSCHOOL</c:Field>
+            <c:Field>REASONNOTATTENDINGSCHOOL</c:Field>
+            <c:Field>CLASSLEVEL</c:Field>
+            <c:Field>FAVORITESUBJECT</c:Field>
+            <c:Field>VOCATIONALSKILLS</c:Field>
+            <c:Field>CURRENTPROGRAMCOMPLETIONDATE</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+      </c:FieldGroups>
+
+      <!--<c:FormUIComponent />-->
+
+      <c:Tabs>
+        <c:Tab Caption="Who Am I" ID="WHOAMI_TAB" />
+        <c:Tab Caption="Who I Live With" ID="WHOILIVEWITH_TAB" />
+        <c:Tab Caption="Where I Live" ID="WHEREILIVE_TAB" />
+        <c:Tab Caption="About Me" ID="ABOUTME_TAB" />
+        <c:Tab Caption="Development" ID="DEVELOPMENT_TAB" />
+        <c:Tab Caption="Additional Info" ID="ADDITIONALINFO_TAB" />
+      </c:Tabs>
+
+      <!--<c:UIFields>
+        <c:FormField FieldID="ADDSIBLINGSLABEL" Caption="Add Siblings" ReadOnly="true" DataType="String" />
+      </c:UIFields>
+
+      <c:UIActions>
+        <c:UIAction ActionID="ADDSIBLINGS" Caption="+" Description="Add Siblings">
+          <c:ShowAddForm DataFormInstanceID="173d9386-e5d8-4628-b756-2beac170f91f" />
+        </c:UIAction>
+      </c:UIActions>-->
+
+    </c:FormMetaData>
+</AddDataFormTemplateSpec>

@@ -1,0 +1,75 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="daf78359-3d91-4dae-8303-c848ef8877c7" 
+	Name="Child Quota Waiting Process Success Data List"
+	Description="List of kids that were registered for a particular instance of the business process"
+	Author=" Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child">
+
+	<!-- 
+	Remarks:    This needs to utilize dynamic sql because the table name is dynamic based on the process instance id guid.
+				CRM creates the table with the id appended with underscores instead of dashes.
+				
+	History:
+	Date            Modified By     Comments
+	08-Jul-2012		CMayeda			Initial Version
+
+	-->
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_CHIDLQUOTAWAITINGLISTPROCESS_STATUSREPORT_SUCCESS">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+			
+create procedure dbo.USR_USP_DATALIST_CHIDLQUOTAWAITINGLISTPROCESS_STATUSREPORT_SUCCESS (@contextID uniqueidentifier)
+as
+begin
+	if @contextID is null 
+		return 1
+		
+	declare @tablePrefix nvarchar(255) = 'dbo.USR_CHILDQUOTA_WAITINGLISTPROCESS_'					-- This is the name of part of the success table name created by the business process (without the guid)
+	declare @tableGUIDString nvarchar(50) = replace (convert (nvarchar(50),@contextID), '-', '_')	-- Convert the guid to have underscores instead of dashes
+
+	declare @selectSuccessSQL as nvarchar(max)
+	set @selectSuccessSQL = 'select countryc.LOOKUPID as CountryID, countryc.NAME as CountryName, ' +
+							'       projectc.LOOKUPID as ProjectID, projectc.NAME as ProjectName, ' +
+							'       childc.LOOKUPID as ChildID, childc.NAME as ChildName ' +
+							'  from ' + @tablePrefix + @tableGUIDString + ' cq' + 
+							'  inner join CONSTITUENT childc on cq.SPONSORSHIPOPPORTUNITYCHILDID = childc.ID' +
+							'   left join CONSTITUENT countryc on cq.COUNTRYID = countryc.ID' + 
+							'   left join CONSTITUENT projectc on cq.CHILDPROJECTID = projectc.ID' + 
+							'    order by CountryID, ProjectID, ChildID'
+                        
+	exec (@selectSuccessSQL)
+
+end
+
+]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="contextID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="CountryID" Caption="Country ID" DataType="String" />
+			<OutputField FieldID="CountryName" Caption="Country Name" DataType="String" />
+			<OutputField FieldID="ProjectID" Caption="Project ID" DataType="String" />
+			<OutputField FieldID="ProjectName" Caption="Project Name" DataType="String" />
+			<OutputField FieldID="ChildID" Caption="Child ID" DataType="String" />
+			<OutputField FieldID="ChildName" Caption="Child Name" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>
