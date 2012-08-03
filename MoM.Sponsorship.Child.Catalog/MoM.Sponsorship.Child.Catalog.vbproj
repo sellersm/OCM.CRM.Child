@@ -411,7 +411,21 @@
     <EmbeddedResource Include="Tables\Code Tables\ChildClassLevel.CodeTable.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS.xml" />
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\ChildTransfer.Table.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Add.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Edit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

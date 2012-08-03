@@ -38,7 +38,7 @@ as
   --set @FROMPROJECTID = newId();
   --set @CHILDLOOKUPID  = 'LookupID Goes Here';    -- this must come from the constituent record
   
-	select
+	select top 1
     @CHILDFIRSTNAME = so_child.FIRSTNAME,
     @CHILDMIDDLENAME  = so_child.MIDDLENAME,
     @CHILDLASTNAME = so_child.LASTNAME,
