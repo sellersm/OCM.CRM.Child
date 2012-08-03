@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
+    <EmbeddedResource Include="ChildBio\UtilityPageDefSpec_AddChildBioTab.xml" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -119,11 +120,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildBio\ChildBioNote.EditDataForm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChildBio\ConvertChildBioToChildBioOld.Sproc.xml" />
-    <EmbeddedResource Include="ChildBio\SponOpNoteAddWithEligCheck.AddDataForm.xml" />
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -142,9 +138,7 @@
     <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityEligibilityCheck.RecordOperation.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_GETPARAMETERS.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml">
@@ -286,6 +280,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\ChildBioDataList.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBioNote.EditDataForm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChildBio\SponOpNoteAddWithEligCheck.AddDataForm.xml" />
+    <EmbeddedResource Include="ChildBio\SponOpporNoteChildBioDateProofed.Edit.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Batch\BatchLock\BatchLock.Table.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
@@ -297,6 +298,7 @@
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChildBio\ConvertChildBioToChildBioOld.Sproc.xml" />
     <EmbeddedResource Include="ChildBio\ProcessProofedChildBio.RecordOperation.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\AddChild.Task.xml" />
     <EmbeddedResource Include="Batch\ChildExtensionBatch.Package.xml">
@@ -349,9 +351,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_LOCKFAILED.xml" />
-    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml" />
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_SETPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -411,21 +411,21 @@
     <EmbeddedResource Include="Tables\Code Tables\ChildClassLevel.CodeTable.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml">
+    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
+    <EmbeddedResource Include="Tables\ChildTransfer.Table.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
+    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Add.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
+    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Edit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,43 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="7609e2ce-4169-4062-b8f9-58df807d02e2"
+	Name="Child Transfer Table"
+	Description="Table to hold the Child Transfer information"
+	Author="Memphis Sellers"
+	Tablename="USR_CHILDTRANSFER"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+    <ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="ManyToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
+    <DateField Description="Today’s date (month /day/year)" Name="FORMCOMPLETIONDATE" Required="true"  IncludeTime="false" />
+    <TextField  Description="Form completed by" Name="FORMCOMPLETEDBY" Length="50"  Required="true"/>
+    <TextField Description="User that entered the form into CRM" Name="FORMENTEREDBY" Length="50" Required="true"/>
+    <DateField Description="Date the form was entered into CRM" Name="CRMDATEOFTRANSFER" Required="true"/>     
+    <DateField Description="Date of transfer (month /day/year)" Name="FIELDDATEOFTRANSFER" IncludeTime="false" Required="true"/>
+    <TextField Description="Provide a brief but detailed explanation regarding why the child is transferring (required)" Name="EXPLANATION" Length="1000" Required="true" />
+    <!--<TextField Description="Project name" Name="FROMPROJECTNAME" Required="false" Length="100"/>-->
+    <GuidField Description="Project ID number" Name="FROMPROJECTID" Required="true"/>
+    <!--<TextField Description="From Project LookupID" Name="FROMPROJECTLOOKUPID" Length="100" Required="false"/>-->
+    <!--<TextField Description="Project name" Name="TOPROJECTNAME" Required="false" Length="100"/>-->
+    <GuidField Description="Project ID number" Name="TOPROJECTID" Required="true"/>
+    <!--<TextField Description="To Project LookupID" Name="TOPROJECTLOOKUPID" Length="100" Required="false"/>-->
+  </Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!--<CheckConstraints>
+
+	</CheckConstraints>-->
+
+	<!-- define any indexes on the table -->
+	<!--<Indexes>
+
+	</Indexes>-->
+		
+	<!-- define any triggers on the table -->
+	<!--<Triggers>
+
+	</Triggers>-->
+
+</TableSpec>

@@ -6,6 +6,7 @@
 	History:
 	Date            Modified By     Comments
 	16-Jul-2012		CMayeda			Added Pamela's temporary Reservation tab
+  02-Aug-2012   Memphis     Added Transfers Tab & Transfer Child Action 
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -246,9 +247,6 @@
 							 <ActionContext>
 								 <PageContextID />
 							 </ActionContext>
-							 <PostActionEvent>
-								 <RefreshPage />
-							 </PostActionEvent>
 						 </ShowAddDataForm>
 						 <HelpKey>GLBEditNotes.html</HelpKey>
 					 </Action>
@@ -257,14 +255,11 @@
 							 <ActionContext>
 								 <SectionField>Notes\System record ID</SectionField>
 							 </ActionContext>
-							 <PostActionEvent>
-								 <RefreshPage />
-							 </PostActionEvent>
 						 </ShowDataForm>
 						 <HelpKey>GLBEditNotes.html</HelpKey>
 					 </Action>
 					 <Action ID="d43f4f3b-bc3d-4f2d-904e-a76e1ce4ede8" Caption="Date Proofed" ImageKey="RES:Edit">
-						 <ShowDataForm DataFormID="5cd48008-d0e2-4546-9c51-3d200916d6d5" xmlns="bb_appfx_commontypes">
+						 <ShowDataForm DataFormID="b296c8f2-9235-4be3-8401-2bf063a8025f" xmlns="bb_appfx_commontypes">
 							 <ActionContext>
 								 <SectionField>Notes\System record ID</SectionField>
 							 </ActionContext>
@@ -279,7 +274,7 @@
 								 <SectionField>Notes\System record ID</SectionField>
 							 </ActionContext>
 							 <PostActionEvent>
-								 <RefreshPage />
+								 <RefreshSection />
 							 </PostActionEvent>
 						 </ExecuteRecordOperation>
 						 <HelpKey>SPAttributesDelete.html</HelpKey>
@@ -627,6 +622,17 @@
         </Section>
       </Sections>
     </Tab>
+    <Tab Caption="Transfers" ID="e248e4f0-91f3-4421-957a-4a82e54b5409" Visible="=Page.Fields!TRANSFEREXISTS=True">
+      <Sections>
+        <Section ID="2494f107-1663-4511-b473-c143e48a5fea">
+          <DataList ID="12ce4824-be88-4433-8328-37c71b9f28df">
+            <RenderStyle>
+              <StandardView />
+            </RenderStyle>
+          </DataList>
+        </Section>
+      </Sections>
+    </Tab>
   </Tabs>
   <PageActionGroups>
     <PageActionGroup ID="d3db7753-92ba-4969-a544-a3f184f1b800" Caption="Tasks" ImageKey="RES:Tasks" CaptionResourceKey="$$tasks">
@@ -787,6 +793,16 @@
         </Action>		
         <Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= Not Page.Fields!DEPARTUREEXISTS">
           <ShowAddDataForm DataFormID="ac89e520-149a-4a66-83c2-1e5e906a5809" xmlns="bb_appfx_commontypes">
+            <ActionContext>
+              <PageContextID />
+            </ActionContext>
+            <PostActionEvent>
+              <RefreshPage />
+            </PostActionEvent>
+          </ShowAddDataForm>
+        </Action>
+        <Action ID="ee27592c-3171-41ea-ab27-8a48ce75b10d" Caption="=String.Format(&quot;Transfer {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:RecordOperationSpec">
+          <ShowAddDataForm DataFormID="fa13d398-d06e-4d37-adf9-891e9cdff38e" xmlns="bb_appfx_commontypes">
             <ActionContext>
               <PageContextID />
             </ActionContext>
