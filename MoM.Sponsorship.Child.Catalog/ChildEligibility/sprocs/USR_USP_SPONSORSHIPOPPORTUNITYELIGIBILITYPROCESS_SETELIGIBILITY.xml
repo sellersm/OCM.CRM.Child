@@ -1,0 +1,49 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1e9abaee-9625-4573-95a4-3e4d68b08463"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY"
+	Description="Used to change the Eligibility if necessary during the Sponsorship Opportunity Eligibility Process"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY"
+	>
+
+	<!-- 
+	Remarks:    Used by the Sponsorship Opportunity Eligibility business process
+				This wraps USR_USP_CHILDREN_SETELIGIBLEORPENDING, so that the business process can pass it a Selection Set ID instead of a USR_UDT_CHILDIDLIST
+
+	History:
+	Date            Modified By     Comments
+    21-Mar-2012		CMayeda			Initial Version
+	09-Jul-2012		CMayeda			Modified this to call USR_USP_CHILDREN_SETELIGIBLEORPENDING instead of handling the same logic in this sproc
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+		
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY (
+	@idSetRegisterID uniqueidentifier,		-- Specify a Selection Set ID if the sproc should process all the children in a query selection
+	@changeAgentID uniqueidentifier,		-- Used to specify change agent for ChangedByID and AddedByID fields
+	@changedToEligible int = 0 output,      -- Output parm that specifies how many children were set to Eligible
+	@changedToPending int = 0 output)       -- Output parm that specifies how many children were set to Pending
+
+as
+begin
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+	-- Insert the children in the selection set to the child list table to pass to USR_USP_CHILDREN_SETELIGIBLEORPENDING
+	declare @childList dbo.USR_UDT_CHILDIDLIST
+	insert @childList 
+	select ID from dbo.UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) 
+
+	
+	exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, 0, @changeAgentID, @changedToEligible output, @changedToPending output
+	
+	return 0
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

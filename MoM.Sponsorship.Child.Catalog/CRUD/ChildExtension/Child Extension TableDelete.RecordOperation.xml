@@ -1,0 +1,36 @@
+<RecordOperationSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="23c2cf05-910b-4294-b040-42361e030e70"
+    Name="Child Extension Table Delete"
+    Description="Used to delete the given Child Extension Table"
+    Author="memphis-PC\Administrator"
+    RecordType="Child Extension Table"
+    OperationType="Delete"
+    c:SecurityUIFolder="Child Extension Table"
+    xmlns="bb_appfx_recordoperation"
+    >
+    <SPRecord>
+        <SPOperationImplementation SPName="USP_CHILD_EXTENSION_TABLE_DELETE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_CHILD_EXTENSION_TABLE_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_USR_CHILDEXTENSION_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+]]>
+</c:CreateProcedureSQL>
+        </SPOperationImplementation>
+    </SPRecord>
+    <Prompt>
+        <StandardPrompt Text="Are you sure you want to delete this Child Extension Table" />
+    </Prompt>
+</RecordOperationSpec>
