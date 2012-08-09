@@ -416,10 +416,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tables\ChildTransfer.Table.xml" />
+    <EmbeddedResource Include="Tables\ChildTransfer.Table.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Add.xml" />
+    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Add.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Edit.xml" />
