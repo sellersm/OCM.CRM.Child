@@ -156,6 +156,29 @@ begin try
       where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
       
       -- then call the CheckEligibility sprocs
+      declare	@return_value int, @insertRowcount int
+
+      exec	@return_value = [dbo].[USR_USP_CHILD_SETPENDINGREASON]
+		        @sponsorshipChildID = @CONTEXTID,
+		        @sponsorshipReasonText = N'Need CCH Form Updated',
+            @changeAgentID = @CHANGEAGENTID,
+		        @insertRowcount = @insertRowcount OUTPUT
+      
+      /* NOT IMPLEMENTED YET!
+      -- add pending reasons that are now applicable
+      exec @return_value = dbo.USR_USP_CHILD_CHECKELIGIBILITY
+           @sponsorshipOpportunityChildID = @CONTEXTID,
+           @changeAgentID = @CHANGEAGENTID
+      */
+      
+      -- set child to pending
+      exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING
+           @sponsorshipOpportunityChildID = @CONTEXTID,
+           @doNotUpdateIneligible = 0,
+           @changeAgentID = @CHANGEAGENTID
+      
+      -- add revenue function of "Designation"
+      
   end
   else
      raiserror ('Cannot find the Location ID.', 13, 1)
