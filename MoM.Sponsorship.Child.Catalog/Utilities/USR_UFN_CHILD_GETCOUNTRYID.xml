@@ -3,9 +3,10 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="2eac9e4f-121a-4de6-8cee-12a35597a899"
 	Name="USR_UFN_CHILD_GETCOUNTRYID"
-	Description="REPLACE_WITH_DESCRIPTION"
+	Description="Retrieve the Country constituent id (same as country extension id) for the child specified"
 	Author="Cary Mayeda"
 	DBFunctionName="USR_UFN_CHILD_GETCOUNTRYID"
+	GrantServiceRolePermission="true"
 	>
 
 	<CreateFunctionSQL>

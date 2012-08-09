@@ -24,6 +24,7 @@
 	History:
 	Date            Modified By     Comments
 	02-May-2012		CMayeda			Initial Version
+	05-Aug-2012		CMayeda			Updated comment
 	-->
 
 	<CreateFunctionSQL>
@@ -67,10 +68,11 @@ as begin
 	insert @sponsorhipReasonsToInclude
 	select ID from SPONSORSHIPREASON where lower (REASON) = 'batch commit - lock failed'
 	
-	-- Only return kids if you got both reason ids
+	-- Get the number of reasons inserted 
 	declare @reasonCount tinyint
 	select @reasonCount = count(*) from @sponsorhipReasonsToInclude
 	
+	-- Only return rows if the expected number of reasons were inserted
 	if @reasonCount = @numberSponsorshipReasons  
 		insert	@awaitingKids
 		select	projectext.QUOTATYPECODE,
