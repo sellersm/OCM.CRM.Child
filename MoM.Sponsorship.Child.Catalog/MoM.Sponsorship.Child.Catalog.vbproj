@@ -97,7 +97,6 @@
   <ItemGroup>
     <Folder Include="Images\" />
     <Folder Include="LinkedSpecs\" />
-    <Folder Include="Query Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrated rules for MyChildExtensionCatalog.ruleset" />
@@ -433,6 +432,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
+    <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
+    <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
+    <Content Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
+    <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
+    <Content Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
