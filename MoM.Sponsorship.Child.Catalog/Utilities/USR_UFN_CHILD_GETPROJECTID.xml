@@ -3,9 +3,10 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="6c4547e2-ebd9-4634-876b-409ec46c1c25"
 	Name="USR_UFN_CHILD_GETPROJECTID"
-	Description="REPLACE_WITH_DESCRIPTION"
+	Description="Retrieve the Child Project's constituent id (same as child project extension id) for the child specified"
 	Author="Cary Mayeda"
 	DBFunctionName="USR_UFN_CHILD_GETPROJECTID"
+	GrantServiceRolePermission="true"
 	>
 
 	<CreateFunctionSQL>

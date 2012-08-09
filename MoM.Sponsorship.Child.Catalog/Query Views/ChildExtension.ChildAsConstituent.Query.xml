@@ -1,0 +1,302 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e86a2a19-a896-4e6f-9ff1-7bc0b69e2b65"
+	Name="Child Extension Constituent Query"
+	Description="Provides the ability to query all constituent fields for a child"
+	Author="Cary Mayeda"
+	IsRoot="false"
+	PrimaryKeyField="ID"
+	RecordType="Constituent" 
+	EnforceRecordAccessSecurity="true" 
+    common:SecurityUIFolder="Sponsorship\Opportunity\Child"
+	UseInReportModelGenerator="true">
+
+	<!-- 
+	Remarks:    Copied from Blackbaud's Constituent query view (ID="EE8A7483-C483-4214-9646-4BB62EC29AB7" Name="Constituents")
+
+	History:
+	Date            Modified By     Comments
+	24-Jul-2012		CMayeda			Initial Version
+
+-->
+
+	<common:InstalledProductList>
+    <common:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+    <common:InstalledProduct ID="42c15648-749e-4859-a56d-3a6474814cc7" />
+    <common:InstalledProduct ID="6f77d512-d0d1-444f-9b46-b8603a6fe5f1" />
+  </common:InstalledProductList>
+  <Extensibility>
+    <Tables>
+      <Table Name="CONSTITUENT" />
+      <Table Name="ORGANIZATIONDATA" />
+      <Table Name="DECEASEDCONSTITUENT" />
+      <Table Name="GROUPDATA" />
+      <Table Name="CONSTITUENTINACTIVEDETAIL" />
+    </Tables>
+  </Extensibility>
+  <ResourceFile AssemblyName="Blackbaud.AppFx.Constituent.Catalog.dll" ClassName="Blackbaud.AppFx.Constituent.Catalog.Constituent.Query" />
+  <ViewImplementation ViewName="USR_V_QUERY_SPONSORSHIPOPPORTUNITYCHILDASCONSTITUENT">
+    <ViewSQL>
+
+		select
+		SPONSORSHIPOPPORTUNITYCHILD.ID as SPONSORSHIPOPPORTUNITYCHILDID,
+		CONSTITUENT.ID,
+		CONSTITUENT.ISORGANIZATION,
+		CONSTITUENT.KEYNAME,
+		CONSTITUENT.FIRSTNAME,
+		CONSTITUENT.MIDDLENAME,
+		CONSTITUENT.MAIDENNAME,
+		CONSTITUENT.NICKNAME,
+		(select MARITALSTATUSCODE.DESCRIPTION from dbo.MARITALSTATUSCODE where MARITALSTATUSCODE.ID = CONSTITUENT.MARITALSTATUSCODEID) as [MARITALSTATUSCODEID_TRANSLATION],
+		CONSTITUENT.LOOKUPID,
+		(select TITLECODE.DESCRIPTION from dbo.TITLECODE where TITLECODE.ID = CONSTITUENT.TITLECODEID) as [TITLECODEID_TRANSLATION],
+		(select SUFFIXCODE.DESCRIPTION from dbo.SUFFIXCODE where SUFFIXCODE.ID = CONSTITUENT.SUFFIXCODEID) as [SUFFIXCODEID_TRANSLATION],
+		CONSTITUENT.GENDER,
+		CONSTITUENT.BIRTHDATE,
+		DECEASEDCONSTITUENT.DECEASEDDATE,
+		CONSTITUENT.ISINACTIVE,
+		CONSTITUENT.GIVESANONYMOUSLY,
+		convert(bit, case when DECEASEDCONSTITUENT.ID is null then 0 else 1 end) as DECEASED,
+		(case when DECEASEDCONSTITUENT.ID is null
+		then dbo.UFN_AGEFROMFUZZYDATE(CONSTITUENT.BIRTHDATE, GETDATE())
+		else 0
+		end) as AGE,
+		DECEASEDCONSTITUENT.DECEASEDYEARS,
+		CONSTITUENT.NAME,
+		CONSTITUENT.WEBADDRESS,
+		CONSTITUENT.KEYNAMEPREFIX,
+		CONSTITUENT.DONOTMAIL,
+		CONSTITUENT.DONOTEMAIL,
+		CONSTITUENT.DONOTPHONE,
+		CONSTITUENT.NETCOMMUNITYMEMBER,
+		INDUSTRYCODE.DESCRIPTION as [INDUSTRYCODEID_TRANSLATION],
+		coalesce(ORGANIZATIONDATA.NUMEMPLOYEES, 0 ) as NUMEMPLOYEES,
+		coalesce(ORGANIZATIONDATA.NUMSUBSIDIARIES, 0) as NUMSUBSIDIARIES,
+		ORGANIZATIONDATA.PARENTCORPID,
+		[ADDEDBY].APPLICATIONNAME as [ADDEDBY_APPLICATION],
+		[ADDEDBY].USERNAME as [ADDEDBY_USERNAME],
+		[CHANGEDBY].APPLICATIONNAME as [CHANGEDBY_APPLICATION],
+		[CHANGEDBY].USERNAME as [CHANGEDBY_USERNAME],
+		CONSTITUENT.DATEADDED,
+		CONSTITUENT.DATECHANGED,
+		CONSTITUENT.TSLONG,
+		CONSTITUENT.PICTURE,
+		(select SPOUSE.RECIPROCALCONSTITUENTID from dbo.RELATIONSHIP as SPOUSE where SPOUSE.RELATIONSHIPCONSTITUENTID = CONSTITUENT.ID and SPOUSE.ISSPOUSE = 1) as [SPOUSE_ID],
+		(select PRIMARYBUSINESS.RECIPROCALCONSTITUENTID from dbo.RELATIONSHIP as PRIMARYBUSINESS where PRIMARYBUSINESS.RELATIONSHIPCONSTITUENTID = CONSTITUENT.ID and PRIMARYBUSINESS.ISPRIMARYBUSINESS = 1 and CONSTITUENT.ISORGANIZATION = 0) as [PRIMARYBUSINESS_ID],
+		(select CONTACT.RECIPROCALCONSTITUENTID from dbo.RELATIONSHIP as CONTACT where CONTACT.RELATIONSHIPCONSTITUENTID = CONSTITUENT.ID and CONTACT.ISPRIMARYCONTACT = 1 and CONSTITUENT.ISORGANIZATION = 1) as [PRIMARYCONTACT_ID],
+		cast(CONSTITUENT.ID as nvarchar(100)) as [KPICONTEXTRECORDID],
+		'' as JOBTITLE,
+		(select CONSTITUENTTYPECODE.DESCRIPTION from dbo.CONSTITUENTTYPECODE where CONSTITUENTTYPECODE.ID =
+		(case when CONSTITUENT.ISORGANIZATION = 1 then
+		'AEFFA312-BE88-4446-9FD1-7E2B07CDB973'
+		when CONSTITUENT.ISGROUP = 1 then
+		(case when GROUPDATA.GROUPTYPECODE = 0 then
+		'5777F3C1-FBC1-47F7-BF69-4789DC29D958'
+		else
+		'0E9D886B-4016-49D2-A220-809EBC38BB15'
+		end)
+		else
+		'053731F1-CE72-441E-B0D2-C90BEE6E691C'
+		end)
+		) CONSTITUENTTYPE,
+		ORGANIZATIONDATA.ISPRIMARY as ISPRIMARYORGANIZATION,
+		DECEASEDCONSTITUENT.DECEASEDCONFIRMATION,
+		(select DECEASEDSOURCECODE.DESCRIPTION from dbo.DECEASEDSOURCECODE where DECEASEDSOURCECODE.ID = DECEASEDCONSTITUENT.DECEASEDSOURCECODEID) as [DECEASEDSOURCECODEID_TRANSLATION],
+		DECEASEDCONSTITUENT.ISREVIEWED,
+		(select TITLECODE.DESCRIPTION from dbo.TITLECODE where TITLECODE.ID = CONSTITUENT.TITLE2CODEID) as [TITLE2CODEID_TRANSLATION],
+		(select SUFFIXCODE.DESCRIPTION from dbo.SUFFIXCODE where SUFFIXCODE.ID = CONSTITUENT.SUFFIX2CODEID) as [SUFFIX2CODEID_TRANSLATION],
+		(select CODE + ' - ' + DESCRIPTION from dbo.CONSTITUENTINACTIVITYREASONCODE where ID = CONSTITUENTINACTIVEDETAIL.CONSTITUENTINACTIVITYREASONCODEID) as [CONSTITUENTINACTIVEDETAIL_REASONCODE],
+		CONSTITUENTINACTIVEDETAIL.DETAILS as [CONSTITUENTINACTIVEDETAIL_DETAILS],
+		NF.NAME as FORMATTEDNAME,
+		T.RELATEDORGANIZATION
+		/*#EXTENSION*/
+
+		from
+		dbo.CONSTITUENT
+		inner join dbo.SPONSORSHIPOPPORTUNITYCHILD on CONSTITUENT.ID = SPONSORSHIPOPPORTUNITYCHILD.CONSTITUENTID
+		left join dbo.ORGANIZATIONDATA on ORGANIZATIONDATA.ID = CONSTITUENT.ID
+		left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = CONSTITUENT.ADDEDBYID
+		left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = CONSTITUENT.CHANGEDBYID
+		left join dbo.DECEASEDCONSTITUENT on DECEASEDCONSTITUENT.ID = CONSTITUENT.ID
+		left join dbo.GROUPDATA on GROUPDATA.ID = CONSTITUENT.ID
+		left join dbo.CONSTITUENTINACTIVEDETAIL on CONSTITUENT.ID = CONSTITUENTINACTIVEDETAIL.ID
+		left join dbo.INDUSTRYCODE on INDUSTRYCODE.ID = ORGANIZATIONDATA.INDUSTRYCODEID
+		left join (
+		select CN.CONSTITUENTID ,dbo.UDA_BUILDLIST(CN.RELATEDORGANIZATION) RELATEDORGANIZATION
+		from (
+		select distinct TF.CONSTITUENTID, TFT.NAME as RELATEDORGANIZATION
+		from dbo.TEAMFUNDRAISER TF
+		inner join dbo.TEAMFUNDRAISINGTEAMMEMBER TFTM ON TFTM.TEAMFUNDRAISERID=TF.ID
+		inner join dbo.TEAMFUNDRAISINGTEAM TFT ON TFT.ID=TFTM.TEAMFUNDRAISINGTEAMID
+		) as CN
+		Group by CN.CONSTITUENTID
+		) as T on T.CONSTITUENTID = CONSTITUENT.ID
+		outer apply dbo.UFN_CONSTITUENT_DISPLAYNAME(CONSTITUENT.ID) NF
+
+	</ViewSQL>
+  </ViewImplementation>
+  <Output>
+    <OutputFields>
+		<OutputField Name="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorship Opportunity Child record" Category="System Fields" DataType="Guid" />
+      <OutputField Caption="Key name prefix" Name="KEYNAMEPREFIX" CaptionResourceKey="$$key_name_prefix" />
+      <OutputField Caption="Industry" Name="INDUSTRYCODEID_TRANSLATION" CaptionResourceKey="$$industry">
+        <LookupInfo>
+          <CodeTable CodeTableName="INDUSTRYCODE" IncludeInactive="true" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Number of employees" Name="NUMEMPLOYEES" CaptionResourceKey="$$number_of_employees" />
+      <OutputField Caption="Number of subsidiaries" Name="NUMSUBSIDIARIES" CaptionResourceKey="$$number_of_subsidiaries" />
+      <OutputField Caption="Parent corporation ID" IsHidden="true" Name="PARENTCORPID" />
+      <OutputField Caption="System record ID" Category="System Fields" Name="ID" CaptionResourceKey="$$system_record_id" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SearchList ID="23C5C603-D7D8-4106-AECC-65392B563887" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Is organization" Name="ISORGANIZATION" CaptionResourceKey="$$is_organization" />
+      <OutputField Caption="Last/Organization/Group/Household name" Name="KEYNAME" CaptionResourceKey="$$last/organization/group/household_name" />
+      <OutputField Caption="First name" Name="FIRSTNAME" CaptionResourceKey="$$first_name" />
+      <OutputField Caption="Middle name" Name="MIDDLENAME" CaptionResourceKey="$$middle_name" />
+      <OutputField Caption="Maiden name" Name="MAIDENNAME" CaptionResourceKey="$$maiden_name" />
+      <OutputField Caption="Nickname" Name="NICKNAME" CaptionResourceKey="$$nickname" />
+      <OutputField Caption="Marital status" Name="MARITALSTATUSCODEID_TRANSLATION" CaptionResourceKey="$$marital_status">
+        <LookupInfo>
+          <CodeTable CodeTableName="MARITALSTATUSCODE" IncludeInactive="true" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Lookup ID" Name="LOOKUPID" CaptionResourceKey="$$lookup_id" />
+      <OutputField Caption="Title" Name="TITLECODEID_TRANSLATION" CaptionResourceKey="$$title">
+        <LookupInfo>
+          <CodeTable IncludeInactive="true" CodeTableName="TITLECODE" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Suffix" Name="SUFFIXCODEID_TRANSLATION" CaptionResourceKey="$$suffix">
+        <LookupInfo>
+          <CodeTable IncludeInactive="true" CodeTableName="SUFFIXCODE" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Gender" Name="GENDER" CaptionResourceKey="$$gender">
+        <LookupInfo>
+          <TranslationList>
+            <common:Options>
+              <common:TranslationListOption Value="Unknown" />
+              <common:TranslationListOption Value="Male" />
+              <common:TranslationListOption Value="Female" />
+            </common:Options>
+          </TranslationList>
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Birth date" Name="BIRTHDATE" AllowMonthDayOnFuzzyDate="true" CaptionResourceKey="$$birth_date" />
+      <OutputField Caption="Deceased date" Name="DECEASEDDATE" CaptionResourceKey="$$deceased_date" />
+      <OutputField Caption="Inactive" Name="ISINACTIVE" CaptionResourceKey="$$inactive" />
+      <OutputField Caption="Gives anonymously" Name="GIVESANONYMOUSLY" CaptionResourceKey="$$gives_anonymously" />
+      <OutputField Caption="Deceased" Name="DECEASED" DataType="Boolean" CaptionResourceKey="$$deceased" />
+      <OutputField Caption="Age" Name="AGE" CaptionResourceKey="$$age" />
+      <OutputField Caption="Deceased years" Name="DECEASEDYEARS" CaptionResourceKey="$$deceased_years" />
+      <OutputField Caption="Name" IsDefaultOutput="true" Name="NAME" CaptionResourceKey="$$name" />
+      <OutputField Caption="Web address" Name="WEBADDRESS" CaptionResourceKey="$$web_address" />
+      <OutputField Caption="Do not mail" IsHidden="true" Name="DONOTMAIL" />
+      <OutputField Caption="Do not email" IsHidden="true" Name="DONOTEMAIL" />
+      <OutputField Caption="Do not phone" IsHidden="true" Name="DONOTPHONE" />
+      <OutputField Caption="Blackbaud Internet Solutions member" Name="NETCOMMUNITYMEMBER" CaptionResourceKey="$$blackbaud_internet_solutions_member">
+        <common:InstalledProductList>
+          <common:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+          <common:InstalledProduct ID="42c15648-749e-4859-a56d-3a6474814cc7" />
+          <common:InstalledProduct ID="bb9873d7-f1ed-430a-8ab4-f09f47056538" />
+        </common:InstalledProductList>
+      </OutputField>
+      <OutputField Caption="Added by application" Category="System Fields" Name="ADDEDBY_APPLICATION" CaptionResourceKey="$$added_by_application" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="37E3E458-AF0D-4dbc-8A18-A93885521A42" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Added by user name" Category="System Fields" Name="ADDEDBY_USERNAME" CaptionResourceKey="$$added_by_user_name" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="CEA15E1C-E455-41be-9ECF-6B5453FA96A4" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Changed by application" Category="System Fields" Name="CHANGEDBY_APPLICATION" CaptionResourceKey="$$changed_by_application" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="37E3E458-AF0D-4dbc-8A18-A93885521A42" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Changed by user name" Category="System Fields" Name="CHANGEDBY_USERNAME" CaptionResourceKey="$$changed_by_user_name" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="CEA15E1C-E455-41be-9ECF-6B5453FA96A4" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Date added" Category="System Fields" Name="DATEADDED" CaptionResourceKey="$$date_added" CategoryResourceKey="$$system_fields" />
+      <OutputField Caption="Date changed" Category="System Fields" Name="DATECHANGED" CaptionResourceKey="$$date_changed" CategoryResourceKey="$$system_fields" />
+      <OutputField Caption="Timestamp value" Category="System Fields" IsHidden="true" Name="TSLONG" />
+      <OutputField Caption="Picture" Name="PICTURE" CaptionResourceKey="$$picture" />
+      <OutputField Caption="Spouse ID" Name="SPOUSE_ID" IsHidden="true" />
+      <OutputField Caption="Primary business ID" Name="PRIMARYBUSINESS_ID" IsHidden="true" />
+      <OutputField Caption="Primary contact ID" Name="PRIMARYCONTACT_ID" IsHidden="true" />
+      <OutputField Caption="KPIs context record ID" Name="KPICONTEXTRECORDID" DataType="String" IsHidden="true" />
+      <OutputField Caption="Job title" Name="JOBTITLE" IsHidden="true" />
+      <OutputField Caption="Type" Name="CONSTITUENTTYPE" DataType="String" CaptionResourceKey="$$type">
+        <LookupInfo>
+          <CodeTable CodeTableName="CONSTITUENTTYPECODE" IncludeInactive="true" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Is primary organization" Name="ISPRIMARYORGANIZATION" DataType="Boolean" CaptionResourceKey="$$is_primary_organization" />
+      <OutputField Caption="Deceased confirmation" Name="DECEASEDCONFIRMATION" CaptionResourceKey="$$deceased_confirmation">
+        <LookupInfo>
+          <TranslationList>
+            <common:Options>
+              <common:TranslationListOption Value="Unconfirmed" />
+              <common:TranslationListOption Value="Death certificate" />
+              <common:TranslationListOption Value="Relative verified" />
+            </common:Options>
+          </TranslationList>
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Deceased source" Name="DECEASEDSOURCECODEID_TRANSLATION" CaptionResourceKey="$$deceased_source">
+        <LookupInfo>
+          <CodeTable CodeTableName="DECEASEDSOURCECODE" IncludeInactive="true" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Deceased is reviewed" Name="ISREVIEWED" DataType="Boolean" CaptionResourceKey="$$deceased_is_reviewed" />
+      <OutputField Caption="Title 2" Name="TITLE2CODEID_TRANSLATION" CaptionResourceKey="$$title_2">
+        <LookupInfo>
+          <CodeTable IncludeInactive="true" CodeTableName="TITLECODE" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Suffix 2" Name="SUFFIX2CODEID_TRANSLATION" CaptionResourceKey="$$suffix_2">
+        <LookupInfo>
+          <CodeTable IncludeInactive="true" CodeTableName="SUFFIXCODE" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Inactive reason" Name="CONSTITUENTINACTIVEDETAIL_REASONCODE" CaptionResourceKey="$$inactive_reason">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="71B29B04-D70F-4d38-BAB1-E44A2528D0E8" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Caption="Inactive details" Name="CONSTITUENTINACTIVEDETAIL_DETAILS" CaptionResourceKey="$$inactive_details" />
+      <OutputField Caption="Formatted name" Name="FORMATTEDNAME" CaptionResourceKey="$$formatted_name" />
+      <OutputField Caption="Related organization" Name="RELATEDORGANIZATION" CaptionResourceKey="$$related_organization" />
+    </OutputFields>
+    <IdentifyingFields>
+      <IdentifyingField Name="NAME" />
+    </IdentifyingFields>
+  </Output>
+  <RelationshipOperations>
+	  <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" Cardinality="OneToOne" ParentViewRelatedField="ID" Field="SPONSORSHIPOPPORTUNITYCHILDID"  PathAlias="Child Constituent"/>
+	  
+	<!-- Commented out all the standard related views -->
+	<!--AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="PARENTCORPID" PathAlias="Parent Corporation" Cardinality="OneToOptionalOne" DisplayAliasResourceKey="$$parent_corporation" /-->
+	<!--AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="SPOUSE_ID" PathAlias="Spouse" Cardinality="OneToOptionalOne" DisplayAliasResourceKey="$$spouse" /-->
+	<!--AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="PRIMARYBUSINESS_ID" PathAlias="Business (Primary)" Cardinality="OneToOptionalOne" DisplayAliasResourceKey="$$business_(primary)" /-->
+    <!--AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="PRIMARYCONTACT_ID" PathAlias="Contact (Primary)" Cardinality="OneToOptionalOne" DisplayAliasResourceKey="$$contact_(primary)" /-->
+	<!--AddRelatedView RelatedView="V_QUERY_KPIINSTANCE" RelatedField="CONTEXTRECORDID" Field="KPICONTEXTRECORDID" PathAlias="KPIs" DisplayAliasResourceKey="$$kpis" /-->
+	  <AddRelatedView RelatedView="V_QUERY_CONSTITUENTALIAS" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Aliases"/>
+	  <AddRelatedView RelatedView="V_QUERY_ALTERNATELOOKUPID" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Alternate Lookup IDs"/>
+	  <AddRelatedView RelatedView="V_QUERY_CONSTITUENCY" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Constituencies"/>
+	  <AddRelatedView RelatedView="V_QUERY_CONSTITUENTAPPEAL" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Appeal Mailing"/>
+	  <AddRelatedView RelatedView="V_QUERY_CONSTITUENTATTACHMENT" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Attachments"/>
+	  <AddRelatedView RelatedView="V_QUERY_CONSTITUENTMEDIALINK" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Media Links"/>
+	  <AddRelatedView RelatedView="V_QUERY_INTERACTION" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Interactions"/>
+	  <AddRelatedView RelatedView="V_QUERY_CONSTITUENTNAMEFORMAT" RelatedField="CONSTITUENTID" Field="ID" PathAlias="Name Formats"/>
+
+  </RelationshipOperations>
+</QueryViewSpec>
