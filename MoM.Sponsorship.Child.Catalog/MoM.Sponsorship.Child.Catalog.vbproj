@@ -91,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
-    <EmbeddedResource Include="ChildBio\UtilityPageDefSpec_AddChildBioTab.xml" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -283,9 +282,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\SponOpNoteAddWithEligCheck.AddDataForm.xml" />
-    <EmbeddedResource Include="ChildBio\SponOpporNoteChildBioDateProofed.Edit.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Batch\BatchLock\BatchLock.Table.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
@@ -432,6 +428,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
+    <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
     <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
