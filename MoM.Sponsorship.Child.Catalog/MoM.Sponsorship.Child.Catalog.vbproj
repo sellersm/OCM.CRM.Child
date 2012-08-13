@@ -432,6 +432,7 @@
     <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
+    <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
   </ItemGroup>
