@@ -164,12 +164,10 @@ begin try
             @changeAgentID = @CHANGEAGENTID,
 		        @insertRowcount = @insertRowcount OUTPUT
       
-      /* NOT IMPLEMENTED YET!
       -- add pending reasons that are now applicable
-      exec @return_value = dbo.USR_USP_CHILD_CHECKELIGIBILITY
+      exec dbo.USR_USP_CHILD_CHECKELIGIBILITY
            @sponsorshipOpportunityChildID = @CONTEXTID,
            @changeAgentID = @CHANGEAGENTID
-      */
       
       -- set child to pending
       exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING
@@ -178,6 +176,11 @@ begin try
            @changeAgentID = @CHANGEAGENTID
       
       -- add revenue function of "Designation"
+      -- call the sproc USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT
+      exec dbo.USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT 
+           @CHANGEAGENTID = @CHANGEAGENTID,
+           @SPONSORSHIPOPPORTUNITYID = @CONTEXTID,
+           @REVENUEDEVELOPMENTFUNCTIONDESCRIPTION = 'Designation'
       
   end
   else
