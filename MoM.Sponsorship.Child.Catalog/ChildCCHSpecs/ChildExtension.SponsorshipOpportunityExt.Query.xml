@@ -75,7 +75,6 @@ select
     USR_CHILDEXTENSION.[WHENIPLAYWITHFRIENDSWE],
     USR_CHILDEXTENSION.[WHENATHOMEIHELPOUTBY],
     USR_CHILDEXTENSION.[WHENITALKTOGODIASKHIM],
-    USR_CHILDEXTENSION.[WHENIAMATSCHOOLILIKELEARNING],
     USR_CHILDEXTENSION.[SOMEDAYI],
     USR_CHILDEXTENSION.[TWOMOSTFAVORITETHINGS],
     USR_CHILDEXTENSION.[OTHERTHINGSTHECHILDENJOYS],
@@ -201,7 +200,6 @@ from
       <OutputField Name="WHENIPLAYWITHFRIENDSWE" Caption="When I play with friends we" />
       <OutputField Name="WHENATHOMEIHELPOUTBY" Caption="When at home I help out by" />
       <OutputField Name="WHENITALKTOGODIASKHIM" Caption="When I talk to god I ask Him" />
-      <OutputField Name="WHENIAMATSCHOOLILIKELEARNING" Caption="When I am at school I like learning" />
       <OutputField Name="SOMEDAYI" Caption="Someday I" />
       <OutputField Name="TWOMOSTFAVORITETHINGS" Caption="Two most favorite things" />
       <OutputField Name="OTHERTHINGSTHECHILDENJOYS" Caption="Other things the child enjoys" />

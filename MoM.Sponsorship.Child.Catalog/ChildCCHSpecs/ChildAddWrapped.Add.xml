@@ -79,7 +79,6 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSIONBATCH_WRAPPED
     @WHENIPLAYWITHFRIENDSWE nvarchar(1000) = '',
     @WHENATHOMEIHELPOUTBY nvarchar(1000) = '',
     @WHENITALKTOGODIASKHIM nvarchar(1000) = '',
-    @WHENIAMATSCHOOLILIKELEARNING nvarchar(1000) = '',
     @SOMEDAYI nvarchar(1000) = '',
     @TWOMOSTFAVORITETHINGS nvarchar(1000) = '',
     @OTHERTHINGSTHECHILDENJOYS nvarchar(1000) = '',
@@ -182,7 +181,6 @@ exec @r = dbo.USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSIONBATCH
   @WHENIPLAYWITHFRIENDSWE = @WHENIPLAYWITHFRIENDSWE, 
   @WHENATHOMEIHELPOUTBY = @WHENATHOMEIHELPOUTBY, 
   @WHENITALKTOGODIASKHIM = @WHENITALKTOGODIASKHIM, 
-  @WHENIAMATSCHOOLILIKELEARNING = @WHENIAMATSCHOOLILIKELEARNING, 
   @SOMEDAYI = @SOMEDAYI, 
   @TWOMOSTFAVORITETHINGS = @TWOMOSTFAVORITETHINGS, 
   @OTHERTHINGSTHECHILDENJOYS = @OTHERTHINGSTHECHILDENJOYS, 
@@ -389,7 +387,7 @@ return @r;
             <c:FormField FieldID="WHENIPLAYWITHFRIENDSWE" MaxLength="1000" Caption="When I play with my friends we" Multiline="true" />
             <c:FormField FieldID="WHENATHOMEIHELPOUTBY" MaxLength="1000" Caption="When at home I help out by" Multiline="true" />
             <c:FormField FieldID="WHENITALKTOGODIASKHIM" MaxLength="1000" Caption="When I talk to God I ask Him" Multiline="true" />
-            <c:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" Hidden="true" MaxLength="1000" Caption="When I am at school I like..." Multiline="true" />
+            <!--<c:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" Hidden="true" MaxLength="1000" Caption="When I am at school I like..." Multiline="true" />-->
             <c:FormField FieldID="SOMEDAYI" MaxLength="1000" Caption="Someday I would like" Multiline="true" />
             <c:FormField FieldID="TWOMOSTFAVORITETHINGS" MaxLength="1000" Caption="My most favorite things" Multiline="true" />
             <c:FormField FieldID="OTHERTHINGSTHECHILDENJOYS" MaxLength="1000" Caption="Other things the child enjoys" Multiline="true" />

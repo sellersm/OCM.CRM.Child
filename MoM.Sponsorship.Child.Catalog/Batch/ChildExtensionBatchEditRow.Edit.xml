@@ -69,7 +69,6 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDEXTENSIONBATCHROW(
 		@WHENIPLAYWITHFRIENDSWE nvarchar(1000) = null output,
 		@WHENATHOMEIHELPOUTBY nvarchar(1000) = null output,
 		@WHENITALKTOGODIASKHIM nvarchar(1000) = null output,
-		@WHENIAMATSCHOOLILIKELEARNING nvarchar(1000) = null output,
 		@SOMEDAYI nvarchar(1000) = null output,
 		@TWOMOSTFAVORITETHINGS nvarchar(1000) = null output,
 		@OTHERTHINGSTHECHILDENJOYS nvarchar(1000) = null output,
@@ -164,7 +163,6 @@ as
 				@WHENIPLAYWITHFRIENDSWE = WHENIPLAYWITHFRIENDSWE, 
 				@WHENATHOMEIHELPOUTBY = WHENATHOMEIHELPOUTBY, 
 				@WHENITALKTOGODIASKHIM = WHENITALKTOGODIASKHIM, 
-				@WHENIAMATSCHOOLILIKELEARNING = WHENIAMATSCHOOLILIKELEARNING, 
 				@SOMEDAYI = SOMEDAYI, 
 				@TWOMOSTFAVORITETHINGS = TWOMOSTFAVORITETHINGS, 
 				@OTHERTHINGSTHECHILDENJOYS = OTHERTHINGSTHECHILDENJOYS, 
@@ -257,7 +255,6 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDEXTENSIONBATCHROW (
 		@WHENIPLAYWITHFRIENDSWE nvarchar(1000),
 		@WHENATHOMEIHELPOUTBY nvarchar(1000),
 		@WHENITALKTOGODIASKHIM nvarchar(1000),
-		@WHENIAMATSCHOOLILIKELEARNING nvarchar(1000),
 		@SOMEDAYI nvarchar(1000),
 		@TWOMOSTFAVORITETHINGS nvarchar(1000),
 		@OTHERTHINGSTHECHILDENJOYS nvarchar(1000),
@@ -350,7 +347,6 @@ as
 						WHENIPLAYWITHFRIENDSWE = @WHENIPLAYWITHFRIENDSWE,
 						WHENATHOMEIHELPOUTBY = @WHENATHOMEIHELPOUTBY,
 						WHENITALKTOGODIASKHIM = @WHENITALKTOGODIASKHIM,
-						WHENIAMATSCHOOLILIKELEARNING = @WHENIAMATSCHOOLILIKELEARNING,
 						SOMEDAYI = @SOMEDAYI,
 						TWOMOSTFAVORITETHINGS = @TWOMOSTFAVORITETHINGS,
 						OTHERTHINGSTHECHILDENJOYS = @OTHERTHINGSTHECHILDENJOYS,
@@ -536,7 +532,7 @@ return 0;
 			<common:FormField FieldID="WHENIPLAYWITHFRIENDSWE" MaxLength="1000" Caption="When I play with my friends we" Multiline="true" />
 			<common:FormField FieldID="WHENATHOMEIHELPOUTBY" MaxLength="1000" Caption="When at home I help out by" Multiline="true" />
 			<common:FormField FieldID="WHENITALKTOGODIASKHIM" MaxLength="1000" Caption="When I talk to God I ask Him" Multiline="true" />
-			<common:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" MaxLength="1000" Caption="When I am at school I like" Multiline="true" Hidden="true" />
+			<!--<common:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" MaxLength="1000" Caption="When I am at school I like" Multiline="true" Hidden="true" />-->
 			<common:FormField FieldID="SOMEDAYI" MaxLength="1000" Caption="Someday I would like" Multiline="true" />
 			<common:FormField FieldID="TWOMOSTFAVORITETHINGS" MaxLength="1000" Caption="My most favorite things" Multiline="true" />
 			<common:FormField FieldID="OTHERTHINGSTHECHILDENJOYS" MaxLength="1000" Caption="Other things the child enjoys" Multiline="true" />

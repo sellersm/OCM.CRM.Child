@@ -64,7 +64,6 @@ as
         USR_CHILDEXTENSION.[WHENIPLAYWITHFRIENDSWE],
         USR_CHILDEXTENSION.[WHENATHOMEIHELPOUTBY],
         USR_CHILDEXTENSION.[WHENITALKTOGODIASKHIM],
-        USR_CHILDEXTENSION.[WHENIAMATSCHOOLILIKELEARNING],
         USR_CHILDEXTENSION.[SOMEDAYI],
         USR_CHILDEXTENSION.[TWOMOSTFAVORITETHINGS],
         USR_CHILDEXTENSION.[OTHERTHINGSTHECHILDENJOYS],
@@ -151,7 +150,7 @@ as
             <OutputField FieldID="WHENIPLAYWITHFRIENDSWE" Caption="Wheniplaywithfriendswe" DataType="String" />
             <OutputField FieldID="WHENATHOMEIHELPOUTBY" Caption="Whenathomeihelpoutby" DataType="String" />
             <OutputField FieldID="WHENITALKTOGODIASKHIM" Caption="Whenitalktogodiaskhim" DataType="String" />
-            <OutputField FieldID="WHENIAMATSCHOOLILIKELEARNING" Caption="Wheniamatschoolilikelearning" DataType="String" />
+            <!--<OutputField FieldID="WHENIAMATSCHOOLILIKELEARNING" Caption="Wheniamatschoolilikelearning" DataType="String" />-->
             <OutputField FieldID="SOMEDAYI" Caption="Somedayi" DataType="String" />
             <OutputField FieldID="TWOMOSTFAVORITETHINGS" Caption="Twomostfavoritethings" DataType="String" />
             <OutputField FieldID="OTHERTHINGSTHECHILDENJOYS" Caption="Otherthingsthechildenjoys" DataType="String" />

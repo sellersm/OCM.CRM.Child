@@ -50,7 +50,6 @@ create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSION
     @WHENIPLAYWITHFRIENDSWE nvarchar(1000) = null output,
     @WHENATHOMEIHELPOUTBY nvarchar(1000) = null output,
     @WHENITALKTOGODIASKHIM nvarchar(1000) = null output,
-    @WHENIAMATSCHOOLILIKELEARNING nvarchar(1000) = null output,
     @SOMEDAYI nvarchar(1000) = null output,
     @TWOMOSTFAVORITETHINGS nvarchar(1000) = null output,
     @OTHERTHINGSTHECHILDENJOYS nvarchar(1000) = null output,
@@ -105,7 +104,6 @@ as
     @WHENIPLAYWITHFRIENDSWE = WHENIPLAYWITHFRIENDSWE,
     @WHENATHOMEIHELPOUTBY = WHENATHOMEIHELPOUTBY,
     @WHENITALKTOGODIASKHIM = WHENITALKTOGODIASKHIM,
-    @WHENIAMATSCHOOLILIKELEARNING = WHENIAMATSCHOOLILIKELEARNING,
     @SOMEDAYI = SOMEDAYI,
     @TWOMOSTFAVORITETHINGS = TWOMOSTFAVORITETHINGS,
     @OTHERTHINGSTHECHILDENJOYS = OTHERTHINGSTHECHILDENJOYS,
@@ -206,7 +204,7 @@ as
 
       <common:FormField FieldID="WHENITALKTOGODIASKHIM" Caption="Prayer text" DataType="String" Required="false"/>
 
-      <common:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" Caption="School likes" DataType="String" Required="false"/>
+      <!--<common:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" Caption="School likes" DataType="String" Required="false"/>-->
 
       <common:FormField FieldID="SOMEDAYI" Caption="Dreams of future text" DataType="String" Required="false"/>
 

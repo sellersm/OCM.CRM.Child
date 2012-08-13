@@ -76,7 +76,7 @@
     <TextField Description="Playing with friends text" Name="WHENIPLAYWITHFRIENDSWE" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <TextField Description="Help out at home text" Name="WHENATHOMEIHELPOUTBY" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <TextField Description="Prayer text" Name="WHENITALKTOGODIASKHIM" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
-    <TextField Description="School likes" Name="WHENIAMATSCHOOLILIKELEARNING" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <!--<TextField Description="School likes" Name="WHENIAMATSCHOOLILIKELEARNING" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />-->
     <TextField Description="Dreams of future text" Name="SOMEDAYI" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <TextField Description="2 favorite things" Name="TWOMOSTFAVORITETHINGS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <TextField Description="Other likes" Name="OTHERTHINGSTHECHILDENJOYS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />

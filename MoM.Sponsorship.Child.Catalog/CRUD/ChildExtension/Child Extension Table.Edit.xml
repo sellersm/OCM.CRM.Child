@@ -67,7 +67,6 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_EXTENSION_TABLE
     @WHENIPLAYWITHFRIENDSWE nvarchar(1000) = null output,
     @WHENATHOMEIHELPOUTBY nvarchar(1000) = null output,
     @WHENITALKTOGODIASKHIM nvarchar(1000) = null output,
-    @WHENIAMATSCHOOLILIKELEARNING nvarchar(1000) = null output,
     @SOMEDAYI nvarchar(1000) = null output,
     @TWOMOSTFAVORITETHINGS nvarchar(1000) = null output,
     @OTHERTHINGSTHECHILDENJOYS nvarchar(1000) = null output,
@@ -151,7 +150,6 @@ as
         @WHENIPLAYWITHFRIENDSWE = WHENIPLAYWITHFRIENDSWE, 
         @WHENATHOMEIHELPOUTBY = WHENATHOMEIHELPOUTBY, 
         @WHENITALKTOGODIASKHIM = WHENITALKTOGODIASKHIM, 
-        @WHENIAMATSCHOOLILIKELEARNING = WHENIAMATSCHOOLILIKELEARNING, 
         @SOMEDAYI = SOMEDAYI, 
         @TWOMOSTFAVORITETHINGS = TWOMOSTFAVORITETHINGS, 
         @OTHERTHINGSTHECHILDENJOYS = OTHERTHINGSTHECHILDENJOYS, 
@@ -233,7 +231,6 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_CHILD_EXTENSION_TABLE
     @WHENIPLAYWITHFRIENDSWE nvarchar(1000),
     @WHENATHOMEIHELPOUTBY nvarchar(1000),
     @WHENITALKTOGODIASKHIM nvarchar(1000),
-    @WHENIAMATSCHOOLILIKELEARNING nvarchar(1000),
     @SOMEDAYI nvarchar(1000),
     @TWOMOSTFAVORITETHINGS nvarchar(1000),
     @OTHERTHINGSTHECHILDENJOYS nvarchar(1000),
@@ -312,7 +309,6 @@ as
             WHENIPLAYWITHFRIENDSWE = @WHENIPLAYWITHFRIENDSWE,
             WHENATHOMEIHELPOUTBY = @WHENATHOMEIHELPOUTBY,
             WHENITALKTOGODIASKHIM = @WHENITALKTOGODIASKHIM,
-            WHENIAMATSCHOOLILIKELEARNING = @WHENIAMATSCHOOLILIKELEARNING,
             SOMEDAYI = @SOMEDAYI,
             TWOMOSTFAVORITETHINGS = @TWOMOSTFAVORITETHINGS,
             OTHERTHINGSTHECHILDENJOYS = @OTHERTHINGSTHECHILDENJOYS,
@@ -430,7 +426,7 @@ return 0;
             <c:FormField FieldID="WHENIPLAYWITHFRIENDSWE" MaxLength="1000" Caption="Wheniplaywithfriendswe" Multiline="true" />
             <c:FormField FieldID="WHENATHOMEIHELPOUTBY" MaxLength="1000" Caption="Whenathomeihelpoutby" Multiline="true" />
             <c:FormField FieldID="WHENITALKTOGODIASKHIM" MaxLength="1000" Caption="Whenitalktogodiaskhim" Multiline="true" />
-            <c:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" MaxLength="1000" Caption="Wheniamatschoolilikelearning" Multiline="true" />
+            <!--<c:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" MaxLength="1000" Caption="Wheniamatschoolilikelearning" Multiline="true" />-->
             <c:FormField FieldID="SOMEDAYI" MaxLength="1000" Caption="Somedayi" Multiline="true" />
             <c:FormField FieldID="TWOMOSTFAVORITETHINGS" MaxLength="1000" Caption="Twomostfavoritethings" Multiline="true" />
             <c:FormField FieldID="OTHERTHINGSTHECHILDENJOYS" MaxLength="1000" Caption="Otherthingsthechildenjoys" Multiline="true" />

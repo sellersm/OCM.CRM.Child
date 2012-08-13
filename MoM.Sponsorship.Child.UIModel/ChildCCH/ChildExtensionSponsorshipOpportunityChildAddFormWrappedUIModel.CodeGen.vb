@@ -99,7 +99,7 @@ Partial Public Class [ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIM
     Private WithEvents _wheniplaywithfriendswe As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _whenathomeihelpoutby As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _whenitalktogodiaskhim As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-    Private WithEvents _wheniamatschoolilikelearning As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+    'Private WithEvents _wheniamatschoolilikelearning As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _somedayi As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _twomostfavoritethings As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _otherthingsthechildenjoys As Global.Blackbaud.AppFx.UIModeling.Core.StringField
@@ -195,7 +195,7 @@ Partial Public Class [ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIM
         _wheniplaywithfriendswe = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _whenathomeihelpoutby = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _whenitalktogodiaskhim = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        _wheniamatschoolilikelearning = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
+        '_wheniamatschoolilikelearning = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _somedayi = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _twomostfavoritethings = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _otherthingsthechildenjoys = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
@@ -647,12 +647,12 @@ Partial Public Class [ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIM
         '
         '_wheniamatschoolilikelearning
         '
-        _wheniamatschoolilikelearning.Name = "WHENIAMATSCHOOLILIKELEARNING"
-        _wheniamatschoolilikelearning.Caption = "When I am at school I like..."
-        _wheniamatschoolilikelearning.Visible = False
-        _wheniamatschoolilikelearning.MaxLength = 1000
-        _wheniamatschoolilikelearning.Multiline = True
-        Me.Fields.Add(_wheniamatschoolilikelearning)
+        '_wheniamatschoolilikelearning.Name = "WHENIAMATSCHOOLILIKELEARNING"
+        '_wheniamatschoolilikelearning.Caption = "When I am at school I like..."
+        '_wheniamatschoolilikelearning.Visible = False
+        '_wheniamatschoolilikelearning.MaxLength = 1000
+        '_wheniamatschoolilikelearning.Multiline = True
+        'Me.Fields.Add(_wheniamatschoolilikelearning)
         '
         '_somedayi
         '
@@ -1521,13 +1521,13 @@ Partial Public Class [ChildExtensionSponsorshipOpportunityChildAddFormWrappedUIM
     ''' <summary>
     ''' When I am at school I like...
     ''' </summary>
-    <System.ComponentModel.Description("When I am at school I like...")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [WHENIAMATSCHOOLILIKELEARNING]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _wheniamatschoolilikelearning
-        End Get
-    End Property
+    '<System.ComponentModel.Description("When I am at school I like...")> _
+    '<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+    'Public ReadOnly Property [WHENIAMATSCHOOLILIKELEARNING]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+    '    Get
+    '        Return _wheniamatschoolilikelearning
+    '    End Get
+    'End Property
 
     ''' <summary>
     ''' Someday I would like
