@@ -19,7 +19,7 @@
 	History:
 	Date            Modified By     Comments
 	10-Jul-2012		CMayeda			Initial Version
-
+	13-Aug-2012		CMayeda			Added call to USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK - Fogbugz Case 755
 	-->
 
 		<CreateProcedureSQL>
@@ -75,6 +75,7 @@ begin
 				where childProjectID = @childProjectID 
 
 			exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
+			exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildListToRegister, @changeAgentID
 			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
 
 		end
@@ -110,6 +111,7 @@ begin
 		  				order by dateAdded 
 
 					exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
+					exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildListToRegister, @changeAgentID
 					exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
 	
 					insert @ChildListIneligible 
