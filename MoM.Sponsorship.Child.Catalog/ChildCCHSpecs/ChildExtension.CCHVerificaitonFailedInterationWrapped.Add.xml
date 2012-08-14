@@ -20,6 +20,7 @@
 	History:
 	Date            Modified By     Comments
 	21-Jul-2012		CMayeda			Initial Version
+	13-Aug-2012		CMayeda			Changed call of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to USR_USP_CHILD_CHECKELIGIBILITY
 	-->
 
 	<c:ImpliedSecurityList>
@@ -140,7 +141,7 @@ as begin
 		exec dbo.USR_USP_CHILD_SETPENDINGREASON		@sponsorshipOpportunityChildID, null, @pendingReasonString_NeedInformationVerified, @CHANGEAGENTID
 		
 		-- Add or remove other pending reasons and set the child to pending (we know there's at least one reason added above)
-		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @sponsorshipOpportunityChildID, null, @CHANGEAGENTID
+		exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @sponsorshipOpportunityChildID, @CHANGEAGENTID
 		exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING	@sponsorshipOpportunityChildID, 1, @CHANGEAGENTID 	-- 1 specifies to include ineligible children in setting them eligible or pending
 
 	end try
