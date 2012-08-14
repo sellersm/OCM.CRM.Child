@@ -423,9 +423,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildTransfer\ChildTransferForm.Edit.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
