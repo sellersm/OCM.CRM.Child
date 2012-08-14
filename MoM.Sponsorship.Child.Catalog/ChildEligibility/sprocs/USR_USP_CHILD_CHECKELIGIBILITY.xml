@@ -1,0 +1,42 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1b3b7c8b-b47c-427c-8da1-556cad3f72c2"
+	Name="USR_USP_CHILD_CHECKELIGIBILITY"
+	Description="Check the eligibility of a single child (add / remove pending reasons)"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILD_CHECKELIGIBILITY"
+	>
+	<!-- 
+	Remarks:    This wraps the USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, so that it can be easily called with just a single sponsorship opportunity child id
+
+	History:
+	Date            Modified By     Comments
+	01-Aug-2012		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILD_CHECKELIGIBILITY (
+	@sponsorshipOpportunityChildID uniqueidentifier,	-- Sponsorship Opportunity Child ID (same as Sponsorship Opportunity ID) to check eligibility
+	@changeAgentID uniqueidentifier						-- The ChangeAgentID to be used for AddedBy and ModifiedBy fields
+)
+as begin
+    
+
+  	if @changeAgentID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output;
+
+	declare @childIDList dbo.USR_UDT_CHILDIDLIST
+	insert @childIDList 
+	select @sponsorshipOpportunityChildID
+	
+	-- Check the eligibility of the child - add / remove all applicable pending reasons for this child
+	exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @childIDList, @changeAgentID		
+	
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

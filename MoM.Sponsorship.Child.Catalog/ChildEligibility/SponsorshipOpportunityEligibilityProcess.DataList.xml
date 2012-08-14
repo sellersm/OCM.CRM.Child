@@ -1,0 +1,79 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="88ab13b1-df31-4970-9a56-71fc4e2fc422" 
+	Name="Sponsorship Opportunity Eligibility Process Data List"
+	Description="List of saved sponsorship opportunity eligibility processes" 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Business Process\Eligibility"
+	>
+
+	<!-- 
+	Remarks:	This is used to on the Sponsorship Opportunity Eligibility Process page to display all of the saved parameter sets.
+				
+	History:
+	Date			Modified By		Comments
+    26-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+			
+create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS
+as begin
+
+	set nocount on;
+
+	select so_eligibilityprocess.ID, 
+		   so_eligibilityprocess.NAME, 
+		   so_eligibilityprocess.DESCRIPTION, 
+		   idset.NAME as SELECTIONNAME,
+		   case 
+			  when addedbyca.ID is null then ''
+			  else addedbyca.USERNAME 
+		   end as ADDEDBY,
+		   so_eligibilityprocess.DATEADDED,
+		   case 
+			  when changedbyca.ID is null then ''
+			  else changedbyca.USERNAME
+		   end as CHANGEDBY,
+		   so_eligibilityprocess.DATECHANGED
+       
+	  from dbo.USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS so_eligibilityprocess
+ 
+      inner join dbo.IDSETREGISTER as idset on 
+			  so_eligibilityprocess.IDSETREGISTERID = idset.ID		      
+ 
+	  left join dbo.CHANGEAGENT addedbyca on
+			  so_eligibilityprocess.ADDEDBYID = addedbyca.ID
+ 
+	  left join dbo.CHANGEAGENT changedbyca on
+			  so_eligibilityprocess.ADDEDBYID = changedbyca.ID
+
+end	     
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+
+	<!-- describe any parameters (other than the context ID) defined on the SP -->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="NAME" Caption="Name" DataType="String"  />
+			<OutputField FieldID="DESCRIPTION" Caption="Description" DataType="String" />
+			<OutputField FieldID="SELECTIONNAME" Caption="Selection" DataType="String"  />
+			<OutputField FieldID="ADDEDBY" Caption="Added by" DataType="String"  />
+			<OutputField FieldID="DATEADDED" Caption="Date added" DataType="Date" />
+			<OutputField FieldID="CHANGEDBY" Caption="Changed by" DataType="String"  />
+			<OutputField FieldID="CHANGEDADDED" Caption="Date changed" DataType="Date" />
+		</OutputFields>
+		
+	</Output>
+
+</DataListSpec>

@@ -1,0 +1,107 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="62d1b050-27ca-4481-8cb5-23af239ac184"
+	Name="USR_UFN_CHILDQUOTA_GETWAITINGLIST"
+	Description="Get a table of children awaiting registration - both Waiting List and Batch Commit"
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILDQUOTA_GETWAITINGLIST">
+	
+	<!-- 
+	Remarks:    This will return 0 rows if any of the Waiting List or Batch Commit - Locked Failed sponsorship reason ids are not found.
+				The table is sorted by project and date added.  There is no preference for waiting list children or batch commit kids.
+				The reason for this is that the "Batch Commit - locked failed" error indicates that the child could not be checked to determine 
+				if they should be registered or placed on the waiting list, because the lock of the project failed when processing the waiting list 
+				when committing the batch.
+				
+				If the project and the country quota types do not match, the children in that project are excluded.
+				
+				@awaitingKids table matches 
+				Initially the waiting list and batch commit kids would be processed all at once, so the waiting list kids needed to be handled first.
+				However, there wasn't a way to make the call after all kids were added to CRM, so the waiting list process is called first and then
+				each child is checked separately prior to entry.
+
+	History:
+	Date            Modified By     Comments
+	02-May-2012		CMayeda			Initial Version
+	05-Aug-2012		CMayeda			Updated comment
+	-->
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILDQUOTA_GETWAITINGLIST()
+returns @awaitingKids table
+		(quotaTypeCode tinyint,
+		 childProjectID uniqueidentifier,
+		 countryID uniqueidentifier,
+		 sponsorshipOpportunityChildID uniqueidentifier,
+		 dateAdded datetime
+		)
+with execute as caller
+as begin
+
+	declare @numberSponsorshipReasons tinyint		-- The number of sponsorship reasons (waiting list and batch commit) that should be checked to include children with that sponsorship reason in the returned set of children
+	set @numberSponsorshipReasons = 6 
+	
+	declare @sponsorhipReasonsToInclude table
+		(
+			sponsorshipReasonID uniqueidentifier
+		)
+	
+	-- Waiting List reasons - finding these individually instead of all the start with 'Waiting List' in order to minimize accidental data entry issues
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - market demand'
+	
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - maximum quota reached'
+	
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - not accepting new children'
+	
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - project performance'
+
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - project status'
+
+	-- Batch Commit reason 
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'batch commit - lock failed'
+	
+	-- Get the number of reasons inserted 
+	declare @reasonCount tinyint
+	select @reasonCount = count(*) from @sponsorhipReasonsToInclude
+	
+	-- Only return rows if the expected number of reasons were inserted
+	if @reasonCount = @numberSponsorshipReasons  
+		insert	@awaitingKids
+		select	projectext.QUOTATYPECODE,
+				projectext.ID,
+				countryext.ID,
+				so.ID,
+				childext.DATEADDED
+		  from	dbo.SPONSORSHIPOPPORTUNITY so
+    inner join	dbo.USR_CHILDEXTENSION childext on
+					so.ID = childext.SPONSORSHIPOPPORTUNITYCHILDID
+	inner join	dbo.SPONSORSHIPREASON sreason on
+					so.SPONSORSHIPREASONID = sreason.id
+	inner join	@sponsorhipReasonsToInclude reasonstoinclude on 
+					so.SPONSORSHIPREASONID = reasonstoinclude.sponsorshipReasonID
+	inner join	dbo.SPONSORSHIPLOCATION slocation on
+					so.SPONSORSHIPLOCATIONID = slocation.ID 	
+	inner join	dbo.USR_CHILDPROJECTEXTENSION projectext on
+					slocation.FIELDOFFICEID = projectext.ID
+	inner join	dbo.USR_COUNTRYEXTENSION countryext on
+					countryext.ID = dbo.USR_UFN_CHILDPROJECT_GETCOUNTRYID (projectext.ID)
+					
+		 where	childext.REGISTRATIONDATE is null
+		   and	projectext.QUOTATYPECODE = countryext.QUOTATYPECODE
+		   
+		 order by projectext.QUOTATYPECODE, projectext.ID, childext.DATEADDED
+	
+	return
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

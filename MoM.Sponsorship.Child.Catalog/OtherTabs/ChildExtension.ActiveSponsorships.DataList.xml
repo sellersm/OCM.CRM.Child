@@ -1,0 +1,148 @@
+﻿<DataListSpec 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	ID="5ce70d8a-f9f5-4baa-936f-845176446c18" 
+	Name="Child Active Sponsorships" 
+	Description="List of active sponsorships for a child (should only be one record)" 
+	Author="Cary Mayeda" 
+	xmlns="bb_appfx_datalist">
+
+	<!-- 
+	Remarks:    Created through CRM UI, and saved through view xml
+
+	History:
+	Date            Modified By     Comments
+	01-Jan-2012		CMayeda			Initial Version
+
+	-->
+
+	<MetaTags xmlns="bb_appfx_commontypes">
+		<AdHocQuerySaveDataListRequest xmlns="">
+			<AdHocQuerySaveDataListRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DataListID="5ce70d8a-f9f5-4baa-936f-845176446c18" AdHocQueryID="00000000-0000-0000-0000-000000000000" QueryViewID="8310a01b-b2c2-4cbd-9840-c21e0fc0a8d6" DataListName="Child - Active Sponsorships" DataListDescription="List of active sponsorships for a child (should only be one record)" ContextRecordType="Sponsorship Opportunity Child" SuppressDuplicateRows="true">
+			<ClientAppInfo REDatabaseToUse="MissionOfMercy_Config" ClientAppName="Blackbaud Enterprise CRM" SessionKey="3a340e77-16f4-4d15-b090-1d748c229d21" TimeOutSeconds="120" RunAsUserID="00000000-0000-0000-0000-000000000000" xmlns="Blackbaud.AppFx.WebService.API.1" />
+			<SelectFields xmlns="Blackbaud.AppFx.WebService.API.1">
+			<f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child" DisplayPath="V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIP\Financial sponsor" DisplayPath="V_QUERY_SPONSORSHIP\Financial sponsor" AliasName="Financial Sponsor" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Financial sponsor" DisplayPath="V_QUERY_SPONSORSHIP\Financial sponsor" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIP\Sponsor\Constituent" DisplayPath="V_QUERY_SPONSORSHIP\Sponsor\Constituent" AliasName="Correspondent" />
+			<f ObjectName="V_QUERY_SPONSOR" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Sponsor" DisplayPath="V_QUERY_SPONSORSHIP\Sponsor" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor" DisplayPath="V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor" DisplayPath="V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="STATUS" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="STARTDATE" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="ENDDATE" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="PLANNEDENDDATE" ParentPath="V_QUERY_SPONSORSHIP" />
+			</SelectFields>
+			<FilterFields xmlns="Blackbaud.AppFx.WebService.API.1">
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="STATUS" ParentPath="V_QUERY_SPONSORSHIP" FilterOperator="IsOneOf">
+			<DateFilterTypes />
+			<FuzzyDateFilterTypes />
+			<MonthDayFilterTypes />
+			<Values>
+			<v>Active</v>
+			<v>Active (Transfer pending)</v>
+			<v>Active (Reassigned)</v>
+			<v>Pending</v>
+			</Values>
+			<TranslatedValues>
+			<v>Active</v>
+			<v>Active (Transfer pending)</v>
+			<v>Active (Reassigned)</v>
+			<v>Pending</v>
+			</TranslatedValues>
+			<DataType>String</DataType>
+			</f>
+			</FilterFields>
+			<SortFields xmlns="Blackbaud.AppFx.WebService.API.1" />
+			<GroupFilterFields xmlns="Blackbaud.AppFx.WebService.API.1" />
+			<DataListOutputFields xmlns="Blackbaud.AppFx.WebService.API.1">
+			<f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child" IsHidden="true" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP" IsHidden="true" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIP\Financial sponsor" AliasName="Financial Sponsor" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Financial sponsor" IsHidden="true" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIP\Sponsor\Constituent" AliasName="Correspondent" />
+			<f ObjectName="V_QUERY_SPONSOR" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Sponsor" IsHidden="true" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor" IsHidden="true" />
+			<f ObjectName="V_QUERY_CONSTITUENT" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor" IsHidden="true" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="STATUS" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="STARTDATE" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="ENDDATE" ParentPath="V_QUERY_SPONSORSHIP" />
+			<f ObjectName="V_QUERY_SPONSORSHIP" ColumnName="PLANNEDENDDATE" ParentPath="V_QUERY_SPONSORSHIP" />
+			</DataListOutputFields>
+			<DataListParameters xmlns="Blackbaud.AppFx.WebService.API.1" />
+			<ContextRecordIDField ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child" DisplayPath="V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child" xmlns="Blackbaud.AppFx.WebService.API.1" />
+			</AdHocQuerySaveDataListRequest>
+		</AdHocQuerySaveDataListRequest>
+	</MetaTags>
+	<SPDataList SPName="USP_DATALIST_ADHOCQUERY_5CE70D8A_F9F5_4BAA_936F_845176446C18">
+		<CreateProcedureSQL xmlns="bb_appfx_commontypes">
+			create procedure [dbo].[USP_DATALIST_ADHOCQUERY_5CE70D8A_F9F5_4BAA_936F_845176446C18](
+			@CONTEXTRECORDID uniqueidentifier,
+			@CURRENTAPPUSERID uniqueidentifier,
+			@SECURITYFEATUREID uniqueidentifier,
+			@SECURITYFEATURETYPE tinyint) as
+			set nocount on;
+			with
+			[ROOT_CTE] as (
+			select  distinct 	[V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child].[ID] as [Sponsorship Opportunity\Child\System record ID],
+			[V_QUERY_SPONSORSHIP].[ID] as [System record ID],
+			[V_QUERY_SPONSORSHIP\Financial sponsor].[NAME] as [Financial Sponsor],
+			[V_QUERY_SPONSORSHIP\Financial sponsor].[ID] as [Financial sponsor\System record ID],
+			[V_QUERY_SPONSORSHIP\Sponsor\Constituent].[NAME] as [Correspondent],
+			[V_QUERY_SPONSORSHIP\Sponsor].[ID] as [Sponsor\System record ID],
+			[V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor].[NAME] as [Context transactions\Gift sponsorship donor\Name],
+			[V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor].[ID] as [Context transactions\Gift sponsorship donor\System record ID],
+			[V_QUERY_SPONSORSHIP].[STATUS] as [Status],
+			[V_QUERY_SPONSORSHIP].[STARTDATE] as [Start date],
+			[V_QUERY_SPONSORSHIP].[ENDDATE] as [End date],
+			[V_QUERY_SPONSORSHIP].[PLANNEDENDDATE] as [Expiration date],
+			[V_QUERY_SPONSORSHIP].[ID] as [QUERYRECID]
+			from [V_QUERY_SPONSORSHIP] as [V_QUERY_SPONSORSHIP]
+			left outer join [V_QUERY_SPONSORSHIPOPPORTUNITY] as [V_QUERY_SPONSORSHIP\Sponsorship Opportunity] on [V_QUERY_SPONSORSHIP].[SPONSORSHIPOPPORTUNITYID] = [V_QUERY_SPONSORSHIP\Sponsorship Opportunity].[ID]
+			left outer join [V_QUERY_SPONSORSHIPOPPORTUNITYCHILD] as [V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child] on [V_QUERY_SPONSORSHIP\Sponsorship Opportunity].[ID] = [V_QUERY_SPONSORSHIP\Sponsorship Opportunity\Child].[ID]
+			left outer join [V_QUERY_CONSTITUENT] as [V_QUERY_SPONSORSHIP\Financial sponsor] on [V_QUERY_SPONSORSHIP].[FINANCIALSPONSOR] = [V_QUERY_SPONSORSHIP\Financial sponsor].[ID]
+			left outer join [V_QUERY_SPONSOR] as [V_QUERY_SPONSORSHIP\Sponsor] on [V_QUERY_SPONSORSHIP].[CONSTITUENTID] = [V_QUERY_SPONSORSHIP\Sponsor].[ID]
+			left outer join [V_QUERY_CONSTITUENT] as [V_QUERY_SPONSORSHIP\Sponsor\Constituent] on [V_QUERY_SPONSORSHIP\Sponsor].[ID] = [V_QUERY_SPONSORSHIP\Sponsor\Constituent].[ID]
+			left outer join [V_QUERY_SPONSORSHIPTRANSACTION] as [V_QUERY_SPONSORSHIP\Context transactions] on [V_QUERY_SPONSORSHIP].[ID] = [V_QUERY_SPONSORSHIP\Context transactions].[CONTEXTSPONSORSHIPID]
+			left outer join [V_QUERY_CONSTITUENT] as [V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor] on [V_QUERY_SPONSORSHIP\Context transactions].[GIFTFINANCIALSPONSORID] = [V_QUERY_SPONSORSHIP\Context transactions\Gift sponsorship donor].[ID]
+			where [V_QUERY_SPONSORSHIP].[STATUS] in ('Active', 'Active (Transfer pending)', 'Active (Reassigned)', 'Pending')
+			)
+
+
+			select [Sponsorship Opportunity\Child\System record ID],
+			[System record ID],
+			[Financial Sponsor],
+			[Financial sponsor\System record ID],
+			[Correspondent],
+			[Sponsor\System record ID],
+			[Context transactions\Gift sponsorship donor\Name],
+			[Context transactions\Gift sponsorship donor\System record ID],
+			[Status],
+			[Start date],
+			[End date],
+			[Expiration date]
+			from [ROOT_CTE] as QUERYRESULTS
+			where QUERYRESULTS.[Sponsorship Opportunity\Child\System record ID] = @CONTEXTRECORDID
+
+		</CreateProcedureSQL>
+	</SPDataList>
+	<Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="CONTEXTRECORDID" />
+	<SiteSecurity TableName="SITE" ColumnName="ID" />
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="Sponsorship Opportunity\Child\System record ID" Caption="Sponsorship Opportunity\Child\System record ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="System record ID" Caption="System record ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="Financial Sponsor" Caption="Financial Sponsor" DataType="String" />
+			<OutputField FieldID="Financial sponsor\System record ID" Caption="Financial sponsor\System record ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="Correspondent" Caption="Correspondent" DataType="String" />
+			<OutputField FieldID="Sponsor\System record ID" Caption="Sponsor\System record ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="Context transactions\Gift sponsorship donor\Name" Caption="Context transactions\Gift sponsorship donor\Name" IsHidden="true" DataType="String" />
+			<OutputField FieldID="Context transactions\Gift sponsorship donor\System record ID" Caption="Context transactions\Gift sponsorship donor\System record ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="Status" Caption="Status" DataType="String" />
+			<OutputField FieldID="Start date" Caption="Start date" DataType="Date" />
+			<OutputField FieldID="End date" Caption="End date" DataType="Date" />
+			<OutputField FieldID="Expiration date" Caption="Expiration date" DataType="Date" />
+		</OutputFields>
+	</Output>
+</DataListSpec>

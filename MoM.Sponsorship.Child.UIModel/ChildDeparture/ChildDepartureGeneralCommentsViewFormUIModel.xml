@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildDeparture.GeneralComments.View.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildDepartureGeneralCommentsViewFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildDepartureGeneralCommentsViewForm.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>
