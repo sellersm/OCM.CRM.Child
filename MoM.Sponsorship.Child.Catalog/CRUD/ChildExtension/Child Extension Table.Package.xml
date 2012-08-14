@@ -40,9 +40,10 @@
 
     <!-- Sprocs -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDDEPARTURE_DELETEROW_WITHCHANGEAGENTID.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
 
-
-    <!-- Queries -->
+		
+	<!-- Queries -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SponsorshipOpportunityExt.Query.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Query.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Query.xml" />
@@ -94,9 +95,9 @@
 
     <!-- Transfers Form -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildTransferForm.Add.xml" />
-    
-    
-    
+		
+
+
 	<!-- ** ADDED BY CARY **-->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDepartureDelete.RecordOperation.xml" />
 		
