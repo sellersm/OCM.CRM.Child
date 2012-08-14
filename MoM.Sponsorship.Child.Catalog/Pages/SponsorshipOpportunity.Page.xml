@@ -854,9 +854,9 @@
 					<HelpKey>SPMarkIneligibleProc.html</HelpKey>
 				</Action>
 				<Action ID="518bf2be-4da1-4a89-8168-9469cff4c3c7" Caption="Interactions">
-					<ShowPage PageID="ede4cf10-a84d-4434-87ef-ae143c78eaaf" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+					<ShowPage PageID="8fee7f1d-49d5-453f-b8f8-a23060c6e72d" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
 						<ActionContext>
-							<Expression>= Page.Fields!CONSTITUENTID</Expression>
+							<PageContextID />
 						</ActionContext>
 					</ShowPage>
 				</Action>
