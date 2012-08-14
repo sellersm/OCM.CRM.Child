@@ -56,15 +56,15 @@ begin
 	
 	-- These are the kids that can be updated to Pending
 	-- Both variables are set to Eligible unless Ineligibles should be included 
-	declare @eligibilityCodeToIncludeForPending1 as int = @eligibilityCode_Eligible
-	declare @eligibilityCodeToIncludeForPending2 as int = @eligibilityCode_Eligible
+	declare @eligibilityCodeToIncludeForPending1 as tinyint = @eligibilityCode_Eligible
+	declare @eligibilityCodeToIncludeForPending2 as tinyint = @eligibilityCode_Eligible
 	if @includeIneligibleInUpdate = 1
 		set @eligibilityCodeToIncludeForPending2 = @eligibilityCode_Ineligible
 	
 	-- These are the kids that can be updated to Eligible
 	-- Both variables are set to Pending unless Ineligibles should be included 
-	declare @eligibilityCodeToIncludeForEligible1 as int = @eligibilityCode_Pending
-	declare @eligibilityCodeToIncludeForEligible2 as int = @eligibilityCode_Pending
+	declare @eligibilityCodeToIncludeForEligible1 as tinyint = @eligibilityCode_Pending
+	declare @eligibilityCodeToIncludeForEligible2 as tinyint = @eligibilityCode_Pending
 	if @includeIneligibleInUpdate = 1
 		set @eligibilityCodeToIncludeForEligible2 = @eligibilityCode_Ineligible
 

@@ -20,7 +20,8 @@
 	History:
 	Date            Modified By     Comments
 	21-Jul-2012		CMayeda			Initial Version
-	13-Aug-2012		CMayeda			Changed call of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to USR_USP_CHILD_CHECKELIGIBILITY
+	13-Aug-2012		CMayeda			Changed call of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to USR_USP_CHILD_CHECKELIGIBILITY 
+									Removed reset of Registration Date to null - FogBugz Case 756
 	-->
 
 	<c:ImpliedSecurityList>
@@ -127,11 +128,10 @@ as begin
 		if @sponsorshipOpportunityChildID is null
 			RAISERROR 1000000 '@sponsorshipOpportunityChildID could not be found'
 
-		-- remove funding and registration date
+		-- remove funding 
 		update	dbo.USR_CHILDEXTENSION
 			set	CCHVALIDATED = 1,
 				FUNDED = 0,
-				REGISTRATIONDATE = null,
 				DATECHANGED =  getdate(),
 				CHANGEDBYID = @CHANGEAGENTID
 		 where	SPONSORSHIPOPPORTUNITYCHILDID = @sponsorshipOpportunityChildID
