@@ -241,7 +241,9 @@
     <EmbeddedResource Include="Batch\ChildExtensionBatchDeleteRow.Delete.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Batch\ChildExtensionBatch.BatchType.xml" />
+    <EmbeddedResource Include="Batch\ChildExtensionBatch.BatchType.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.WhoAmI.Edit.xml" />
