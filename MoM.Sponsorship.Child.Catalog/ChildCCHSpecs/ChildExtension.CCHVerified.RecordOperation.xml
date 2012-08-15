@@ -44,7 +44,7 @@ as begin
 	
 	exec dbo.USR_USP_CHILD_REMOVEPENDINGREASON @id, null, @pendingReasonString_NewChildVerification, @changeAgentID
 	exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @id, @changeAgentID
-	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @id, includeIneligibleInUpdate_False, @changeAgentID
+	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @id, @includeIneligibleInUpdate_False, @changeAgentID
 	
 	return 0;
 	

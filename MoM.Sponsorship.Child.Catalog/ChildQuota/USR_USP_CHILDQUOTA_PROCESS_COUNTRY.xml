@@ -39,6 +39,7 @@ begin
 	declare @ineligibleReasonID uniqueidentifier	-- Used to store the Sponsorship Reason ID if the child project or country is not eligible
 	declare @quotaRoom int										-- How many children can be registered for a country
 	
+	declare @includeIneligibleInUpdate_True bit = 1				-- Include Ineligible children in eligible/pending updates.
 
 	-- Tables used to pass a list of children to other sprocs 
 	declare @ChildListToRegister dbo.USR_UDT_CHILDIDLIST
@@ -75,7 +76,7 @@ begin
 
 			exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
 			exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildListToRegister, @changeAgentID
-			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
+			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, @includeIneligibleInUpdate_True, @changeAgentID
 
 		end
 		else
@@ -111,7 +112,7 @@ begin
 
 					exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
 					exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildListToRegister, @changeAgentID
-					exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, 1, @changeAgentID
+					exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, @includeIneligibleInUpdate_True, @changeAgentID
 
 					insert @ChildListIneligible 
 					select SPONSORSHIPOPPORTUNITYCHILDID 

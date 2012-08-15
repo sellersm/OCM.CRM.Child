@@ -8,8 +8,14 @@
 	DataFormInstanceID="fa13d398-d06e-4d37-adf9-891e9cdff38e" 
 	RecordType="SponsorshipOpportunityChild"
 	common:SecurityUIFolder="Sponsorship\Opportunity"
-	>
+	>	
+	<!-- 
+	Remarks:    
 
+	History:
+	Date            Modified By     Comments
+	15-Aug-2012		CMayeda			Updated sproc call dbo.USR_USP_CHILD_SETELIGIBLEORPENDING. Changed parm to @includeIneligibleInUpdate 
+	-->
   
   <!-- Need to get the current childproject name and Lookup ID to display, as well as the child information-->
   <SPDataForm>
@@ -172,7 +178,7 @@ begin try
       -- set child to pending
       exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING
            @sponsorshipOpportunityChildID = @CONTEXTID,
-           @doNotUpdateIneligible = 0,
+           @includeIneligibleInUpdate = 1,
            @changeAgentID = @CHANGEAGENTID
       
       -- add revenue function of "Designation"

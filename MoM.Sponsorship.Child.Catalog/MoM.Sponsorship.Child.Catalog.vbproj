@@ -348,7 +348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildQuota\USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_LOCKFAILED.xml" />
-    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerified.RecordOperation.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibility\sprocs\USR_USP_CHILD_SETPENDINGREASON.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

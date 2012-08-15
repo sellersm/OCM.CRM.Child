@@ -42,7 +42,7 @@ begin
 	select ID from dbo.UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) 
 
 	
-	exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, includeIneligibleInUpdate_False, @changeAgentID, @changedToEligible output, @changedToPending output
+	exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, @includeIneligibleInUpdate_False, @changeAgentID, @changedToEligible output, @changedToPending output
 	
 	return 0
 end
