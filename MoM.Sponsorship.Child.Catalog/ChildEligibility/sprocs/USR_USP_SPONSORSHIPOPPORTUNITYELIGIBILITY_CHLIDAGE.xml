@@ -22,6 +22,7 @@
 	Date			Modified By		Comments
     27-Mar-2012		CMayeda			Initial Version
 	29-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTERID
+	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
 	-->
 
 	<CreateProcedureSQL>
@@ -35,7 +36,11 @@ create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE (
 	
 as
 begin
-
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+	
 	-- Maximum age of the child in months (16.5 years)
 	declare @MaxValidAge int
 	set @MaxValidAge = 198
@@ -64,8 +69,9 @@ begin
 	end catch
 	
 	-- This needs to be set to off for the output parms to be set properly
-	SET NOCOUNT OFF
+	set nocount off
 	
+
 	-- Remove 'Child is 16 yrs old or Older' pending reasons if the child shouldn't have it (not in group whose Age is over 16.5 and not sponsored)
 	delete	dbo.SPONSORSHIPOPPORTUNITYREASON 
 	  from	dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
@@ -109,7 +115,14 @@ begin
 				-- Check Age and verify that child is not sponsored
 		    and dateadd (mm, @MaxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate()
 			and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(ID) = 0
-		
+			
+			-- Don't add to ineligible kids that are not quota waiting list
+		    and not exists (select ID from SPONSORSHIPOPPORTUNITY so 
+							 where so.ID = so_child.ID
+							   and so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
+							   and not exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID))
+
+
 	set @insertedRows = @@ROWCOUNT
 	
 

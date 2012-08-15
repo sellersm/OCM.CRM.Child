@@ -22,6 +22,7 @@
 	Date			Modified By		Comments
     03-Apr-2012		CMayeda			Initial Version
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
+	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
 	-->
 	
 	<CreateProcedureSQL>
@@ -33,6 +34,11 @@ create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD 
 	@insertedRows int = 0 output					-- Output parm that specifies how many pending reasons were inserted
 )
 as begin
+
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
 
 	-- Get ChangeAgent if none was passed into the sproc
   	if @CHANGEAGENTID is null  
@@ -111,7 +117,12 @@ as begin
 						  from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
 						 where so_note.SPONSORSHIPOPPORTUNITYID = so.ID
 					       and (SPROPPNOTETYPECODEID = @ChildBioDraftNoteTypeID))
-			 	         
+	
+				-- Don't add to ineligible kids that are not quota waiting list
+		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
+		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
+				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
+	
 	set @INSERTEDROWS = @@ROWCOUNT
 
 end

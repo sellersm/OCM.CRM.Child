@@ -23,7 +23,7 @@
 
 create procedure dbo.USR_USP_CHILD_SETELIGIBLEORPENDING (
 	@sponsorshipOpportunityChildID uniqueidentifier,		-- Specify a Sponsorship Opportunity ID (same as the child's ID) if the sproc should only process a single child
-	@doNotUpdateIneligible bit = 0,							-- Whether to include Ineligible children in updates.  0 = Include Ineligible children, 1 = Do Not Include Ineligible children
+	@includeIneligibleInUpdate bit = 0,						-- Whether to include Ineligible children in updates.  0 = Do not include Ineligible children, 1 = Include Ineligible children
 	@changeAgentID uniqueidentifier)						-- Used to specify change agent for CHANGEDBYID fields
 
 as
@@ -41,7 +41,7 @@ begin
 		insert @childList
 		select @sponsorshipOpportunityChildID 
 		
-		exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, @doNotUpdateIneligible, @changeAgentID
+		exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, @includeIneligibleInUpdate, @changeAgentID
 		
 	end try
 	begin catch

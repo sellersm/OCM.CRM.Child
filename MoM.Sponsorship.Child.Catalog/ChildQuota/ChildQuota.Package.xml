@@ -60,6 +60,7 @@
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDQUOTA_PROCESS_COUNTRY.xml" />
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST.xml" />
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILDREN_REGISTER.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS" />
 		
 		<!-- Tables -->
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildQuota.WaitingListProcess.Table.xml" />

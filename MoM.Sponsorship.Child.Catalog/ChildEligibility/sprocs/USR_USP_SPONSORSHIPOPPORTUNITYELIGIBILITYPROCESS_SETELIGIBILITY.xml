@@ -16,6 +16,7 @@
 	Date            Modified By     Comments
     21-Mar-2012		CMayeda			Initial Version
 	09-Jul-2012		CMayeda			Modified this to call USR_USP_CHILDREN_SETELIGIBLEORPENDING instead of handling the same logic in this sproc
+	14-Aug-2012		CMayeda			Added @includeIneligibleInUpdate_False constant to make the sproc call clearer
 	-->
 
 	<CreateProcedureSQL>
@@ -29,6 +30,8 @@ create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBI
 
 as
 begin
+	declare @includeIneligibleInUpdate_False bit = 0    -- Do not include Ineligible children in eligible/pending updates.
+
 	-- Get ChangeAgent if none was passed into the sproc
   	if @changeAgentID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
@@ -39,7 +42,7 @@ begin
 	select ID from dbo.UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) 
 
 	
-	exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, 0, @changeAgentID, @changedToEligible output, @changedToPending output
+	exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING @childList, includeIneligibleInUpdate_False, @changeAgentID, @changedToEligible output, @changedToPending output
 	
 	return 0
 end

@@ -26,7 +26,7 @@
     26-Mar-2012		CMayeda			Initial Version
 	01-Aug-2012		CMayeda			Modified for the changed signature of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK - using USR_USP_CHILD_CHECKELIGIBILITY instead.
 									Modified to use USR_USP_CHILD_SETELIGIBLEORPENDING instead of doing it manually.
-									
+	14-Aug-2012		CMayeda			Added @includeIneligibleInUpdate_False constant to make the sproc call easier to read									
 	-->
 	
 	<SPRecord>
@@ -39,7 +39,7 @@ create procedure dbo.USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCH
 	@CHANGEAGENTID uniqueidentifier		-- The ChangeAgentID to be used for AddedBy and ModifiedBy fields
 )
 as begin
-    
+	declare @includeIneligibleInUpdate_False bit = 0    -- Do not include Ineligible children in eligible/pending updates.
 
   	if @CHANGEAGENTID is null  
 		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
@@ -47,28 +47,7 @@ as begin
 	-- Delete / Insert all applicable pending reasons to this child
 	exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @ID, @CHANGEAGENTID	
 	
-	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @ID, 1, @CHANGEAGENTID	-- 1 - Leave ineligible status, only update those pending or eligible
-
-	
-	/*  No longer needed.  This is taken care of in USR_USP_CHILD_SETELIGIBLEORPENDING
-	
-	-- Determine how many pending reasons exist for this child
-	declare @NumberOfPendingReasons int 
-		 
-	 select @NumberOfPendingReasons = count(sreason.ID)
-	   from SPONSORSHIPOPPORTUNITYREASON so_reason
- inner join SPONSORSHIPREASON sreason on so_reason.SPONSORSHIPREASONID = sreason.ID
-	  where so_reason.SPONSORSHIPOPPORTUNITYID = @ID
-	    and sreason.REASONTYPECODE = 0	 -- Enum REASONTYPECODE 0 = "Child - Mark pending eligibility"
-  
-	-- If there are one or more pending reasons on this child and the child is Eligible, then set them to Pending
-	if @NumberOfPendingReasons > 0 and exists(select ID from dbo.SPONSORSHIPOPPORTUNITY where ID=@ID and ELIGIBILITYCODE=1) -- Eligibility = Eligible
-		exec dbo.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEPENDING @ID, @CHANGEAGENTID
-	
-	-- If there are no pending reasons on this child and the child is Pending, then set them to Eligible
-	if @NumberOfPendingReasons = 0 and exists(select ID from dbo.SPONSORSHIPOPPORTUNITY where ID=@ID and ELIGIBILITYCODE=0) -- Eligibility = Pending
-		exec dbo.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEELIGIBLE @ID, @CHANGEAGENTID
-	*/
+	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @ID, @includeIneligibleInUpdate_False, @CHANGEAGENTID	
 	
 	return 0;
 	

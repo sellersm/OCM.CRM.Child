@@ -28,7 +28,7 @@
 
 create procedure dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING (
 	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
-	@includeIneligibleInUpdate bit = 1,				-- Whether to include Ineligible children in updates.  0 = Do not include Ineligible children, 1 = Include Ineligible children
+	@includeIneligibleInUpdate bit = 0,				-- Whether to include Ineligible children in updates.  0 = Do not include Ineligible children, 1 = Include Ineligible children
 	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID fields
 	@changedToEligible int = 0 output,				-- Output parm that specifies how many children were set to Eligible
 	@changedToPending int = 0 output)				-- Output parm that specifies how many children were set to Pending

@@ -16,6 +16,7 @@
 	Date            Modified By     Comments
 	01-Jul-2012		CMayeda			Initial Version
 	01-Aug-2012		CMayeda			Modified for the changed signature of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to use USR_USP_CHILD_CHECKELIGIBILITY instead
+	14-Aug-2012		CMayeda			Added @includeIneligibleInUpdate_False constant to make the sproc call clearer
 	-->
 
 	<SPRecord>
@@ -28,6 +29,7 @@ create procedure dbo.USP_CHILDEXTENSION_CCHVERIFIED_UPDATE
 	@changeAgentID uniqueidentifier
 )
 as begin
+	declare @includeIneligibleInUpdate_False bit = 0    -- Do not include Ineligible children in eligible/pending updates.
 	declare @pendingReasonString_NewChildVerification nvarchar(100) = 'New Child Verification'
 	
 	-- Get ChangeAgent if none was passed into the sproc
@@ -42,7 +44,7 @@ as begin
 	
 	exec dbo.USR_USP_CHILD_REMOVEPENDINGREASON @id, null, @pendingReasonString_NewChildVerification, @changeAgentID
 	exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @id, @changeAgentID
-	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @id, 1, @changeAgentID 	-- 1 - Leave ineligible status, only update those pending or eligible
+	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @id, includeIneligibleInUpdate_False, @changeAgentID
 	
 	return 0;
 	

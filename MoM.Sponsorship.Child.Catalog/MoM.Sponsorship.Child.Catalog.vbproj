@@ -432,6 +432,7 @@
     <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
+    <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />
     <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
   </ItemGroup>
