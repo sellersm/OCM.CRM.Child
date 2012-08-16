@@ -117,7 +117,64 @@ begin try
 	  @childID = @CONTEXTID,			-- Specify a Sponsorship Opportunity ID (same as the child's ID) of the child to set ineligible
 	  @sponsorshipReasonID = @DepartureTypeCodeID,		-- Used to specify the sponsorship reason to add
 	  @changeAgentID = @CHANGEAGENTID
+    
+  -- manage the recurring gift if this child is sponsored
+  declare @statusCodePending tinyint = 0
+  declare @statusCodeActive tinyint = 1 
+  declare @statusCodeInactive tinyint = 2
+  declare @REVENUEID uniqueidentifier
+
+  declare @sponsorshipOpportunityID uniqueidentifier = @CONTEXTID  -- this is being set manually for this sample code (same as SponsorshipOpportunityChild ID)
+
+  -- check for a sponsorhip first:
+  select     @REVENUEID = REVENUEID
+    from     dbo.SPONSORSHIP
+    join     dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+    join     dbo.REVENUESCHEDULE on REVENUESCHEDULE.ID = REVENUESPLIT.REVENUEID
+    where    SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = @sponsorshipOpportunityID 
+    and      SPONSORSHIP.STATUSCODE = @statusCodeActive
+
+  --if we have a sponsorship then proceed
+  if @REVENUEID is not null
+  begin
+	  -- this should tell us if it;s and EFT type of transaction: 
+	  /*
+	   CASE [PAYMENTMETHODCODE] 
+	  a WHEN 2 THEN N'Credit card' 
+	   WHEN 3 THEN N'Direct debit'
+	  */
+	  declare @FINANCIALTRANSACTIONID uniqueidentifier   -- this is used to identify if this is an EFT type of payment
 	
+	  -- check for an EFT type of transaction:
+	  select @FINANCIALTRANSACTIONID = FINANCIALTRANSACTION.ID
+	  from dbo.FINANCIALTRANSACTION
+	  inner join dbo.REVENUE_EXT on FINANCIALTRANSACTION.ID = REVENUE_EXT.ID
+	  inner join dbo.REVENUEPAYMENTMETHOD on FINANCIALTRANSACTION.ID = REVENUEPAYMENTMETHOD.REVENUEID
+	  left join dbo.REVENUESCHEDULE on FINANCIALTRANSACTION.ID = REVENUESCHEDULE.ID
+	  left join dbo.CREDITCARD on CREDITCARD.ID = REVENUESCHEDULE.CREDITCARDID
+	  where FINANCIALTRANSACTION.ID = @REVENUEID
+	  and FINANCIALTRANSACTION.DELETEDON is null
+	  and PAYMENTMETHODCODE IN (2, 3)
+	  and TYPECODE = 2   -- TYPECODE=2 which is 'Recurring Gift'
+    
+    -- set the recurring gift to 'Held' if this is an EFT payment:
+    if @FINANCIALTRANSACTIONID is not null
+    begin
+		    update dbo.REVENUESCHEDULE 
+		    set STATUSCODE = 1 
+		    where ID IN (
+		    select  REVENUESCHEDULE.ID
+		      from  dbo.SPONSORSHIP
+		      join  dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+		      join  dbo.REVENUESCHEDULE on REVENUESCHEDULE.ID = REVENUESPLIT.REVENUEID
+		      where SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = @sponsorshipOpportunityID 
+		      and   SPONSORSHIP.STATUSCODE = 1 --STATUSCODE is defined as (0)'Active’ (1)'Held’ (2)'Terminated' (3)'Completed' (4)'Canceled'  
+		    )
+	  end
+  end
+  
+  return 0;
+  
 end try
 
 begin catch
