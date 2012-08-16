@@ -231,7 +231,9 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildAddWrapped.Add.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChildCCHSpecs\ChildExtensionAddChild.Add.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtensionAddChild.Add.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Batch\ChildExtensionBatchAddRow.Add.xml" />
