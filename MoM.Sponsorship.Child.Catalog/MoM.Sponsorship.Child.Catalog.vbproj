@@ -199,7 +199,9 @@
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.Edit.xml" />
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension TableDelete.RecordOperation.xml" />
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.DataList.xml" />
-    <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.Query.xml" />
+    <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.Query.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
