@@ -161,6 +161,10 @@ begin try
           CURRENTPHOTODATE = NULL
       where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
       
+      -- set the ChildBio to Child Bio - Old
+      exec dbo.USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD
+	         @ID = @CONTEXTID	
+
       -- then call the CheckEligibility sprocs
       declare	@return_value int, @insertRowcount int
 

@@ -104,10 +104,23 @@ select
   USR_CHILDEXTENSION.DATECHANGED,
   USR_CHILDEXTENSION.TSLONG,
   USR_CHILDEXTENSION.FUNDED,
+  uct.[ID] as CHILDTRANSFERID,
+  uct.[SPONSORSHIPOPPORTUNITYCHILDID] as CHILDTRANSFERCHILDID,
+  uct.[FORMCOMPLETIONDATE],
+  uct.[FORMCOMPLETEDBY],
+  uct.[FORMENTEREDBY],
+  uct.[FIELDDATEOFTRANSFER],
+  uct.[EXPLANATION],
+  uct.FROMREGISTRATIONDATE,
+  dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.FROMPROJECTID) as FROMPROJECTNAME,
+  uct.[CRMDATEOFTRANSFER],
+  dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.TOPROJECTID) as TOPROJECTLOOKUPID,
+  uct.DATEADDED as CHILDTRANSFERDATEADDED,
   soc.CONSTITUENTID
 from 
-    dbo.USR_CHILDEXTENSION
+    dbo.USR_CHILDEXTENSION    
     join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
+    join dbo.USR_CHILDTRANSFER uct on uct.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
     left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_CHILDEXTENSION.ADDEDBYID
     left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_CHILDEXTENSION.CHANGEDBYID
 ]]>
@@ -254,6 +267,18 @@ from
       <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
       <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
       <OutputField Name="FUNDED" Caption="Funded" />
+      <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer ID" />
+      <OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
+      <OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />
+      <OutputField Name="FORMCOMPLETEDBY" Caption="Child Transfer Form Completed By" />
+      <OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By*" />
+      <OutputField Name="FIELDDATEOFTRANSFER" Caption="Transfer Field Date" />
+      <OutputField Name="EXPLANATION" Caption="Transfer Explanation" />
+      <OutputField Name="FROMREGISTRATIONDATE" Caption="Old Registration Date" />
+      <OutputField Name="FROMPROJECTNAME" Caption="Old Project LookupId" />
+      <OutputField Name="CRMDATEOFTRANSFER" Caption="Transfer Date" />
+      <OutputField Name="TOPROJECTLOOKUPID" Caption="To Project LookupId" />
+      <OutputField Name="CHILDTRANSFERDATEADDED" Caption="Date Transfer Entered" />
     </OutputFields>
     <IdentifyingFields>
       <IdentifyingField Name="ID"/>

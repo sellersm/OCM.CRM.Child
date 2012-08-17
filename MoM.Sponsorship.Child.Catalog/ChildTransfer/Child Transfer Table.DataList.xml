@@ -25,42 +25,13 @@ as
         uct.[FIELDDATEOFTRANSFER],
         uct.[EXPLANATION],
         uct.FROMREGISTRATIONDATE,
-        (select 
-        projectconst.LOOKUPID as FROMPROJECTNAME
-	from 
-	  dbo.SPONSORSHIPOPPORTUNITY so 
-    join dbo.USR_CHILDTRANSFER uct on so.ID = uct.SPONSORSHIPOPPORTUNITYCHILDID
-    inner join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on uct.SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID
-		join dbo.SPONSORSHIPLOCATION slocation on slocation.ID  = uct.FROMPROJECTID --so.SPONSORSHIPLOCATIONID = slocation.ID   
-		join dbo.USR_CHILDPROJECTEXTENSION projectext on slocation.FIELDOFFICEID = projectext.ID
-		join dbo.CONSTITUENT projectconst ON projectconst.ID = projectext.ID
-  where so.ID = @CONTEXTID  ) as FROMPROJECTNAME,
+        dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.FROMPROJECTID) as FROMPROJECTNAME,
         uct.[CRMDATEOFTRANSFER],
-        projectconst.LOOKUPID as TOPROJECTLOOKUPID,
+        dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.TOPROJECTID) as TOPROJECTLOOKUPID,
         uct.DATEADDED
-	from 
-	  dbo.SPONSORSHIPOPPORTUNITY so 
-    join dbo.USR_CHILDTRANSFER uct on so.ID = uct.SPONSORSHIPOPPORTUNITYCHILDID
-    inner join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on uct.SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID
-		join dbo.SPONSORSHIPLOCATION slocation on so.SPONSORSHIPLOCATIONID = slocation.ID   
-		join dbo.USR_CHILDPROJECTEXTENSION projectext on slocation.FIELDOFFICEID = projectext.ID
-		join dbo.CONSTITUENT projectconst ON projectconst.ID = projectext.ID
-  where so.ID = @CONTEXTID
+	from dbo.USR_CHILDTRANSFER uct 
+  where uct.SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID;
 
-  -- now get the old (from) project lookupid value:
-  /*
-  select 
-        projectconst.LOOKUPID as FROMPROJECTNAME
-	from 
-	  dbo.SPONSORSHIPOPPORTUNITY so 
-    join dbo.USR_CHILDTRANSFER uct on so.ID = uct.SPONSORSHIPOPPORTUNITYCHILDID
-    inner join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on uct.SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID
-		join dbo.SPONSORSHIPLOCATION slocation on slocation.ID  = uct.FROMPROJECTID --so.SPONSORSHIPLOCATIONID = slocation.ID   
-		join dbo.USR_CHILDPROJECTEXTENSION projectext on slocation.FIELDOFFICEID = projectext.ID
-		join dbo.CONSTITUENT projectconst ON projectconst.ID = projectext.ID
-  where so.ID = @CONTEXTID  
-  */
-  
   
 ]]>
 </c:CreateProcedureSQL>
