@@ -257,7 +257,9 @@
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.DataList.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDepartureDelete.RecordOperation.xml" />
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.Edit.xml" />
-    <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.Add.xml" />
+    <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.Add.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.View.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +435,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID.xml" />
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTNAME.xml" />
     <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
     <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
