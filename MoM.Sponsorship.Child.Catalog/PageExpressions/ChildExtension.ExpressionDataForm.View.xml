@@ -26,11 +26,12 @@
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSIONEXPRESSION
 (
 	@ID uniqueidentifier,
-	@DATALOADED bit = 0 output,						-- used by the framework, see below
-	@CCHEXISTS bit = null output,					-- used to determine if a record exists or not
+	@DATALOADED bit = 0 output,						  -- used by the framework, see below
+	@CCHEXISTS bit = null output,					  -- used to determine if a record exists or not
 	@CCHVALIDATED bit = null output,				-- used to determine if the CCH has been validated for a new child
 	@CONSTITUENTID uniqueidentifier = null output,	-- used to pass to constituent forms
-  @TRANSFEREXISTS bit = null output   -- identify if this child's been transferred at all
+  @TRANSFEREXISTS bit = null output,      -- identify if this child's been transferred at all
+  @REACTIVATED bit = null output          -- identify if this child has a current reactivation
 )
 as
 	set nocount on;
@@ -54,6 +55,12 @@ as
   select 	@TRANSFEREXISTS = 1			 
  	from	dbo.USR_CHILDTRANSFER
   where	SPONSORSHIPOPPORTUNITYCHILDID = @ID
+
+  -- set the reactivated bit flag:
+  select @REACTIVATED = 1
+  from dbo.USR_CHILDREACTIVATION
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+  and ISCURRENTREACTIVATIONCODE = 1
     
     
 	return 0;
@@ -69,6 +76,7 @@ as
 			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" />
 			<common:FormField FieldID="CONSTITUENTID" Caption="Constituent ID (not lookup id)" DataType="Guid" />
       <common:FormField FieldID="TRANSFEREXISTS" Caption="Child has Transfer[s]" DataType="Boolean" />
+      <common:FormField FieldID="REACTIVATED" Caption="Child's been Reactivated" DataType="Boolean" />
 		</common:FormFields>
 	</common:FormMetaData>
 

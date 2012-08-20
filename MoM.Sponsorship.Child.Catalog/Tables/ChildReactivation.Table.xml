@@ -1,0 +1,46 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a02c426d-176e-4d5b-b103-65c5f8992ea8"
+	Name="Child Reactivation Table"
+	Description="Holds Child Reactivation Records"
+	Author="Memphis Sellers"
+	Tablename="USR_CHILDREACTIVATION"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+    <ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="ManyToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
+    <DateField Description="Today’s date (month /day/year)" Name="FORMENTEREDDATE" Required="true"  IncludeTime="false" />
+    <TextField  Description="Form completed by" Name="FORMCOMPLETEDBY" Length="50"  Required="true"/>
+    <TextField Description="Explanation of previous departure" Name="PREVIOUSDEPARTUREREASON" Length="500"/>
+    <EnumField DefaultValue="0" Description="Is child under age eleven" Name="ISCHILDUNDERELEVENCODE" >
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+      </EnumValues>
+    </EnumField>
+    <TextField Description="Reason child returned" Name="REACTIVATEEXPLANATION" Length="1000" Required="true" />
+    <DateField Description="Current registration date" Name="ORIGINALREGISTRATIONDATE" IncludeTime="false" Required="true"/>
+    <DateField Description="End date" Name="ENDDATE" IncludeTime="false" />
+    <EnumField DefaultValue="1" Description="Is this the current reactivation" Name="ISCURRENTREACTIVATIONCODE" >
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
+      </EnumValues>
+    </EnumField>
+  </Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!--<CheckConstraints>
+	</CheckConstraints>-->
+
+	<!-- define any indexes on the table -->
+	<!--<Indexes>
+	</Indexes>-->
+		
+	<!-- define any triggers on the table -->
+	<!--<Triggers>
+	</Triggers>-->
+
+</TableSpec>

@@ -63,7 +63,8 @@ as
     @SKILLS_VOCATIONALTECHNICAL = SKILLS_VOCATIONALTECHNICAL, 
     @SKILLS_OTHER = SKILLS_OTHER
   from dbo.USR_CHILDDEPARTURE
-  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+  --where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+  where ID = @ID;    -- Memphis changed this to test getting to this page from the Reactivations Tab's Departure's DataList
 
   return 0;
         ]]>
@@ -118,7 +119,8 @@ as
       SKILLS_OTHER = @SKILLS_OTHER,
       CHANGEDBYID = @CHANGEAGENTID,
       DATECHANGED = @CURRENTDATE
-  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+  --where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+  where ID = @ID;    -- Memphis changed this to test getting to this page from the Reactivations Tab's Departure's DataList
   end try
   begin catch
     exec dbo.USP_RAISE_ERROR

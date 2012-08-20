@@ -1,0 +1,18 @@
+<PackageSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="fb7771e3-924c-42fc-934d-9f2c384d8bc8"
+    Name="Child Reactivation Table Package"
+    Description="Package containing CRUD specs generated from the Child Reactivation Table table."
+    Author="memphis-PC\Administrator"
+    xmlns="bb_appfx_package"
+    >
+    <c:DependencyList>
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.ChildReactivation.Table.xml" />
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.Child Reactivation Table.View.xml" />
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.Child Reactivation Table.Add.xml" />
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.Child Reactivation Table.Edit.xml" />
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.Child Reactivation TableDelete.RecordOperation.xml" />
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.Child Reactivation Table.DataList.xml" />
+        <c:Dependency CatalogAssembly="CRM.Temp.Catalog.dll" CatalogItem="CRM.Temp.Catalog.Child Reactivation Table.Query.xml" />
+    </c:DependencyList>
+</PackageSpec>

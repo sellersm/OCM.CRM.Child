@@ -1,0 +1,78 @@
+<QueryViewSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="a8a5381c-b4b2-42cd-b632-9084bd00f40a"
+    Name="Child Reactivation Table"
+    Description="Provides support for querying on Child Reactivation Table information."
+    Author="memphis-PC\Administrator"
+    PrimaryKeyField="ID"
+    RecordType="Child Reactivation Table"
+    IsRoot="true"
+    c:SecurityUIFolder="Child Reactivation Table"
+    xmlns="bb_appfx_queryview"
+    >
+    <ViewImplementation ViewName="USR_V_QUERY_USR_CHILDREACTIVATION">
+        <ViewSQL>
+<![CDATA[
+select
+    USR_CHILDREACTIVATION.ID,
+    USR_CHILDREACTIVATION.[SPONSORSHIPOPPORTUNITYCHILDID],
+    USR_CHILDREACTIVATION.[FORMENTEREDDATE],
+    USR_CHILDREACTIVATION.[FORMCOMPLETEDBY],
+    USR_CHILDREACTIVATION.[PREVIOUSDEPARTUREREASON],
+    USR_CHILDREACTIVATION.[ISCHILDUNDERELEVENCODE],
+    USR_CHILDREACTIVATION.[REACTIVATEEXPLANATION],
+    USR_CHILDREACTIVATION.[ORIGINALREGISTRATIONDATE],
+    USR_CHILDREACTIVATION.[ENDDATE],
+    USR_CHILDREACTIVATION.[ISCURRENTREACTIVATIONCODE],
+	ADDEDBY.APPLICATIONNAME as [ADDEDBY_APPLICATION],
+	ADDEDBY.USERNAME as [ADDEDBY_USERNAME],
+	CHANGEDBY.APPLICATIONNAME as [CHANGEDBY_APPLICATION],
+	CHANGEDBY.USERNAME as [CHANGEDBY_USERNAME],
+	USR_CHILDREACTIVATION.DATEADDED,
+	USR_CHILDREACTIVATION.DATECHANGED,
+	USR_CHILDREACTIVATION.TSLONG
+from 
+    dbo.USR_CHILDREACTIVATION
+    left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_CHILDREACTIVATION.ADDEDBYID
+    left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_CHILDREACTIVATION.CHANGEDBYID
+]]>
+</ViewSQL>
+    </ViewImplementation>
+    <Output>
+        <OutputFields>
+            <OutputField Name="ID" Caption="System record ID" Category="System Fields" DataType="Guid" />
+            <OutputField Name="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid" />
+            <OutputField Name="FORMENTEREDDATE" Caption="Formentereddate" DataType="Date" />
+            <OutputField Name="FORMCOMPLETEDBY" Caption="Formcompletedby" />
+            <OutputField Name="PREVIOUSDEPARTUREREASON" Caption="Previousdeparturereason" />
+            <OutputField Name="ISCHILDUNDERELEVENCODE" Caption="Ischildundereleven" DataType="TinyInt" />
+            <OutputField Name="REACTIVATEEXPLANATION" Caption="Reactivateexplanation" />
+            <OutputField Name="ORIGINALREGISTRATIONDATE" Caption="Originalregistrationdate" DataType="Date" />
+            <OutputField Name="ENDDATE" Caption="Enddate" DataType="Date" />
+            <OutputField Name="ISCURRENTREACTIVATIONCODE" Caption="Iscurrentreactivation" DataType="TinyInt" />
+            <OutputField Name="ADDEDBY_APPLICATION" Caption="Added by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="ADDEDBY_USERNAME" Caption="Added by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_APPLICATION" Caption="Changed by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_USERNAME" Caption="Changed by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
+            <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
+            <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
+        </OutputFields>
+    </Output>
+</QueryViewSpec>

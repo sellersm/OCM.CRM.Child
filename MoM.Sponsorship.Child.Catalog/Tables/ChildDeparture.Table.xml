@@ -10,7 +10,7 @@
 
   <!-- define fields on the table -->
   <Fields>
-    <ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="OneToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
+    <ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="ManyToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
     <BooleanField Name="NODEPARTUREFORM" Description="No departure form"/>
     <!--<EnumField DefaultValue="1" Description="ReceivedForm" Name="RECEIVEDFORMCODE" >
       <EnumValues>
@@ -118,6 +118,15 @@
         <EnumValue ID="0" Translation="Departure"/>
         <EnumValue ID="1" Translation="Completion"/>
         <EnumValue ID="2" Translation="Administrative"/>
+      </EnumValues>
+    </EnumField>
+    
+    <!-- Memphis added 8/18/12 -->
+    <DateField Name="CHILDREGISTRATIONDATE" Description="Child Registration Date" IncludeTime="false" Required="true" DefaultValue="getdate()"/>
+    <EnumField DefaultValue="1" Description="Is this the current departure" Name="ISCURRENTDEPARTURECODE" >
+      <EnumValues>
+        <EnumValue ID="0" Translation="No"/>
+        <EnumValue ID="1" Translation="Yes"/>
       </EnumValues>
     </EnumField>
   </Fields>

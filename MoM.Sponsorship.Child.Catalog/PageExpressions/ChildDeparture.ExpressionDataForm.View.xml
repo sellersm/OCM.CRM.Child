@@ -42,11 +42,14 @@ as
        @ISDEPARTURE = ISDEPARTURE,
        @DEPARTURETYPE = DEPARTURETYPE
   from dbo.USR_CHILDDEPARTURE
-  where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+  and ISCURRENTDEPARTURECODE = 1;
   
-  select @CHILDNAME = soc.FIRSTNAME + ' ' + soc.MIDDLENAME + ' ' + soc.LASTNAME from USR_CHILDDEPARTURE departure
+  select @CHILDNAME = soc.FIRSTNAME + ' ' + soc.MIDDLENAME + ' ' + soc.LASTNAME 
+  from USR_CHILDDEPARTURE departure
   join SPONSORSHIPOPPORTUNITYCHILD soc on departure.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
-  where soc.ID = @ID;
+  where soc.ID = @ID
+  and departure.ISCURRENTDEPARTURECODE = 1;
 
   
   return 0;
@@ -60,7 +63,7 @@ as
     <common:FormFields>      
       <common:FormField FieldID="ISDEPARTURE" Caption="Child Departed" DataType="Boolean" />
       <common:FormField FieldID="ISPROGRAMCOMPLETION" Caption="Program Completed" DataType="Boolean" />
-      <common:FormField FieldID="DEPARTUREEXISTS" Caption="ChildDeparture Record Exists" DataType="Boolean" />
+      <common:FormField FieldID="DEPARTUREEXISTS" Caption="Child is currently departed" DataType="Boolean" />
       <common:FormField FieldID="CHILDNAME" Caption="Child Name" DataType="String" />
       <common:FormField FieldID="DEPARTURETYPE" Caption="Departure Type" DataType="String" />
     </common:FormFields>

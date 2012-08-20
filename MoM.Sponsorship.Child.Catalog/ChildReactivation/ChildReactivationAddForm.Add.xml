@@ -1,0 +1,242 @@
+<AddDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="527a2f01-c485-42ab-9680-6f01ef438988"
+    Name="Child Reactivation Add Form"
+    Description="Used for adding a new Child Reactivation record"
+    Author="Memphis Sellers"
+    RecordType="Child Reactivation Table"
+    DataFormInstanceID="9ec34013-82e8-47e2-a4f1-100d56e31fe1"
+    c:SecurityUIFolder="Sponsorship\Opportunity"
+    xmlns="bb_appfx_adddataformtemplate"
+    >
+    <SPDataForm>
+      <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILD_REACTIVATION_PRELOAD">
+        <c:CreateProcedureSQL>
+          <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILD_REACTIVATION_PRELOAD
+(
+    @CONTEXTID uniqueidentifier,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+    @CHILDLOOKUPID nvarchar(100) = null output,    -- this must come from the constituent record
+    @CHILDFIRSTNAME nvarchar(100) = null output,
+    @CHILDMIDDLENAME nvarchar(100) = null output,
+    @CHILDLASTNAME nvarchar(100) = null output,
+    @GENDER nvarchar(10) = null output,
+    @BIRTHDATE nvarchar(8) = null output,
+    @DEPARTURETYPE nvarchar(14) = null output,
+    @ORIGINALREGISTRATIONDATE datetime = null output
+)
+as
+
+  set nocount on;
+
+  -- Get the Child readonly fields to give the user some context on the child they're reactivating
+
+  select top 1
+    @CHILDFIRSTNAME = so_child.FIRSTNAME,
+    @CHILDMIDDLENAME  = so_child.MIDDLENAME,
+    @CHILDLASTNAME = so_child.LASTNAME,
+    @GENDER = so_child.GENDER,
+    @BIRTHDATE = so_child.BIRTHDATE,
+    @CHILDLOOKUPID = so.LOOKUPID,
+    @SPONSORSHIPOPPORTUNITYCHILDID = so.ID,
+    @DEPARTURETYPE = departure.DEPARTURETYPE,
+    @ORIGINALREGISTRATIONDATE = childext.REGISTRATIONDATE
+  from        dbo.SPONSORSHIPOPPORTUNITY so
+  inner join  dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so.ID = so_child.ID
+  inner join  dbo.SPONSORSHIPLOCATION slocation on so.SPONSORSHIPLOCATIONID = slocation.ID   
+  inner join  dbo.USR_CHILDPROJECTEXTENSION projectext on slocation.FIELDOFFICEID = projectext.ID
+  inner join  dbo.USR_CHILDDEPARTURE departure on so_child.ID = departure.SPONSORSHIPOPPORTUNITYCHILDID
+  inner join  dbo.USR_CHILDEXTENSION childext on childext.SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID
+  inner join  dbo.CONSTITUENT projectconst ON projectconst.ID = projectext.ID
+  where so.ID = @CONTEXTID
+  -- This isn't yet implemented in the departure table:
+  --and departure.ISCURRENTDEPARTURECODE = 1   -- Yes
+
+  return 0;
+]]>
+        </c:CreateProcedureSQL>
+      </LoadImplementation>
+
+
+      <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILD_REACTIVATION">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILD_REACTIVATION
+(
+    @ID uniqueidentifier = null output,
+    @CONTEXTID uniqueidentifier,
+    @CHANGEAGENTID uniqueidentifier = null,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier,
+    @FORMENTEREDDATE datetime = null,
+    @FORMCOMPLETEDBY nvarchar(50),
+    @PREVIOUSDEPARTUREREASON nvarchar(500) = '',
+    @ISCHILDUNDERELEVENCODE tinyint = null,
+    @REACTIVATEEXPLANATION nvarchar(1000),
+    @ORIGINALREGISTRATIONDATE datetime = null,
+    @ENDDATE datetime = null,
+    @ISCURRENTREACTIVATIONCODE tinyint = 1
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+set @ENDDATE = getdate()    -- default to today until I know what it should be set to
+
+begin try
+  -- set all other records to inactive for this child, if there are any:
+  update dbo.USR_CHILDREACTIVATION
+  set ISCURRENTREACTIVATIONCODE = 0   -- 'No' value = 0, 'Yes' = 1
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+  
+  -- handle inserting the data, will set this row to currently active reactivation row
+  insert into dbo.USR_CHILDREACTIVATION
+    (ID, SPONSORSHIPOPPORTUNITYCHILDID, FORMENTEREDDATE, FORMCOMPLETEDBY, PREVIOUSDEPARTUREREASON, ISCHILDUNDERELEVENCODE, REACTIVATEEXPLANATION, ORIGINALREGISTRATIONDATE, ENDDATE, ISCURRENTREACTIVATIONCODE, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+    (@ID, @CONTEXTID, @FORMENTEREDDATE, @FORMCOMPLETEDBY, @PREVIOUSDEPARTUREREASON, @ISCHILDUNDERELEVENCODE, @REACTIVATEEXPLANATION, @ORIGINALREGISTRATIONDATE, @ENDDATE, @ISCURRENTREACTIVATIONCODE, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+
+  -- update child's registration date to today
+  -- update funded to yes
+  update dbo.USR_CHILDEXTENSION 
+  set REGISTRATIONDATE = getdate(),
+      FUNDED = 1
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+  
+  -- set all the departures for this child to inactive
+  update dbo.USR_CHILDDEPARTURE
+  set ISCURRENTDEPARTURECODE = 0
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+  
+  -- call the check eligibility stuff as this is essentially a new child in the system (from an eligibility point-of-view)
+  declare	@return_value int, @insertRowcount int
+
+  -- add the pending reason of 'Reactivation in process'
+  exec	@return_value = [dbo].[USR_USP_CHILD_SETPENDINGREASON]
+        @sponsorshipChildID = @CONTEXTID,
+        @sponsorshipReasonText = N'Reactivation in process',
+        @changeAgentID = @CHANGEAGENTID,
+        @insertRowcount = @insertRowcount OUTPUT
+      
+  -- add pending reasons that are now applicable
+  exec dbo.USR_USP_CHILD_CHECKELIGIBILITY
+        @sponsorshipOpportunityChildID = @CONTEXTID,
+        @changeAgentID = @CHANGEAGENTID
+      
+  -- set child to pending
+  exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING
+        @sponsorshipOpportunityChildID = @CONTEXTID,
+        @includeIneligibleInUpdate = 1,
+        @changeAgentID = @CHANGEAGENTID
+  
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+
+]]>
+</c:CreateProcedureSQL>
+            <c:ExpectedDBExceptions>
+                <c:Constraints>
+                    <c:Constraint Name="FK_USR_CHILDREACTIVATION_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+                    <c:Constraint Name="CK_USR_CHILDREACTIVATION_FORMCOMPLETEDBY" Field="FORMCOMPLETEDBY" Type="Required" />
+                    <c:Constraint Name="CK_USR_CHILDREACTIVATION_REACTIVATEEXPLANATION" Field="REACTIVATEEXPLANATION" Type="Required" />
+                </c:Constraints>
+            </c:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+  
+  <Context ContextRecordType="Sponsorship opportunity" RecordIDParameter="CONTEXTID"/>
+
+  <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+          <c:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true" />
+          <c:FormField FieldID="FORMENTEREDDATE" DataType="Date" Required="true" Caption="Reactivation form date" />
+          <c:FormField FieldID="FORMCOMPLETEDBY" Required="true" MaxLength="50" Caption="Form completed by" />
+
+          <!-- These are for context to give the user information about the child they're reactivating -->
+          <c:FormField FieldID="CHILDLOOKUPID" DataType="String" Caption="Child ID Number" ReadOnly="true" />
+          <c:FormField FieldID="CHILDFIRSTNAME" DataType="String" Caption="First or Common Name" ReadOnly="true" />
+          <c:FormField FieldID="CHILDMIDDLENAME" DataType="String" Caption="Second or Middle Name" ReadOnly="true" />
+          <c:FormField FieldID="CHILDLASTNAME" DataType="String" Caption="Family Name/Surname/Last Name" ReadOnly="true" />
+          <c:FormField FieldID="GENDER" DataType="String" Caption="Gender" ReadOnly="true" />
+          <c:FormField FieldID="BIRTHDATE" DataType="FuzzyDate" IncludeTimeOnDate="false" Caption="Date of Birth" ReadOnly="true" />
+          <c:FormField FieldID="DEPARTURETYPE" DataType="String" Caption="Original Departure Type" ReadOnly="true" />
+          
+            <c:FormField FieldID="PREVIOUSDEPARTUREREASON" MaxLength="500" Caption="Previous departure explanation" Multiline="true" />
+            <c:FormField FieldID="ISCHILDUNDERELEVENCODE" DataType="TinyInt" Caption="Is child under eleven" DefaultValueText="" Required="true">
+                <c:ValueList>
+                    <c:Items>
+                        <c:Item>
+                            <c:Value>0</c:Value>
+                            <c:Label>No</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>1</c:Value>
+                            <c:Label>Yes</c:Label>
+                        </c:Item>
+                    </c:Items>
+                </c:ValueList>
+            </c:FormField>
+            <c:FormField FieldID="REACTIVATEEXPLANATION" Required="true" MaxLength="1000" Caption="Reason child returned" Multiline="true" />
+            <c:FormField FieldID="ORIGINALREGISTRATIONDATE" DataType="Date" Required="true" Caption="Previous Registration Date" Hidden="true" />
+            <c:FormField FieldID="ENDDATE" DataType="Date" Caption="Enddate" Hidden="true" />
+          
+            <c:FormField FieldID="ISCURRENTREACTIVATIONCODE" DataType="TinyInt" Caption="Iscurrentreactivation" DefaultValueText="1" Hidden="true">
+                <c:ValueList>
+                    <c:Items>
+                        <c:Item>
+                            <c:Value>0</c:Value>
+                            <c:Label>No</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>1</c:Value>
+                            <c:Label>Yes</c:Label>
+                        </c:Item>
+                    </c:Items>
+                </c:ValueList>
+            </c:FormField>
+        </c:FormFields>
+      <c:FormUIComponent />
+
+    <!-- NOTE: The webshell will respect & use these groups & display in this order, the smart client will use the order above & ignore these! -->
+    
+      <c:FieldGroups>
+        <c:FieldGroup ID="CHILDINFORMATION" Caption="Child Information" >
+          <c:Fields>
+            <c:Field>CHILDLOOKUPID</c:Field>
+            <c:Field>CHILDFIRSTNAME</c:Field>
+            <c:Field>CHILDMIDDLENAME</c:Field>
+            <c:Field>CHILDLASTNAME</c:Field>
+            <c:Field>GENDER</c:Field>
+            <c:Field>BIRTHDATE</c:Field>
+            <c:Field>DEPARTURETYPE</c:Field>
+            <!--<c:Field>ORIGINALREGISTRATIONDATE</c:Field>-->
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup ID="DEPARTUREINFO" Caption="REASON FOR ORIGINAL DEPARTURE">
+          <c:Fields>
+            <c:Field>PREVIOUSDEPARTUREREASON</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+        <c:FieldGroup ID="ELIGIBILITYINFO" Caption="ELIGIBILITY VERIFICATION">
+          <c:Fields>
+            <c:Field>ISCHILDUNDERELEVENCODE</c:Field>
+            <c:Field>REACTIVATEEXPLANATION</c:Field>
+          </c:Fields>
+        </c:FieldGroup>
+      </c:FieldGroups>
+
+    </c:FormMetaData>
+</AddDataFormTemplateSpec>

@@ -438,12 +438,20 @@
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTNAME.xml" />
     <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
+    <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DataList.xml" />
     <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />
+    <EmbeddedResource Include="ChildReactivation\Child Reactivation Table.Package.xml" />
+    <EmbeddedResource Include="ChildReactivation\ChildReactivation.DataList.xml" />
+    <EmbeddedResource Include="ChildReactivation\ChildReactivation.Query.xml" />
+    <EmbeddedResource Include="ChildReactivation\ChildReactivationAddForm.Add.xml" />
+    <EmbeddedResource Include="ChildReactivation\ChildReactivationEditForm.Edit.xml" />
+    <EmbeddedResource Include="ChildReactivation\ChildReactivationViewForm.View.xml" />
     <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
+    <EmbeddedResource Include="Tables\ChildReactivation.Table.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
