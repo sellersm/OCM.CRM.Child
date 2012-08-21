@@ -1,21 +1,21 @@
 ﻿<AddDataFormTemplateSpec 
-	xmlns="bb_appfx_adddataformtemplate"
-	xmlns:common="bb_appfx_commontypes" 
-	ID="1b5afe4c-21b2-47af-aae6-6c0ec76f42a3" 
-	Name="Child Transfer Form Add Data Form"
-	Description="Child Transfer form" 
-	Author="Memphis Sellers"
-	DataFormInstanceID="fa13d398-d06e-4d37-adf9-891e9cdff38e" 
-	RecordType="SponsorshipOpportunityChild"
-	common:SecurityUIFolder="Sponsorship\Opportunity"
-	>	
-	<!-- 
-	Remarks:    
+  xmlns="bb_appfx_adddataformtemplate"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="1b5afe4c-21b2-47af-aae6-6c0ec76f42a3" 
+  Name="Child Transfer Form Add Data Form"
+  Description="Child Transfer form" 
+  Author="Memphis Sellers"
+  DataFormInstanceID="fa13d398-d06e-4d37-adf9-891e9cdff38e" 
+  RecordType="SponsorshipOpportunityChild"
+  common:SecurityUIFolder="Sponsorship\Opportunity"
+  >	
+  <!-- 
+  Remarks:    
 
-	History:
-	Date            Modified By     Comments
-	15-Aug-2012		CMayeda			Updated sproc call dbo.USR_USP_CHILD_SETELIGIBLEORPENDING. Changed parm to @includeIneligibleInUpdate 
-	-->
+  History:
+  Date            Modified By     Comments
+  15-Aug-2012		CMayeda			Updated sproc call dbo.USR_USP_CHILD_SETELIGIBLEORPENDING. Changed parm to @includeIneligibleInUpdate 
+  -->
   
   <!-- Need to get the current childproject name and Lookup ID to display, as well as the child information-->
   <SPDataForm>
@@ -38,13 +38,13 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILD_TRANSFER_TABLE_PRELOAD
 )
 as
 
-	set nocount on;
+  set nocount on;
 
   --set @FROMPROJECTNAME = 'This is the project name'; 
   --set @FROMPROJECTID = newId();
   --set @CHILDLOOKUPID  = 'LookupID Goes Here';    -- this must come from the constituent record
   
-	select top 1
+  select top 1
     @CHILDFIRSTNAME = so_child.FIRSTNAME,
     @CHILDMIDDLENAME  = so_child.MIDDLENAME,
     @CHILDLASTNAME = so_child.LASTNAME,
@@ -70,7 +70,7 @@ as
                   projectconst.LOOKUPID as CHILDPROJECTLOOKUPID
 */
 
-	return 0;
+  return 0;
 ]]>
       </common:CreateProcedureSQL>
     </LoadImplementation>
@@ -144,11 +144,11 @@ begin try
       set SPONSORSHIPLOCATIONID = @TOPROJECTNAME
       where ID = @CONTEXTID
 
-	    -- handle inserting the data
-	    insert into dbo.USR_CHILDTRANSFER
-		    (ID, SPONSORSHIPOPPORTUNITYCHILDID, FORMCOMPLETIONDATE, FORMCOMPLETEDBY, FORMENTEREDBY, CRMDATEOFTRANSFER, FIELDDATEOFTRANSFER, EXPLANATION, FROMPROJECTID, TOPROJECTID, FROMREGISTRATIONDATE, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+      -- handle inserting the data
+      insert into dbo.USR_CHILDTRANSFER
+        (ID, SPONSORSHIPOPPORTUNITYCHILDID, FORMCOMPLETIONDATE, FORMCOMPLETEDBY, FORMENTEREDBY, CRMDATEOFTRANSFER, FIELDDATEOFTRANSFER, EXPLANATION, FROMPROJECTID, TOPROJECTID, FROMREGISTRATIONDATE, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
         values
-		    (@ID, @CONTEXTID, @FORMCOMPLETIONDATE, @FORMCOMPLETEDBY, @FORMENTEREDBY, @CRMDATEOFTRANSFER, @FIELDDATEOFTRANSFER, @EXPLANATION, @FROMPROJECTID, @TOPROJECTNAME, @FROMREGISTRATIONDATE, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+        (@ID, @CONTEXTID, @FORMCOMPLETIONDATE, @FORMCOMPLETEDBY, @FORMENTEREDBY, @CRMDATEOFTRANSFER, @FIELDDATEOFTRANSFER, @EXPLANATION, @FROMPROJECTID, @TOPROJECTNAME, @FROMREGISTRATIONDATE, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
   
       -- these are all done on the childextension record
       -- update the registration date to be today
@@ -163,16 +163,16 @@ begin try
       
       -- set the ChildBio to Child Bio - Old
       exec dbo.USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD
-	         @ID = @CONTEXTID	
+           @ID = @CONTEXTID	
 
       -- then call the CheckEligibility sprocs
       declare	@return_value int, @insertRowcount int
 
       exec	@return_value = [dbo].[USR_USP_CHILD_SETPENDINGREASON]
-		        @sponsorshipChildID = @CONTEXTID,
-		        @sponsorshipReasonText = N'Need CCH Form Updated',
+            @sponsorshipChildID = @CONTEXTID,
+            @sponsorshipReasonText = N'Need CCH Form Updated',
             @changeAgentID = @CHANGEAGENTID,
-		        @insertRowcount = @insertRowcount OUTPUT
+            @insertRowcount = @insertRowcount OUTPUT
       
       -- add pending reasons that are now applicable
       exec dbo.USR_USP_CHILD_CHECKELIGIBILITY
