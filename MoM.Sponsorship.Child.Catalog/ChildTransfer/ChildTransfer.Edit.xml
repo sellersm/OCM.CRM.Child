@@ -28,8 +28,9 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_TRANSFER
     @EXPLANATION nvarchar(1000) = null output,
     @FROMPROJECTNAME nvarchar(100) = null output,
     @FROMPROJECLOOKUPTID nvarchar(100) = null output,
-    --@TOPROJECTNAME nvarchar(100) = null output,
-    @TOPROJECTID uniqueidentifier = null output
+    @TOPROJECTNAME nvarchar(100) = null output,
+    --@TOPROJECTID uniqueidentifier = null output,
+    @TOPROJECTLOOKUPID nvarchar(100) = null output
     --@FROMREGISTRATIONDATE datetime = null output
 )
 as
@@ -41,7 +42,7 @@ as
   set @TSLONG = 0
 
   --declare @FROMPROJECTNAME nvarchar(100);
-  declare @TOPROJECTLOOKUPID nvarchar(100);
+  
   
   -- populate the output parameters, which correspond to fields on the form.  Note that
   -- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
@@ -60,8 +61,8 @@ as
         @FROMPROJECTNAME = dbo.USR_UFN_CHILD_GETCHILDPROJECTNAME(FROMPROJECTID),
         @TOPROJECTLOOKUPID = dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(TOPROJECTID), 
         @FROMPROJECLOOKUPTID = dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(FROMPROJECTID), 
-        --@TOPROJECTNAME = TOPROJECTNAME, 
-        @TOPROJECTID = TOPROJECTID
+        @TOPROJECTNAME = dbo.USR_UFN_CHILD_GETCHILDPROJECTNAME(TOPROJECTID)
+        --@TOPROJECTID = TOPROJECTID
         --@FROMREGISTRATIONDATE = FROMREGISTRATIONDATE
   from dbo.USR_CHILDTRANSFER
   where ID = @ID
@@ -107,11 +108,11 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILD_TRANSFER
     @FORMENTEREDBY nvarchar(50),
     @CRMDATEOFTRANSFER datetime,
     @FIELDDATEOFTRANSFER datetime,
-    @EXPLANATION nvarchar(1000),
+    @EXPLANATION nvarchar(1000)
     --@FROMPROJECTNAME nvarchar(100),
     --@FROMPROJECTID uniqueidentifier,
     --@TOPROJECTNAME nvarchar(100),
-    @TOPROJECTID uniqueidentifier
+    --@TOPROJECTID uniqueidentifier
 )
 as
 
@@ -133,7 +134,7 @@ as
             --FROMPROJECTNAME = @FROMPROJECTNAME,
             --FROMPROJECTID = @FROMPROJECTID,
             --TOPROJECTNAME = @TOPROJECTNAME,
-            TOPROJECTID = @TOPROJECTID,
+            --TOPROJECTID = @TOPROJECTID,
       CHANGEDBYID = @CHANGEAGENTID,
       DATECHANGED = getdate()
     where ID = @ID
@@ -169,8 +170,14 @@ return 0;
       <common:FormField FieldID="FROMPROJECTNAME" Required="true" MaxLength="100" Caption="From project" ReadOnly="true" />
       <common:FormField FieldID="FROMPROJECLOOKUPTID" DataType="String" Required="true" Caption="From project lookupid" ReadOnly="true" />
       <!--<common:FormField FieldID="FROMREGISTRATIONDATE" Caption="Registration Date" IncludeTimeOnDate="false" ReadOnly="true" />-->
-      <!--<common:FormField FieldID="TOPROJECTNAME" Required="true" MaxLength="100" Caption="To project name" />-->
-      <common:FormField FieldID="TOPROJECTID" DataType="Guid" Required="true" Caption="To project" >
+
+      
+      <!-- This is uneditable so display the name & lookupid values only-->
+      <common:FormField FieldID="TOPROJECTLOOKUPID" DataType="String" Required="true" Caption="To project lookupid" ReadOnly="true" />
+      <common:FormField FieldID="TOPROJECTNAME" Required="true" MaxLength="100" Caption="To project name" ReadOnly="true" />
+      
+      
+      <!--<common:FormField FieldID="TOPROJECTID" DataType="Guid" Required="true" Caption="To project" >
         <common:SearchList SearchListID="7d7ac450-86f7-42f7-9299-e2458592ad14" EnableQuickFind="true">
           <common:FormFieldOverrides>
             <common:FormFieldOverride FieldID="INCLUDECHILDNODES" DefaultValueText="1" />
@@ -178,7 +185,7 @@ return 0;
             <common:FormFieldOverride FieldID="WITHINLOCATIONDISPLAY" Hidden="true" />
           </common:FormFieldOverrides>
         </common:SearchList>
-      </common:FormField>
+      </common:FormField>-->
       <!--<common:FormField FieldID="TOPROJECTNAME" Required="true" MaxLength="100" Caption="Transfer Project name" CaptionResourceKey="$$location" >
         
       </common:FormField>-->

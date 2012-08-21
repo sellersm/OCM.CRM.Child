@@ -271,11 +271,11 @@ from
           <OutputField Name="BIRTHDATE" Caption="Birthdate" IsHidden="false" DataType="FuzzyDate" />
 
           <OutputField Name="FUNDED" Caption="Funded" IsHidden="false" DataType="Boolean" />
-          <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer ID" />
+          <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
           <OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
           <OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />
           <OutputField Name="FORMCOMPLETEDBY" Caption="Child Transfer Form Completed By" />
-          <OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By*" />
+          <OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By" />
           <OutputField Name="FIELDDATEOFTRANSFER" Caption="Transfer Field Date" />
           <OutputField Name="EXPLANATION" Caption="Transfer Explanation" />
           <OutputField Name="FROMREGISTRATIONDATE" Caption="Old Registration Date" />

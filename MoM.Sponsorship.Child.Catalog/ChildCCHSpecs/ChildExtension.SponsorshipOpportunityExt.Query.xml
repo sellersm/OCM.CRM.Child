@@ -267,11 +267,11 @@ from
       <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
       <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
       <OutputField Name="FUNDED" Caption="Funded" />
-      <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer ID" />
+      <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
       <OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
       <OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />
       <OutputField Name="FORMCOMPLETEDBY" Caption="Child Transfer Form Completed By" />
-      <OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By*" />
+      <OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By" />
       <OutputField Name="FIELDDATEOFTRANSFER" Caption="Transfer Field Date" />
       <OutputField Name="EXPLANATION" Caption="Transfer Explanation" />
       <OutputField Name="FROMREGISTRATIONDATE" Caption="Old Registration Date" />
