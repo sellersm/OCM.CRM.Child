@@ -13,6 +13,7 @@
 	Date            Modified By     Comments
 	11-Jul-2012		CMayeda			Added "Other Tabs" data lists
 	21-Jul-2012		CMayeda			Added ChildDepartureDelete.RecordOperation.xml, because ChildDeparture.Page.xml references it
+  21-Aug-2012   Memphis     Added forms, tables, queries, etc. for Transfers, Reactivations
 -->
 
 	<c:DependencyList>
