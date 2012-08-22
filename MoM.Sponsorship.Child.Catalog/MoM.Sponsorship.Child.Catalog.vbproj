@@ -440,6 +440,7 @@
     <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DataList.xml" />
     <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
+    <EmbeddedResource Include="ChildEligibility\SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibility\sprocs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />

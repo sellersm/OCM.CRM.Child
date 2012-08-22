@@ -13,7 +13,8 @@
 	Date            Modified By     Comments
 	11-Jul-2012		CMayeda			Added "Other Tabs" data lists
 	21-Jul-2012		CMayeda			Added ChildDepartureDelete.RecordOperation.xml, because ChildDeparture.Page.xml references it
-  21-Aug-2012   Memphis     Added forms, tables, queries, etc. for Transfers, Reactivations
+	21-Aug-2012		Memphis			Added forms, tables, queries, etc. for Transfers, Reactivations
+	21-Aug-2012		CMayeda			Added Edit Pending Reasons Form 
 -->
 
 	<c:DependencyList>
@@ -62,8 +63,9 @@
     <!-- Record Operations -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension TableDelete.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.CCHVerified.RecordOperation.xml"/>
-		
-	<!-- CCH Forms -->
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDepartureDelete.RecordOperation.xml" />
+
+		<!-- CCH Forms -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Add.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.AboutMe.Edit.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.AboutMe.View.xml" />
@@ -108,9 +110,8 @@
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildReactivationAddForm.Add.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildReactivationEditForm.Edit.xml" />
 
-
-    <!-- ** ADDED BY CARY **-->
-	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDepartureDelete.RecordOperation.xml" />
+	<!-- Edit Pending Reasons Form -->
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
 		
 	<!-- Other Tabs -->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ActiveSponsorships.DataList.xml" />

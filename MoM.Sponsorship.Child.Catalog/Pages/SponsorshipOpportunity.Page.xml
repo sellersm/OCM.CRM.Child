@@ -6,8 +6,9 @@
 	History:
 	Date            Modified By     Comments
 	16-Jul-2012		CMayeda			Added Pamela's temporary Reservation tab
-  02-Aug-2012   Memphis     Added Transfers Tab & Transfer Child Action 
-  21-Aug-2012   Memphis     Added reactivations tab, edited the Actions
+	02-Aug-2012		Memphis			Added Transfers Tab & Transfer Child Action 
+	21-Aug-2012		Memphis			Added reactivations tab, edited the Actions
+	21-Aug-2012		CMayeda			Added wrapped data form for edit pending reasons
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -217,7 +218,8 @@
 					</SectionContext>
 					<Actions>
 						<Action ID="de84bb78-2ac6-4ed5-9b8a-d14a64693e6b" Caption="Edit pending reasons" ImageKey="res:edit" Visible="=Page.Fields!ELIGIBILITYCODE = 0 Or Page.Fields!ELIGIBILITYCODE=1" CaptionResourceKey="$$edit_pending_reasons">
-							<ShowDataForm DataFormID="955e8a91-8a01-4762-93de-7246ec732dc8" xmlns="bb_appfx_commontypes">
+							<ShowDataForm DataFormID="4e9919d6-9c3f-42a6-a487-b243b1c47b0a" xmlns="bb_appfx_commontypes"> 
+							<!-- OOB <ShowDataForm DataFormID="955e8a91-8a01-4762-93de-7246ec732dc8" xmlns="bb_appfx_commontypes"> -->
 								<ActionContext>
 									<PageContextID />
 								</ActionContext>
