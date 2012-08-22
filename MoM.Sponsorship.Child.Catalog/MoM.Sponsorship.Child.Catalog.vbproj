@@ -254,7 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.Query.xml" />
-    <EmbeddedResource Include="CRUD\Departures\ChildDeparture.DataList.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDepartureDelete.RecordOperation.xml" />
     <EmbeddedResource Include="CRUD\Departures\ChildDeparture.Edit.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.Add.xml">
