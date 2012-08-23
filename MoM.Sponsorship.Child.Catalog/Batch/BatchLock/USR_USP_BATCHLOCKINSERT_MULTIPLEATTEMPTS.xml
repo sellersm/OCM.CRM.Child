@@ -4,9 +4,16 @@
 	ID="cc6913de-2ee3-401b-b169-0c030bb95310"
 	Name="USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS"
 	Description="This is used to attempt to lock a batch multiple times with a time delay between attempts"
-	Author="BETHESDA\cmayeda"
-	SPName="USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS"
-	>
+	Author="Cary Mayeda"
+	SPName="USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS" >
+
+	<!-- 
+	Remarks:    This uses waitfor delay to pause in between lock attempts via USR_USP_BATCHLOCKINSERT
+				Note: This currently only supports delays of 0 - 59 seconds.
+	History:
+	Date            Modified By     Comments
+	30-Jul-2012		CMayeda			Initial Version
+	-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
