@@ -7,9 +7,16 @@
 	Author="Memphis Sellers"
 	DataFormInstanceID="341c23a6-648b-4c2c-bd6f-d33ddebda22b" 
 	RecordType="Child Extension"
-	common:SecurityUIFolder="Sponsorship\Opportunity"
-	>
+	common:SecurityUIFolder="Sponsorship\Opportunity" >
 
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	22-Aug-2012		CMayeda			Added Project fields - Fogbugz Case 776
+	->
+	
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USR_USP_DATAFORMTEMPLATE_VIEW_CCH_WHOAMI">
 		<common:CreateProcedureSQL>
@@ -20,8 +27,12 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_WHOAMI
 	@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,   -- ID of the sponsorship opportunity (child)
 	@DATALOADED bit = 0 output,                                      -- required by CRM, if not set then user doesn't see the data in the section
 	@CHILDAGE tinyint = null output,                                 -- age of the child
-  @CHILDNAMESUFFIXCODEID uniqueidentifier = null output,           -- name suffix of the child
-  @BIRTHDATEACCURACYCODEID uniqueidentifier = null output          -- birthdate accuracy code id value
+	@CHILDNAMESUFFIXCODEID uniqueidentifier = null output,           -- name suffix of the child
+	@BIRTHDATEACCURACYCODEID uniqueidentifier = null output,		 -- birthdate accuracy code id value
+	@CHILDPROJECTID uniqueidentifier = null output,					 -- child project system record id 
+	@CHILDPROJECTLOOKUPID nvarchar(36) = null output,				 -- child project status lookup id
+	@CHILDPROJECTNAME nvarchar(154) = null output,					 -- child project name	
+	@CHILDPROJECTSTATUS nvarchar(100) = null output					 -- child project status	
 )
 as
 	set nocount on;
@@ -46,24 +57,48 @@ join dbo.USR_CHILDEXTENSION ce on ce.SPONSORSHIPOPPORTUNITYCHILDID = sc.ID
 where ce.SPONSORSHIPOPPORTUNITYCHILDID = @ID
 
 
+	select 	@CHILDPROJECTID = chproject_ext.ID,
+			@CHILDPROJECTLOOKUPID = projectconst.LOOKUPID,
+			@CHILDPROJECTNAME = projectconst.NAME,
+			@CHILDPROJECTSTATUS = (select USR_CHILDPROJECTSTATUSCODE.DESCRIPTION from dbo.USR_CHILDPROJECTSTATUSCODE where USR_CHILDPROJECTSTATUSCODE.ID = chproject_ext.CHILDPROJECTSTATUSCODEID)
+
+	  from	dbo.SPONSORSHIPOPPORTUNITY so 					
+inner join	dbo.SPONSORSHIPLOCATION slocation ON 
+				slocation.ID = so.SPONSORSHIPLOCATIONID
+inner join	dbo.USR_CHILDPROJECTEXTENSION chproject_ext on
+				slocation.FIELDOFFICEID = chproject_ext.ID
+inner join	dbo.CONSTITUENT projectconst on
+				slocation.FIELDOFFICEID = projectconst.ID
+	 where	so.ID = @ID
+		
+
 	return 0;
 			]]>
 		</common:CreateProcedureSQL>
 	</SPDataForm>
 
+
 	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
 	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
-	<common:FormMetaData FixedDialog="true">
+	<common:FormMetaData FixedDialog="true" >		
+		
 		<common:FormFields>
-      <common:FormField FieldID="CHILDNAMESUFFIXCODEID" Caption="Name Suffix" DataType="Guid">
-        <common:CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE"/>
-      </common:FormField>
-      <common:FormField FieldID="CHILDAGE" Caption="Age of Child" DataType="TinyInt"  />
-      <common:FormField FieldID="BIRTHDATEACCURACYCODEID" Caption="Birthdate Accuracy" DataType="Guid" >
-        <common:CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE" />
-      </common:FormField>
-      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
+			<common:FormField FieldID="CHILDNAMESUFFIXCODEID" ReadOnly="true" Caption="Name Suffix" DataType="Guid">
+				<common:CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE"/>
+			</common:FormField>
+			<common:FormField FieldID="CHILDAGE" Caption="Age of Child" DataType="TinyInt"  />
+			<common:FormField FieldID="BIRTHDATEACCURACYCODEID" Caption="Birthdate Accuracy" DataType="Guid" >
+				<common:CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE" />
+			</common:FormField>
+			<common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
+			
+			<common:FormField FieldID="CHILDPROJECTLOOKUPID" Caption="Child project ID" DataType="String" />
+			<common:FormField FieldID="CHILDPROJECTNAME" Caption="Child project name" DataType="String"  />
+			<common:FormField FieldID="CHILDPROJECTSTATUS" Caption="Child project status" DataType="String" />
+			<common:FormField FieldID="CHILDPROJECTID" Caption="Child project system record id" Hidden="true" DataType="Guid" />
 		</common:FormFields>
+	
 	</common:FormMetaData>
 
+	
 </ViewDataFormTemplateSpec>
