@@ -451,6 +451,7 @@
     <EmbeddedResource Include="ChildReactivation\ChildReactivationEditForm.Edit.xml" />
     <EmbeddedResource Include="ChildReactivation\ChildReactivationViewForm.View.xml" />
     <EmbeddedResource Include="ChildTransfer\ChildTransfer.Edit.xml" />
+    <EmbeddedResource Include="ChildTransfer\USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION.xml" />
     <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
     <EmbeddedResource Include="Tables\ChildReactivation.Table.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />

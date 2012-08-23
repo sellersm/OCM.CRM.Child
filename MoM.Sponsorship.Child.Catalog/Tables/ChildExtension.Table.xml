@@ -1,23 +1,24 @@
 <TableSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	xmlns="bb_appfx_table"
-	xmlns:common="bb_appfx_commontypes"
-	ID="1c0af01f-9ca2-4fe7-ba20-b36093440527"
-	Name="Child Extension Table"
-	Description="Child Extension Table for BPR CCH"
-	Author="Mark Sellers"
-	Tablename="USR_CHILDEXTENSION"
-	IsCustomizable="true">
+    xmlns="bb_appfx_table"
+    xmlns:common="bb_appfx_commontypes"
+    ID="1c0af01f-9ca2-4fe7-ba20-b36093440527"
+    Name="Child Extension Table"
+    Description="Child Extension Table for BPR CCH"
+    Author="Mark Sellers"
+    Tablename="USR_CHILDEXTENSION"
+    IsCustomizable="true">
 
-	<!-- 
-	Remarks:    
+    <!-- 
+    Remarks:    
 
-	History:
-	Date            Modified By     Comments
-	25-Jul-2012		CMayeda			Added trigger for Child Lookup IDs
-  13-Aug-2012   Memphis     Removed the field: WHENIAMATSCHOOLILIKELEARNING
-	-->
+    History:
+    Date            Modified By     Comments
+    25-Jul-2012		CMayeda			Added trigger for Child Lookup IDs
+    13-Aug-2012		Memphis			Removed the field: WHENIAMATSCHOOLILIKELEARNING
+    22-Aug-2012		Memphis			took out old commented fields
+    -->
 
-	<Fields>
+    <Fields>
     <!--<GuidField Description="SPONSORSHIPOPPORTUNITYID" IsUnique="true" Name="SPONSORSHIPOPPORTUNITYID" Required="true" />-->
     <!--<GuidField Description="SPONSORSHIPOPPORTUNITYGROUPID" IsUnique="false" Name="SPONSORSHIPOPPORTUNITYGROUPID" Required="true"/>-->
     <!-- Will need a foreignkey field possibly to Child Departures table -->
@@ -26,12 +27,8 @@
 
     <CodeTableField Description="Birthdate Accuracy" Name="BIRTHDATEACCURACYCODEID" CodeTable="USR_BIRTHDATEACCURACYCODE" Required="false" />
     <DateField Description="Current Program Completion Date" Name="CURRENTPROGRAMCOMPLETIONDATE" Required="false" IncludeTime="false" />
-    <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>
-    <!--<ComputedColumnField Description="Age of Child" Name="CHILDAGE" Persisted="false" Expression="Select DateDIFF(yy,@DOB,@later)-CASE WHEN @later>=DateAdd(yy,DateDIFF(yy,@DOB,@later), @DOB) THEN 0 ELSE 1 END"/>-->
-    <!--<NumberField Description="Age of Child" Name="CHILDAGE" Type="tinyint" />-->
-    
+    <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>    
     <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
-
     <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="false"/>
     <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
@@ -79,21 +76,6 @@
     <BooleanField Description="Light Source Generator" Name="LIGHTSOURCEGENERATOR" />
     <BooleanField Description="Light Source None" Name="LIGHTSOURCENONE" />
     <TextField Description="Light Source Other" Name="LIGHTSOURCEOTHER" Length="50"  />
-    
-    <!--<TextField Description="Wall structure other value" Name="HOUSINGWALLSTRUCTUREOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
-
-    <CodeTableField CodeTable="USR_HOUSINGROOFINGMATERIALCODE" Description="Housing Roof Material values" Name="HOUSINGROOFINGMATERIALCODEID" Required="true"/>
-    <TextField Description="HousingRoofingMaterial Other value" Name="HOUSINGROOFINGMATERIALOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
-    
-    <CodeTableField CodeTable="USR_WATERSOURCECODE" Description="Water source values" Name="WATERSOURCECODEID" Required="true"/>
-    <TextField Description="Water Source other value" Name="WATERSOURCEOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
-
-    <CodeTableField CodeTable="USR_COOKINGSOURCECODE" Description="Cooking source values" Name="COOKINGSOURCECODEID" Required="true"/>
-    <TextField Description="Cooking Source Other Value" Name="COOKINGSOURCEOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
-
-    <CodeTableField CodeTable="USR_LIGHTSOURCECODE" Description="Light source values" Name="LIGHTSOURCECODEID" Required="true"/>
-    <TextField Description="LightSource Other value" Name="LIGHTSOURCEOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />-->
-
     <TextField Description="Area Description" Name="AREADESCRIPTION" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <TextField Description="Favorite thing" Name="MYFAVORITETHINGTODO" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
     <TextField Description="Playing with friends text" Name="WHENIPLAYWITHFRIENDSWE" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
@@ -135,25 +117,28 @@
     <DateField Description="Registration Date" Name="REGISTRATIONDATE" />
     <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
     <BooleanField Description="CCH Validated" Name="CCHVALIDATED" DefaultValue="false"/>
+        
+        <!-- Not sure what length to use, awaiting a reply from Pamela/Cary -->
+        <TextField Description="Nickname" Name="CHILDNICKNAME" Length="100" Required="false"/>
   </Fields>
   <!--<CheckConstraints />
   <Indexes /-->
-	
-	<Triggers>
-		<Trigger Name="TR_CHILDEXTENSION_LOOKUPID_INSERT">
-			<CreateTriggerSQL>
-				<![CDATA[				
-				
-				create trigger TR_CHILDEXTENSION_LOOKUPID_INSERT on dbo.USR_CHILDEXTENSION after insert not for replication
-				as begin
-					update	SPONSORSHIPOPPORTUNITY
-					   set	CUSTOMIDENTIFIER = 'C' + cast ((SPONSORSHIPOPPORTUNITY.SEQUENCEID - 10000000 + 400000) as varchar(6))
-					 where	exists (select ID from SPONSORSHIPOPPORTUNITYCHILD sop_child where sop_child.ID = SPONSORSHIPOPPORTUNITY.ID)
-					   and	exists (select ID from inserted where inserted.SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITY.ID)
-				end
-				 ]]>
-			</CreateTriggerSQL>
-		</Trigger>	  
-	</Triggers>	  
+    
+    <Triggers>
+        <Trigger Name="TR_CHILDEXTENSION_LOOKUPID_INSERT">
+            <CreateTriggerSQL>
+                <![CDATA[				
+                
+                create trigger TR_CHILDEXTENSION_LOOKUPID_INSERT on dbo.USR_CHILDEXTENSION after insert not for replication
+                as begin
+                    update	SPONSORSHIPOPPORTUNITY
+                       set	CUSTOMIDENTIFIER = 'C' + cast ((SPONSORSHIPOPPORTUNITY.SEQUENCEID - 10000000 + 400000) as varchar(6))
+                     where	exists (select ID from SPONSORSHIPOPPORTUNITYCHILD sop_child where sop_child.ID = SPONSORSHIPOPPORTUNITY.ID)
+                       and	exists (select ID from inserted where inserted.SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITY.ID)
+                end
+                 ]]>
+            </CreateTriggerSQL>
+        </Trigger>	  
+    </Triggers>	  
   
 </TableSpec>

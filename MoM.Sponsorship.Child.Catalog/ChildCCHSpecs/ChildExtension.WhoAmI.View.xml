@@ -15,7 +15,8 @@
 	History:
 	Date            Modified By     Comments
 	22-Aug-2012		CMayeda			Added Project fields - Fogbugz Case 776
-	->
+	22-Aug-2012		Memphis			Added CHILDNICKNAME field - Fogbugz Case 777
+	-->
 	
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USR_USP_DATAFORMTEMPLATE_VIEW_CCH_WHOAMI">
@@ -28,6 +29,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_WHOAMI
 	@DATALOADED bit = 0 output,                                      -- required by CRM, if not set then user doesn't see the data in the section
 	@CHILDAGE tinyint = null output,                                 -- age of the child
 	@CHILDNAMESUFFIXCODEID uniqueidentifier = null output,           -- name suffix of the child
+	@CHILDNICKNAME nvarchar(50) = null output,						 -- nickname of the child, from the constituent table
 	@BIRTHDATEACCURACYCODEID uniqueidentifier = null output,		 -- birthdate accuracy code id value
 	@CHILDPROJECTID uniqueidentifier = null output,					 -- child project system record id 
 	@CHILDPROJECTLOOKUPID nvarchar(36) = null output,				 -- child project status lookup id
@@ -44,33 +46,34 @@ as
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
 	-- will display a "no data loaded" message.
 	select @DATALOADED = 1,
-      @CHILDNAMESUFFIXCODEID = CHILDNAMESUFFIXCODEID,
-      @BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID
-  from dbo.USR_CHILDEXTENSION
-  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+			@CHILDNAMESUFFIXCODEID = CHILDNAMESUFFIXCODEID,
+			@BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID
+	from dbo.USR_CHILDEXTENSION
+	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	--where ID = @ID
 
-select @CHILDAGE = v.AGE 
-from V_QUERY_SPONSORSHIPOPPORTUNITYCHILD v
-join dbo.SPONSORSHIPOPPORTUNITYCHILD sc on sc.CONSTITUENTID = v.ID
-join dbo.USR_CHILDEXTENSION ce on ce.SPONSORSHIPOPPORTUNITYCHILDID = sc.ID
-where ce.SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	select @CHILDAGE = v.AGE 
+	from V_QUERY_SPONSORSHIPOPPORTUNITYCHILD v
+	join dbo.SPONSORSHIPOPPORTUNITYCHILD sc on sc.CONSTITUENTID = v.ID
+	join dbo.USR_CHILDEXTENSION ce on ce.SPONSORSHIPOPPORTUNITYCHILDID = sc.ID
+	where ce.SPONSORSHIPOPPORTUNITYCHILDID = @ID
 
 
 	select 	@CHILDPROJECTID = chproject_ext.ID,
 			@CHILDPROJECTLOOKUPID = projectconst.LOOKUPID,
 			@CHILDPROJECTNAME = projectconst.NAME,
 			@CHILDPROJECTSTATUS = (select USR_CHILDPROJECTSTATUSCODE.DESCRIPTION from dbo.USR_CHILDPROJECTSTATUSCODE where USR_CHILDPROJECTSTATUSCODE.ID = chproject_ext.CHILDPROJECTSTATUSCODEID)
+	from	dbo.SPONSORSHIPOPPORTUNITY so 					
+	inner join	dbo.SPONSORSHIPLOCATION slocation ON slocation.ID = so.SPONSORSHIPLOCATIONID
+	inner join	dbo.USR_CHILDPROJECTEXTENSION chproject_ext on slocation.FIELDOFFICEID = chproject_ext.ID
+	inner join	dbo.CONSTITUENT projectconst on slocation.FIELDOFFICEID = projectconst.ID
+	where	so.ID = @ID
 
-	  from	dbo.SPONSORSHIPOPPORTUNITY so 					
-inner join	dbo.SPONSORSHIPLOCATION slocation ON 
-				slocation.ID = so.SPONSORSHIPLOCATIONID
-inner join	dbo.USR_CHILDPROJECTEXTENSION chproject_ext on
-				slocation.FIELDOFFICEID = chproject_ext.ID
-inner join	dbo.CONSTITUENT projectconst on
-				slocation.FIELDOFFICEID = projectconst.ID
-	 where	so.ID = @ID
-		
+	-- get the child nickname from constituent
+	select @CHILDNICKNAME = con.NICKNAME
+	from dbo.SPONSORSHIPOPPORTUNITYCHILD soc
+	join dbo.CONSTITUENT con on soc.CONSTITUENTID = con.ID
+	where soc.ID = @ID
 
 	return 0;
 			]]>
@@ -83,6 +86,7 @@ inner join	dbo.CONSTITUENT projectconst on
 	<common:FormMetaData FixedDialog="true" >		
 		
 		<common:FormFields>
+			<common:FormField FieldID="CHILDNICKNAME" Caption="Nickname" DataType="String" />
 			<common:FormField FieldID="CHILDNAMESUFFIXCODEID" ReadOnly="true" Caption="Name Suffix" DataType="Guid">
 				<common:CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE"/>
 			</common:FormField>

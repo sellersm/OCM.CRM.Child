@@ -1,29 +1,38 @@
-﻿<EditDataFormTemplateSpec 
+﻿<EditDataFormTemplateSpec
 	xmlns="bb_appfx_editdataformtemplate"
-	xmlns:common="bb_appfx_commontypes" 
-	ID="58c3e4f6-15a1-4a7b-9d28-793a505d9676" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="58c3e4f6-15a1-4a7b-9d28-793a505d9676"
 	Name="ChildExtension Who Am I Edit Form"
-	Description="Edit ChildExtension-Who Am I Data" 
+	Description="Edit ChildExtension-Who Am I Data"
 	Author="Memphis Sellers"
-	DataFormInstanceID="b143f07b-c96d-4cc8-9878-685540330506" 
+	DataFormInstanceID="b143f07b-c96d-4cc8-9878-685540330506"
 	RecordType="Child Extension"
 	common:SecurityUIFolder="Sponsorship\Opportunity"
 	>
 
-	<SPDataForm>
+	<!-- 
+	Remarks:    
 
+	History:
+	Date            Modified By     Comments
+	22-Aug-2012		Memphis			Added CHILDNICKNAME field - Fogbugz Case 777
+	-->
+
+
+	<SPDataForm>
 		<!-- define the edit load SP, which is used to load the data for the form -->
 		<LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CCH_WHOAMI">
 			<common:CreateProcedureSQL>
 				<![CDATA[
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CCH_WHOAMI(
-  @TSLONG bigint = 0 output,                                       -- Required by CRM, I think it's the timestamp value of the row
-  @ID uniqueidentifier,                                            -- ID of the Child
+	@TSLONG bigint = 0 output,                                       -- Required by CRM, I think it's the timestamp value of the row
+	@ID uniqueidentifier,                                            -- ID of the Child
 	@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,   -- ID of the sponsorship opportunity (child)
 	@DATALOADED bit = 0 output,                                      -- required by CRM, if not set then user doesn't see the data in the section
 	@CHILDAGE tinyint = null output,                                 -- age of the child
-  @CHILDNAMESUFFIXCODEID uniqueidentifier = null output,           -- name suffix of the child
-  @BIRTHDATEACCURACYCODEID uniqueidentifier = null output          -- birthdate accuracy code id value
+	@CHILDNAMESUFFIXCODEID uniqueidentifier = null output,           -- name suffix of the child
+	@BIRTHDATEACCURACYCODEID uniqueidentifier = null output,         -- birthdate accuracy code id value
+	@CHILDNICKNAME nvarchar(100) = null output						 -- nickname of the child, from the constituent table
 )
 as
 
@@ -36,17 +45,23 @@ as
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
 	-- will display a "no data loaded" message.
 	select @DATALOADED = 1,
-      @CHILDNAMESUFFIXCODEID = CHILDNAMESUFFIXCODEID,
-      @BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID
-  from dbo.USR_CHILDEXTENSION
-  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+			@CHILDNAMESUFFIXCODEID = CHILDNAMESUFFIXCODEID,
+			@BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID
+	from dbo.USR_CHILDEXTENSION
+	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	--where ID = @ID
 
-select @CHILDAGE = v.AGE 
-from V_QUERY_SPONSORSHIPOPPORTUNITYCHILD v
-join dbo.SPONSORSHIPOPPORTUNITYCHILD sc on sc.CONSTITUENTID = v.ID
-join dbo.USR_CHILDEXTENSION ce on ce.SPONSORSHIPOPPORTUNITYCHILDID = sc.ID
-where ce.SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	select @CHILDAGE = v.AGE 
+	from V_QUERY_SPONSORSHIPOPPORTUNITYCHILD v
+	join dbo.SPONSORSHIPOPPORTUNITYCHILD sc on sc.CONSTITUENTID = v.ID
+	join dbo.USR_CHILDEXTENSION ce on ce.SPONSORSHIPOPPORTUNITYCHILDID = sc.ID
+	where ce.SPONSORSHIPOPPORTUNITYCHILDID = @ID
+	
+	-- get the child nickname from constituent
+	select @CHILDNICKNAME = con.NICKNAME
+	from dbo.SPONSORSHIPOPPORTUNITYCHILD soc
+	join dbo.CONSTITUENT con on soc.CONSTITUENTID = con.ID
+	where soc.ID = @ID
 
 	return 0;
 				]]>
@@ -57,10 +72,11 @@ where ce.SPONSORSHIPOPPORTUNITYCHILDID = @ID
 			<common:CreateProcedureSQL>
 				<![CDATA[
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CCH_WHOAMI(
-	@ID uniqueidentifier,                              -- unique ID of the record
-	@CHANGEAGENTID uniqueidentifier,                   -- id of the change user
-  @CHILDNAMESUFFIXCODEID uniqueidentifier,           -- name suffix of the child
-  @BIRTHDATEACCURACYCODEID uniqueidentifier          -- birthdate accuracy code id value
+	@ID uniqueidentifier,								-- unique ID of the record
+	@CHANGEAGENTID uniqueidentifier,					-- id of the change user
+	@CHILDNAMESUFFIXCODEID uniqueidentifier,			-- name suffix of the child
+	@BIRTHDATEACCURACYCODEID uniqueidentifier,          -- birthdate accuracy code id value
+	@CHILDNICKNAME nvarchar(100)						-- nickname of the child
 )
 as
 
@@ -80,6 +96,18 @@ as
 			CHANGEDBYID = @CHANGEAGENTID,
 			DATECHANGED = @CURRENTDATE
 		 where SPONSORSHIPOPPORTUNITYCHILDID = @ID	
+		 
+		 
+		 --update the constituent nickname if updated
+		 if @CHILDNICKNAME is not null
+		 begin
+		 	-- get the child nickname from constituent
+			update dbo.CONSTITUENT
+			set NICKNAME = @CHILDNICKNAME
+			where ID = (select con.ID from dbo.SPONSORSHIPOPPORTUNITYCHILD soc
+						join dbo.CONSTITUENT con on soc.CONSTITUENTID = con.ID
+						where soc.ID = @ID)
+		 end
 	end try
 	begin catch
 		exec dbo.USP_RAISE_ERROR
@@ -97,20 +125,17 @@ return 0;
 	like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
 	<common:FormMetaData FixedDialog="true">
 		<common:FormFields>
-      <common:FormField FieldID="CHILDNAMESUFFIXCODEID" Caption="Name Suffix" DataType="Guid">
-        <common:CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE"/>
-      </common:FormField>
-      <common:FormField FieldID="CHILDAGE" Caption="Age of Child" DataType="TinyInt" ReadOnly="true" />
-      <common:FormField FieldID="BIRTHDATEACCURACYCODEID" Caption="Birthdate Accuracy" DataType="Guid" Required="true" >
-        <common:CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE"/>
-      </common:FormField>
-      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
+			<common:FormField FieldID="CHILDNICKNAME" Caption="Nickname" DataType="String" />
+			<common:FormField FieldID="CHILDNAMESUFFIXCODEID" Caption="Name Suffix" DataType="Guid">
+				<common:CodeTable CodeTableName="USR_CHILDNAMESUFFIXCODE"/>
+			</common:FormField>
+			<common:FormField FieldID="CHILDAGE" Caption="Age of Child" DataType="TinyInt" ReadOnly="true" />
+			<common:FormField FieldID="BIRTHDATEACCURACYCODEID" Caption="Birthdate Accuracy" DataType="Guid" Required="true" >
+				<common:CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE"/>
+			</common:FormField>
+			<common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
 		</common:FormFields>
 
-		<!-- indicate the client-side component for the user interface -->
-		<!--<common:FormUIComponent FormUIComponentType="CustomComponent">
-			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
-		</common:FormUIComponent>-->
 	</common:FormMetaData>
 
 </EditDataFormTemplateSpec>
