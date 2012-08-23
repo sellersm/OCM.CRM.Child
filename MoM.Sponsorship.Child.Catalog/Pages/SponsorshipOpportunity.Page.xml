@@ -9,6 +9,7 @@
 	02-Aug-2012		Memphis			Added Transfers Tab & Transfer Child Action 
 	21-Aug-2012		Memphis			Added reactivations tab, edited the Actions
 	21-Aug-2012		CMayeda			Added wrapped data form for edit pending reasons
+	22-Aug-2012		CMayeda			Added goto task for Child Project
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -962,6 +963,13 @@
 						</ActionContext>
 					</ShowPage>
 				</Action>-->
+				<Action ID="de91452c-6153-49d8-90e7-f44702dbd9fa" Caption="Child project">
+					<ShowPage PageID="29d5b7a5-d032-4b66-80f9-b1d451292ad6" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageExpressionField>CHILDPROJECTID</PageExpressionField>
+						</ActionContext>
+					</ShowPage>
+				</Action>
 
 			</Actions>
 
