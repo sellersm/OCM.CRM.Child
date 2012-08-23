@@ -1,0 +1,84 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="ab046915-8dd2-4644-87a6-15d40d17592b"
+    Name="Child Quota Waiting List Process Status Report Page"
+    Description="The page used to see the details of which kids were registered and which were placed on the waiting list"
+    Author="Cary Mayeda"
+    ContextRecordType="Child quota waiting list business process instance">
+
+	<!-- 
+	Remarks:    There is one tab for the list of kids that were registered and another for those put on the waiting list.
+
+	History:
+	Date            Modified By     Comments
+	02-Jul-2012		CMayeda			Initial Version
+
+	-->
+
+	<!-- define how the page header should appear -->
+	<PageHeader Caption="Child Quota Waiting List Business Process Report" ImageKey="" />
+	
+
+	<!-- define the tabs for the page - note that if only one tab is present, then that tab's sections are promoted to the page level (ie., the tab
+	itself isn't shown -->
+	<Tabs>
+		<Tab ID="5909d716-869d-48d8-8776-545b0d50aa3c" Caption="Successfully Registered Children">
+
+			<!-- define the sections for this tab -->
+			<Sections>
+				<Section ID="d6567a10-e3bb-4397-8c4b-3160f19ddd52" Caption="">
+					<DataList ID="daf78359-3d91-4dae-8303-c848ef8877c7">
+						<RenderStyle>
+							<StandardView/>
+						</RenderStyle>
+					</DataList>
+
+					<!-- define the section-level actions -->
+					<!--<Actions>
+						<Action ID="326da5cb-0515-41e4-a7e5-5faa7bc6b255" Caption="Section action caption" ImageKey="res:newitem">
+							<common:ShowPage PageID="REPLACE_WITH_PAGEID" />
+						</Action>
+					</Actions>-->
+					
+				</Section>
+			</Sections>
+		</Tab>
+		<Tab ID="E938B617-C164-40EE-80DC-DBB09003A41C" Caption="Children Placed on Waiting List">
+
+			<!-- define the sections for this tab -->
+			<Sections>
+				<Section ID="F5E855D1-8820-4FC1-8ABC-2CFDC6D3D910" Caption="">
+					<DataList ID="efc065e3-b056-4f39-b4bd-a13ee31cf090">
+						<RenderStyle>
+							<StandardView/>
+						</RenderStyle>
+					</DataList>
+
+					<!-- define the section-level actions -->
+					<!--<Actions>
+						<Action ID="326da5cb-0515-41e4-a7e5-5faa7bc6b255" Caption="Section action caption" ImageKey="res:newitem">
+							<common:ShowPage PageID="REPLACE_WITH_PAGEID" />
+						</Action>
+					</Actions>-->
+
+				</Section>
+			</Sections>
+		</Tab>
+	</Tabs>
+
+	<!-- define page-level actions groups which appear in the explorer bar area of the shell -->
+	<!--<PageActionGroups>
+		
+		<PageActionGroup ID="fd410be9-6137-4c69-9e62-e1471994b3be" Caption="Tasks" ImageKey="RES:Tasks">
+			<for this action group, define the list of actions>
+			<Actions>
+				<Action ID="9532e752-ac25-44aa-8bd6-0236c96bf437" Caption="Action caption" ImageKey="res:newitem">
+					<common:ShowPage PageID="REPLACE_WITH_PAGEID" />
+				</Action>
+			</Actions>
+		</PageActionGroup>
+		
+	</PageActionGroups>-->
+
+</PageDefinitionSpec>

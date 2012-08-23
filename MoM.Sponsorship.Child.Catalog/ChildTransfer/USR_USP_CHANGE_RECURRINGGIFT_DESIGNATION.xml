@@ -1,0 +1,108 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="27cd13c8-0a48-4052-9a9e-e8c483ec51d6"
+	Name="USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION"
+	Description="Changes designation of a recurring gift when child's transferred."
+	Author="Memphis Sellers"
+	SPName="USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION"
+	>
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	22-Aug-2012		Memphis			Initial creation. Not sure it's 100% accureate, needs testing
+	-->
+
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION (
+	@SPONSORSHIPOPPORTUNITYCHILD uniqueidentifier,			-- child id
+	@FROMSPONSORSHIPLOCATIONID uniqueidentifier,			-- locationID of the previous location (from)
+	@TOSPONSORSHIPLOCATIONID uniqueidentifier				-- locationID of the transfer location (to)
+)
+as
+begin
+	-- this will get us the current designationID of the given child
+	--declare @CURRENT_DESIGNATIONID uniqueidentifier
+	declare @REVENUESPLITID uniqueidentifier
+	declare @NEWDESIGNATIONID uniqueidentifier
+
+	select  --@CURRENT_DESIGNATIONID = DESIGNATIONID,
+			@REVENUESPLITID = REVENUESPLIT.ID --dbo.REVENUESPLIT.*,dbo.SPONSORSHIP.*    --@REVENUEID = REVENUEID
+	  from     dbo.SPONSORSHIP
+	  join     dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+	  join     dbo.REVENUESCHEDULE on REVENUESCHEDULE.ID = REVENUESPLIT.REVENUEID
+	  where    SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILD
+	  and      SPONSORSHIP.STATUSCODE = 1
+
+	-- check for a revenueid, if not then this child isn't sponsored so just return
+	if @REVENUESPLITID is not null
+	begin
+		--select * --so.SPONSORSHIPLOCATIONID
+		--from dbo.SPONSORSHIPOPPORTUNITY so
+		--join dbo.SPONSORSHIPOPPORTUNITYCHILD soc on soc.ID = so.ID
+		--where soc.ID = @SPONSORSHIPOPPORTUNITYCHILD
+
+		-- if we don't have a current designation from revenuesplit, then try to get it from location
+		-- try to get the designationid of the from location id: B8715008-8CF1-4BEC-B603-3B7503BBAF4A
+		--if @CURRENT_DESIGNATIONID is null
+		--	select @CURRENT_DESIGNATIONID = DESIGNATIONID
+		--	from dbo.sponsorshiplocation
+		--	where ID=@FROMSPONSORSHIPLOCATIONID
+		
+		---- check for a designation before continuing
+		--if @CURRENT_DESIGNATIONID is not null
+		--	begin
+
+		--Now we need to get the DesignationID of the new Project Location!  
+		declare @INCLUDEACTIVE bit = 1
+		declare @INCLUDEINACTIVE bit = 1
+		declare @INCLUDECLOSED bit = 1
+		declare @INCLUDEONLINEONLY bit = 0
+
+		select
+			@NEWDESIGNATIONID = L.DESIGNATIONID
+		from
+			dbo.SPONSORSHIPLOCATION L
+		inner join
+			dbo.SPONSORSHIPLOCATIONTYPECODE on SPONSORSHIPLOCATIONTYPECODE.ID = L.SPONSORSHIPLOCATIONTYPECODEID
+		left outer join
+			dbo.DESIGNATION on DESIGNATION.ID = L.DESIGNATIONID
+		left outer join
+			dbo.SPONSORSHIPREASON on SPONSORSHIPREASON.ID = L.SPONSORSHIPREASONID
+		left outer join
+			dbo.SPONSORSHIPLOCATIONCLOSEPROCESS on SPONSORSHIPLOCATIONCLOSEPROCESS.ID = L.ID 
+		where case STATUSCODE when 0 then @INCLUDEACTIVE
+								when 1 then @INCLUDEINACTIVE
+								when 2 then @INCLUDECLOSED end = 1
+		and (@INCLUDEONLINEONLY = 0 or DISPLAYONLINE = 1)	
+		and   L.ID = @TOSPONSORSHIPLOCATIONID  --'509D7567-A236-4224-B85B-B4680B6AA034'
+		order by
+			dbo.UFN_SPONSORSHIPLOCATION_FULLSTRING(L.ID,'|',0,0);
+		  
+		-- if we didn;t find a designation, try this way to get it
+		if @NEWDESIGNATIONID is null
+			select @NEWDESIGNATIONID =  DESIGNATIONID
+			from dbo.sponsorshiplocation
+			where ID=@TOSPONSORSHIPLOCATIONID
+
+		--now finally perform the update of the recurring gift designation
+		if @NEWDESIGNATIONID is not null
+			update dbo.REVENUESPLIT
+			set DESIGNATIONID = @NEWDESIGNATIONID
+			where ID=@REVENUESPLITID				
+		--end
+	end
+	
+	
+	return 0;
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

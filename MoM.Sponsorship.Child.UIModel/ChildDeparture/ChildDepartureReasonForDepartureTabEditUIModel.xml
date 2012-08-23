@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildDeparture.DepartureReason.Edit.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildDepartureReasonForDepartureTabEditUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildDepartureReasonForDepartureTabEdit.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

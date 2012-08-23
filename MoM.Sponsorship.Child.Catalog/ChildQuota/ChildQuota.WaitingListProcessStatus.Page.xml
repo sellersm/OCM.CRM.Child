@@ -1,0 +1,105 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="7ac222ec-ded6-4394-b330-77cedaf860c3"
+    Name="Child Quota Process Status Page"
+    Description="The status page for the Child Quota Waiting List Business Process"
+    Author="Cary Mayeda"
+    ContextRecordType="Sponsorship opportunity child"	
+	ExpressionDataFormID="782e37aa-d4d6-4ef2-9172-697d0a5854fb"
+	>
+
+<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	02-Jul-2012		CMayeda			Initial Version
+-->
+
+	<!-- define how the page header should appear -->
+	<PageHeader Caption="Child Quota Waiting List Process Status " ImageKey="" />
+	
+	<SummarySection ID="55405D34-289D-4FC1-8E44-A16738EFDD1A" HideCaption="True">
+		<DataForm ID="782e37aa-d4d6-4ef2-9172-697d0a5854fb" ShowBorder="true"/>
+	</SummarySection>
+	
+	<Tabs>
+		<Tab Caption="Recent status" ID="7985716C-4953-4691-A455-D07026B3506E">
+			<Sections>
+				<Section ID="CA6A87FF-52F1-4570-85F6-A399A364F13B" HideCaption="true">
+					<DataForm ID="7cf7a0c1-5848-40b2-b3d6-88a1406efc8b" />  <!--Blackbaud's data form - Business Process Parameter Set Recent Status View Form -->
+					<SectionContext>
+						<PageContextID xmlns="bb_appfx_commontypes" />
+					</SectionContext>
+					<Actions>
+						<Action ID="0608F2F1-58AE-43E4-A4FA-DF52FDBD8D0A" Caption="View status report" ImageKey="RES:PrintPreview" >
+							<ShowPage xmlns="bb_appfx_commontypes" PageID="ab046915-8dd2-4644-87a6-15d40d17592b" TabID="00000000-0000-0000-0000-000000000000">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+							</ShowPage>
+						</Action>
+					</Actions>
+				</Section>
+			</Sections>
+		</Tab>
+		<Tab Caption="History" ID="CDE29978-722A-4860-8504-F267DEC7F1D4" >
+			<Sections>
+				<Section ID="FAFF89E3-83C0-4C28-8304-36764AFA1BA9" HideCaption="true">
+					<DataList ID="518fd6f7-740d-4391-8351-242aba0a76b1">
+						<RenderStyle>
+							<StandardView />
+						</RenderStyle>
+					</DataList>
+					<SectionContext>
+						<PageContextID xmlns="bb_appfx_commontypes" />
+					</SectionContext>
+					<Actions>
+						<Action ID="00558712-9206-494E-AD3D-34F0EA027D08" Caption="View status report" ImageKey="RES:PrintPreview">
+							<ShowPage xmlns="bb_appfx_commontypes" PageID="ab046915-8dd2-4644-87a6-15d40d17592b" TabID="00000000-0000-0000-0000-000000000000">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+							</ShowPage>
+						</Action>
+					</Actions>
+				</Section>
+			</Sections>			
+		</Tab>
+		<Tab ID="BB8D78FF-61D9-46AF-B9C1-68DABE8031F7" Caption="Test Version uimodel">
+			<Sections>
+				<Section ID="4734F347-2444-46A7-B4CB-20249986FFB7">
+					<DataForm ID="238619d4-7f2b-4441-a7d1-36908e9e5300"/>					
+				</Section>
+			</Sections>
+		</Tab>
+
+	</Tabs>
+
+	<PageActionGroups>
+		<PageActionGroup ID="AB9EAF14-B312-416A-AD3D-B77FA4FDF7DD" Caption="Tasks" ImageKey="RES:Tasks" >
+			<Actions>
+				<Action ID="E8B37764-3150-41F0-BC5A-2AAD117BAE42" Caption="Start process" ImageKey="RES:businessprocessspec" >
+					<StartBusinessProcess xmlns="bb_appfx_commontypes" BusinessProcessID="967388a8-449b-40aa-be8c-3f9cab94e0df" StatusPageID="7ac222ec-ded6-4394-b330-77cedaf860c3" StatusTabID="00000000-0000-0000-0000-000000000000" PreprocessEditFormID="00000000-0000-0000-0000-000000000000">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+					</StartBusinessProcess>
+				</Action>
+				<Action ID="DE321995-DB7E-4AD5-8692-0C20A77EEAAF" Caption="Create job schedule" ImageKey="RES:calendarschedule" ToolTipText="Creates a SQL Server Agent job using an ActiveX script to run the selected business process." >
+					<ShowAddDataForm xmlns="bb_appfx_commontypes" DataFormID="f96dff68-2bf5-46fc-9427-e87d2b3afc29"> <!-- Uses Blackbaud's data form - Business Process Job Add Form -->
+						<ActionContext>
+							<Expression>= IIf(String.IsNullOrEmpty(Page.Fields!PARAMETERSID.ToString()), "", String.Concat("Child Quota Waiting List Business Process|967388a8-449b-40aa-be8c-3f9cab94e0df|", Page.Fields!PARAMETERSID.ToString())).ToString()</Expression>
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+						
+					</ShowAddDataForm>
+				</Action>
+			</Actions>
+		</PageActionGroup>
+	</PageActionGroups>
+
+</PageDefinitionSpec>

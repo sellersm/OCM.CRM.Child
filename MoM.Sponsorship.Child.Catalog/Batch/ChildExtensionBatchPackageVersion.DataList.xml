@@ -1,0 +1,41 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1b1f40a0-9ed3-4a41-8f5b-a8f1e6ece585" 
+	Name="Child Extension Batch Package Version Data List"
+	Description="Used to display the version of the package deployment."
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
+
+	<!-- 
+	Remarks:    This is used to view the package version that has been loaded.  #VersionNumber# is modifed automatically on the build machine to match the build version number.
+
+	History:
+	Date            Modified By     Comments
+	17-Jul-2012		CMayeda			Initial Version
+	-->
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_CHILDEXTENSIONBATCHPACKAGEVERSION">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+			
+create procedure dbo.USR_USP_DATALIST_CHILDEXTENSIONBATCHPACKAGEVERSION
+as
+begin
+	select 'Version #VersionNumber#' as version
+end
+
+]]>
+			</common:CreateProcedureSQL>
+		</SPDataList>
+
+
+		<!-- define the output fields in the list -->
+		<Output>
+			<OutputFields>
+				<OutputField FieldID="version" Caption="Child Extension Batch Package" DataType="String" />
+			</OutputFields>
+		</Output>
+
+	</DataListSpec>

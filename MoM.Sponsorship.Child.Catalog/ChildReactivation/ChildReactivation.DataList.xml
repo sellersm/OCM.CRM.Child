@@ -1,0 +1,54 @@
+<DataListSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="5db00c9e-0eac-4535-b7bf-7865ab2b765d"
+    Name="Child Reactivation Data List"
+    Description="Datalist of Child Reactivation records for a given Child."
+    Author="Memphis Sellers"
+    c:SecurityUIFolder="Sponsorship\Opportunity"
+    xmlns="bb_appfx_datalist"
+    >
+    <SPDataList SPName="USR_USP_DATALIST_CHILD_REACTIVATIONS">
+        <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATALIST_CHILD_REACTIVATIONS(
+   @CONTEXTID uniqueidentifier
+)
+as
+  set nocount on;
+
+  select 
+        USR_CHILDREACTIVATION.[ID],
+        USR_CHILDREACTIVATION.[SPONSORSHIPOPPORTUNITYCHILDID],
+        USR_CHILDREACTIVATION.[FORMENTEREDDATE],
+        USR_CHILDREACTIVATION.[FORMCOMPLETEDBY],
+        USR_CHILDREACTIVATION.[PREVIOUSDEPARTUREREASON],
+        USR_CHILDREACTIVATION.[ISCHILDUNDERELEVEN],
+        USR_CHILDREACTIVATION.[REACTIVATEEXPLANATION],
+        USR_CHILDREACTIVATION.[ORIGINALREGISTRATIONDATE],
+        USR_CHILDREACTIVATION.[ENDDATE],
+        USR_CHILDREACTIVATION.[ISCURRENTREACTIVATION]
+  from 
+        dbo.USR_CHILDREACTIVATION
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+  order by ISCURRENTREACTIVATIONCODE DESC, FORMENTEREDDATE DESC
+
+]]>
+</c:CreateProcedureSQL>
+    </SPDataList>
+  <Context ContextRecordType="Sponsorship opportunity" RecordIDParameter="CONTEXTID"/>
+  
+    <Output>
+        <OutputFields>
+            <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+            <OutputField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid" IsHidden="true" />
+            <OutputField FieldID="FORMENTEREDDATE" Caption="Form Date" DataType="Date" />
+            <OutputField FieldID="FORMCOMPLETEDBY" Caption="Completed By" DataType="String" />
+            <OutputField FieldID="PREVIOUSDEPARTUREREASON" Caption="Previous Reason" DataType="String" />
+            <OutputField FieldID="ISCHILDUNDERELEVEN" Caption="Under Eleven?" DataType="String" />
+            <OutputField FieldID="REACTIVATEEXPLANATION" Caption="Explanation" DataType="String" />
+            <OutputField FieldID="ORIGINALREGISTRATIONDATE" Caption="Previous Registration Date" DataType="Date" />
+            <OutputField FieldID="ENDDATE" Caption="End Date" DataType="Date" />
+            <OutputField FieldID="ISCURRENTREACTIVATION" Caption="Current Reactivation?" DataType="String" />
+        </OutputFields>
+    </Output>
+</DataListSpec>

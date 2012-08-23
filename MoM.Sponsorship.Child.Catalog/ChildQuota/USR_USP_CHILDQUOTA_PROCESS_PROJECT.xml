@@ -1,0 +1,177 @@
+﻿	<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a4fc4ab7-8db6-447a-9f90-9b059e758334"
+	Name="USR_USP_CHILDQUOTA_PROCESS_PROJECT"
+	Description="Process children in a single project taking into account project status and quota"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDQUOTA_PROCESS_PROJECT" >
+	
+	<!-- 
+	Remarks:    The assumptions are:
+					1) The children in @childList are in the same project.
+					2) The project is on project quota
+					3) There cannot be a combination of project and country quota within the same country.  
+					   It is either country quota for all project, or it's project quota for all projects.
+				
+				As this is only called from USR_USP_CHILDQUOTA_PROCESS_CHILDLIST, the assumptions aren't validated.
+
+	History:
+	Date            Modified By     Comments
+	10-Jul-2012		CMayeda			Initial Version
+	13-Aug-2012		CMayeda			Added call to USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK - Fogbugz Case 755
+	-->
+
+		<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT (
+	@childProjectID uniqueidentifier,						-- The child project to process
+	@childList dbo.USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- The list of children to process, all of the children (not necessarily just in a single project, therefore the queries need to include @childProjectID in the where clause
+	@changeAgentID uniqueidentifier,						-- Used to specify change agent for ChangedByID and AddedByID fields
+	@insertSuccessSQL nvarchar(max),						-- Dynamic SQL string to run to log the children successful registered
+	@insertSuccessSQLParms nvarchar(255),					-- Parameters for dynamic SQL string to run to log the children successful registered
+	@insertExceptionsSQL nvarchar(max),						-- Dynamic SQL string to run to log the children put on the waiting list or that had an exception
+	@insertExceptionsSQLParm nvarchar(255)					-- Parameters for dynamic SQL string to run to log the children put on the waiting list or that had an exception
+)
+as
+begin
+	declare @childProjectIneligibleReasonID uniqueidentifier	-- Used to store the Sponsorship Reason ID if a child project is not eligible
+	declare @quotaRoom int										-- How many children can be registered for a project
+	
+	declare @includeIneligibleInUpdate_True bit = 1				-- Include Ineligible children in eligible/pending updates.
+	
+
+	-- Tables used to pass a list of children to other sprocs 
+	declare @ChildListToRegister dbo.USR_UDT_CHILDIDLIST
+	declare @ChildListIneligible dbo.USR_UDT_CHILDIDLIST
+	declare @ChildListIneligibleWithReason dbo.USR_UDT_CHILDIDLISTWITHREASON
+	
+
+	-- Sponsorship Reason ID for 'Waiting List - maximum quota reached'
+	begin try
+		declare @waitingListMaximumQuotaReachedID uniqueidentifier
+		select @waitingListMaximumQuotaReachedID = ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - maximum quota reached'
+		if @waitingListMaximumQuotaReachedID is null
+			RAISERROR 1000000 'Couldn''t find the "Waiting List - maximum quota reached" Sponsorship Reason'		
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+
+	end catch
+	
+	
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+	
+	
+	begin try
+			
+		if dbo.USR_UFN_CHILDPROJECT_QUOTAOVERRIDE (@childProjectID) = 1
+		begin
+			-- Quota Override trigger is Yes, so add all waiting list kids
+			insert @ChildListToRegister
+			select SPONSORSHIPOPPORTUNITYCHILDID
+				from @childList  
+				where childProjectID = @childProjectID 
+
+			exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
+			exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildListToRegister, @changeAgentID
+			exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, @includeIneligibleInUpdate_True, @changeAgentID
+
+		end
+			
+		else
+		begin
+			-- Quota Override trigger is No, so we need to check if the project can take new kids
+			exec dbo.USR_USP_CHILDPROJECT_DETERMINEQUOTAELIGIBILITY @childProjectID, @childProjectIneligibleReasonID output
+	
+			if @childProjectIneligibleReasonID is not null
+			begin
+				-- Project cannot take new kids, so all the kids need to be added to the waiting list
+								
+				insert @ChildListIneligible 
+				select SPONSORSHIPOPPORTUNITYCHILDID from @childList where childProjectID = @childProjectID
+				
+				exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @ChildListIneligible, @childProjectIneligibleReasonID, @changeAgentID
+					
+				insert @ChildListIneligibleWithReason
+				select SPONSORSHIPOPPORTUNITYCHILDID, @childProjectIneligibleReasonID from @ChildListIneligible
+			end
+			else
+			begin
+				
+				-- Check Quota
+				set @quotaRoom = dbo.USR_UFN_CHILDPROJECT_QUOTAVARIANCE (@childProjectID)
+				if @quotaRoom > 0 
+				begin
+					insert @ChildListToRegister
+					select top (@quotaRoom) SPONSORSHIPOPPORTUNITYCHILDID 
+						from @childList  
+						where childProjectID = @childProjectID 
+		  				order by dateAdded 
+
+					exec dbo.USR_USP_CHILDREN_REGISTER @ChildListToRegister, @changeAgentID
+					exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildListToRegister, @changeAgentID
+					exec dbo.USR_USP_CHILDREN_SETELIGIBLEORPENDING  @ChildListToRegister, @includeIneligibleInUpdate_True, @changeAgentID
+	
+					insert @ChildListIneligible 
+					select SPONSORSHIPOPPORTUNITYCHILDID 
+						from @childList  wlc
+						where wlc.childProjectID = @childProjectID 
+						and not exists (select SPONSORSHIPOPPORTUNITYCHILDID from @ChildListToRegister where SPONSORSHIPOPPORTUNITYCHILDID = wlc.sponsorshipOpportunityChildID)
+				 
+					exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @ChildListIneligible, @waitingListMaximumQuotaReachedID, @changeAgentID				
+
+					insert @ChildListIneligibleWithReason
+					select SPONSORSHIPOPPORTUNITYCHILDID, @waitingListMaximumQuotaReachedID from @ChildListIneligible
+				   
+				end
+				
+				else
+				begin
+					insert @ChildListIneligible 
+					select SPONSORSHIPOPPORTUNITYCHILDID from @childList where childProjectID = @childProjectID
+							
+					exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @ChildListIneligible, @waitingListMaximumQuotaReachedID, @changeAgentID				
+	
+					insert @ChildListIneligibleWithReason
+					select SPONSORSHIPOPPORTUNITYCHILDID, @waitingListMaximumQuotaReachedID from @ChildListIneligible
+				end
+			end
+		end
+
+
+		-- ** Had to use temp tables instead of just referencing the table vars because of permission issues when called from the business process
+		-- ** The EXECUTE permission was denied on the object 'USR_UDT_CHILDIDLIST'
+
+		-- Write Successes to Output table if it was specified
+		if @insertSuccessSQL <> ''
+		begin
+			select SPONSORSHIPOPPORTUNITYCHILDID into #registeredChildren from @ChildListToRegister
+			exec sp_executesql @insertSuccessSQL, @insertSuccessSQLParms, @projectID=@childProjectID, @countryID=NULL
+			drop table #registeredChildren 
+		end
+			
+		-- Write exceptions to Output table if it was specified
+		if @insertExceptionsSQL <> ''	
+		begin
+			select SPONSORSHIPOPPORTUNITYCHILDID, SPONSORSHIPREASONID into #ineligibleChildren from @ChildListIneligibleWithReason
+			exec sp_executesql @insertExceptionsSQL, @insertExceptionsSQLParm, @projectID=@childProjectID, @countryID=NULL
+			drop table #ineligibleChildren 
+		end
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+
+	end catch
+	
+	return 0
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

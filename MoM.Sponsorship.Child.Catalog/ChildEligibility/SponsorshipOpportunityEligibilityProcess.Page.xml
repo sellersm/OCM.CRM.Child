@@ -1,0 +1,93 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="c72a0b41-8296-4405-b3d3-2819586da0eb"
+    Name="Sponsorship Opportunity Eligibility Process Page"
+    Description="Displays a list of saved sponsorship opportunity eligibility process parameter sets"
+    Author="Cary Mayeda"
+    ContextRecordType="Sponsorship Opportunity Eligibility Process"	
+    >
+
+	<!--
+	Remarks:	The Security action allows you to set permissions individually per business process instance (parameter set)
+				No Image Key has been specified for the header.
+				
+	History:
+	Date			Modified By		Comments
+    23-Mar-2012		CMayeda			Initial Version
+	25-May-2012		CMayeda			Removed test "Something Else" tab
+	-->
+	
+	<!-- define how the page header should appear -->
+	<PageHeader Caption="Sponsorship Opportunity Eligibility Process" ImageKey="" />
+
+	<!-- define the tabs for the page - note that if only one tab is present, then that tab's sections are promoted to the page level (ie., the tab
+	itself isn't shown -->
+	<Tabs>
+		<Tab ID="0a50a4f6-8b9c-4c9d-b055-d993b7677f5b" Caption="Sponsorship opportunity eligibility process">
+				<Sections>
+					<Section ID="675674A3-6216-4026-B0AB-1121A28EAD52" Caption="Sponsorship opportunity eligibility processes" >
+ 						<DataList ID="88ab13b1-df31-4970-9a56-71fc4e2fc422">
+							<RenderStyle>
+								<StandardView />
+							</RenderStyle>
+						</DataList> 
+						<Actions>
+							<Action ID="c70db937-5a21-468f-8be3-df373f777a72" Caption="Go to process" ImageKey="RES:goto_round" DefaultAction="true" AppendSeparator="true" LinkFieldID="ID" >
+								<ShowPage xmlns="bb_appfx_commontypes" PageID="84413830-aa6e-4e11-8cd9-86e0bc3cf4ad" TabID="00000000-0000-0000-0000-000000000000">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+								</ShowPage>
+							</Action>
+							<Action ID="a58ddea9-f09f-48c6-b65d-69e8778e6c9b" Caption="Start process" ImageKey="RES:businessprocessspec" AppendSeparator="true" >
+								<StartBusinessProcess xmlns="bb_appfx_commontypes" BusinessProcessID="c0c3662a-2586-4104-a1db-638e9e9950b0" StatusPageID="84413830-aa6e-4e11-8cd9-86e0bc3cf4ad" StatusTabID="00000000-0000-0000-0000-000000000000" PreprocessEditFormID="00000000-0000-0000-0000-000000000000">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+								</StartBusinessProcess>
+							</Action>
+							<Action ID="ddc8b7f8-b433-462e-b253-c02db4bc5fa2" Caption="Add" ImageKey="RES:NewItem" >
+								<ShowAddDataForm xmlns="bb_appfx_commontypes" DataFormID="cea82eca-d5c0-469f-9969-a82daf0d55f8" />
+							</Action>
+							<Action ID="b8eb9150-e513-4d9b-ab17-f9a729674890" Caption="Edit" ImageKey="RES:Edit" >
+								<ShowDataForm xmlns="bb_appfx_commontypes" DataFormID="7becfa03-55db-4221-bfaa-0ca4e7092c2f">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+								</ShowDataForm>
+							</Action>
+							<Action ID="e56612ff-a8ac-49a2-89a8-32248454ab58" Caption="Delete" ImageKey="RES:Delete" >
+								<ExecuteRecordOperation xmlns="bb_appfx_commontypes" RecordOperationID="e123547b-c32a-4c8b-8eb5-0cd23c191d62">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+									<PostActionEvent>
+										<RefreshPage/>
+									</PostActionEvent>
+								</ExecuteRecordOperation>
+								
+							</Action>
+							<Action ID="3C0907E5-7EA4-4962-8448-61E1ED42E3BA" Caption="Security" ImageKey="RES:usersfolder" Visible="= Globals.CurrentAppUserIsSysAdmin() OrElse (Globals.CurrentAppUserID = new System.Guid(CStr(Fields!OwnerID)))" Enabled="= Globals.CurrentAppUserIsSysAdmin() OrElse (Globals.CurrentAppUserID = new System.Guid(CStr(Fields!OwnerID)))">
+								<ShowDataForm xmlns="bb_appfx_commontypes" DataFormID="206e614d-be02-4faa-a7e2-ae64d1b1e454">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+								</ShowDataForm>
+							</Action>
+						</Actions>
+					</Section>
+				</Sections>
+			</Tab>
+		</Tabs>
+
+	<!-- define page-level actions groups which appear in the explorer bar area of the shell -->
+	<PageActionGroups>
+		
+		<PageActionGroup ID="9d475fa6-0ee2-4523-9caf-2d58b812b5ae" Caption="Tasks" ImageKey="RES:Tasks">
+			<!-- for this action group, define the list of actions -->
+		</PageActionGroup>
+		
+	</PageActionGroups>
+	
+</PageDefinitionSpec>
