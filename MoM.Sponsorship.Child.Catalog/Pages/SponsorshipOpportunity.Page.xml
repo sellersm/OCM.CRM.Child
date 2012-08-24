@@ -670,7 +670,7 @@
         </Section>
       </Sections>
     </Tab>
-    <Tab Caption="Reactivations" ID="15cf4ad8-7498-48d2-b82b-088ce3e2ed3c">
+    <Tab Caption="Departures/Reactivations" ID="15cf4ad8-7498-48d2-b82b-088ce3e2ed3c">
       <Sections>
         <Section ID="9a505d60-885c-493d-96c7-10d7ef353932" Caption="Reactivation List">
           <DataList ID="5db00c9e-0eac-4535-b7bf-7865ab2b765d">
@@ -691,7 +691,7 @@
             </Action>
           </Actions>
         </Section>
-        <Section ID="4145fe83-a0a2-4181-b237-865ad72fd3f5" Caption="Departures">
+        <Section ID="4145fe83-a0a2-4181-b237-865ad72fd3f5" Caption="Departure List">
           <DataList ID="87c8c7e2-8e9f-4e5d-ba6e-62ac1d3dc3da">
             <RenderStyle>
               <StandardView />
