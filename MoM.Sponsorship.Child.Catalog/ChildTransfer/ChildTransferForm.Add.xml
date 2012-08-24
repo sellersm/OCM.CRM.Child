@@ -198,6 +198,104 @@ begin try
 		@FROMSPONSORSHIPLOCATIONID = @FROMPROJECTID,
 		@TOSPONSORSHIPLOCATIONID = @TOPROJECTNAME
       
+	  
+	-- ONLY do the interactions updates if this child is sponsored, so check first:
+	declare @sponsorshipID uniqueidentifier
+	select @sponsorshipID = ID
+	from dbo.SPONSORSHIP
+	where SPONSORSHIPOPPORTUNITYID = @CONTEXTID
+	and STATUSCODE = 1   -- Active
+	
+	if @sponsorshipID is not null
+	begin	
+		-- perform the interaction updates:
+		declare @financialSponsor uniqueidentifier = null
+		declare @correspondent uniqueidentifier = null
+		declare @interactionConstituent uniqueidentifier = null
+		declare @financialSponsorAddress nvarchar (150) = ''
+		declare @correspondentAddress nvarchar (150) = ''
+		declare @financialSponsorStateID uniqueidentifier = null
+		declare @correspondentStateID uniqueidentifier = null
+
+		set @correspondent = dbo.USR_UFN_SPONSORSHIP_GETCORRESPONDENT (@sponsorshipID)
+		set @financialSponsor = dbo.USR_UFN_SPONSORSHIP_GETFINANCIALSPONSOR (@sponsorshipID)
+
+		-- Determine who should get the interaction (Child Correspondent or Financial Sponsor)
+
+		if @correspondent is null
+			set @interactionConstituent = @financialSponsor
+		else
+		begin
+			-- If there is a Child Correspondent, determine if they live at the same address as the Financial Sponsor
+			-- If both have the same address, then the interaction goes to the Financial Sponsor
+			-- If they have different addresses, then the interaction goes to the Child Correspondent
+	
+			-- Comparison is of the Address Block and State
+			-- Blackbaud's OOB UFN_ADDRESS_ADDRESSBLOCK_NORMALIZE_LOWERCASE is used to make the comparison more accuate
+			-- It standardizes the addresses by applying standard abbreviations, removing white space, and converting to lower case
+	
+			declare @SUBSTITUTIONS dbo.UDT_STRINGPAIR_100 -- This is required by the user defined function, but we do not have any additional standardizations to apply
+	
+			select	@financialSponsorAddress = ADDRESSBLOCK,
+					@financialSponsorStateID = STATEID
+			  from	dbo.ADDRESS
+			 where	CONSTITUENTID = @financialSponsor
+	 
+			select	@correspondentAddress = ADDRESSBLOCK,
+					@correspondentStateID = STATEID
+			  from	dbo.ADDRESS
+			 where	CONSTITUENTID = @correspondent
+
+			if (dbo.UFN_ADDRESS_ADDRESSBLOCK_NORMALIZE_LOWERCASE(@financialSponsorAddress, @SUBSTITUTIONS)= dbo.UFN_ADDRESS_ADDRESSBLOCK_NORMALIZE_LOWERCASE(@correspondentAddress, @SUBSTITUTIONS))
+				and ((@financialSponsorStateID is null and @correspondentStateID is null) or (@financialSponsorStateID = @correspondentStateID))
+	    	    
+				set @interactionConstituent = @financialSponsor
+			else
+				set @interactionConstituent = @correspondent
+		
+		end
+
+		declare @interactionID uniqueidentifier = null
+		--declare @currentDate date = getdate()
+		exec dbo.USR_USP_INTERACTION_SPONSOR_ADD_PENDING 
+			@id = @interactionID output,
+			@constituentID = @interactionConstituent,
+			@summary = 'Child location transfer complete',
+			@categoryName = 'Child Change Notifications',  -- this was different
+			@subcategoryName = 'Child Project Transfer Letter',
+			@expectedDate = @currentDate,
+			@owner = null,						
+			@contactMethodDesc = 'Mail',
+			@comment = '',						
+			@letterTypeDesc = '',
+			@fulfillmentStatusDesc = 'pending', 
+			@eftBrochureCode = 0, 
+			@resendCode = 0,
+			@changeAgentID = @changeAgentID				
+
+		if @interactionID is not null
+		begin
+			--exec dbo.USR_USP_INTERACTION_SPONSOR_SETPREVIOUSANDTRANSFERPROJECTS
+			--	@interactionID = @interactionID,
+			--	@previousChildProjectID = @previousChildProjectID,
+			--	@transferChildProjectID = @transferChildProjectID,
+			--	@changeAgentID = @changeAgentID
+				
+			exec dbo.USR_USP_INTERACTION_SPONSOR_SETPREVIOUSANDTRANSFERPROJECTS_BYLOCATIONID
+				@interactionID = @interactionID,
+				@previousLocationID = @FROMPROJECTID,
+				@transferLocationID = @TOPROJECTNAME,
+				@changeAgentID = @changeAgentID
+
+
+			exec dbo.USR_USP_INTERACTION_SPONSOR_ADDCHILD 
+				@interactionID = @interactionID, 
+				@sponsorshipOpportunityChildID = @CONTEXTID, --@sponsorshipOpportunityID,
+				@changeAgentID = @changeAgentID
+		end
+	  
+	  end  --if @sponsorshipID is not null
+	  
   end
   else
      raiserror ('Cannot find the Location ID.', 13, 1)
