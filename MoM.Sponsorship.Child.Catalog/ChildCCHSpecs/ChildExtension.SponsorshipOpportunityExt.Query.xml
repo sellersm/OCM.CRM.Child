@@ -115,11 +115,21 @@ select
   uct.[CRMDATEOFTRANSFER],
   dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.TOPROJECTID) as TOPROJECTLOOKUPID,
   uct.DATEADDED as CHILDTRANSFERDATEADDED,
-  soc.CONSTITUENTID
+  soc.CONSTITUENTID,
+	r.ID as REACTIVATIONID,
+	r.FORMENTEREDDATE,
+	r.FORMCOMPLETEDBY as REACTIVATIONFORMCOMPLETEDBY,
+	r.PREVIOUSDEPARTUREREASON,
+	r.ISCHILDUNDERELEVEN,
+	r.REACTIVATEEXPLANATION,
+	r.ORIGINALREGISTRATIONDATE,
+	r.ENDDATE,
+	r.ISCURRENTREACTIVATION  
 from 
 	dbo.USR_CHILDEXTENSION    
 	join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
-	join dbo.USR_CHILDTRANSFER uct on uct.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
+	left join dbo.USR_CHILDTRANSFER uct on uct.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
+	left join dbo.USR_CHILDREACTIVATION r on r.SPONSORSHIPOPPORTUNITYCHILDID = USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID	
 	left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_CHILDEXTENSION.ADDEDBYID
 	left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_CHILDEXTENSION.CHANGEDBYID
 ]]>
@@ -262,22 +272,31 @@ from
 		  <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
 		</LookupInfo>
 	  </OutputField>
-	  <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
-	  <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
-	  <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
-	  <OutputField Name="FUNDED" Caption="Funded" />
-	  <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
-	  <OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
-	  <OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />
-	  <OutputField Name="FORMCOMPLETEDBY" Caption="Child Transfer Form Completed By" />
-	  <OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By" />
-	  <OutputField Name="FIELDDATEOFTRANSFER" Caption="Transfer Field Date" />
-	  <OutputField Name="EXPLANATION" Caption="Transfer Explanation" />
-	  <OutputField Name="FROMREGISTRATIONDATE" Caption="Old Registration Date" />
-	  <OutputField Name="FROMPROJECTNAME" Caption="Old Project LookupId" />
-	  <OutputField Name="CRMDATEOFTRANSFER" Caption="Transfer Date" />
-	  <OutputField Name="TOPROJECTLOOKUPID" Caption="To Project LookupId" />
-	  <OutputField Name="CHILDTRANSFERDATEADDED" Caption="Date Transfer Entered" />
+		<OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
+		<OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
+		<OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
+		<OutputField Name="FUNDED" Caption="Funded" />
+		<OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
+		<OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
+		<OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />
+		<OutputField Name="FORMCOMPLETEDBY" Caption="Child Transfer Form Completed By" />
+		<OutputField Name="FORMENTEREDBY" Caption="Child Transfer Form Entered By" />
+		<OutputField Name="FIELDDATEOFTRANSFER" Caption="Transfer Field Date" />
+		<OutputField Name="EXPLANATION" Caption="Transfer Explanation" />
+		<OutputField Name="FROMREGISTRATIONDATE" Caption="Old Registration Date" />
+		<OutputField Name="FROMPROJECTNAME" Caption="Old Project LookupId" />
+		<OutputField Name="CRMDATEOFTRANSFER" Caption="Transfer Date" />
+		<OutputField Name="TOPROJECTLOOKUPID" Caption="To Project LookupId" />
+		<OutputField Name="CHILDTRANSFERDATEADDED" Caption="Date Transfer Entered" />
+		<OutputField Name="REACTIVATIONID" Caption="ChildReactivation Table Record ID" Category="System Fields" />
+		<OutputField Name="FORMENTEREDDATE" Caption="Date Reactivation Form Entered" />
+		<OutputField Name="REACTIVATIONFORMCOMPLETEDBY" Caption="Reactivation Form entered By" />
+		<OutputField Name="PREVIOUSDEPARTUREREASON" Caption="Previous Departure Reason on Reactivation Form" />
+		<OutputField Name="ISCHILDUNDERELEVEN" Caption="Child Under 11?" />
+		<OutputField Name="REACTIVATEEXPLANATION" Caption="Reactivation Explanation" />
+		<OutputField Name="ORIGINALREGISTRATIONDATE" Caption="Original Registration Date" />
+		<OutputField Name="ENDDATE" Caption="End Date" />
+		<OutputField Name="ISCURRENTREACTIVATION" Caption="Current Reactivation ?" />
 	</OutputFields>
 	<IdentifyingFields>
 	  <IdentifyingField Name="ID"/>
