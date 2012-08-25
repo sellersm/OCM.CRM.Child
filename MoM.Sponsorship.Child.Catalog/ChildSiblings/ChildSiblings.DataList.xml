@@ -1,0 +1,51 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="aa31ed30-32f3-4afd-920b-25945dde7bc8" 
+	Name="ChildSiblings Data List"
+	Description="ChildSiblings List." 
+	Author="memphis-PC\Administrator"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USP_DATALIST_CHILDSIBLINGS">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USP_DATALIST_CHILDSIBLINGS(@CONTEXTID uniqueidentifier)
+as
+	set nocount on;
+
+	select ID,
+		   SIBLINGNAME,
+		   SIBLINGGENDER,
+		   SIBLINGBIRTHYEAR
+	from dbo.USR_CHILDSIBLINGS
+  where CHILDEXTENSIONID = @CONTEXTID
+	--where CONTEXTID = @CONTEXTID
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Child Extension" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="ID" DataType="Guid" IsHidden="true" />
+			<OutputField FieldID="SIBLINGNAME" Caption="Name" DataType="String" />
+			<OutputField FieldID="SIBLINGGENDER" Caption="Gender" DataType="String" />
+			<OutputField FieldID="SIBLINGBIRTHYEAR" Caption="Birth Year" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

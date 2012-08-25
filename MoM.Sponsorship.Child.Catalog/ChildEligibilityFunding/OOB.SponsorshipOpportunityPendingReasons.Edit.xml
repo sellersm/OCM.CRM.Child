@@ -1,0 +1,167 @@
+﻿<EditDataFormTemplateSpec xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:d1p1="bb_appfx_commontypes" xmlns="bb_appfx_editdataformtemplate" ID="9f3a1bf1-12d3-4c5f-af8f-c6362251cd80" Name="Sponsorship Opportunity Pending Reasons Edit Form" Description="Edit form for opportunity pending reasons" Author="Blackbaud Product Development" RecordType="Sponsorship Opportunity" DataFormInstanceID="955e8a91-8a01-4762-93de-7246ec732dc8" d1p1:SecurityUIFolder="Sponsorship\Opportunity" OwnerIDMapperID="00000000-0000-0000-0000-000000000000" FormHeader="Edit pending reasons" FormHeaderResourceKey="$$edit_pending_reasons">
+	<d1p1:DependencyList>
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityReason.Table.xml" />
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.UFN_SPONSORSHIPOPPORTUNITY_REASONS.xml" />
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipReason.SimpleList.xml" />
+	</d1p1:DependencyList>
+	<d1p1:ImpliedSecurityList>
+		<d1p1:ImpliedSecurity Type="RecordOperation" ID="692588f4-3498-4bb0-996b-14969e44820d" />
+		<d1p1:ImpliedSecurity Type="RecordOperation" ID="0eee0709-2a41-45c5-bda2-4a22cd867606" />
+	</d1p1:ImpliedSecurityList>
+	<d1p1:InstalledProductList>
+		<d1p1:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+	</d1p1:InstalledProductList>
+	<ResourceFile AssemblyName="Blackbaud.AppFx.Sponsorship.Catalog.dll" ClassName="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityReason.Edit" />
+	<SPDataForm>
+		<LoadImplementation SPName="USP_DATAFORMTEMPLATE_EDITLOAD_OPPORTUNITYREASONS">
+			<d1p1:CreateProcedureSQL>
+				create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_OPPORTUNITYREASONS(
+				@ID uniqueidentifier,
+				@DATALOADED bit = 0 output,
+				@TSLONG bigint = 0 output,
+				@REASONLIST xml = null output,
+				@REASONTYPE tinyint = null output)
+				as
+
+				set nocount on;
+
+				set @DATALOADED = 1
+				set @TSLONG = 0
+
+				select  @REASONTYPE = case when SPONSORSHIPOPPORTUNITYCHILD.ID is not null then 0 else 10 end,
+				@TSLONG = SPONSORSHIPOPPORTUNITY.TSLONG
+				from
+				dbo.SPONSORSHIPOPPORTUNITY
+				left outer join dbo.SPONSORSHIPOPPORTUNITYCHILD on SPONSORSHIPOPPORTUNITYCHILD.ID =  SPONSORSHIPOPPORTUNITY.ID
+				left outer join dbo.SPONSORSHIPOPPORTUNITYPROJECT on SPONSORSHIPOPPORTUNITYPROJECT.ID =  SPONSORSHIPOPPORTUNITY.ID
+				where
+				SPONSORSHIPOPPORTUNITY.ID = @ID
+
+				select @REASONLIST = dbo.UFN_SPONOSRSHIPOPPORTUNITY_REASONS_TOITEMLISTXML(@ID)
+				return 0;
+			</d1p1:CreateProcedureSQL>
+		</LoadImplementation>
+		<SaveImplementation SPName="USP_DATAFORMTEMPLATE_EDIT_OPPORTUNITYREASONS">
+			<d1p1:CreateProcedureSQL>
+				create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_OPPORTUNITYREASONS (
+				@ID uniqueidentifier,
+				@REASONLIST xml,
+				@CHANGEAGENTID uniqueidentifier
+				)
+				as
+				begin
+				set nocount on;
+
+				if @CHANGEAGENTID is null
+				exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+
+				declare @CURRENTDATE datetime;
+				set @CURRENTDATE = getdate();
+
+				-- build a temporary table containing the values from the XML
+				declare @TempTbl table (
+				ID uniqueidentifier,
+				SPONSORSHIPREASONID uniqueidentifier)
+
+				begin try
+				insert into @TempTbl select
+				ID,
+				SPONSORSHIPREASONID
+				from dbo.UFN_SPONOSRSHIPOPPORTUNITY_REASONS_FROMITEMLISTXML(@REASONLIST)
+
+				update @TempTbl set ID = newid() where (ID is null) or (ID = '00000000-0000-0000-0000-000000000000');
+
+				-- delete the items that don't exist in the XML
+				delete from dbo.SPONSORSHIPOPPORTUNITYREASON
+				where SPONSORSHIPOPPORTUNITYREASON.ID not in (select ID from @TempTbl)
+				and SPONSORSHIPOPPORTUNITYREASON.SPONSORSHIPOPPORTUNITYID = @ID
+
+				-- update the items that exist in the XML table and the db
+				update dbo.SPONSORSHIPOPPORTUNITYREASON
+				set SPONSORSHIPOPPORTUNITYREASON.ID=temp.ID,
+				SPONSORSHIPOPPORTUNITYREASON.SPONSORSHIPREASONID=temp.SPONSORSHIPREASONID,
+				SPONSORSHIPOPPORTUNITYREASON.CHANGEDBYID = @CHANGEAGENTID,
+				SPONSORSHIPOPPORTUNITYREASON.DATECHANGED = @CURRENTDATE
+
+				from dbo.SPONSORSHIPOPPORTUNITYREASON inner join @TempTbl as temp on SPONSORSHIPOPPORTUNITYREASON.ID = temp.ID
+				where SPONSORSHIPOPPORTUNITYREASON.SPONSORSHIPREASONID&lt;&gt;temp.SPONSORSHIPREASONID
+
+				-- insert new items
+				insert into dbo.SPONSORSHIPOPPORTUNITYREASON
+				(ID,
+				SPONSORSHIPOPPORTUNITYID,
+				SPONSORSHIPREASONID,
+				ADDEDBYID,
+				CHANGEDBYID,
+				DATEADDED,
+				DATECHANGED)
+				select ID,
+				@ID,
+				SPONSORSHIPREASONID,
+				@CHANGEAGENTID,
+				@CHANGEAGENTID,
+				@CURRENTDATE,
+				@CURRENTDATE
+				from @TempTbl as temp
+				where not exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON as SPR where SPR.ID = temp.ID)
+
+				--- update child eligiblity
+				declare @REASONCOUNT tinyint
+				select @REASONCOUNT = count(*) from @TempTbl
+
+				if @REASONCOUNT = 0
+				begin
+				exec.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEELIGIBLE @ID, @CHANGEAGENTID
+				end
+				else
+				begin
+				exec.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEPENDING @ID, @CHANGEAGENTID
+				end
+
+				exec dbo.USP_SPONSORSHIPOPPORTUNITY_UNLOCK @ID, 0, @CHANGEAGENTID
+				end try
+
+				begin catch
+				exec dbo.USP_RAISE_ERROR;
+				return 1;
+				end catch
+
+				return 0;
+
+				end
+			</d1p1:CreateProcedureSQL>
+			<d1p1:ExpectedDBExceptions>
+				<d1p1:Constraints>
+					<d1p1:Constraint Name="UIX_SPONSORSHIPOPPORTUNITYREASON_SPONSORSHIPOPPORTUNITYID_SPONSORSHIPREASONID" Field="REASONLIST" Type="Unique" />
+				</d1p1:Constraints>
+			</d1p1:ExpectedDBExceptions>
+		</SaveImplementation>
+	</SPDataForm>
+	<d1p1:FormMetaData FixedDialog="true">
+		<d1p1:FormFields>
+			<d1p1:FormField FieldID="REASONLIST" DataType="XML" Caption="Reason" CaptionResourceKey="$$reason">
+				<d1p1:Collection>
+					<d1p1:Fields>
+						<d1p1:FormField FieldID="SPONSORSHIPREASONID" DataType="Guid" Required="true" Caption="Reason" CaptionResourceKey="$$reason">
+							<d1p1:SimpleDataList SimpleDataListID="c8d3128e-a2eb-4413-b0b4-1585ad5bf001">
+								<d1p1:Params>
+									<d1p1:Param ID="TYPE">
+										<d1p1:Value>PARENT.Fields!REASONTYPE</d1p1:Value>
+									</d1p1:Param>
+								</d1p1:Params>
+							</d1p1:SimpleDataList>
+						</d1p1:FormField>
+						<d1p1:FormField FieldID="ID" DataType="Guid" Hidden="true" Caption="Opportunity reason ID" />
+					</d1p1:Fields>
+				</d1p1:Collection>
+			</d1p1:FormField>
+			<d1p1:FormField FieldID="REASONTYPE" DataType="TinyInt" ReadOnly="true" Hidden="true" Caption="REASONTYPE" />
+		</d1p1:FormFields>
+		<d1p1:WebUIComponent>
+			<d1p1:UIModel AssemblyName="Blackbaud.AppFx.Sponsorship.UIModel.dll" ClassName="Blackbaud.AppFx.Sponsorship.UIModel.SponsorshipOpportunityPendingReasonsEditFormUIModel" />
+			<d1p1:WebUI>
+				<d1p1:ExternalResource Url="browser/htmlforms/sponsorship/SponsorshipOpportunityPendingReasonsEditForm.html" />
+			</d1p1:WebUI>
+		</d1p1:WebUIComponent>
+	</d1p1:FormMetaData>
+</EditDataFormTemplateSpec>

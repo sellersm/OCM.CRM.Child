@@ -1,0 +1,51 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e45d5851-4a2c-4931-825c-473147b76e6b"
+	Name="USR_USP_CHILD_REGISTER"
+	Description="REPLACE_WITH_DESCRIPTION"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILD_REGISTER">
+	<!-- 
+	Remarks:    This merely packages the child id into a table to pass to USR_USP_CHILDREN_REGISTER to perform the actual tasks.
+				The assumption is USR_USP_CHILDREN_REGISTER fixes the a null @changeAgentID, so it isn't checked here.
+
+	History:
+	Date            Modified By     Comments
+	02-Jul-2012		CMayeda			Initial Version
+
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILD_REGISTER (
+	@sponsorshipOpportunityChildID uniqueidentifier,		-- Specify a Sponsorship Opportunity ID (same as the child's ID) if the sproc should only process a single child
+	@changeAgentID uniqueidentifier)						-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	
+as
+begin
+
+	declare @childIDList dbo.USR_UDT_CHILDIDLIST 
+
+	begin try
+		if @sponsorshipOpportunityChildID is null
+			RAISERROR 1000000 '@childID cannot be null'		
+
+		insert @childIDList 
+		select @sponsorshipOpportunityChildID
+	
+		exec dbo.USR_USP_CHILDREN_REGISTER @childIDList, @changeAgentID
+		
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	return 0
+	
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

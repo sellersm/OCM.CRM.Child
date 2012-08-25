@@ -1,0 +1,96 @@
+<ViewDataFormTemplateSpec 
+		xmlns:c="bb_appfx_commontypes"
+		ID="d5dc49bb-2e39-4884-817b-04acf73b3c9d"
+		Name="Child Reactivation Table View Form"
+		Description="Used for viewing a given Child Reactivation Table"
+		Author="memphis-PC\Administrator"
+		DataFormInstanceID="afecace4-f25b-48c2-b608-9b50153a1a4a"
+		RecordType="Child Reactivation Table"
+		c:SecurityUIFolder="Child Reactivation Table"
+		OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+		xmlns="bb_appfx_viewdataformtemplate"
+		>
+		<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_CHILD_REACTIVATION_TABLE">
+				<c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CHILD_REACTIVATION_TABLE 
+(
+	@ID uniqueidentifier,
+	@DATALOADED bit = 0 output,
+		@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+		@FORMENTEREDDATE datetime = null output,
+		@FORMCOMPLETEDBY nvarchar(50) = null output,
+		@PREVIOUSDEPARTUREREASON nvarchar(500) = null output,
+		@ISCHILDUNDERELEVENCODE tinyint = null output,
+		@REACTIVATEEXPLANATION nvarchar(1000) = null output,
+		@ORIGINALREGISTRATIONDATE datetime = null output,
+		@ENDDATE datetime = null output,
+		@ISCURRENTREACTIVATIONCODE tinyint = null output
+)
+as
+	set nocount on;
+	
+	-- be sure to set this, in case the select returns no rows
+	set @DATALOADED = 0;
+	
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.
+	select @DATALOADED = 1,
+					 @SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID, 
+					 @FORMENTEREDDATE = FORMENTEREDDATE, 
+					 @FORMCOMPLETEDBY = FORMCOMPLETEDBY, 
+					 @PREVIOUSDEPARTUREREASON = PREVIOUSDEPARTUREREASON, 
+					 @ISCHILDUNDERELEVENCODE = ISCHILDUNDERELEVENCODE, 
+					 @REACTIVATEEXPLANATION = REACTIVATEEXPLANATION, 
+					 @ORIGINALREGISTRATIONDATE = ORIGINALREGISTRATIONDATE, 
+					 @ENDDATE = ENDDATE, 
+					 @ISCURRENTREACTIVATIONCODE = ISCURRENTREACTIVATIONCODE
+	from dbo.USR_CHILDREACTIVATION
+	where ID = @ID
+	
+	return 0;
+]]>
+</c:CreateProcedureSQL>
+		</SPDataForm>
+		<c:FormMetaData FixedDialog="true">
+				<c:FormFields>
+						<c:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" />
+						<c:FormField FieldID="FORMENTEREDDATE" DataType="Date" Required="true" Caption="Formentereddate" />
+						<c:FormField FieldID="FORMCOMPLETEDBY" Required="true" MaxLength="50" Caption="Formcompletedby" />
+						<c:FormField FieldID="PREVIOUSDEPARTUREREASON" MaxLength="500" Caption="Previousdeparturereason" Multiline="true" />
+						<c:FormField FieldID="ISCHILDUNDERELEVENCODE" DataType="TinyInt" Caption="Ischildundereleven" DefaultValueText="0">
+								<c:ValueList>
+										<c:Items>
+												<c:Item>
+														<c:Value>0</c:Value>
+														<c:Label>No</c:Label>
+												</c:Item>
+												<c:Item>
+														<c:Value>1</c:Value>
+														<c:Label>Yes</c:Label>
+												</c:Item>
+										</c:Items>
+								</c:ValueList>
+						</c:FormField>
+						<c:FormField FieldID="REACTIVATEEXPLANATION" Required="true" MaxLength="1000" Caption="Reactivateexplanation" Multiline="true" />
+						<c:FormField FieldID="ORIGINALREGISTRATIONDATE" DataType="Date" Required="true" Caption="Originalregistrationdate" />
+						<c:FormField FieldID="ENDDATE" DataType="Date" Caption="Enddate" />
+						<c:FormField FieldID="ISCURRENTREACTIVATIONCODE" DataType="TinyInt" Caption="Iscurrentreactivation" DefaultValueText="1">
+								<c:ValueList>
+										<c:Items>
+												<c:Item>
+														<c:Value>0</c:Value>
+														<c:Label>No</c:Label>
+												</c:Item>
+												<c:Item>
+														<c:Value>1</c:Value>
+														<c:Label>Yes</c:Label>
+												</c:Item>
+										</c:Items>
+								</c:ValueList>
+						</c:FormField>
+				</c:FormFields>
+				<c:FormUIComponent />
+		</c:FormMetaData>
+</ViewDataFormTemplateSpec>

@@ -1,0 +1,64 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="ecaebad5-3a4e-426d-9410-70059efa3f74"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID"
+	Description="Used to delete a row from the USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS table."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID"
+	>
+
+	<!-- 
+	Remarks:	This is was copied from Blackbaud's USP_SPONSORSHIPTERMINATEPROCESS_DELETEBYID_WITHCHANGEAGENTID
+				
+	History:
+	Date			Modified By		Comments
+    21-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+		
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID 
+(
+	@ID UNIQUEIDENTIFIER,
+	@CHANGEAGENTID UNIQUEIDENTIFIER=NULL
+)
+as begin
+	/*	
+	Sets Context Info to the CHANGEAGENTID
+	Deletes a row in the SPONSORSHIPTERMINATEPROCESS table with the given ID
+	Resets Context info to the previous value
+	
+	The Context Info will be used by delete triggers to log the AUDITCHANGEAGENTID 
+	as the supplied @CHANGEAGENTID rather than the default change agent id.
+	*/
+
+	set nocount on;
+
+	declare @e int;
+	declare @contextCache varbinary(128);
+
+	/* cache current context information */
+	set @contextCache = CONTEXT_INFO();
+
+	/* set CONTEXT_INFO to @CHANGEAGENTID */
+	if not @CHANGEAGENTID is null
+		set CONTEXT_INFO @CHANGEAGENTID
+
+	delete from dbo.USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS where ID=@ID;
+
+	/* reset CONTEXT_INFO to previous value */
+	if not @contextCache is null
+		set CONTEXT_INFO @contextCache
+
+	select @e=@@error;
+
+	if @e<>0 return -456; --always return non-zero sp result if an error occurs
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
