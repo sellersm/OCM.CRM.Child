@@ -1,0 +1,46 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes"
+	ID="fea18d5d-2838-4c5d-ac53-00a5d5dbbc52"
+	Name="USR_USP_CHILDREN_CHECKFUNDING"
+	Description="REPLACE_WITH_DESCRIPTION"
+	Author="BETHESDA\cmayeda"
+	SPName="USR_USP_CHILDREN_SETFUNDING" >
+
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILDREN_SETFUNDING (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID fields
+	@changedToFunded int = 0 output,				-- Output parm that specifies how many children were set to Eligible
+	@changedToNotFunded int = 0 output)				-- Output parm that specifies how many children were set to Pending
+)
+as
+begin
+	-- Constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+	
+	
+	declare @eligibilityCode tinyint
+	declare @Funded bit = 0
+	
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+
+	update	dbo.USR_CHILDEXTENSION
+	  from	dbo.SPONSORSHIPOPPORTUNITY
+	  
+	 where ELIGIBILITYCODE
+	
+	select 
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
