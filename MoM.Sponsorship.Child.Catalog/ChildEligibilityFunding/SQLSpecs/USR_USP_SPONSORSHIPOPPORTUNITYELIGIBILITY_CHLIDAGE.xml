@@ -8,7 +8,7 @@
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE"	>
 
 	<!-- 
-	Remarks:	The 'Child is 16 years or older' pending reason is added if the child/children are over 16.5 years, which @MaxValidAge is set to (in months)
+	Remarks:	The 'Child is 16 years or older' pending reason is added if the child/children are over 16.5 years, which @maxValidAge is set to (in months)
 				Also, the child needs to not be sponsored.
 				
 				This uses UFN_DATE_EARLIESTFROMFUZZYDATE to convert the birthdate (estimate or actual) to a datetime.  
@@ -23,6 +23,7 @@
     27-Mar-2012		CMayeda			Initial Version
 	29-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTERID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	25-Aug-2012		CMayeda			Standardized camel case of variables
 	-->
 
 	<CreateProcedureSQL>
@@ -42,24 +43,24 @@ begin
 	declare @eligibilityCode_Ineligible tinyint = 2
 	
 	-- Maximum age of the child in months (16.5 years)
-	declare @MaxValidAge int
-	set @MaxValidAge = 198
+	declare @maxValidAge int
+	set @maxValidAge = 198
 
 	-- Get ChangeAgent if none was passed into the sproc
   	if @changeAgentID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
 
     -- Used for setting date fields to today's date
-	declare @CurrentDate datetime = null  
-	set @CurrentDate = getdate()	
+	declare @currentDate datetime = null  
+	set @currentDate = getdate()	
 	
 		
 	begin try
 	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
 		
-    	declare @ChildAgeID uniqueidentifier
-		select @ChildAgeID = ID from dbo.SPONSORSHIPREASON where UPPER (REASON) = 'CHILD IS 16 YEARS OR OLDER'
-		if @ChildAgeID is null
+    	declare @childAgeID uniqueidentifier
+		select @childAgeID = ID from dbo.SPONSORSHIPREASON where UPPER (REASON) = 'CHILD IS 16 YEARS OR OLDER'
+		if @childAgeID is null
 			RAISERROR 1000000 'Couldn''t find the "Child is 16 years or older" Sponsorship Reason'		
 
 	end try
@@ -83,7 +84,7 @@ begin
 	   and	not exists  (select	ID 
 						   from	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child  			 		           
 					      where so_child.ID = so_reason.SPONSORSHIPOPPORTUNITYID
-						   and dateadd (mm, @MaxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate() 
+						   and dateadd (mm, @maxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate() 
 					       and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0)
 									         				
 	set @deletedRows = @@ROWCOUNT
@@ -98,11 +99,11 @@ begin
 				 DATECHANGED)
 				 
 		select  ID,
-				@ChildAgeID, 
+				@childAgeID, 
 				@changeAgentID, 
 				@changeAgentID, 
-				@CurrentDate, 
-				@CurrentDate
+				@currentDate, 
+				@currentDate
 				
 	      from	dbo.SPONSORSHIPOPPORTUNITYCHILD	so_child 
 						
@@ -110,10 +111,10 @@ begin
 
 				-- Verify that the child/children do not already have a 'Child is 16 yrs old or Older' pending reason
    	        and not exists (select SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
-			                 where so_reason.SPONSORSHIPREASONID = @ChildAgeID and so_reason.SPONSORSHIPOPPORTUNITYID = so_child.ID)
+			                 where so_reason.SPONSORSHIPREASONID = @childAgeID and so_reason.SPONSORSHIPOPPORTUNITYID = so_child.ID)
 
 				-- Check Age and verify that child is not sponsored
-		    and dateadd (mm, @MaxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate()
+		    and dateadd (mm, @maxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate()
 			and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(ID) = 0
 			
 			-- Don't add to ineligible kids that are not quota waiting list

@@ -375,11 +375,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildQuota\ChildQuota.WaitingListProcess.Task.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\PamelasChildReservations.DataList.xml" />
-    <EmbeddedResource Include="ChildQuota\TEMPSetChildCCHValidatedFalse.RecordOperation.xml">
+    <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetCCHValidatedFalse.RecordOperation.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildQuota\TEMPSetChildRegistrationDateNull.RecordOperation.xml" />
-    <EmbeddedResource Include="ChildQuota\TEMPSetChildFundedNo.RecordOperation.xml" />
+    <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetRegistrationDateNull.RecordOperation.xml" />
+    <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetFundedNo.RecordOperation.xml" />
     <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPage.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -395,8 +395,7 @@
     <EmbeddedResource Include="CRUD\ChildExtension\ChildExtension.PagesTasksPackageVersion.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildCCHSpecs\Blackbaud.ConstituentInteraction2.Add.xml" />
-    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificaitonFailedInterationWrapped.Add.xml">
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificationFailedInterationWrapped.Add.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPackageVersion.DataList.xml">
@@ -433,6 +432,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetFundedYes.RecordOperation.xml" />
     <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTNAME.xml" />
@@ -440,6 +440,7 @@
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DataList.xml" />
     <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILDREN_SETFUNDING.xml" />
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />

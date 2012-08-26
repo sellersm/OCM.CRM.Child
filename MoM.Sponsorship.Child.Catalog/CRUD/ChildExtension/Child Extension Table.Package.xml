@@ -15,6 +15,7 @@
 	21-Jul-2012		CMayeda			Added ChildDepartureDelete.RecordOperation.xml, because ChildDeparture.Page.xml references it
 	21-Aug-2012		Memphis			Added forms, tables, queries, etc. for Transfers, Reactivations
 	21-Aug-2012		CMayeda			Added Edit Pending Reasons Form 
+	24-Aug-2012		CMayeda			Fixed spelling of filename for ChildExtension.CCHVerificationFailedInterationWrapped.Add.xml
 -->
 
 	<c:DependencyList>
@@ -46,7 +47,7 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION.xml" />
 
-		<!-- UFN -->
+	<!-- UFN -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETCHILDPROJECTNAME.xml" />
     
@@ -60,11 +61,15 @@
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Transfer Table.DataList.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.DataList.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildReactivation.DataList.xml" />
-
+		
     <!-- Record Operations -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension TableDelete.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.CCHVerified.RecordOperation.xml"/>
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDepartureDelete.RecordOperation.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetCCHValidatedFalse.RecordOperation.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedNo.RecordOperation.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedYes.RecordOperation.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetRegistrationDateNull.RecordOperation.xml" />
 
 		<!-- CCH Forms -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Add.xml" />
@@ -88,7 +93,7 @@
     <!--<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensions.Add.xml" />-->
 
 	<!-- CCH Verification Form -->
-	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.CCHVerificaitonFailedInterationWrapped.Add.xml"/>
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.CCHVerificationFailedInterationWrapped.Add.xml"/>
 
 	<!-- Departure Forms -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Add.xml" />

@@ -118,7 +118,7 @@ as begin
 		-- Constants
 		declare @includeIneligibleInUpdate_False bit = 0    -- Do not include Ineligible children in eligible/pending updates.
 		
-			declare @pendingReasonString_NeedInformationVerified nvarchar(100) = 'Need Information Verified -  New Child'
+		declare @pendingReasonString_NeedInformationVerified nvarchar(100) = 'Need Information Verified - New Child'
 		declare @pendingReasonString_NewChildVerification nvarchar(100) = 'New Child Verification'
 
 		-- Get SPONSORSHIPOPPORTUNITYCHILDID from CONSTITUENTID, because the CONSTITUENTID is the context passed to this form

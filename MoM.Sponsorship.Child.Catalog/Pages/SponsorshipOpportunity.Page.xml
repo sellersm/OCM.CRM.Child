@@ -988,9 +988,9 @@
 				</Action>
 			</Actions>
 		</PageActionGroup>
-		<PageActionGroup ID="6a23ead0-0148-430b-baaf-7aa5697d3ec8" Caption="Testing Tasks" Visible="= Globals.CurrentAppUserIsSysAdmin()">
+		<PageActionGroup ID="6a23ead0-0148-430b-baaf-7aa5697d3ec8" Caption="Admin Tasks" Visible="= Globals.CurrentAppUserIsSysAdmin()">
 			<Actions>
-				<Action ID="a19f46b8-eb61-45bc-a117-2aeb0726dbc9" Caption="Set CCH Validated to False">
+				<Action ID="a19f46b8-eb61-45bc-a117-2aeb0726dbc9" Caption="Set CCH Verified to No">
 					<ExecuteRecordOperation RecordOperationID="5e80b7c0-bff0-40a5-8af7-e6cfe1ae8e1b" xmlns="bb_appfx_commontypes">
 						<ActionContext>
 							<PageContextID />
@@ -1000,7 +1000,7 @@
 						</PostActionEvent>
 					</ExecuteRecordOperation>
 				</Action>
-				<Action ID="1ad98ac3-7924-40bc-bead-2cb9117b5786" Caption="Set Registration Date to blank">
+				<Action ID="1ad98ac3-7924-40bc-bead-2cb9117b5786" Caption="Clear Registration Date">
 					<ExecuteRecordOperation RecordOperationID="a1ae9878-6227-4436-9965-fe73b0bc4463" xmlns="bb_appfx_commontypes">
 						<ActionContext>
 							<PageContextID />
@@ -1019,6 +1019,16 @@
 							<RefreshPage />
 						</PostActionEvent>
 					</ExecuteRecordOperation>
+				</Action>
+				<Action ID="7C4ECF30-9FE8-4597-8BF1-7CB9C7F6D3BA" Caption="Set Funded to Yes">
+					<ExecuteRecordOperation RecordOperationID="33ded6be-5309-4b75-aad2-a8e60076c2df" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</ExecuteRecordOperation>				
 				</Action>
 			</Actions>
 		</PageActionGroup>

@@ -54,13 +54,13 @@ begin
 			
 	  from	#childQuotaProcessExceptions cq
 	  
-inner join  dbo.CONSTITUENT childc (nolock) on 
+inner join  dbo.CONSTITUENT childc on 
 				cq.childID = childc.ID
-inner join  dbo.SPONSORSHIPREASON sreason (nolock) on 
+inner join  dbo.SPONSORSHIPREASON sreason on 
 				cq.errorMessage = sreason.ID
- left join	dbo.CONSTITUENT projectc (nolock) on 
+ left join	dbo.CONSTITUENT projectc on 
 				cq.childProjectID = projectc.ID
- left join	dbo.CONSTITUENT countryc (nolock) on 
+ left join	dbo.CONSTITUENT countryc on 
 				cq.countryID = countryc.ID
   
 	
