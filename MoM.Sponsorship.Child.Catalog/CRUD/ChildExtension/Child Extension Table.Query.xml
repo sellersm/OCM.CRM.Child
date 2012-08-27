@@ -120,11 +120,21 @@ select
   dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.FROMPROJECTID) as FROMPROJECTNAME,
   uct.[CRMDATEOFTRANSFER],
   dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.TOPROJECTID) as TOPROJECTLOOKUPID,
-  uct.DATEADDED as CHILDTRANSFERDATEADDED  
+  uct.DATEADDED as CHILDTRANSFERDATEADDED,
+	r.ID as REACTIVATIONID,
+	r.FORMENTEREDDATE,
+	r.FORMCOMPLETEDBY as REACTIVATIONFORMCOMPLETEDBY,
+	r.PREVIOUSDEPARTUREREASON,
+	r.ISCHILDUNDERELEVEN,
+	r.REACTIVATEEXPLANATION,
+	r.ORIGINALREGISTRATIONDATE,
+	r.ENDDATE,
+	r.ISCURRENTREACTIVATION  
 from 
 	dbo.USR_CHILDEXTENSION
 	join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
-	join dbo.USR_CHILDTRANSFER uct on uct.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID    
+	left join dbo.USR_CHILDTRANSFER uct on uct.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID    
+	left join dbo.USR_CHILDREACTIVATION r on r.SPONSORSHIPOPPORTUNITYCHILDID = USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID	
 	left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_CHILDEXTENSION.ADDEDBYID
 	left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_CHILDEXTENSION.CHANGEDBYID
 ]]>
@@ -293,6 +303,16 @@ from
 		  <OutputField Name="CRMDATEOFTRANSFER" Caption="Transfer Date" />
 		  <OutputField Name="TOPROJECTLOOKUPID" Caption="To Project LookupId" />
 		  <OutputField Name="CHILDTRANSFERDATEADDED" Caption="Date Transfer Entered" />
+			<OutputField Name="REACTIVATIONID" Caption="ChildReactivation Table Record ID" Category="System Fields" />
+			<OutputField Name="FORMENTEREDDATE" Caption="Date Reactivation Form Entered" />
+			<OutputField Name="REACTIVATIONFORMCOMPLETEDBY" Caption="Reactivation Form entered By" />
+			<OutputField Name="PREVIOUSDEPARTUREREASON" Caption="Previous Departure Reason on Reactivation Form" />
+			<OutputField Name="ISCHILDUNDERELEVEN" Caption="Child Under 11?" />
+			<OutputField Name="REACTIVATEEXPLANATION" Caption="Reactivation Explanation" />
+			<OutputField Name="ORIGINALREGISTRATIONDATE" Caption="Original Registration Date" />
+			<OutputField Name="ENDDATE" Caption="End Date" />
+			<OutputField Name="ISCURRENTREACTIVATION" Caption="Current Reactivation ?" />
+
 		</OutputFields>
 	  <IdentifyingFields>
 		<IdentifyingField Name="ID"/>
