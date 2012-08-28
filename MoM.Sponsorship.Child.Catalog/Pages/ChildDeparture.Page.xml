@@ -98,14 +98,24 @@
     </PageActionGroup>
     <PageActionGroup ID="400ff184-9725-455d-bb55-a2ec1f618357" Caption="Go to">
       <Actions>
-        <Action ID="c7726e47-d9d6-4008-933b-a4c0b8db2d0c" Caption="=String.Format(&quot;Return To {0}&quot;, Page.Fields!CHILDNAME)">
+        <!--<Action ID="c7726e47-d9d6-4008-933b-a4c0b8db2d0c" Caption="=String.Format(&quot;Return To {0}&quot;, Page.Fields!CHILDNAME)">
           <ShowPage PageID="0f392d71-5884-4363-b6e3-a75755f8402a" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
             <ActionContext>
               <PageContextID />
             </ActionContext>
           </ShowPage>
-        </Action>
+        </Action>-->
+		  <Action ID="c7726e47-d9d6-4008-933b-a4c0b8db2d0c" Caption="=String.Format(&quot;Return To {0}&quot;, Page.Fields!CHILDNAME)">
+			  <ShowPage PageID="0f392d71-5884-4363-b6e3-a75755f8402a" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+				  <ActionContext>
+					  <PageExpressionField>CHILDID</PageExpressionField>
+				  </ActionContext>
+			  </ShowPage>
+		  </Action>
       </Actions>
     </PageActionGroup>
   </PageActionGroups>
+	<PageExpressionForms>
+		<PageExpressionForm DataFormInstanceID="90579643-32b2-48ef-9c53-5ee3e6213ca7" />
+	</PageExpressionForms>
 </PageDefinitionSpec>
