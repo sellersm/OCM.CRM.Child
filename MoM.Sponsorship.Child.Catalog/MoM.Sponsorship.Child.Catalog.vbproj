@@ -193,9 +193,6 @@
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.Development.View.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.AdditionalInfo.View.xml" />
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.View.xml" />
-    <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.Add.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.Edit.xml" />
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension TableDelete.RecordOperation.xml" />
     <EmbeddedResource Include="CRUD\ChildExtension\Child Extension Table.DataList.xml" />
@@ -226,9 +223,6 @@
     <EmbeddedResource Include="Batch\ChildExtensionAddBatch.Commit.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ChildCCHSpecs\ChildAddWrapped.Add.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtensionAddChild.Add.xml">

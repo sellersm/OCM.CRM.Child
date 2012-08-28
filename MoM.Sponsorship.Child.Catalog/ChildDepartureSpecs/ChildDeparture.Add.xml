@@ -122,8 +122,18 @@ begin try
   -- call this to set the ineligibile reason based on the departure type the user selected:
 	declare @reasonTypeCode_ChildMarkIneligibile tinyint = 1 --Child - Mark ineligible
 	declare @DepartureTypeCodeText nvarchar(100)             -- = 'Departure - Admin', 'Departure - Other',	'Program Completion'
-	select @DepartureTypeCodeText = (case @DEPARTURETYPECODE when (0) then N'Departure - Other' when (1) then N'Program Completion' when (2) then N'Departure - Admin'  end)
+	select @DepartureTypeCodeText = (case @DEPARTURETYPECODE when (0) then N'Departure' when (1) then N'Program Completion' when (2) then N'Departure - Admin'  end)
 		
+	-- FogBugz Case 797: need to check for death of child and/or Other reason selected, if this is type 0 (Departure)
+	if @DEPARTURETYPECODE = 0
+	begin
+		-- check for Death of Child & Other
+		if @DEPARTURE_DEATHOFCHILD = 1
+			set @DepartureTypeCodeText = N'Death of Child'
+		if (@DEPARTURE_OTHER <> '' and @DEPARTURE_OTHER is not null)
+			set @DepartureTypeCodeText = N'Departure - Other'
+	end
+	
 	declare @DepartureTypeCodeID uniqueidentifier
 	select @DepartureTypeCodeID = ID		
 	from	dbo.SPONSORSHIPREASON 
