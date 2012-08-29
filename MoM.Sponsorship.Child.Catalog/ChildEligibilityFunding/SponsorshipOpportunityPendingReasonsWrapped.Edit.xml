@@ -117,16 +117,24 @@ as begin
 	
 	begin try
 		-- Handle any custom "after-save" logic here
-		declare @sponsorshipReasonID_NeedInformationVerified uniqueidentifier
+		/*declare @sponsorshipReasonID_NeedInformationVerified uniqueidentifier
 		select @sponsorshipReasonID_NeedInformationVerified  = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Need Information Verified - New Child')
 		if @sponsorshipReasonID_NeedInformationVerified is null
 			RAISERROR 1000000 'Couldn''t find the "Need Information Verified - New Child" Sponsorship Reason'		
 
 		if exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON where SPONSORSHIPOPPORTUNITYID = @ID AND SPONSORSHIPREASONID = @sponsorshipReasonID_NeedInformationVerified )
 			 update	dbo.USR_CHILDEXTENSION
-				set FUNDED = 0
+				set FUNDED = 0,
 			  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 			    and FUNDED = 1
+		*/
+		
+		declare @childIDList dbo.USR_UDT_CHILDIDLIST 
+		insert @childIDList 
+		select @ID
+		exec dbo.USR_USP_CHILDREN_SETFUNDING 
+				@childIDList = @childIDList,
+				@changeAgentID = @CHANGEAGENTID
 	end try
 	begin catch
 		exec dbo.USP_RAISE_ERROR;

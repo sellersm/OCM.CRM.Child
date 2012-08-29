@@ -447,6 +447,8 @@
     <EmbeddedResource Include="ChildReactivation\ChildReactivationViewForm.View.xml" />
     <EmbeddedResource Include="ChildTransfer\ChildTransfer.Edit.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEWCHILDVERIFICATION.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFO.xml" />
     <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
     <EmbeddedResource Include="Tables\ChildReactivation.Table.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />

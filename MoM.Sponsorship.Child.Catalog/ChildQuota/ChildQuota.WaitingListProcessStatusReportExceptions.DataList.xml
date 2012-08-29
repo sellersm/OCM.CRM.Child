@@ -17,7 +17,7 @@
 	History:
 	Date            Modified By     Comments
 	08-Jul-2012		CMayeda			Initial Version
-
+	28-Aug-2012		CMayeda			Fixed Child ID to display the Sponsorship Opportunity Lookup ID - Fogbugz 763
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
@@ -48,14 +48,15 @@ begin
 			countryc.NAME as CountryName, 
 			projectc.LOOKUPID as ProjectID, 
 			projectc.NAME as ProjectName, 
-			childc.LOOKUPID as ChildID, 
-			childc.NAME as ChildName, 
+			so.LOOKUPID as ChildID, 
+			so_child.NAME as ChildName, 
 			sreason.REASON as WaitingListReason 
 			
 	  from	#childQuotaProcessExceptions cq
-	  
-inner join  dbo.CONSTITUENT childc on 
-				cq.childID = childc.ID
+inner join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on
+				so_child.ID = cq.childID
+inner join	dbo.SPONSORSHIPOPPORTUNITY so on
+				so.ID = cq.childID
 inner join  dbo.SPONSORSHIPREASON sreason on 
 				cq.errorMessage = sreason.ID
  left join	dbo.CONSTITUENT projectc on 
@@ -73,7 +74,7 @@ end
 	</SPDataList>
 
 	<!-- describe the context ID parameter for the SP (if applicable)-->
-	<Context ContextRecordType="Business process instance" RecordIDParameter="contextID"/>  <!-- Not sure what the record type is for this -->
+	<Context ContextRecordType="Sponsorship opportunity child" RecordIDParameter="contextID"/>  <!-- Not sure what the record type is for this -->
 
 	<!-- define the output fields in the list -->
 	<Output>

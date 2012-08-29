@@ -14,7 +14,7 @@
 	History:
 	Date            Modified By     Comments
 	08-Jul-2012		CMayeda			Initial Version
-
+	28-Aug-2012		CMayeda			Fixed Child ID to display the Sponsorship Opportunity Lookup ID - Fogbugz 763
 	-->
 	<!-- define the SP that returns the data for the datalist -->
 	<SPDataList SPName="USR_USP_DATALIST_CHIDLQUOTAWAITINGLISTPROCESS_STATUSREPORT_SUCCESS">
@@ -31,16 +31,34 @@ begin
 	declare @tableGUIDString nvarchar(50) = replace (convert (nvarchar(50),@contextID), '-', '_')	-- Convert the guid to have underscores instead of dashes
 
 	declare @selectSuccessSQL as nvarchar(max)
-	set @selectSuccessSQL = 'select countryc.LOOKUPID as CountryID, countryc.NAME as CountryName, ' +
-							'       projectc.LOOKUPID as ProjectID, projectc.NAME as ProjectName, ' +
-							'       childc.LOOKUPID as ChildID, childc.NAME as ChildName ' +
-							'  from ' + @tablePrefix + @tableGUIDString + ' cq' + 
-							'  inner join CONSTITUENT childc on cq.SPONSORSHIPOPPORTUNITYCHILDID = childc.ID' +
-							'   left join CONSTITUENT countryc on cq.COUNTRYID = countryc.ID' + 
-							'   left join CONSTITUENT projectc on cq.CHILDPROJECTID = projectc.ID' + 
-							'    order by CountryID, ProjectID, ChildID'
-                        
+	set @selectSuccessSQL =	'select CHILDPROJECTID, COUNTRYID, SPONSORSHIPOPPORTUNITYCHILDID ' +
+							' from ' + @tablePrefix + @tableGUIDString  
+	
+	create table #childQuotaProcessExceptions(childProjectID uniqueidentifier, countryID uniqueidentifier, childID uniqueidentifier)
+	insert into #childQuotaProcessExceptions
 	exec (@selectSuccessSQL)
+	
+	select	countryc.LOOKUPID as CountryID, 
+			countryc.NAME as CountryName, 
+			projectc.LOOKUPID as ProjectID, 
+			projectc.NAME as ProjectName, 
+			so.LOOKUPID as ChildID, 
+			so_child.NAME as ChildName 
+			
+	  from	#childQuotaProcessExceptions cq
+inner join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on
+				so_child.ID = cq.childID
+inner join	dbo.SPONSORSHIPOPPORTUNITY so on
+				so.ID = cq.childID
+ left join	dbo.CONSTITUENT projectc on 
+				cq.childProjectID = projectc.ID
+ left join	dbo.CONSTITUENT countryc on 
+				cq.countryID = countryc.ID
+  
+	
+	order by CountryID, ProjectID, ChildID
+
+
 
 end
 
@@ -49,16 +67,7 @@ end
 	</SPDataList>
 
 	<!-- describe the context ID parameter for the SP (if applicable)-->
-	<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="contextID"/>
-
-	<!-- describe any parameters (other than the context ID) defined on the SP
-	<Parameters>
-		<common:FormMetaData>
-			<common:FormFields>
-				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
-			</common:FormFields>
-		</common:FormMetaData>
-	</Parameters>-->
+	<Context ContextRecordType="Sponsorship opportunity child" RecordIDParameter="contextID"/>	<!-- Not sure what the record type is for this -->
 
 	<!-- define the output fields in the list -->
 	<Output>
