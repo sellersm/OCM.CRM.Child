@@ -82,7 +82,7 @@
             </PostActionEvent>
           </ShowDataForm>
         </Action>
-        <Action ID="dbba11b8-a418-4727-a42f-4055c3a37f19" Caption="Delete" ImageKey="RES:delete">
+        <!--<Action ID="dbba11b8-a418-4727-a42f-4055c3a37f19" Caption="Delete" ImageKey="RES:delete">
           <ExecuteRecordOperation RecordOperationID="22479045-589c-447e-8713-82f7bb0486e5" xmlns="bb_appfx_commontypes">
             <ActionContext>
               <PageContextID />
@@ -93,7 +93,29 @@
               </GoToPage>
             </PostActionEvent>
           </ExecuteRecordOperation>
-        </Action>
+        </Action>-->
+		  <Action ID="dbba11b8-a418-4727-a42f-4055c3a37f19" Caption="Delete Departure" ImageKey="RES:delete">
+			  <ExecuteRecordOperation RecordOperationID="22479045-589c-447e-8713-82f7bb0486e5" xmlns="bb_appfx_commontypes">
+				  <ActionContext>
+					  <PageExpressionField>CHILDID</PageExpressionField>
+				  </ActionContext>
+				  <PostActionEvent>
+					  <GoToPage>
+						  <PreviousPage />
+					  </GoToPage>
+				  </PostActionEvent>
+			  </ExecuteRecordOperation>
+		  </Action>
+		  <Action ID="d676d388-5a01-4253-95f5-ce02cc2c411d" Caption="Update Date Processed" ImageKey="RES:edit">
+			  <ShowDataForm DataFormID="404a7e05-cf54-45ca-979b-985bca0cee41" xmlns="bb_appfx_commontypes">
+				  <ActionContext>
+					  <PageContextID />
+				  </ActionContext>
+				  <PostActionEvent>
+					  <RefreshPage />
+				  </PostActionEvent>
+			  </ShowDataForm>
+		  </Action>
       </Actions>
     </PageActionGroup>
     <PageActionGroup ID="400ff184-9725-455d-bb55-a2ec1f618357" Caption="Go to">

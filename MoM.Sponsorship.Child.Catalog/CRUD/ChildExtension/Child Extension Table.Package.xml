@@ -17,6 +17,7 @@
 	21-Aug-2012		CMayeda			Added Edit Pending Reasons Form 
 	24-Aug-2012		CMayeda			Fixed spelling of filename for ChildExtension.CCHVerificationFailedInterationWrapped.Add.xml
 	27-Aug-2012		Memphis			Removed the extranneous Add Child forms.
+	30-Aug-2012		Memphis			Added Edit form for Departure.DateProcessed. FogBugz Case 792
 -->
 
 	<c:DependencyList>
@@ -108,8 +109,9 @@
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.SocialImpact.View.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.SpiritualPhysicalImpact.Edit.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.SpiritualPhysicalImpact.View.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.ChildDeparture.DateProcessed.Edit.xml" />
 
-    <!-- Transfers Form -->
+		<!-- Transfers Form -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildTransferForm.Add.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildTransfer.Edit.xml" />
     
