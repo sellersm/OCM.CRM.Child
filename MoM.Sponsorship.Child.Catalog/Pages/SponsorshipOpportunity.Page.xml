@@ -10,6 +10,7 @@
 	21-Aug-2012		Memphis			Added reactivations tab, edited the Actions
 	21-Aug-2012		CMayeda			Added wrapped data form for edit pending reasons
 	22-Aug-2012		CMayeda			Added goto task for Child Project
+	03-Sep-2012		CMayeda			Added Departure Transfer
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -219,8 +220,8 @@
 					</SectionContext>
 					<Actions>
 						<Action ID="de84bb78-2ac6-4ed5-9b8a-d14a64693e6b" Caption="Edit pending reasons" ImageKey="res:edit" Visible="=Page.Fields!ELIGIBILITYCODE = 0 Or Page.Fields!ELIGIBILITYCODE=1" CaptionResourceKey="$$edit_pending_reasons">
-							<ShowDataForm DataFormID="4e9919d6-9c3f-42a6-a487-b243b1c47b0a" xmlns="bb_appfx_commontypes"> 
-							<!-- OOB <ShowDataForm DataFormID="955e8a91-8a01-4762-93de-7246ec732dc8" xmlns="bb_appfx_commontypes"> -->
+							<ShowDataForm DataFormID="4e9919d6-9c3f-42a6-a487-b243b1c47b0a" xmlns="bb_appfx_commontypes">
+								<!-- OOB <ShowDataForm DataFormID="955e8a91-8a01-4762-93de-7246ec732dc8" xmlns="bb_appfx_commontypes"> -->
 								<ActionContext>
 									<PageContextID />
 								</ActionContext>
@@ -647,68 +648,68 @@
 				</Section>
 			</Sections>
 		</Tab>-->
-    <Tab Caption="Transfers" ID="e248e4f0-91f3-4421-957a-4a82e54b5409" Visible="=Page.Fields!TRANSFEREXISTS=True">
-      <Sections>
-        <Section ID="2494f107-1663-4511-b473-c143e48a5fea">
-          <DataList ID="12ce4824-be88-4433-8328-37c71b9f28df">
-            <RenderStyle>
-              <StandardView />
-            </RenderStyle>
-          </DataList>
-          <Actions>
-            <Action ID="0098be05-e6a7-4903-a080-6e3e1eb34730" Caption="Edit" ImageKey="RES:edit">
-              <ShowDataForm DataFormID="cb8a5aa3-832f-4510-891c-502a24ea5650" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>ID</SectionField>
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshSection />
-                </PostActionEvent>
-              </ShowDataForm>
-            </Action>
-          </Actions>
-        </Section>
-      </Sections>
-    </Tab>
-    <Tab Caption="Departures/Reactivations" ID="15cf4ad8-7498-48d2-b82b-088ce3e2ed3c">
-      <Sections>
-        <Section ID="9a505d60-885c-493d-96c7-10d7ef353932" Caption="Reactivation List">
-          <DataList ID="5db00c9e-0eac-4535-b7bf-7865ab2b765d">
-            <RenderStyle>
-              <StandardView />
-            </RenderStyle>
-          </DataList>
-          <Actions>
-            <Action ID="f018201c-d043-421c-b797-fe4053ccbec8" Caption="Edit" ImageKey="RES:Edit">
-              <ShowDataForm DataFormID="c1dc455b-3c7d-4ec2-95ef-c1e3218fa257" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>ID</SectionField>
-                </ActionContext>
-                <PostActionEvent>
-                  <RefreshSection />
-                </PostActionEvent>
-              </ShowDataForm>
-            </Action>
-          </Actions>
-        </Section>
-        <Section ID="4145fe83-a0a2-4181-b237-865ad72fd3f5" Caption="Departure List">
-          <DataList ID="87c8c7e2-8e9f-4e5d-ba6e-62ac1d3dc3da">
-            <RenderStyle>
-              <StandardView />
-            </RenderStyle>
-          </DataList>
-          <Actions>
-            <Action ID="c4909e06-cad0-4e8d-beaa-9f59c5d0fcdf" Caption="Go to Departure">
-              <ShowPage PageID="77a8e713-0038-425f-9969-3893c322de15" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
-                <ActionContext>
-                  <SectionField>ID</SectionField>
-                </ActionContext>
-              </ShowPage>
-            </Action>
-          </Actions>
-        </Section>
-      </Sections>
-    </Tab>
+		<Tab Caption="Transfers" ID="e248e4f0-91f3-4421-957a-4a82e54b5409" Visible="=Page.Fields!TRANSFEREXISTS=True">
+			<Sections>
+				<Section ID="2494f107-1663-4511-b473-c143e48a5fea">
+					<DataList ID="12ce4824-be88-4433-8328-37c71b9f28df">
+						<RenderStyle>
+							<StandardView />
+						</RenderStyle>
+					</DataList>
+					<Actions>
+						<Action ID="0098be05-e6a7-4903-a080-6e3e1eb34730" Caption="Edit" ImageKey="RES:edit">
+							<ShowDataForm DataFormID="cb8a5aa3-832f-4510-891c-502a24ea5650" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+								<PostActionEvent>
+									<RefreshSection />
+								</PostActionEvent>
+							</ShowDataForm>
+						</Action>
+					</Actions>
+				</Section>
+			</Sections>
+		</Tab>
+		<Tab Caption="Departures/Reactivations" ID="15cf4ad8-7498-48d2-b82b-088ce3e2ed3c">
+			<Sections>
+				<Section ID="9a505d60-885c-493d-96c7-10d7ef353932" Caption="Reactivation List">
+					<DataList ID="5db00c9e-0eac-4535-b7bf-7865ab2b765d">
+						<RenderStyle>
+							<StandardView />
+						</RenderStyle>
+					</DataList>
+					<Actions>
+						<Action ID="f018201c-d043-421c-b797-fe4053ccbec8" Caption="Edit" ImageKey="RES:Edit">
+							<ShowDataForm DataFormID="c1dc455b-3c7d-4ec2-95ef-c1e3218fa257" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+								<PostActionEvent>
+									<RefreshSection />
+								</PostActionEvent>
+							</ShowDataForm>
+						</Action>
+					</Actions>
+				</Section>
+				<Section ID="4145fe83-a0a2-4181-b237-865ad72fd3f5" Caption="Departure List">
+					<DataList ID="87c8c7e2-8e9f-4e5d-ba6e-62ac1d3dc3da">
+						<RenderStyle>
+							<StandardView />
+						</RenderStyle>
+					</DataList>
+					<Actions>
+						<Action ID="c4909e06-cad0-4e8d-beaa-9f59c5d0fcdf" Caption="Go to Departure">
+							<ShowPage PageID="77a8e713-0038-425f-9969-3893c322de15" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+							</ShowPage>
+						</Action>
+					</Actions>
+				</Section>
+			</Sections>
+		</Tab>
 	</Tabs>
 	<PageActionGroups>
 		<PageActionGroup ID="d3db7753-92ba-4969-a544-a3f184f1b800" Caption="Tasks" ImageKey="RES:Tasks" CaptionResourceKey="$$tasks">
@@ -801,6 +802,7 @@
 					</StartBusinessProcess>
 					<HelpKey>SPChildMarkIneligible.html</HelpKey>
 				</Action>
+
 				<Action ID="21c11ea4-e065-483a-b6a7-add6c3ba0fd5" Caption="Unreserve" ImageKey="RES:RecordOperationSpec" Visible="=Page.Fields!ISRESERVED AndAlso Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1" CaptionResourceKey="$$unreserve">
 					<ExecuteRecordOperation RecordOperationID="585b46e6-e720-43e1-81e1-a2afba4b77f2" xmlns="bb_appfx_commontypes">
 						<ActionContext>
@@ -877,16 +879,27 @@
 						</PostActionEvent>
 					</ShowAddDataForm>
 				</Action>-->
-        <Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= (Not Page.Fields!DEPARTUREEXISTS) Or (Page.Fields!REACTIVATED)">
-          <ShowAddDataForm DataFormID="ac89e520-149a-4a66-83c2-1e5e906a5809" xmlns="bb_appfx_commontypes">
-            <ActionContext>
-              <PageContextID />
-            </ActionContext>
-            <PostActionEvent>
-              <RefreshPage />
-            </PostActionEvent>
-          </ShowAddDataForm>
-        </Action>
+				<Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= (Not Page.Fields!DEPARTUREEXISTS) Or (Page.Fields!REACTIVATED)">
+					<ShowAddDataForm DataFormID="ac89e520-149a-4a66-83c2-1e5e906a5809" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</ShowAddDataForm>
+				</Action>
+				<Action ID="B0116858-7D0C-489A-AC36-BB1FF6868EEF" Caption="Departure transfer" ImageKey="RES:BusinessProcessSpec" Visible="=(Page.Fields!DEPARTUREEXISTS) and (Page.Fields!ACTIVESPONSORS > 0) and (Page.Fields!PENDINGTRANSFERSOUT = 0)">
+					<StartBusinessProcess BusinessProcessID="7ee47ea0-8e7f-475c-a1c3-3b4b127e9136" StatusPageID="177290bd-6da5-456a-972e-3f1e73708637" StatusTabID="00000000-0000-0000-0000-000000000000" PreprocessEditFormID="10be203e-8bdb-45ef-870e-ce91e0b0cd8a" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</StartBusinessProcess>
+					<HelpKey>SPChildMarkIneligible.html</HelpKey>
+				</Action>
 				<!--<Action ID="ee27592c-3171-41ea-ab27-8a48ce75b10d" Caption="=String.Format(&quot;Transfer {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:RecordOperationSpec">
 					<ShowAddDataForm DataFormID="fa13d398-d06e-4d37-adf9-891e9cdff38e" xmlns="bb_appfx_commontypes">
 						<ActionContext>
@@ -897,16 +910,16 @@
 						</PostActionEvent>
 					</ShowAddDataForm>
 				</Action>-->
-        <Action ID="ee27592c-3171-41ea-ab27-8a48ce75b10d" Caption="=String.Format(&quot;Transfer {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:RecordOperationSpec">
-          <ShowAddDataForm DataFormID="fa13d398-d06e-4d37-adf9-891e9cdff38e" xmlns="bb_appfx_commontypes">
-            <ActionContext>
-              <PageContextID />
-            </ActionContext>
-            <PostActionEvent>
-              <RefreshPage />
-            </PostActionEvent>
-          </ShowAddDataForm>
-        </Action>
+				<Action ID="ee27592c-3171-41ea-ab27-8a48ce75b10d" Caption="=String.Format(&quot;Transfer {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:RecordOperationSpec">
+					<ShowAddDataForm DataFormID="fa13d398-d06e-4d37-adf9-891e9cdff38e" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</ShowAddDataForm>
+				</Action>
 				<Action ID="05D8F10A-AF50-486A-BC5F-0896C9E94F53" Caption="CCH - Verified" ImageKey="RES:RecordOperationSpec" Visible="=(not Page.Fields!CCHVALIDATED) AndAlso Page.Fields!CCHEXISTS">
 					<ExecuteRecordOperation RecordOperationID="193bf623-e113-40cb-b66f-ceb346b7b60f" xmlns="bb_appfx_commontypes">
 						<ActionContext>
@@ -927,16 +940,16 @@
 						</PostActionEvent>
 					</ShowAddDataForm>
 				</Action>
-        <Action ID="66f429df-986b-41f1-8202-404223dce0d4" Caption="=String.Format(&quot;Reactivate {0}&quot;, Page.Fields!FIRSTNAME)" Visible="=Page.Fields!DEPARTUREEXISTS">
-          <ShowAddDataForm DataFormID="9ec34013-82e8-47e2-a4f1-100d56e31fe1" xmlns="bb_appfx_commontypes">
-            <ActionContext>
-              <PageContextID />
-            </ActionContext>
-            <PostActionEvent>
-              <RefreshPage />
-            </PostActionEvent>
-          </ShowAddDataForm>
-        </Action>
+				<Action ID="66f429df-986b-41f1-8202-404223dce0d4" Caption="=String.Format(&quot;Reactivate {0}&quot;, Page.Fields!FIRSTNAME)" Visible="=Page.Fields!DEPARTUREEXISTS">
+					<ShowAddDataForm DataFormID="9ec34013-82e8-47e2-a4f1-100d56e31fe1" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</ShowAddDataForm>
+				</Action>
 			</Actions>
 		</PageActionGroup>
 		<PageActionGroup ID="87a91e84-628d-4733-8d9d-18456f014674" Caption="Go to" CaptionResourceKey="$$go_to">
@@ -1028,7 +1041,7 @@
 						<PostActionEvent>
 							<RefreshPage />
 						</PostActionEvent>
-					</ExecuteRecordOperation>				
+					</ExecuteRecordOperation>
 				</Action>
 			</Actions>
 		</PageActionGroup>
@@ -1038,5 +1051,6 @@
 		<!--PageExpressionForm DataFormInstanceID="0656af60-2c61-49be-bced-4c9018b107eb" />-->
 		<PageExpressionForm DataFormInstanceID="90579643-32b2-48ef-9c53-5ee3e6213ca7" />
 		<PageExpressionForm DataFormInstanceID="4c5654c6-93b2-494d-862b-5887bc96f972" />
+		<PageExpressionForm DataFormInstanceID="20a1c198-6745-49f0-984d-3751558113f2" />
 	</PageExpressionForms>
 </PageDefinitionSpec>

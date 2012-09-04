@@ -90,6 +90,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChildDepartureSpecs\SponsorshipOpportunity.DepartureTransfer.Ineligible.Edit.vb" />
     <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
@@ -433,7 +434,8 @@
     <EmbeddedResource Include="ChildBio\SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DataList.xml" />
     <EmbeddedResource Include="ChildDepartureSpecs\ChildDeparture.DateProcessed.Edit.xml" />
-    <Content Include="ChildDepartureSpecs\Wrapped Departure form.Edit.xml" />
+    <EmbeddedResource Include="ChildDepartureSpecs\SponsorshipOpportunity.DepartureTransfer.Ineligible.Edit.xml" />
+    <EmbeddedResource Include="ChildDepartureSpecs\USR_USP_SPONSORSHIPOPPORTUNITY_DEPARTURETRANSFER.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILDREN_SETFUNDING.xml" />
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
