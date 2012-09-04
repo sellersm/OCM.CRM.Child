@@ -211,9 +211,7 @@
     <Compile Include="ChildCCH\ChildExtensionWhoILiveWithViewFormUIModel.vb" />
     <Compile Include="ChildDeparture\SponsorshipOpportunityDepartureTransferIneligiblePreprocessEditFormUIModel.CodeGen.vb" />
     <Compile Include="ChildDeparture\SponsorshipOpportunityDepartureTransferIneligiblePreprocessEditFormUIModel.vb" />
-    <Compile Include="ChildDeparture\SponsorshipOpportunityPreProcessIneligibleHelper.vb" />
-    <Compile Include="ChildDeparture\SponsorshipOpportunityProjectClosedPreprocessEditFormUIModel.CodeGen.vb" />
-    <Compile Include="ChildDeparture\SponsorshipOpportunityProjectClosedPreprocessEditFormUIModel.vb" />
+    <Compile Include="ChildDeparture\SponsorshipOpportunityDepartureTransferPreProcessIneligibleHelper.vb" />
     <Compile Include="Helpers\CCHFormsHelper.vb" />
     <Compile Include="Helpers\DepartureFieldNames.vb" />
     <Compile Include="Helpers\DepartureFormsHelper.vb" />

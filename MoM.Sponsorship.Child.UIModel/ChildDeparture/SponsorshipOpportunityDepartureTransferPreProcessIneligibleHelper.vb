@@ -99,8 +99,9 @@ Friend Class SponsorshipOpportunityPreprocessIneligibleHelperDepartureTransfer
 	Private Sub _choosingchild_ValueChanged(ByVal sender As Object, ByVal e As UIModeling.Core.ValueChangedEventArgs) Handles _choosingchild.ValueChanged
 		_parentModel.Fields("NEWSPONSORSHIPOPPORTUNITYID").Enabled = False
 		'If specific child or project enable the opportunity search.
-		If (_typecode = 2 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityProjectClosedPreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificProject)) _
-		 OrElse (_typecode = 1 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificChild)) Then
+		'If (_typecode = 2 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityProjectClosedPreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificProject)) _
+		'OrElse (_typecode = 1 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificChild)) Then
+		If _typecode = 1 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModelDepartureTransfer.CHOOSINGCHILDS.SpecificChild) Then
 			_parentModel.Fields("NEWSPONSORSHIPOPPORTUNITYID").Enabled = True
 		Else 'Matching child or project.  Unlock record and empty display string.
 			_NewOpportunity.SearchDisplayText = String.Empty
@@ -123,8 +124,9 @@ Friend Class SponsorshipOpportunityPreprocessIneligibleHelperDepartureTransfer
 	Friend Function ValidateNewOpportunity() As Boolean
 
 		If _parentModel.Fields("NEWSPONSORSHIPOPPORTUNITYID").ValueObject.Equals(Guid.Empty) AndAlso _
-		 ((_typecode = 2 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityProjectClosedPreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificProject)) _
-		 OrElse (_typecode = 1 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificChild))) Then
+		 _typecode = 1 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificChild) Then
+			'((_typecode = 2 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityProjectClosedPreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificProject)) _
+			'OrElse (_typecode = 1 AndAlso _choosingchild.ValueObject.Equals(SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel.CHOOSINGCHILDS.SpecificChild))) Then
 
 			Select Case _typecode
 				Case 1

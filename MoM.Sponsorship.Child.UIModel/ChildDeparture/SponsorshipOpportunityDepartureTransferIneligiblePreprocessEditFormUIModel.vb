@@ -7,7 +7,7 @@ Public Class SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModelDepar
 	<System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")>
 	Private ineligibleHelper As SponsorshipOpportunityPreprocessIneligibleHelperDepartureTransfer
 
-	Private Sub SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel_Loaded(ByVal sender As Object, ByVal e As Blackbaud.AppFx.UIModeling.Core.LoadedEventArgs) Handles Me.Loaded
+	Private Sub SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModelDepartureTransfer_Loaded(ByVal sender As Object, ByVal e As Blackbaud.AppFx.UIModeling.Core.LoadedEventArgs) Handles Me.Loaded
 		ineligibleHelper = New SponsorshipOpportunityPreprocessIneligibleHelperDepartureTransfer(Me, 1)
 
 		' Added this call - OCM
@@ -15,7 +15,7 @@ Public Class SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModelDepar
 
 	End Sub
 
-	Private Sub SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel_Validating(ByVal sender As Object, ByVal e As UIModeling.Core.ValidatingEventArgs) Handles Me.Validating
+	Private Sub SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModelDepartureTransfer_Validating(ByVal sender As Object, ByVal e As UIModeling.Core.ValidatingEventArgs) Handles Me.Validating
 		If Not ineligibleHelper.ValidateNewOpportunity() Then
 			e.Valid = False
 			e.InvalidReason = ineligibleHelper.getInvalidReason()
