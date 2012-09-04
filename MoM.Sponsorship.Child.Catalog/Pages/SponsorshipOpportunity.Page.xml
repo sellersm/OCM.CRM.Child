@@ -11,6 +11,7 @@
 	21-Aug-2012		CMayeda			Added wrapped data form for edit pending reasons
 	22-Aug-2012		CMayeda			Added goto task for Child Project
 	03-Sep-2012		CMayeda			Added Departure Transfer
+	04-Sep-2012		Memphis			Updated the Departure/Reactivation Tab, Depart & Reactivate Action Tasks
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -671,7 +672,7 @@
 				</Section>
 			</Sections>
 		</Tab>
-		<Tab Caption="Departures/Reactivations" ID="15cf4ad8-7498-48d2-b82b-088ce3e2ed3c">
+		<Tab Caption="Departures/Reactivations" ID="15cf4ad8-7498-48d2-b82b-088ce3e2ed3c" Visible="= (Page.Fields!REACTIVATIONEXISTS) Or (Page.Fields!DEPARTUREEXISTS)">
 			<Sections>
 				<Section ID="9a505d60-885c-493d-96c7-10d7ef353932" Caption="Reactivation List">
 					<DataList ID="5db00c9e-0eac-4535-b7bf-7865ab2b765d">
@@ -869,7 +870,7 @@
 						</PostActionEvent>
 					</ExecuteRecordOperation>
 				</Action>
-				<!--<Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= Not Page.Fields!DEPARTUREEXISTS">
+				<!--<Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= (Not Page.Fields!DEPARTUREEXISTS) Or (Page.Fields!REACTIVATED)">
 					<ShowAddDataForm DataFormID="ac89e520-149a-4a66-83c2-1e5e906a5809" xmlns="bb_appfx_commontypes">
 						<ActionContext>
 							<PageContextID />
@@ -879,7 +880,7 @@
 						</PostActionEvent>
 					</ShowAddDataForm>
 				</Action>-->
-				<Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= (Not Page.Fields!DEPARTUREEXISTS) Or (Page.Fields!REACTIVATED)">
+				<Action ID="d9854646-7319-4701-a0c6-ac447e93ec04" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square" Visible="= (Not Page.Fields!CURRENTLYDEPARTED)">
 					<ShowAddDataForm DataFormID="ac89e520-149a-4a66-83c2-1e5e906a5809" xmlns="bb_appfx_commontypes">
 						<ActionContext>
 							<PageContextID />
@@ -888,7 +889,7 @@
 							<RefreshPage />
 						</PostActionEvent>
 					</ShowAddDataForm>
-				</Action>
+				</Action>				
 				<Action ID="B0116858-7D0C-489A-AC36-BB1FF6868EEF" Caption="Departure transfer" ImageKey="RES:BusinessProcessSpec" Visible="=(Page.Fields!DEPARTUREEXISTS) and (Page.Fields!ACTIVESPONSORS > 0) and (Page.Fields!PENDINGTRANSFERSOUT = 0)">
 					<StartBusinessProcess BusinessProcessID="7ee47ea0-8e7f-475c-a1c3-3b4b127e9136" StatusPageID="177290bd-6da5-456a-972e-3f1e73708637" StatusTabID="00000000-0000-0000-0000-000000000000" PreprocessEditFormID="10be203e-8bdb-45ef-870e-ce91e0b0cd8a" xmlns="bb_appfx_commontypes">
 						<ActionContext>
@@ -940,7 +941,17 @@
 						</PostActionEvent>
 					</ShowAddDataForm>
 				</Action>
-				<Action ID="66f429df-986b-41f1-8202-404223dce0d4" Caption="=String.Format(&quot;Reactivate {0}&quot;, Page.Fields!FIRSTNAME)" Visible="=Page.Fields!DEPARTUREEXISTS">
+				<!--<Action ID="66f429df-986b-41f1-8202-404223dce0d4" Caption="=String.Format(&quot;Reactivate {0}&quot;, Page.Fields!FIRSTNAME)" Visible="=Page.Fields!DEPARTUREEXISTS">
+					<ShowAddDataForm DataFormID="9ec34013-82e8-47e2-a4f1-100d56e31fe1" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</ShowAddDataForm>
+				</Action>-->
+				<Action ID="66f429df-986b-41f1-8202-404223dce0d4" Caption="=String.Format(&quot;Reactivate {0}&quot;, Page.Fields!FIRSTNAME)" Visible="=(Page.Fields!CURRENTLYDEPARTED) And (Not Page.Fields!REACTIVATED)">
 					<ShowAddDataForm DataFormID="9ec34013-82e8-47e2-a4f1-100d56e31fe1" xmlns="bb_appfx_commontypes">
 						<ActionContext>
 							<PageContextID />
