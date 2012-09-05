@@ -9,7 +9,7 @@
 
 	<!-- 
 	Remarks:	The 'Completing Program in 12 Months' pending reason is added if the child/children are within 12 months (@CompletionDateThreshold) of their Current Completion Date
-				Also, the child needs to not be sponsored.
+				It now includes sponsored and unsponsored kids.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
 				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
@@ -20,6 +20,7 @@
     27-Mar-2012		CMayeda			Initial Version
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	04-Sep-2012		CMayeda			Removed the Sponsored criteria
 	-->
 
 	<CreateProcedureSQL>
@@ -66,24 +67,24 @@ as begin
 	-- This needs to be set to off for the output parms to be set properly
 	SET NOCOUNT OFF
 	
-	-- Remove 'Completing Program in 12 Months' pending reasons if the child shouldn't have it (more than 12 months from Current Completion Date or sponsored)
+	-- Remove 'Completing Program in 12 Months' pending reasons if the child shouldn't have it (more than 12 months from Current Completion Date)
 	delete	dbo.SPONSORSHIPOPPORTUNITYREASON 
 	  from	dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
 	 where	-- Find children who are specified to be reviewed and have the 'Completing Program in 12 Months' pending reason 
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   and	so_reason.SPONSORSHIPREASONID = @ProgramCompletionID	   
 	   
-	   -- Find children that shouldn't have the pending reason anymore because they aren't within 12 months of the Current Completion Date and unsponsored
+	   -- Find children that shouldn't have the pending reason anymore because they aren't within 12 months of the Current Completion Date 
 	   and not exists (select so_child.ID 
 						 from dbo.SPONSORSHIPOPPORTUNITYCHILD so_child  
 	               inner join dbo.USR_CHILDEXTENSION childext on so_child.ID = childext.SPONSORSHIPOPPORTUNITYCHILDID
 						where so_child.ID = so_reason.SPONSORSHIPOPPORTUNITYID
-					      and dateadd (mm, (@CompletionDateThreshold * -1), childext.CURRENTPROGRAMCOMPLETIONDATE) <= getdate() 
-					      and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0)
+					      and dateadd (mm, (@CompletionDateThreshold * -1), childext.CURRENTPROGRAMCOMPLETIONDATE) <= getdate() )
+--					      and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0)
 									         				
 	set @DELETEDROWS = @@ROWCOUNT
 	
-	-- Insert 'Completing Program in 12 Months' pending reason if the child/children are less than or equal to 12 months from Current Completion Date and not sponsored
+	-- Insert 'Completing Program in 12 Months' pending reason if the child/children are less than or equal to 12 months from Current Completion Date 
 	insert dbo.SPONSORSHIPOPPORTUNITYREASON
 				(SPONSORSHIPOPPORTUNITYID,
 				 SPONSORSHIPREASONID,				
@@ -114,7 +115,7 @@ as begin
 
 				-- Check Completion Date and verify that child is not sponsored
 		   and	dateadd (mm, (@CompletionDateThreshold * -1), childext.CURRENTPROGRAMCOMPLETIONDATE) <= getdate() 
-		   and	dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0
+--		   and	dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0
 		
 				-- Don't add to ineligible kids that are not quota waiting list
 		   and	not exists (select ID from SPONSORSHIPOPPORTUNITY so 
