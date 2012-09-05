@@ -12,6 +12,7 @@
 	22-Aug-2012		CMayeda			Added goto task for Child Project
 	03-Sep-2012		CMayeda			Added Departure Transfer
 	04-Sep-2012		Memphis			Updated the Departure/Reactivation Tab, Depart & Reactivate Action Tasks
+	05-Sep-2012		CMayeda			Removed old Child Departure page expression
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -1060,7 +1061,6 @@
 	<HelpKey>SPSponsorshipOpportunityPage.html</HelpKey>
 	<PageExpressionForms>
 		<!--PageExpressionForm DataFormInstanceID="0656af60-2c61-49be-bced-4c9018b107eb" />-->
-		<PageExpressionForm DataFormInstanceID="90579643-32b2-48ef-9c53-5ee3e6213ca7" />
 		<PageExpressionForm DataFormInstanceID="4c5654c6-93b2-494d-862b-5887bc96f972" />
 		<PageExpressionForm DataFormInstanceID="20a1c198-6745-49f0-984d-3751558113f2" />
 	</PageExpressionForms>
