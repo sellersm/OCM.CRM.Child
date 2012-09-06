@@ -427,6 +427,8 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reservations\ChildReservation.DataList.xml" />
+    <EmbeddedResource Include="Tables\ChildReservation.Table.xml" />
     <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetFundedYes.RecordOperation.xml" />
     <Content Include="Batch\ChildExtension.BatchStarted.Table.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID.xml" />

@@ -13,6 +13,7 @@
 	03-Sep-2012		CMayeda			Added Departure Transfer
 	04-Sep-2012		Memphis			Updated the Departure/Reactivation Tab, Depart & Reactivate Action Tasks
 	05-Sep-2012		CMayeda			Removed old Child Departure page expression
+	05-Sep-2012		CMayeda			Added new reservation datalist
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -419,6 +420,13 @@
 						</RenderStyle>
 					</DataList>
 				</Section>
+				<Section ID="79fdce8b-df4c-422f-8058-c65a06c4f1eb" Caption="Reservations">
+					<DataList ID="d68b299b-7960-4805-b178-bce9216574a8">
+						<RenderStyle>
+							<StandardView AutoSize="true" />
+						</RenderStyle>
+					</DataList>
+				</Section>			
 			</Sections>
 		</Tab>
 
