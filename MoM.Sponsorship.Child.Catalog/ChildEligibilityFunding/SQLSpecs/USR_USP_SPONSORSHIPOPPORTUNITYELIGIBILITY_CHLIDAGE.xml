@@ -8,8 +8,7 @@
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE"	>
 
 	<!-- 
-	Remarks:	The 'Child is 16 years or older' pending reason is added if the child/children are over 16.5 years, which @maxValidAge is set to (in months)
-				Also, the child needs to not be sponsored.
+	Remarks:	The 'Child is 16 years or older' pending reason is added if the child/children are over 16.5 years, which @maxValidAge is set to (in months)				
 				
 				This uses UFN_DATE_EARLIESTFROMFUZZYDATE to convert the birthdate (estimate or actual) to a datetime.  
 				It uses the first day of the month if not specified and January if the month is not specified.
@@ -24,6 +23,7 @@
 	29-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTERID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
 	25-Aug-2012		CMayeda			Standardized camel case of variables
+	11-Sep-2012		CMayeda			Removed the Not Sponsored criteria Fogbugz Case 814
 	-->
 
 	<CreateProcedureSQL>
@@ -84,8 +84,8 @@ begin
 	   and	not exists  (select	ID 
 						   from	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child  			 		           
 					      where so_child.ID = so_reason.SPONSORSHIPOPPORTUNITYID
-						   and dateadd (mm, @maxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate() 
-					       and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0)
+						   and dateadd (mm, @maxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate())
+					       -- and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so_child.ID) = 0) Removed per Fogbugz Case 814
 									         				
 	set @deletedRows = @@ROWCOUNT
 	
@@ -115,7 +115,7 @@ begin
 
 				-- Check Age and verify that child is not sponsored
 		    and dateadd (mm, @maxValidAge, dbo.UFN_DATE_EARLIESTFROMFUZZYDATE(so_child.BIRTHDATE)) <= getdate()
-			and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(ID) = 0
+			-- and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(ID) = 0 Removed per Fogbugz Case 814
 			
 			-- Don't add to ineligible kids that are not quota waiting list
 		    and not exists (select ID from SPONSORSHIPOPPORTUNITY so 

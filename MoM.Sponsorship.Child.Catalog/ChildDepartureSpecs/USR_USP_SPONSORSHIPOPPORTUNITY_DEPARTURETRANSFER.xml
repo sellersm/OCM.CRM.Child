@@ -9,14 +9,12 @@
 	GrantServiceRolePermission="true" >
 
 	<!-- 
-	Remarks:    Used to create departure call interaction on the financial sponsor's record
+	Remarks:    Used to create departure call interaction on the financial sponsor's record and to set the recurring gift to held if it is EFT
 
 	History:
 	Date            Modified By     Comments
-	03-Sep-2012		CMayeda			Initial Version
-	************  NEED TO FINISH  **************
-	Departure reason and Departure other reason (waiting on questions to be answered)
-	Set EFT gift to held
+	03-Sep-2012		CMayeda			Initial Beta Version for demo
+	11-Sep-2012		CMayeda			Completed initial version 
 	-->
 
 	<CreateProcedureSQL>
@@ -30,6 +28,9 @@ as begin
 		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output;
 
 	-- Constants
+	declare @revenueScheduleStatusCode_Active tinyint = 0
+	declare @revenueScheduleStatusCode_Held tinyint = 1
+
 	declare @callCenterManagerConstituentID uniqueidentifier = 'B25168DC-4DD4-46ED-B4DD-C5A26A965667'
 
 	declare @interactionCategoryDesc nvarchar(100) = 'Sponsorship Transfers'
@@ -50,10 +51,31 @@ as begin
 	declare @interactionResponse_Unknown nvarchar(100) = 'Unknown'
 	
 	
+	
+	
+	declare @departureLivesWithRelatives_Description varchar(100) = 'Child gone to live with relatives'
+	declare @departureFamilyMoved_Description varchar(100) = 'Moved from project area'
+	declare @departureFamilyNowProvides_Description varchar(100) = 'Family now provides for child'
+	declare @departureProjectTooFar_Description varchar(100) = 'Too far for the child to attend'
+	declare @departureRemovedByParents_Description varchar(100) = 'Removed by parents'
+	declare @departureLackOfInterest_Description varchar(100) = 'Lack of interest or commitment'
+	declare @departureNeededAtHome_Description varchar(100) = 'Needed at home to help family'
+	declare @departureEmployed_Description varchar(100) = 'Employed to help family'
+	declare @departureTransferred_Description varchar(100) = 'Transferred to a different school'
+	declare @departureFailed_Description varchar(100) = 'Failed school courses'
+	declare @departureDeathOfChild_Description varchar(100) = 'Death of child'
+	declare @departureIllness_Description varchar(100) = 'Illness'
+	declare @departurePregnancy_Description varchar(100) = 'Pregnancy'
+	declare @departureMarried_Description varchar(100) = 'Married'
+				
+	declare @departureCompletedProgram_Description varchar(100) = 'Child completed program'
+	declare @departureOther_Description varchar(100) = 'Child departure reason is Other'
+	declare @departureUnknown_Description varchar(100) = 'Unknown child departure type'
+	declare @departureUnknownAdminCode_Description varchar(100) = 'Unknown administrative code'
+
+	declare @departureAdministrative_Description varchar(100) = null
 	declare @financialSponsorID uniqueidentifier = null
 		
-	declare @sponsorshipID uniqueidentifier 
-
 	declare @interactionSummary nvarchar(100) = ''
 	declare @interactionSubcategoryDesc nvarchar(100) = ''
 	
@@ -61,47 +83,124 @@ as begin
 	declare @departureDeath bit = 0
 	declare @departureAdminCodeID uniqueidentifier = null
 	declare @departureOther bit = 0
-	--declare @departureOtherReason nvarchar(250)
-	
+	declare @departureLivesWithRelatives bit = 0
+	declare @departureFamilyMoved bit = 0
+	declare @departureFamilyNowProvides bit = 0
+	declare @departureProjectTooFar bit = 0
+	declare @departureRemovedByParents bit = 0
+	declare @departureLackOfInterest bit = 0
+	declare @departureNeededAtHome bit = 0
+	declare @departureEmployed bit = 0
+	declare @departureTransferred bit = 0
+	declare @departureFailed bit = 0
+	declare @departureDeathOfChild bit = 0
+	declare @departureIllness bit = 0
+	declare @departurePregnancy bit = 0	
+	declare @departureMarried bit = 0
+
+				
 	begin try
 		set @financialSponsorID = dbo.USR_UFN_SPONSORSHIP_GETFINANCIALSPONSOR_BYSPONSORSHIPOPP (@sponsorshipOpportunityChildID)
 		if @financialSponsorID is null
 			raiserror 10000 'Could not find Financial Sponsor. No interactions were created, and the recurring gift was not processed (held if EFT).'
 
-		select	@departureTypeCode = DEPARTURETYPECODE,
+		-- Get Departure info for Interaction
+		declare @departureExists bit = 0
+		select	@departureExists = 1,
+				@departureTypeCode = DEPARTURETYPECODE,
 				@departureDeath = DEPARTURE_DEATHOFCHILD,
-				@departureAdminCodeID = ADMINISTRATIVECODEID, 
+				@departureAdministrative_Description = (select DESCRIPTION from dbo.USR_DEPARTURE_ADMINISTRATIVE_CODE where ID = ADMINISTRATIVECODEID),
 				@departureOther = case 
 									when isnull (DEPARTURE_OTHER, '') = '' then 0
 								    else 1
-								  end
-				--@departureOtherReason = DEPARTURE_OTHER,
+								  end,
+				@departureLivesWithRelatives = DEPARTURE_LIVESWITHRELATIVES,
+				@departureFamilyMoved = DEPARTURE_FAMILYMOVED,
+				@departureFamilyNowProvides = DEPARTURE_FAMILYNOWPROVIDES,
+				@departureProjectTooFar = DEPARTURE_PROJECTTOOFAR,
+				@departureRemovedByParents = DEPARTURE_REMOVEDBYPARENTS,
+				@departureLackOfInterest = DEPARTURE_LACKOFINTEREST,
+				@departureNeededAtHome = DEPARTURE_NEEDEDATHOME,
+				@departureEmployed = DEPARTURE_EMPLOYED,
+				@departureTransferred = DEPARTURE_TRANSFERRED,
+				@departureFailed = DEPARTURE_FAILED,
+				@departureDeathOfChild = DEPARTURE_DEATHOFCHILD,
+				@departureIllness = DEPARTURE_ILLNESS,
+				@departurePregnancy = DEPARTURE_PREGNANCY,
+				@departureMarried = DEPARTURE_MARRIED
+				
 		  from	dbo.USR_CHILDDEPARTURE
 		 where	ISCURRENTDEPARTURECODE = 1
 		   and	SPONSORSHIPOPPORTUNITYCHILDID = @sponsorshipOpportunityChildID
 
+
+		if @departureExists = 0
+			raiserror 10000 'Could not departure form. No interactions were created, and the recurring gift was not processed (held if EFT).'
+
+		
+		declare @sponsorshipID uniqueidentifier = null
+		set @sponsorshipID  = dbo.USR_UFN_SPONSORSHIP_GETSPONSORSHIPID (@sponsorshipOpportunityChildID)
+		
+		if @sponsorshipID  is null
+			raiserror 10000 'Could not find an active sponsorship for the child. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			
+         if dbo.USR_UFN_SPONSORSHIP_ISEFT (@sponsorshipID) = 1		-- If the recurring gift is paid through EFT
+         begin
+			-- if the recurring gift is active set it to held
+			update	dbo.REVENUESCHEDULE 
+			   set	STATUSCODE = @revenueScheduleStatusCode_Held,
+					CHANGEDBYID = @changeAgentID,
+					DATECHANGED = getdate()
+			 where	ID IN ( select	REVENUESCHEDULE.ID
+							  from	dbo.SPONSORSHIP
+							  join	dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+							  join	dbo.REVENUESCHEDULE on REVENUESCHEDULE.ID = REVENUESPLIT.REVENUEID
+							 where	SPONSORSHIP.ID = @sponsorshipID
+							   and	REVENUESCHEDULE.STATUSCODE = @revenueScheduleStatusCode_Active 
+					)
+		end
+
+
+		-- Determine Summary and Subcategory for interaction based on Departure
 		if 	@departureDeath = 1
 		begin
-			set @interactionSummary = 'Death of child'
+			set @interactionSummary = @departureDeathOfChild_Description
 			set @interactionSubcategoryDesc = @interactionSubcategoryDesc_DeathOfChild
 		end
 		
 		else
 		begin
 			set @interactionSummary =	case 
-											when @departureTypeCode = @departureTypeCode_Completion							then 'Child completed program'
-											when @departureTypeCode = @departureTypeCode_Administrative						then (select DESCRIPTION from dbo.USR_DEPARTURE_ADMINISTRATIVE_CODE where ID = @departureAdminCodeID)
-											when @departureTypeCode = @departureTypeCode_Departure and @departureOther = 1	then 'Other reason child is ineligible'  --??
-											when @departureTypeCode = @departureTypeCode_Departure and @departureOther = 0	then 'Child departure'  -- Need to add specific reason
-											else 'unknown departure type'
+											when @departureTypeCode = @departureTypeCode_Completion							then @departureOther_Description
+											when @departureTypeCode = @departureTypeCode_Administrative						then coalesce (@departureAdministrative_Description, @departureUnknownAdminCode_Description)
+											when @departureTypeCode = @departureTypeCode_Departure and @departureOther = 1	then @departureOther_Description
+											when @departureTypeCode = @departureTypeCode_Departure and @departureOther = 0	then -- Child departure - use specific reason
+												case 
+													when @departureLivesWithRelatives = 1 then @departureLivesWithRelatives_Description
+													when @departureFamilyMoved = 1 then @departureFamilyMoved_Description
+													when @departureFamilyNowProvides = 1 then @departureFamilyNowProvides_Description
+													when @departureProjectTooFar = 1 then @departureProjectTooFar_Description
+													when @departureRemovedByParents = 1 then @departureRemovedByParents_Description
+													when @departureLackOfInterest = 1 then @departureLackOfInterest_Description
+													when @departureNeededAtHome = 1 then @departureNeededAtHome_Description
+													when @departureEmployed = 1 then @departureEmployed_Description
+													when @departureTransferred = 1 then @departureTransferred_Description
+													when @departureFailed = 1 then @departureFailed_Description
+													when @departureDeathOfChild = 1 then @departureDeathOfChild_Description
+													when @departureIllness = 1 then @departureIllness_Description
+													when @departurePregnancy = 1 then @departurePregnancy_Description
+													when @departureMarried = 1 then @departureMarried_Description
+													else @departureUnknown_Description
+												end
+											else @departureUnknown_Description
 										end
-
-			if @interactionSummary is null
-				set @interactionSummary = 'Unknown Administrative code'
 
 			set @interactionSubcategoryDesc = @interactionSubcategoryDesc_DepartureNotification 
 
 		end
+		
+		
+		-- Create Departure Notification Interaction on Financial Sponsor's record
 		
 		declare @interactionID uniqueidentifier = null
 		declare @currentDate date = getdate()
