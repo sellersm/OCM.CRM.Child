@@ -26,11 +26,11 @@ create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CCH_WOHILIVEWITH
   @MOTHERWORKSASCODE nvarchar(max) = null output,
   @CAREGIVERRELATIONCODE nvarchar(max) = null output,
   @CAREGIVERREASONCODE nvarchar(max) = null output,
-  @FATHERWORKSASOTHER nvarchar(50) = null output,
-  @MOTHERWORKSASOTHER nvarchar(50) = null output,
+  @FATHERWORKSASOTHER nvarchar(100) = null output,
+  @MOTHERWORKSASOTHER nvarchar(100) = null output,
   @CAREGIVERRELATIONOTHER nvarchar(50) = null output,
   @CAREGIVERWORKSASCODE nvarchar(max) = null output,
-  @CAREGIVERWORKSASOTHER nvarchar(50) = null output,
+  @CAREGIVERWORKSASOTHER nvarchar(100) = null output,
   @REASONFORCAREGIVEROTHER nvarchar(50) = null output
 )
 as

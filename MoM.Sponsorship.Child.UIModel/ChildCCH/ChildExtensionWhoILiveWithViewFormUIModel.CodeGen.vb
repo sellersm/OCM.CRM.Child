@@ -92,7 +92,7 @@ Partial Public Class [ChildExtensionWhoILiveWithViewFormUIModel]
         _fatherworksasother.Name = "FATHERWORKSASOTHER"
         _fatherworksasother.Caption = "Details/Other"
         _fatherworksasother.DBReadOnly = True
-        _fatherworksasother.MaxLength = 50
+		_fatherworksasother.MaxLength = 100
         Me.Fields.Add(_fatherworksasother)
         '
         '_motherworksascode
@@ -107,7 +107,7 @@ Partial Public Class [ChildExtensionWhoILiveWithViewFormUIModel]
         _motherworksasother.Name = "MOTHERWORKSASOTHER"
         _motherworksasother.Caption = "Details/Other"
         _motherworksasother.DBReadOnly = True
-        _motherworksasother.MaxLength = 50
+		_motherworksasother.MaxLength = 100
         Me.Fields.Add(_motherworksasother)
         '
         '_caregiverrelationcode
@@ -137,7 +137,7 @@ Partial Public Class [ChildExtensionWhoILiveWithViewFormUIModel]
         _caregiverworksasother.Name = "CAREGIVERWORKSASOTHER"
         _caregiverworksasother.Caption = "Details/Other"
         _caregiverworksasother.DBReadOnly = True
-        _caregiverworksasother.MaxLength = 50
+		_caregiverworksasother.MaxLength = 100
         Me.Fields.Add(_caregiverworksasother)
         '
         '_caregiverreasoncode

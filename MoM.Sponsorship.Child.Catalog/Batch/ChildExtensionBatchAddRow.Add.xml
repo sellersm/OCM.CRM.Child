@@ -38,13 +38,13 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDEXTENSIONBATCHROW
 		@CHILDNAMESUFFIXCODEID uniqueidentifier = null,
 		@CHILDLIVESWITHCODEID uniqueidentifier = null,
 		@FATHERWORKSASCODEID uniqueidentifier = null,
-		@FATHERWORKSASOTHER nvarchar(50) = '',
+		@FATHERWORKSASOTHER nvarchar(100) = '',
 		@MOTHERWORKSASCODEID uniqueidentifier = null,
-		@MOTHERWORKSASOTHER nvarchar(50) = '',
+		@MOTHERWORKSASOTHER nvarchar(100) = '',
 		@CAREGIVERRELATIONCODEID uniqueidentifier = null,
 		@CAREGIVERRELATIONOTHER nvarchar(50) = '',
 		@CAREGIVERWORKSASCODEID uniqueidentifier = null,
-		@CAREGIVERWORKSASOTHER nvarchar(50) = '',
+		@CAREGIVERWORKSASOTHER nvarchar(100) = '',
 		@CAREGIVERREASONCODEID uniqueidentifier = null,
 		@REASONFORCAREGIVEROTHER nvarchar(50) = '',
 		@NUMBEROFSISTERS tinyint = 0,
@@ -248,11 +248,11 @@ return 0
 			<common:FormField FieldID="FATHERWORKSASCODEID" DataType="Guid" Required="false" Caption="Father Works As">
 				<common:CodeTable CodeTableName="USR_FATHERWORKSASCODE" />
 			</common:FormField>
-			<common:FormField FieldID="FATHERWORKSASOTHER" MaxLength="50" Caption="Father Works As Other" />
+			<common:FormField FieldID="FATHERWORKSASOTHER" MaxLength="100" Caption="Father Works As Other" />
 			<common:FormField FieldID="MOTHERWORKSASCODEID" DataType="Guid" Required="false" Caption="Mother Works As">
 				<common:CodeTable CodeTableName="USR_MOTHERWORKSASCODE" />
 			</common:FormField>
-			<common:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="50" Caption="Mother Works As Other" />
+			<common:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="100" Caption="Mother Works As Other" />
 			<common:FormField FieldID="CAREGIVERRELATIONCODEID" DataType="Guid" Caption="Caregiver Relation">
 				<common:CodeTable CodeTableName="USR_CAREGIVERRELATIONCODE" />
 			</common:FormField>
@@ -260,7 +260,7 @@ return 0
 			<common:FormField FieldID="CAREGIVERWORKSASCODEID" DataType="Guid" Caption="Caregiver Works As">
 				<common:CodeTable CodeTableName="USR_CAREGIVERWORKSASCODE" />
 			</common:FormField>
-			<common:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="50" Caption="Caregiver Works As Other" />
+			<common:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="100" Caption="Caregiver Works As Other" />
 			<common:FormField FieldID="CAREGIVERREASONCODEID" DataType="Guid" Caption="Caregiver Reason">
 				<common:CodeTable CodeTableName="USR_CAREGIVERREASONCODE" />
 			</common:FormField>

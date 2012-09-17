@@ -263,7 +263,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         '
         _fatherworksasother.Name = "FATHERWORKSASOTHER"
         _fatherworksasother.Caption = "Father Works as Other"
-        _fatherworksasother.MaxLength = 50
+		_fatherworksasother.MaxLength = 100
         Me.Fields.Add(_fatherworksasother)
         '
         '_motherworksascodeid
@@ -278,7 +278,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         '
         _motherworksasother.Name = "MOTHERWORKSASOTHER"
         _motherworksasother.Caption = "Mother Works as Other"
-        _motherworksasother.MaxLength = 50
+		_motherworksasother.MaxLength = 100
         Me.Fields.Add(_motherworksasother)
         '
         '_caregiverrelationcodeid
@@ -306,7 +306,7 @@ Partial Public Class [ChildExtensionTableAddFormUIModel]
         '
         _caregiverworksasother.Name = "CAREGIVERWORKSASOTHER"
         _caregiverworksasother.Caption = "Caregiver Works as Other"
-        _caregiverworksasother.MaxLength = 50
+		_caregiverworksasother.MaxLength = 100
         Me.Fields.Add(_caregiverworksasother)
         '
         '_caregiverreasoncodeid

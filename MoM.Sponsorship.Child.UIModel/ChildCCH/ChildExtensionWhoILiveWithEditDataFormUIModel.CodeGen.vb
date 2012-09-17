@@ -91,7 +91,7 @@ Partial Public Class [ChildExtensionWhoILiveWithEditDataFormUIModel]
         '
         _fatherworksasother.Name = "FATHERWORKSASOTHER"
         _fatherworksasother.Caption = "Details/Other"
-        _fatherworksasother.MaxLength = 50
+		_fatherworksasother.MaxLength = 100
         Me.Fields.Add(_fatherworksasother)
         '
         '_motherworksascodeid
@@ -105,7 +105,7 @@ Partial Public Class [ChildExtensionWhoILiveWithEditDataFormUIModel]
         '
         _motherworksasother.Name = "MOTHERWORKSASOTHER"
         _motherworksasother.Caption = "Details/Other"
-        _motherworksasother.MaxLength = 50
+		_motherworksasother.MaxLength = 100
         Me.Fields.Add(_motherworksasother)
         '
         '_caregiverrelationcodeid
@@ -133,7 +133,7 @@ Partial Public Class [ChildExtensionWhoILiveWithEditDataFormUIModel]
         '
         _caregiverworksasother.Name = "CAREGIVERWORKSASOTHER"
         _caregiverworksasother.Caption = "Details/Other"
-        _caregiverworksasother.MaxLength = 50
+		_caregiverworksasother.MaxLength = 100
         Me.Fields.Add(_caregiverworksasother)
         '
         '_caregiverreasoncodeid

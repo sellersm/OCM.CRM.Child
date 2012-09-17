@@ -27,13 +27,13 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_EXTENSION_TABLE
     @CHILDAGE tinyint = null output,
     @CHILDLIVESWITHCODEID uniqueidentifier = null output,
     @FATHERWORKSASCODEID uniqueidentifier = null output,
-    @FATHERWORKSASOTHER nvarchar(50) = null output,
+    @FATHERWORKSASOTHER nvarchar(100) = null output,
     @MOTHERWORKSASCODEID uniqueidentifier = null output,
-    @MOTHERWORKSASOTHER nvarchar(50) = null output,
+    @MOTHERWORKSASOTHER nvarchar(100) = null output,
     @CAREGIVERRELATIONCODEID uniqueidentifier = null output,
     @CAREGIVERRELATIONOTHER nvarchar(50) = null output,
     @CAREGIVERWORKSASCODEID uniqueidentifier = null output,
-    @CAREGIVERWORKSASOTHER nvarchar(50) = null output,
+    @CAREGIVERWORKSASOTHER nvarchar(100) = null output,
     @CAREGIVERREASONCODEID uniqueidentifier = null output,
     @REASONFORCAREGIVEROTHER nvarchar(50) = null output,
     @NUMBEROFSISTERS tinyint = null output,
@@ -191,13 +191,13 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_CHILD_EXTENSION_TABLE
     @CHILDAGE tinyint,
     @CHILDLIVESWITHCODEID uniqueidentifier,
     @FATHERWORKSASCODEID uniqueidentifier,
-    @FATHERWORKSASOTHER nvarchar(50),
+    @FATHERWORKSASOTHER nvarchar(100),
     @MOTHERWORKSASCODEID uniqueidentifier,
-    @MOTHERWORKSASOTHER nvarchar(50),
+    @MOTHERWORKSASOTHER nvarchar(100),
     @CAREGIVERRELATIONCODEID uniqueidentifier,
     @CAREGIVERRELATIONOTHER nvarchar(50),
     @CAREGIVERWORKSASCODEID uniqueidentifier,
-    @CAREGIVERWORKSASOTHER nvarchar(50),
+    @CAREGIVERWORKSASOTHER nvarchar(100),
     @CAREGIVERREASONCODEID uniqueidentifier,
     @REASONFORCAREGIVEROTHER nvarchar(50),
     @NUMBEROFSISTERS tinyint,
@@ -378,11 +378,11 @@ return 0;
             <c:FormField FieldID="FATHERWORKSASCODEID" DataType="Guid" Required="true" Caption="Fatherworksas">
                 <c:CodeTable CodeTableName="USR_FATHERWORKSASCODE" />
             </c:FormField>
-            <c:FormField FieldID="FATHERWORKSASOTHER" MaxLength="50" Caption="Fatherworksasother" />
+            <c:FormField FieldID="FATHERWORKSASOTHER" MaxLength="100" Caption="Fatherworksasother" />
             <c:FormField FieldID="MOTHERWORKSASCODEID" DataType="Guid" Required="true" Caption="Motherworksas">
                 <c:CodeTable CodeTableName="USR_MOTHERWORKSASCODE" />
             </c:FormField>
-            <c:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="50" Caption="Motherworksasother" />
+            <c:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="100" Caption="Motherworksasother" />
             <c:FormField FieldID="CAREGIVERRELATIONCODEID" DataType="Guid" Caption="Caregiverrelation">
                 <c:CodeTable CodeTableName="USR_CAREGIVERRELATIONCODE" />
             </c:FormField>
@@ -390,7 +390,7 @@ return 0;
             <c:FormField FieldID="CAREGIVERWORKSASCODEID" DataType="Guid" Caption="Caregiverworksas">
                 <c:CodeTable CodeTableName="USR_CAREGIVERWORKSASCODE" />
             </c:FormField>
-            <c:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="50" Caption="Caregiverworksasother" />
+            <c:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="100" Caption="Caregiverworksasother" />
             <c:FormField FieldID="CAREGIVERREASONCODEID" DataType="Guid" Caption="Caregiverreason">
                 <c:CodeTable CodeTableName="USR_CAREGIVERREASONCODE" />
             </c:FormField>

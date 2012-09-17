@@ -25,13 +25,13 @@ create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CHILD_EXTENSION_TABLE
     @CHILDAGE tinyint = null output,
     @CHILDLIVESWITHCODE nvarchar(100) = null output,
     @FATHERWORKSASCODE nvarchar(100) = null output,
-    @FATHERWORKSASOTHER nvarchar(50) = null output,
+    @FATHERWORKSASOTHER nvarchar(100) = null output,
     @MOTHERWORKSASCODE nvarchar(100) = null output,
-    @MOTHERWORKSASOTHER nvarchar(50) = null output,
+    @MOTHERWORKSASOTHER nvarchar(100) = null output,
     @CAREGIVERRELATIONCODE nvarchar(100) = null output,
     @CAREGIVERRELATIONOTHER nvarchar(50) = null output,
     @CAREGIVERWORKSASCODE nvarchar(100) = null output,
-    @CAREGIVERWORKSASOTHER nvarchar(50) = null output,
+    @CAREGIVERWORKSASOTHER nvarchar(100) = null output,
     @CAREGIVERREASONCODE nvarchar(100) = null output,
     @REASONFORCAREGIVEROTHER nvarchar(50) = null output,
     @NUMBEROFSISTERS tinyint = null output,
@@ -179,13 +179,13 @@ as
             <c:FormField FieldID="CHILDAGE" DataType="TinyInt" Caption="Childage" />
             <c:FormField FieldID="CHILDLIVESWITHCODE" MaxLength="100" Caption="Childliveswith" />
             <c:FormField FieldID="FATHERWORKSASCODE" MaxLength="100" Caption="Fatherworksas" />
-            <c:FormField FieldID="FATHERWORKSASOTHER" MaxLength="50" Caption="Fatherworksasother" />
+            <c:FormField FieldID="FATHERWORKSASOTHER" MaxLength="100" Caption="Fatherworksasother" />
             <c:FormField FieldID="MOTHERWORKSASCODE" MaxLength="100" Caption="Motherworksas" />
-            <c:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="50" Caption="Motherworksasother" />
+            <c:FormField FieldID="MOTHERWORKSASOTHER" MaxLength="100" Caption="Motherworksasother" />
             <c:FormField FieldID="CAREGIVERRELATIONCODE" MaxLength="100" Caption="Caregiverrelation" />
             <c:FormField FieldID="CAREGIVERRELATIONOTHER" MaxLength="50" Caption="Caregiverrelationother" />
             <c:FormField FieldID="CAREGIVERWORKSASCODE" MaxLength="100" Caption="Caregiverworksas" />
-            <c:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="50" Caption="Caregiverworksasother" />
+            <c:FormField FieldID="CAREGIVERWORKSASOTHER" MaxLength="100" Caption="Caregiverworksasother" />
             <c:FormField FieldID="CAREGIVERREASONCODE" MaxLength="100" Caption="Caregiverreason" />
             <c:FormField FieldID="REASONFORCAREGIVEROTHER" MaxLength="50" Caption="Reasonforcaregiverother" />
             <c:FormField FieldID="NUMBEROFSISTERS" DataType="TinyInt" Caption="Numberofsisters" />

@@ -28,11 +28,11 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_CCH_WHOILIVEWITH(
   @MOTHERWORKSASCODEID uniqueidentifier = null output,
   @CAREGIVERRELATIONCODEID uniqueidentifier = null output,
   @CAREGIVERREASONCODEID uniqueidentifier = null output,
-  @FATHERWORKSASOTHER nvarchar(50) = null output,
-  @MOTHERWORKSASOTHER nvarchar(50) = null output,
+  @FATHERWORKSASOTHER nvarchar(100) = null output,
+  @MOTHERWORKSASOTHER nvarchar(100) = null output,
   @CAREGIVERRELATIONOTHER nvarchar(50) = null output,
   @CAREGIVERWORKSASCODEID uniqueidentifier = null output,
-  @CAREGIVERWORKSASOTHER nvarchar(50) = null output,
+  @CAREGIVERWORKSASOTHER nvarchar(100) = null output,
   @REASONFORCAREGIVEROTHER nvarchar(50) = null output
 )
 as
@@ -83,11 +83,11 @@ create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_CCH_WHOILIVEWITH (
   @MOTHERWORKSASCODEID uniqueidentifier,
   @CAREGIVERRELATIONCODEID uniqueidentifier,
   @CAREGIVERREASONCODEID uniqueidentifier,
-  @FATHERWORKSASOTHER nvarchar(50),
-  @MOTHERWORKSASOTHER nvarchar(50),
+  @FATHERWORKSASOTHER nvarchar(100),
+  @MOTHERWORKSASOTHER nvarchar(100),
   @CAREGIVERRELATIONOTHER nvarchar(50),
   @CAREGIVERWORKSASCODEID uniqueidentifier,
-  @CAREGIVERWORKSASOTHER nvarchar(50),
+  @CAREGIVERWORKSASOTHER nvarchar(100),
   @REASONFORCAREGIVEROTHER nvarchar(50)
 )
 as

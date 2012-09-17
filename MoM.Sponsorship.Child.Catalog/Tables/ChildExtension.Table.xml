@@ -16,6 +16,7 @@
     25-Jul-2012		CMayeda			Added trigger for Child Lookup IDs
     13-Aug-2012		Memphis			Removed the field: WHENIAMATSCHOOLILIKELEARNING
     22-Aug-2012		Memphis			took out old commented fields
+	17-Sep-2012		Memphis			Added the Departure Form Received, increased field size of "Other" fields (MotherWorksAsOther, FatherWorksAsOther, CaregiverWorksAsOther)
     -->
 
     <Fields>
@@ -30,16 +31,16 @@
     <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>    
     <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
     <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="false"/>
-    <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
     <CodeTableField Description="Mother works as code value" CodeTable="USR_MOTHERWORKSASCODE" Name="MOTHERWORKSASCODEID" Required="false"/>
-    <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
     <CodeTableField CodeTable="USR_CAREGIVERRELATIONCODE" Description="CareGiver Relation Code Values" Name="CAREGIVERRELATIONCODEID" Required="false"/>
     <TextField Description="Caregiver relation other value" Name="CAREGIVERRELATIONOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
     <CodeTableField CodeTable="USR_CAREGIVERWORKSASCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERWORKSASCODEID" Required="false"/>
-    <TextField Description="Caregiver Works As Other value" Name="CAREGIVERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Caregiver Works As Other value" Name="CAREGIVERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
     <CodeTableField CodeTable="USR_CAREGIVERREASONCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERREASONCODEID" Required="false"/>
     <TextField Description="ReasonForCaregiverOther" Name="REASONFORCAREGIVEROTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
@@ -120,6 +121,8 @@
         
         <!-- Not sure what length to use, awaiting a reply from Pamela/Cary -->
         <TextField Description="Nickname" Name="CHILDNICKNAME" Length="100" Required="false"/>
+
+		<DateField Description="Departure form received" Name="DEPARTUREFORMRECEIVED" IncludeTime="false"/>
   </Fields>
   <!--<CheckConstraints />
   <Indexes /-->

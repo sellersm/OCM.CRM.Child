@@ -19,17 +19,18 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO
 	@ID uniqueidentifier,
 	@DATALOADED bit = 0 output,
 	@ADDITIONALCHILDINFORMATION nvarchar(max) = null output,
-				 @CCHENTEREDBY nvarchar(100) = null output,
-			 @CCHTEMPID nvarchar(250) = null output,
-			 @CURRENTPHOTODATE datetime = null output,
-			 @PHOTOSTORED bit = null output,
-			 @CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
-			 @CHILDPROFILEUPDATECODEID uniqueidentifier = null output,
-			 @PROFILEUPDATENOTIFICATION bit = null output,
-			 @FUNDED bit = null output,
-			 @REGISTRATIONDATE datetime = null output,
-			 @BATCHNUMBER nvarchar(50) = null output,
-			 @CCHVALIDATED bit = null output
+	@CCHENTEREDBY nvarchar(100) = null output,
+	@CCHTEMPID nvarchar(250) = null output,
+	@CURRENTPHOTODATE datetime = null output,
+	@PHOTOSTORED bit = null output,
+	@CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
+	@CHILDPROFILEUPDATECODEID uniqueidentifier = null output,
+	@PROFILEUPDATENOTIFICATION bit = null output,
+	@FUNDED bit = null output,
+	@REGISTRATIONDATE datetime = null output,
+	@BATCHNUMBER nvarchar(50) = null output,
+	@CCHVALIDATED bit = null output,
+	@DEPARTUREFORMRECEIVED datetime = null output
 )
 as
 	set nocount on;
@@ -52,7 +53,8 @@ as
 			 @FUNDED = FUNDED,
 			 @REGISTRATIONDATE = REGISTRATIONDATE,
 			 @BATCHNUMBER = BATCHNUMBER,
-			 @CCHVALIDATED = CCHVALIDATED
+			 @CCHVALIDATED = CCHVALIDATED,
+			 @DEPARTUREFORMRECEIVED = DEPARTUREFORMRECEIVED
 	from dbo.USR_CHILDEXTENSION
 	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	--where ID = @ID
@@ -85,6 +87,7 @@ as
 			
 			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
 			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" ReadOnly="true" />
+			<common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
 		</common:FormFields>
 	</common:FormMetaData>
 
