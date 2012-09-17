@@ -3,10 +3,17 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="b8669115-d4be-46dc-8ff2-ffb094538093"
 	Name="Child Reservation"
-	Description="REPLACE_WITH_DESCRIPTION"
+	Description="Used to store Child Reservation current and historical"
 	Author="Cary Mayeda"
 	Tablename="USR_CHILDRESERVATION"		   
 	>
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	12-Sep-2012		CMayeda			Added Unpaid transfer
+	-->
 
 	<!-- define fields on the table -->
 	<Fields>
@@ -21,6 +28,7 @@
 				<EnumValue ID="1" Translation="Open"/>
 				<EnumValue ID="2" Translation="Sponsored"/>
 				<EnumValue ID="3" Translation="Prospect sponsored"/>
+				<EnumValue ID="4" Translation="Unpaid transfer" />
 			</EnumValues>
 		</EnumField>
 
