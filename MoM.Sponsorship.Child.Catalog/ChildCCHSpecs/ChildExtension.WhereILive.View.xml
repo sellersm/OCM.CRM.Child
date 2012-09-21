@@ -10,6 +10,14 @@
     common:SecurityUIFolder="Sponsorship\Opportunity"
     >
 
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	19-Sep-2012		CMayeda			Made Area Description multiline
+	-->
+
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_CCH_WHEREILIVE">
 		<common:CreateProcedureSQL>
@@ -18,8 +26,8 @@ create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CCH_WHEREILIVE
 (
 	@ID uniqueidentifier,
 	@DATALOADED bit = 0 output,
-  @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
-	  @HOUSINGWALLWOOD bit = null output,
+	@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+	@HOUSINGWALLWOOD bit = null output,
     @HOUSINGWALLMUD bit = null output,
     @HOUSINGWALLBAMBOO bit = null output,
     @HOUSINGWALLBLOCK bit = null output,
@@ -123,9 +131,9 @@ as
       <common:FormField FieldID="LIGHTSOURCENONE" Caption="None" DataType="Boolean" />
       <common:FormField FieldID="LIGHTSOURCEOTHER" Caption="Other" DataType="String" />
 
-      <common:FormField FieldID="AREADESCRIPTION" Caption="Area Description" DataType="String" Required="false" />
+      <common:FormField FieldID="AREADESCRIPTION" Caption="Area Description" DataType="String" Required="false"  Multiline="true"/>
 
-      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
+			<common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
 		</common:FormFields>
 
         <common:WebUIComponent>

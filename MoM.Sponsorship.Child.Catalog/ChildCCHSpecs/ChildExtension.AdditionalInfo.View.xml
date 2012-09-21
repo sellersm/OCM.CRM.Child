@@ -89,6 +89,7 @@ as
 			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" ReadOnly="true" />
 			<common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
 		</common:FormFields>
+
 	</common:FormMetaData>
 
 </ViewDataFormTemplateSpec>
