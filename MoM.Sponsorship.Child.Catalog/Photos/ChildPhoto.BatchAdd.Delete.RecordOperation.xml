@@ -1,0 +1,44 @@
+<RecordOperationSpec 
+    xmlns:common="bb_appfx_commontypes"
+    ID="6957BD6B-93D4-492F-85FB-A8B8642729D5"
+    Name="Child Photo Add Batch Row Delete"
+    Description="Delete a given child photo add batch record."
+    Author="Cary Mayeda"
+    RecordType="Child Photo Add Batch"
+    OperationType="Delete"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+    xmlns="bb_appfx_recordoperation" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	-->
+
+	<SPRecord>
+        <SPOperationImplementation SPName="USR_USP_BATCHCHILDPHOTOADD_DELETE">
+            <common:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_BATCHCHILDPHOTOADD_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_USR_BATCHCHILDPHOTOADD_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+]]>
+</common:CreateProcedureSQL>
+        </SPOperationImplementation>
+    </SPRecord>
+    <Prompt>
+        <StandardPrompt Text="Are you sure you want to delete this child photo add batch row?" />
+    </Prompt>
+</RecordOperationSpec>

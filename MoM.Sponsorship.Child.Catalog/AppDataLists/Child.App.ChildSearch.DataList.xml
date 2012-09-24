@@ -1,0 +1,60 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="4a30e861-66d6-4a4d-9c93-746d36e17427" 
+	Name="Child Data List"
+	Description="REPLACE_WITH_DESCRIPTION." 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_APP_GETCHILDREN">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_APP_GETCHILDREN(@CONTEXTID uniqueidentifier)
+as
+	set nocount on;
+
+select	so.ID,
+		so.LOOKUPID, 
+		so_child.NAME as CHILDNAME, 
+		so_child.GENDER,
+		so_child.AGE, 
+		so_child.BIRTHDATE,
+		so_child.PICTURE
+  from dbo.SPONSORSHIPOPPORTUNITY so
+  join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so.ID = so_child.ID
+  where so_child.picture is not null
+  --where so.AVAILABILITYCODE = 0 and so.ELIGIBILITYCODE = 1
+  
+--	where CONTEXTID = @CONTEXTID
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="ID" DataType="Guid" IsHidden="true" />
+			<OutputField FieldID="LOOKUPID" Caption="Child ID" DataType="String" />
+			<OutputField FieldID="CHILDNAME" Caption="Child Name" DataType="String" />
+			<OutputField FieldID="GENDER" Caption="Gender" DataType="String" />
+			<OutputField FieldID="AGE" Caption="Age" DataType="TinyInt" />
+			<OutputField FieldID="BIRTHDATE" Caption="Birthdate" DataType="Date" />
+			<OutputField FieldID="PICTURE" Caption="Picture" DataType="Binary" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

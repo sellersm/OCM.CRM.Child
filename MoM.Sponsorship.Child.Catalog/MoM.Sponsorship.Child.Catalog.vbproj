@@ -93,6 +93,7 @@
     <Compile Include="ChildDepartureSpecs\SponsorshipOpportunity.DepartureTransfer.Ineligible.Edit.vb" />
     <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="Photos\ChildPhoto.BatchAdd.Commit.Add.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
@@ -454,6 +455,14 @@
     <EmbeddedResource Include="ChildTransfer\USR_USP_CHANGE_RECURRINGGIFT_DESIGNATION.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEWCHILDVERIFICATION.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFO.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Add.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Batch.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Commit.Add.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Delete.RecordOperation.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Edit.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Package.xml" />
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Table.xml" />
+    <EmbeddedResource Include="Photos\USR_USP_CHILDPHOTOADD.xml" />
     <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
     <EmbeddedResource Include="Tables\ChildReactivation.Table.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
