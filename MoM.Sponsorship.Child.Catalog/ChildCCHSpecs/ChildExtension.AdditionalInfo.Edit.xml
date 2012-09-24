@@ -1,14 +1,14 @@
 ﻿<EditDataFormTemplateSpec 
-	xmlns="bb_appfx_editdataformtemplate"
-	xmlns:common="bb_appfx_commontypes" 
-	ID="9bf8bc06-eba1-4585-b48c-3220c0637be6" 
-	Name="ChildExtension Edit Additional Info Data Form"
-	Description="Edit ChildExtension Additional Info Data Form" 
-	Author="Memphis Sellers"
-	DataFormInstanceID="4491a326-4cf5-4008-acbc-7b10d138ec41" 
-	RecordType="Child Extension"
-	common:SecurityUIFolder="Sponsorship\Opportunity"
-	>
+    xmlns="bb_appfx_editdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="9bf8bc06-eba1-4585-b48c-3220c0637be6"
+    Name="ChildExtension Edit Additional Info Data Form"
+    Description="Edit ChildExtension Additional Info Data Form"
+    Author="Memphis Sellers"
+    DataFormInstanceID="4491a326-4cf5-4008-acbc-7b10d138ec41"
+    RecordType="Child Extension"
+    common:SecurityUIFolder="Sponsorship\Opportunity"
+    >
 
 	<SPDataForm>
 
@@ -31,7 +31,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CCH_ADDITIONALINFO(
     @FUNDED bit = null output,
     @REGISTRATIONDATE datetime = null output,
     @BATCHNUMBER nvarchar(50) = null output,
-	@DEPARTUREFORMRECEIVED datetime = null output
+	@DEPARTUREFORMRECEIVED datetime = null output,
+	@CCHZIPFILENAME nvarchar(200) = null output
 )
 as
 
@@ -59,7 +60,8 @@ as
     @FUNDED = FUNDED,
     @REGISTRATIONDATE = REGISTRATIONDATE,
     @BATCHNUMBER = BATCHNUMBER,
-	@DEPARTUREFORMRECEIVED = DEPARTUREFORMRECEIVED
+	@DEPARTUREFORMRECEIVED = DEPARTUREFORMRECEIVED,
+	@CCHZIPFILENAME = CCHZIPFILENAME
 	from dbo.USR_CHILDEXTENSION
   where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 
@@ -82,7 +84,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CCH_ADDITIONALINFO (
    @CHILDPROFILESTATUSCODEID uniqueidentifier,
    @CHILDPROFILEUPDATECODEID uniqueidentifier,
    @PROFILEUPDATENOTIFICATION bit,
-   @DEPARTUREFORMRECEIVED datetime
+   @DEPARTUREFORMRECEIVED datetime,
+   @CCHZIPFILENAME nvarchar(200)
 )
 as
 
@@ -107,7 +110,8 @@ as
 			PROFILEUPDATENOTIFICATION = @PROFILEUPDATENOTIFICATION,
 			CHANGEDBYID = @CHANGEAGENTID,
 			DATECHANGED = @CURRENTDATE,
-			DEPARTUREFORMRECEIVED = @DEPARTUREFORMRECEIVED
+			DEPARTUREFORMRECEIVED = @DEPARTUREFORMRECEIVED,
+			CCHZIPFILENAME = @CCHZIPFILENAME
 	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	end try
 	begin catch
@@ -133,19 +137,27 @@ return 0;
       <common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" ReadOnly="true" />
       <common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" ReadOnly="true" />
       <common:FormField FieldID="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
-      <common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false"/>
+      <common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false" />
 
-      <common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid" >
-        <common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE"/>
+      <common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
       </common:FormField>
 
-      <common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid" >
-        <common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE"/>
+      <common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE" />
       </common:FormField>
 
       <common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
 		<common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
+		<common:FormField FieldID="CCHZIPFILENAME" Caption="CCH zip file name" DataType="String" />
     </common:FormFields>
+
+        <common:WebUIComponent>
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildExtensionEditAdditionalInfoDataFormUIModel" />
+            <common:WebUI>
+                <common:ExternalResource Url="browser/htmlforms/custom/ChildExtensionEditAdditionalInfoDataForm.html" />
+            </common:WebUI>
+        </common:WebUIComponent>
 
     
 	</common:FormMetaData>

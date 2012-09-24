@@ -114,6 +114,10 @@
       <DependentUpon>CCHChildExtensionWhereILiveFormUIModel.vb</DependentUpon>
     </Compile>
     <Compile Include="ChildCCH\CCHChildExtensionWhereILiveFormUIModel.vb" />
+    <Compile Include="ChildCCH\ChildExtensionEditAdditionalInfoDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionEditAdditionalInfoDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionEditAdditionalInfoDataFormUIModel.vb" />
     <Compile Include="ChildCCH\ChildExtensionUIModelVersionViewFormUIModel.CodeGen.vb">
       <DependentUpon>ChildExtension.UIModelVersion.ViewForm.UIModel.vb</DependentUpon>
     </Compile>
@@ -212,6 +216,10 @@
     <Compile Include="ChildDeparture\SponsorshipOpportunityDepartureTransferIneligiblePreprocessEditFormUIModel.CodeGen.vb" />
     <Compile Include="ChildDeparture\SponsorshipOpportunityDepartureTransferIneligiblePreprocessEditFormUIModel.vb" />
     <Compile Include="ChildDeparture\SponsorshipOpportunityDepartureTransferPreProcessIneligibleHelper.vb" />
+    <Compile Include="ChildCCH\ChildExtensionAdditionalInfoViewFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildExtensionAdditionalInfoViewFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChildCCH\ChildExtensionAdditionalInfoViewFormUIModel.vb" />
     <Compile Include="Helpers\CCHFormsHelper.vb" />
     <Compile Include="Helpers\DepartureFieldNames.vb" />
     <Compile Include="Helpers\DepartureFormsHelper.vb" />
@@ -225,6 +233,17 @@
     <None Include="Migrated rules for Blackbaud.CustomFx.ChildExtension.UIModel.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MoM.Sponsorship.Child.Catalog\ChildCCHSpecs\ChildExtension.AdditionalInfo.Edit.xml">
+      <Link>LinkedSpecs\ChildExtension.AdditionalInfo.Edit.xml</Link>
+    </None>
+    <Content Include="ChildCCH\ChildExtensionEditAdditionalInfoDataForm.html" />
+    <None Include="..\MoM.Sponsorship.Child.Catalog\ChildCCHSpecs\ChildExtension.AdditionalInfo.View.xml">
+      <Link>LinkedSpecs\ChildExtension.AdditionalInfo.View.xml</Link>
+    </None>
+    <Content Include="ChildCCH\ChildExtensionAdditionalInfoViewForm.html" />
+    <Content Include="ChildCCH\ChildExtensionAdditionalInfoViewFormUIModel.xml">
+      <DependentUpon>ChildExtensionAdditionalInfoViewFormUIModel.vb</DependentUpon>
+    </Content>
     <None Include="..\MoM.Sponsorship.Child.Catalog\ChildCCHSpecs\ChildExtension.UIModelVersion.View.xml">
       <Link>LinkedSpecs\ChildExtension.UIModelVersion.View.xml</Link>
     </None>
@@ -294,6 +313,9 @@
     </None>
     <Content Include="ChildCCH\ChildExtension.UIModelVersion.ViewForm.UIModel.xml">
       <DependentUpon>ChildExtension.UIModelVersion.ViewForm.UIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="ChildCCH\ChildExtensionEditAdditionalInfoDataFormUIModel.xml">
+      <DependentUpon>ChildExtensionEditAdditionalInfoDataFormUIModel.vb</DependentUpon>
     </Content>
     <Content Include="ChildDeparture\ChildDepartureEditPageSummaryDataForm.html" />
     <Content Include="ChildDeparture\ChildDepartureEditPageSummaryDataFormUIModel.xml">

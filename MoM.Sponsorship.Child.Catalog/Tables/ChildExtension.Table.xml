@@ -17,6 +17,7 @@
     13-Aug-2012		Memphis			Removed the field: WHENIAMATSCHOOLILIKELEARNING
     22-Aug-2012		Memphis			took out old commented fields
 	17-Sep-2012		Memphis			Added the Departure Form Received, increased field size of "Other" fields (MotherWorksAsOther, FatherWorksAsOther, CaregiverWorksAsOther)
+	24-Sep-2012		Memphis			Added CCHZIPFILENAME field.
     -->
 
     <Fields>
@@ -123,6 +124,8 @@
         <TextField Description="Nickname" Name="CHILDNICKNAME" Length="100" Required="false"/>
 
 		<DateField Description="Departure form received" Name="DEPARTUREFORMRECEIVED" IncludeTime="false"/>
+
+		<TextField Description="CCH zip file name" Name="CCHZIPFILENAME" Length="200" Required="false" />
   </Fields>
   <!--<CheckConstraints />
   <Indexes /-->

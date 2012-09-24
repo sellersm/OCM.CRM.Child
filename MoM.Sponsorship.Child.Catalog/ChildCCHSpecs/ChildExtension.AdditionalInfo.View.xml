@@ -1,14 +1,14 @@
 ﻿<ViewDataFormTemplateSpec 
-	xmlns="bb_appfx_viewdataformtemplate" 
-	xmlns:common="bb_appfx_commontypes" 
-	ID="ce8c4111-dffd-4f66-a285-054a2c08bcd6" 
-	Name="ChildExtension Additional Info View Form"
-	Description="View ChildExtension Additional Info"
-	Author="Memphis Sellers"
-	DataFormInstanceID="b9390174-f5b7-4a6a-b73b-9d5b9cb5b1c4" 
-	RecordType="Child Extension"
-	common:SecurityUIFolder="Sponsorship\Opportunity"
-	>
+    xmlns="bb_appfx_viewdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="ce8c4111-dffd-4f66-a285-054a2c08bcd6"
+    Name="ChildExtension Additional Info View Form"
+    Description="View ChildExtension Additional Info"
+    Author="Memphis Sellers"
+    DataFormInstanceID="b9390174-f5b7-4a6a-b73b-9d5b9cb5b1c4"
+    RecordType="Child Extension"
+    common:SecurityUIFolder="Sponsorship\Opportunity"
+    >
 
 	<!-- define the SP that returns the data used by the form -->
 	<SPDataForm SPName="USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO">
@@ -30,7 +30,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO
 	@REGISTRATIONDATE datetime = null output,
 	@BATCHNUMBER nvarchar(50) = null output,
 	@CCHVALIDATED bit = null output,
-	@DEPARTUREFORMRECEIVED datetime = null output
+	@DEPARTUREFORMRECEIVED datetime = null output,
+	@CCHZIPFILENAME nvarchar(200) = null output
 )
 as
 	set nocount on;
@@ -54,7 +55,8 @@ as
 			 @REGISTRATIONDATE = REGISTRATIONDATE,
 			 @BATCHNUMBER = BATCHNUMBER,
 			 @CCHVALIDATED = CCHVALIDATED,
-			 @DEPARTUREFORMRECEIVED = DEPARTUREFORMRECEIVED
+			 @DEPARTUREFORMRECEIVED = DEPARTUREFORMRECEIVED,
+			 @CCHZIPFILENAME = CCHZIPFILENAME
 	from dbo.USR_CHILDEXTENSION
 	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	--where ID = @ID
@@ -75,20 +77,28 @@ as
 			<common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" />
 			<common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
 			<common:FormField FieldID="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
-			<common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false"/>
+			<common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false" />
 
-			<common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid" >
-			<common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE"/>
+			<common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid">
+			<common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
 			</common:FormField>
 			
-			<common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid" >
-				<common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE"/>
+			<common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid">
+				<common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE" />
 			</common:FormField>
 			
 			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
 			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" ReadOnly="true" />
 			<common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
+			<common:FormField FieldID="CCHZIPFILENAME" Caption="CCH zip file name" DataType="String" />
 		</common:FormFields>
+
+        <common:WebUIComponent>
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildExtensionAdditionalInfoViewFormUIModel" />
+            <common:WebUI>
+                <common:ExternalResource Url="browser/htmlforms/custom/ChildExtensionAdditionalInfoViewForm.html" />
+            </common:WebUI>
+        </common:WebUIComponent>
 
 	</common:FormMetaData>
 

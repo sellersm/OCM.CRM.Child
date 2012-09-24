@@ -97,7 +97,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDEXTENSIONBATCHROW(
 		@ISHIVPOSITIVE bit = null output,
 		@SPROPPCHILDCONDITIONCODEID uniqueidentifier = null output,
 		@ISORPHANED bit = null output,
-		@PICTURE varbinary(max) = null output
+		@PICTURE varbinary(max) = null output,
+		@CCHZIPFILENAME nvarchar(200) = null output
 )
 as
 
@@ -191,7 +192,8 @@ as
 				@ISHIVPOSITIVE = ISHIVPOSITIVE, 
 				@SPROPPCHILDCONDITIONCODEID = SPROPPCHILDCONDITIONCODEID, 
 				@ISORPHANED = ISORPHANED, 
-				@PICTURE = PICTURE
+				@PICTURE = PICTURE,
+				@CCHZIPFILENAME = CCHZIPFILENAME
 	from dbo.USR_BATCHCHILDEXTENSION
 	where ID = @ID
 
@@ -283,7 +285,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDEXTENSIONBATCHROW (
 		@ISHIVPOSITIVE bit,
 		@SPROPPCHILDCONDITIONCODEID uniqueidentifier,
 		@ISORPHANED bit,
-		@PICTURE varbinary(max)
+		@PICTURE varbinary(max),
+		@CCHZIPFILENAME nvarchar(200)
 )
 as
 
@@ -376,6 +379,7 @@ as
 						SPROPPCHILDCONDITIONCODEID = @SPROPPCHILDCONDITIONCODEID,
 						ISORPHANED = @ISORPHANED,
 						PICTURE = @PICTURE,
+						CCHZIPFILENAME = @CCHZIPFILENAME,
 			CHANGEDBYID = @CHANGEAGENTID,
 			DATECHANGED = getdate()
 		where ID = @ID
@@ -558,6 +562,9 @@ return 0;
 			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" DataType="Boolean" Caption="Profile Update Notification" />
 			<!--<common:FormField FieldID="AGE" DataType="TinyInt" Caption="Age" ReadOnly="true" />-->
 			<common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
+			
+			<!-- Memphis 9/24/12 added -->
+			<common:FormField FieldID="CCHZIPFILENAME" Caption="CCH zip file name" DataType="String" />
 			
 			<!-- commented out 6/22 to try fix template create error
 			<common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" Required="true" Hidden="true" DataType="String" />-->
