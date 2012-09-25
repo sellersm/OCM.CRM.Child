@@ -1,0 +1,98 @@
+<AddDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="ac2470ac-69f3-4b2b-a9c4-f9b3bf4cebac"
+    Name="Child Reservation Add Form"
+    Description="Used for adding a new Child Reservation"
+    Author="BETHESDA\cmayeda"
+    RecordType="Child Reservation"
+    DataFormInstanceID="eb78270b-5cd3-4fb9-b029-15436b02b186"
+    c:SecurityUIFolder="Child Reservation"
+    xmlns="bb_appfx_adddataformtemplate"
+    >
+    <SPDataForm>
+        <SaveImplementation SPName="USP_DATAFORMTEMPLATE_ADD_CHILD_RESERVATION">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_ADD_CHILD_RESERVATION
+(
+    @ID uniqueidentifier = null output,
+    @CHANGEAGENTID uniqueidentifier = null,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null,
+    @SPONSORSHIPOPPORTUNITYRESERVEPROCESSID uniqueidentifier = null,
+    @SOLICITORID uniqueidentifier = null,
+    @STARTDATE datetime = null,
+    @ENDDATE datetime = null,
+    @STATUSCODE tinyint = 0
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_CHILDRESERVATION
+		(ID, SPONSORSHIPOPPORTUNITYCHILDID, SPONSORSHIPOPPORTUNITYRESERVEPROCESSID, SOLICITORID, STARTDATE, ENDDATE, STATUSCODE, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @SPONSORSHIPOPPORTUNITYCHILDID, @SPONSORSHIPOPPORTUNITYRESERVEPROCESSID, @SOLICITORID, @STARTDATE, @ENDDATE, @STATUSCODE, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+
+]]>
+</c:CreateProcedureSQL>
+            <c:ExpectedDBExceptions>
+                <c:Constraints>
+                    <c:Constraint Name="FK_USR_CHILDRESERVATION_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDRESERVATION_SPONSORSHIPOPPORTUNITYRESERVEPROCESSID" Field="SPONSORSHIPOPPORTUNITYRESERVEPROCESSID" Type="ForeignKey" />
+                    <c:Constraint Name="FK_USR_CHILDRESERVATION_SOLICITORID" Field="SOLICITORID" Type="ForeignKey" />
+                </c:Constraints>
+            </c:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Caption="Sponsorshipopportunitychild" />
+            <c:FormField FieldID="SPONSORSHIPOPPORTUNITYRESERVEPROCESSID" DataType="Guid" Caption="Sponsorshipopportunityreserveprocess" />
+            <c:FormField FieldID="SOLICITORID" DataType="Guid" Caption="Solicitor" />
+            <c:FormField FieldID="STARTDATE" DataType="Date" Caption="Startdate" />
+            <c:FormField FieldID="ENDDATE" DataType="Date" Caption="Enddate" />
+            <c:FormField FieldID="STATUSCODE" DataType="TinyInt" Caption="Status" DefaultValueText="0">
+                <c:ValueList>
+                    <c:Items>
+                        <c:Item>
+                            <c:Value>0</c:Value>
+                            <c:Label>Open</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>1</c:Value>
+                            <c:Label>Closed</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>2</c:Value>
+                            <c:Label>Sponsored</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>3</c:Value>
+                            <c:Label>Prospect sponsored</c:Label>
+                        </c:Item>
+                    </c:Items>
+                </c:ValueList>
+            </c:FormField>
+        </c:FormFields>
+        <c:FormUIComponent />
+    </c:FormMetaData>
+</AddDataFormTemplateSpec>

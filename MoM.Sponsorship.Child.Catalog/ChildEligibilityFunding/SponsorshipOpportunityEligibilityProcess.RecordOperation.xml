@@ -1,0 +1,56 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e123547b-c32a-4c8b-8eb5-0cd23c191d62" 
+	Name="Sponsorship Opportunity Eligibility Process: Delete" 
+	Description="This operation handles the deletion of a Sponsorship Opportunity Eligibility parameter set."
+	Author="Cary Mayeda"
+	OperationType="Delete"
+	RecordType="Sponsorship Opportunity Eligibility Process"
+	common:SecurityUIFolder="Sponsorship\Business Process\Eligibility"
+	>
+
+	<!-- 
+	Remarks:	This relies on the delete trigger on USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS to remove rows in BUSINESSPROCESSINSTANCE
+	
+				Used on Sponsorship Opportunity Eligibility Process Page and Sponsorship Opportunity Eligibility Process Status Page to remove
+				an instance of the Sponsorship Opportunity Eligibility Process
+				
+	History:
+	Date			Modified By		Comments
+    21-Mar-2012		CMayeda			Initial Version
+	-->
+	
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+				
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	set nocount on;
+	--exec dbo.USP_BUSINESSPROCESS_PARAMETERSETCANBEDELETED 'SPONSORSHIPTERMINATEPROCESS', @ID;
+	--Should I use table trigger or exec dbo.USP_BUSINESSPROCESSINSTANCE_DELETE 'c0c3662a-2586-4104-a1db-638e9e9950b0', @ID, @CHANGEAGENTID;    
+	
+	exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID;
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+
+</RecordOperationSpec>

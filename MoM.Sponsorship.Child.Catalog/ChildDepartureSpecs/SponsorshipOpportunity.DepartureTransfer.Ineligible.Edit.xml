@@ -1,0 +1,145 @@
+﻿<EditDataFormTemplateSpec
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:d1p1="bb_appfx_commontypes"
+	xmlns="bb_appfx_editdataformtemplate"
+	ID="4764cf59-288d-4433-a234-20f2d6e782a3"
+	Name="Sponsorship Opportunity Departure Transfer - Ineligible Preprocess Edit Form"
+	Description="Edit form for sponsorship opportunity mark ineligible action - Departure Transfer"
+	Author="Cary Mayeda"
+	RecordType="Sponsorship opportunity"
+	DataFormInstanceID="10BE203E-8BDB-45EF-870E-CE91E0B0CD8A"
+	d1p1:SecurityUIFolder="Sponsorship\Business Process\Mark Opportunity Ineligible/Closed"
+	HelpKey="SPChildMarkIneligible.html"
+	OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+	FormHeader="Departure Transfer" >
+
+	<!-- 
+	Remarks:    Refactored the OOB Blackbaud form to add functionality for Departure Transfer.  The child is already ineligible.  This is used to handle the transfer process.				
+				ID="3391c731-c111-4f52-8a12-21d2c9da3dd5" DataFormInstanceID="366ec3c1-a3b7-4492-8f7d-a127860912be" Name="Sponsorship Opportunity Ineligible Preprocess Edit Form"
+				
+				The purpose for refactoring this is to add the proper interactions to the save event and to disable the Sponsorship Reason so that it couldn't be changed.
+				
+				The only changes in this spec are:
+					CLRDataForm
+					WebUIComponent
+	
+	History:
+	Date            Modified By     Comments
+	30-Aug-2012		CMayeda			Initial Version
+	-->
+
+	<d1p1:DependencyList>
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipReason.SimpleList.xml" />
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityChild.Search.xml" />
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunity.View.xml" />
+		<d1p1:Dependency CatalogAssembly="Blackbaud.AppFx.Sponsorship.Catalog.dll" CatalogItem="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipReason.DataList.xml" />
+	</d1p1:DependencyList>
+	<d1p1:ImpliedSecurityList>
+		<d1p1:ImpliedSecurity Type="DataFormSpec" ID="2c5e91ff-ec60-4f8a-9361-9eae6549aa69" />
+		<d1p1:ImpliedSecurity Type="Datalist" ID="10c9e6e4-3520-4f95-85d8-d249d3d71661" />
+		<d1p1:ImpliedSecurity Type="DataFormSpec" ID="92f92683-0c5d-4ce0-9357-1aca0a0d3ad0" />
+		<d1p1:ImpliedSecurity Type="RecordOperation" ID="692588f4-3498-4bb0-996b-14969e44820d" />
+		<d1p1:ImpliedSecurity Type="RecordOperation" ID="8b382b28-764a-4443-9ebe-6f291dc55167" />
+		<d1p1:ImpliedSecurity Type="RecordOperation" ID="0eee0709-2a41-45c5-bda2-4a22cd867606" />
+	</d1p1:ImpliedSecurityList>
+	<d1p1:InstalledProductList>
+		<d1p1:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+	</d1p1:InstalledProductList>
+	<!-- Original OOB <CLRDataForm AssemblyName="Blackbaud.AppFx.Sponsorship.Catalog" ClassName="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityIneligibleEditDataForm"> -->
+	<CLRDataForm AssemblyName="MoM.Sponsorship.Child.Catalog" ClassName="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityDepartureTransferIneligibleEditDataForm">
+		<d1p1:GrantSelectList>
+			<d1p1:GrantSelect>SPONSORSHIP</d1p1:GrantSelect>
+			<d1p1:GrantSelect>SPONSORSHIPOPPORTUNITY</d1p1:GrantSelect>
+		</d1p1:GrantSelectList>
+	</CLRDataForm>
+	<d1p1:FormMetaData FixedDialog="true">
+		<d1p1:FormFields>
+			<d1p1:FormField FieldID="NEWSPONSORSHIPOPPORTUNITYID" DataType="Guid" Caption=" New child" CaptionResourceKey="$$_new_child">
+				<d1p1:SearchList SearchListID="ab076868-114a-4696-afe9-8d590677708c" EnableQuickFind="true">
+					<d1p1:FormFieldOverrides>
+						<d1p1:FormFieldOverride FieldID="SPONSORSHIPPROGRAMID" ReadOnly="true" />
+						<d1p1:FormFieldOverride FieldID="ELIGIBILITYCODE" ReadOnly="true" DefaultValueText="1" />
+						<d1p1:FormFieldOverride FieldID="AVAILABILITYCODE" ReadOnly="true" DefaultValueText="0" />
+						<d1p1:FormFieldOverride FieldID="RESTRICTFORSOLESPONSORSHIP" Caption="Only include unsponsored" ReadOnly="true" DefaultValueText="Fields!ISSOLESPONSORSHIP" />
+						<d1p1:FormFieldOverride FieldID="SPONSORSHIPOPPORTUNITYGROUPID" ReadOnly="true" DefaultValueText="Fields!GROUPID" />
+						<d1p1:FormFieldOverride FieldID="EXCLUDEOPPORTUNITYID" ReadOnly="true" Hidden="true" DefaultValueText="Fields!OLDSPONSORSHIPOPPORTUNITYID" />
+					</d1p1:FormFieldOverrides>
+				</d1p1:SearchList>
+			</d1p1:FormField>
+			<d1p1:FormField FieldID="SPONSORSHIPREASONID" DataType="Guid" Required="true" Caption="Departure Reason" CaptionResourceKey="$$reason">
+				<d1p1:SimpleDataList SimpleDataListID="c8d3128e-a2eb-4413-b0b4-1585ad5bf001">
+					<d1p1:Params>
+						<d1p1:Param ID="TYPE">
+							<d1p1:Value>1</d1p1:Value>
+						</d1p1:Param>
+					</d1p1:Params>
+				</d1p1:SimpleDataList>
+			</d1p1:FormField>
+			<d1p1:FormField FieldID="CHILDSPONSORSHIPS" DataType="Integer" Hidden="true" />
+			<d1p1:FormField FieldID="GROUPID" DataType="Guid" Hidden="true" />
+			<d1p1:FormField FieldID="CREATEOUTPUTIDSET" DataType="Boolean" Caption="Create selection of" DefaultValueText="false" CaptionResourceKey="$$create_selection_of" />
+			<d1p1:FormField FieldID="OUTPUTIDSETTYPECODE" Required="true" Caption="" DefaultValueText="0">
+				<d1p1:ValueList>
+					<d1p1:Items>
+						<d1p1:Item>
+							<d1p1:Value>0</d1p1:Value>
+							<d1p1:Label>Transferred source sponsorships</d1p1:Label>
+						</d1p1:Item>
+						<d1p1:Item>
+							<d1p1:Value>1</d1p1:Value>
+							<d1p1:Label>Transferred target sponsorships</d1p1:Label>
+						</d1p1:Item>
+					</d1p1:Items>
+				</d1p1:ValueList>
+			</d1p1:FormField>
+			<d1p1:FormField FieldID="OUTPUTIDSETNAME" MaxLength="100" Caption="Selection name" CaptionResourceKey="$$selection_name" />
+			<d1p1:FormField FieldID="OVERWRITEOUTPUTIDSET" DataType="Boolean" Caption="Overwrite existing selection" DefaultValueText="false" CaptionResourceKey="$$overwrite_existing_selection" />
+		</d1p1:FormFields>
+		<d1p1:WebUIComponent>
+			<!-- Original OOB <d1p1:UIModel AssemblyName="Blackbaud.AppFx.Sponsorship.UIModel.dll" ClassName="Blackbaud.AppFx.Sponsorship.UIModel.SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModel" /> -->
+			<d1p1:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.SponsorshipOpportunityChildIneligiblePreprocessEditFormUIModelDepartureTransfer" />
+			<d1p1:WebUI>
+				<d1p1:ExternalResource Url="browser\htmlforms\sponsorship\SponsorshipOpportunityIneligiblePreprocessEditForm.html" />
+			</d1p1:WebUI>
+		</d1p1:WebUIComponent>
+		<d1p1:FieldGroups>
+			<d1p1:FieldGroup ID="REASON" Caption="Reason" CaptionResourceKey="$$reason">
+				<d1p1:Fields>
+					<d1p1:Field>SPONSORSHIPREASONID</d1p1:Field>
+				</d1p1:Fields>
+			</d1p1:FieldGroup>
+			<d1p1:FieldGroup ID="TRANSFER" Caption="Transfer" CaptionResourceKey="$$transfer">
+				<d1p1:Fields>
+					<d1p1:Field>CHILDSPONSORSHIPS</d1p1:Field>
+					<d1p1:Field>NEWSPONSORSHIPOPPORTUNITYID</d1p1:Field>
+				</d1p1:Fields>
+			</d1p1:FieldGroup>
+			<d1p1:FieldGroup ID="RESULTS" Caption="Results" CaptionResourceKey="$$results">
+				<d1p1:Fields>
+					<d1p1:Field>CREATEOUTPUTIDSET</d1p1:Field>
+					<d1p1:Field>OUTPUTIDSETTYPECODE</d1p1:Field>
+					<d1p1:Field>OUTPUTIDSETNAME</d1p1:Field>
+					<d1p1:Field>OVERWRITEOUTPUTIDSET</d1p1:Field>
+				</d1p1:Fields>
+			</d1p1:FieldGroup>
+		</d1p1:FieldGroups>
+		<d1p1:UIFields>
+			<d1p1:FormField FieldID="CHOOSINGCHILD" DataType="Integer" Caption="This opportunity has" DefaultValueText="0" CaptionResourceKey="$$this_opportunity_has">
+				<d1p1:ValueList>
+					<d1p1:Items>
+						<d1p1:Item>
+							<d1p1:Value>0</d1p1:Value>
+							<d1p1:Label>Matching child</d1p1:Label>
+						</d1p1:Item>
+						<d1p1:Item>
+							<d1p1:Value>1</d1p1:Value>
+							<d1p1:Label>Specific child</d1p1:Label>
+						</d1p1:Item>
+					</d1p1:Items>
+				</d1p1:ValueList>
+			</d1p1:FormField>
+			<d1p1:FormField FieldID="TRANSFERMSG" ReadOnly="true" Caption="This opportunity has" CaptionResourceKey="$$this_opportunity_has" />
+		</d1p1:UIFields>
+	</d1p1:FormMetaData>
+</EditDataFormTemplateSpec>

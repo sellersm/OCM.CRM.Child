@@ -1,0 +1,133 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1332afec-a3bd-43ce-a042-a94f5ee4a5ba"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED"
+	Description="Used to add/delete 'Need Photo Stored' pending reasons."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED" >
+	
+	<!-- 
+	Remarks:	The 'Need Photo Stored' pending reason is added to the child/children if the Photo has not been stored.
+	
+				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
+				a Sponsorship Opportunity selection.  
+				
+				This is accomplished with the @ID and @IDSETREGISTERID parameters.
+				If @ID is not null, then the sproc uses @ID to specify the Sponsorship Opportunity ID
+				If @ID is null, then the sproc uses @IDSETREGISTERID to specify the collection of children to check.
+				
+	History:
+	Date			Modified By		Comments
+    27-Aug-2012		CMayeda			Initial Version	
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED(
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output					-- Output parm that specifies how many pending reasons were inserted
+)
+as begin
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+
+	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0
+
+	declare @sponsorshipReason_NeedPhotoStored nvarchar(100) = 'Need Photo Stored'
+	declare @errorMessageNeedPhotoStoredNotfound nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_NeedPhotoStored + '" Sponsorship Reason'	
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+	
+		
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found	
+		declare @needPhotoStoredID uniqueidentifier
+		select @needPhotoStoredID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_NeedPhotoStored) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @needPhotoStoredID is null
+			RAISERROR 1000000 @errorMessageNeedPhotoStoredNotfound					
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	-- This needs to be set to off for the output parms to be set properly
+	set nocount off
+	
+	-- Remove 'Need Photo Stored' pending reasons if PHOTOSTORED = 1 (Photo has been stored)
+	
+	delete  dbo.SPONSORSHIPOPPORTUNITYREASON
+	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+			
+	 where  -- Find children who are specified to be reviewed and have the 'Need Photo Stored' pending reason  			
+			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   and	so_reason.SPONSORSHIPREASONID = @needPhotoStoredID
+
+		   -- Check if PHOTOSTORED = 1 (Photo has been stored)
+	   and exists (	select	ID
+					  from	dbo.USR_CHILDEXTENSION 
+					 where	PHOTOSTORED = 1
+					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   
+					  
+	set @DELETEDROWS = @@ROWCOUNT
+	
+	
+	-- Insert 'Need Photo Stored' pending reason if PHOTOSTORED = 0 (Photo has not been verified)
+	insert dbo.SPONSORSHIPOPPORTUNITYREASON
+				(SPONSORSHIPOPPORTUNITYID,
+				 SPONSORSHIPREASONID,				
+				 ADDEDBYID, 
+				 CHANGEDBYID, 
+				 DATEADDED, 
+				 DATECHANGED)
+				 
+		select  ID,
+				@needPhotoStoredID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CurrentDate, 
+				@CurrentDate
+				
+		  from	dbo.SPONSORSHIPOPPORTUNITY so
+		 
+		 where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so.ID )	           
+	      
+				-- Verify that the children do not already have a 'Need Photo Stored' pending reason
+   	       and	not exists (select so_reason.SPONSORSHIPOPPORTUNITYID 
+							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
+		                     where so_reason.SPONSORSHIPREASONID = @needPhotoStoredID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
+
+				-- Check if PHOTOSTORED = 0 (Photo has not been verified)
+		   and	exists (select	ID
+						  from	dbo.USR_CHILDEXTENSION 
+						 where	PHOTOSTORED = 0
+					       and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
+	
+	
+				-- Don't add to ineligible kids that are not quota waiting list
+		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
+		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
+				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
+						
+	
+	set @INSERTEDROWS = @@ROWCOUNT
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

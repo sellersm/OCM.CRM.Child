@@ -1,0 +1,109 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1e807895-f729-4b37-90cb-d8c41c564a30" 
+	Name="Set Child Bio as Proofed" 
+	Description="All functions to automatically set a Child Bio as proofed"
+	Author="Bill Elfstrom"
+	OperationType="Update"
+	RecordType="SPONSORSHIPOPPORTUNITYNOTE"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Documentation\Note"
+	>
+  <!-- 
+ 
+  History:
+    Date            Modified By     Comments
+    21-June-2012     BElfstrom       Modified - Renamed and removed transaction processing.
+    
+-->
+  
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_PROCESSPROOFEDCHILDBIO">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+        
+create procedure [dbo].[USR_USP_PROCESSPROOFEDCHILDBIO] (
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+) 	-- Sponsorship Opportunity Note ID
+	
+as
+begin
+  
+begin try		
+
+	/* get the IDs for the Child Bio Draft, and Child Bio type codes */
+    declare @ChildBioDraftCodeID uniqueidentifier
+    declare @ChildBioCodeID uniqueidentifier
+	  declare @ChildID uniqueidentifier
+	
+    select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
+    if @ChildBioCodeID is null
+      RAISERROR 1000000 'Couldn''t find the "Child Bio" sponsorship opportunity note code' 
+        
+    select @ChildBioDraftCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - draft'
+    if @ChildBioDraftCodeID is null
+      RAISERROR 1000000 'Couldn''t find the "Child Bio Draft" sponsorship opportunity note code'    
+
+	  /* get the Child ID to convert the child bios to old  */
+	  SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
+	  if @ChildID is null
+		  RAISERROR 1000000 'Couldn''t find the "Child ID'    
+
+	  /* Convert the Child Bio notes to Child Bio Old first  */
+	  exec dbo.USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD @ChildID
+
+	  /* Check to make sure the record exists and it's a Child Bio Draft  */
+	  if (SELECT [ID] from dbo.SPONSORSHIPOPPORTUNITYNOTE 
+	  where ([ID] = @ID) and (SPROPPNOTETYPECODEID = @ChildBioDraftCodeID)) is null 
+	    RAISERROR 1000000 'Couldn''t find the "Child Bio Draft" sponsorship opportunity note code'        
+            
+	  /* Update Child Bio note type */
+	  update dbo.SPONSORSHIPOPPORTUNITYNOTE
+	  set SPROPPNOTETYPECODEID = @ChildBioCodeID
+	  where ID = @ID       
+
+    if not exists(select ID from dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION where ID = @ID)
+    begin
+	  /*  Create date Proofed record  */
+	  insert into dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
+	  ( [ID]
+		  ,[DATE_PROOFED]
+		  ,[ADDEDBYID]
+		  ,[CHANGEDBYID]
+		  ,[DATEADDED]
+		  ,[DATECHANGED])
+	  VALUES (@ID, GETDATE(),@CHANGEAGENTID, @CHANGEAGENTID,GETDATE(),GETDATE())
+    end
+    else
+      RAISERROR 1000000 'The note is already proofed'   
+   
+	  /* Eligibility check */	
+	  exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK 
+		  @ChildID, @CHANGEAGENTID
+		
+end try
+
+begin catch
+
+  -- Raise an error with the details of the exception
+  declare @ErrMsg nvarchar(4000), @ErrSeverity int
+  select @ErrMsg = ERROR_MESSAGE(),
+         @ErrSeverity = ERROR_SEVERITY()
+  raiserror(@ErrMsg, @ErrSeverity, 1)
+
+end catch
+
+end
+				      
+        ]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>  -->
+
+</RecordOperationSpec>

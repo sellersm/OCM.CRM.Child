@@ -1,0 +1,91 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="9529be6a-abae-4e15-8176-636aefd3752f"
+	Name="USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS"
+	Description="Used to add pending reasons to a new sponsorship opportunity child"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS" >
+	
+	<!-- 
+	Remarks:	Modified Blackbaud's USP_SPONSORSHIPSETTINGS_GETNEWDEFAULTS.  
+				Removed Project, so this only works for children.
+				Removed call to USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEPENDING, so we can set them pending manually.
+
+	History:
+	Date            Modified By     Comments
+	30-Jul-2012		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILD_ADDNEWCHILDPENDINGREASONS (
+	@SPONSORSHIPOPPORTUNITYID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null
+)
+as
+begin
+	set nocount on;
+	
+	declare @CURRENTDATE datetime;
+    set @CURRENTDATE = getdate();
+                
+	if @CHANGEAGENTID is null
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+		
+	declare @REASONLIST xml = null
+	
+	select @REASONLIST = CHILDPENDINGREASONS from SPONSORSHIPINFO order by DATEADDED
+		
+	-- build a temporary table containing the values from the XML
+	declare @TempTbl table (
+		ID uniqueidentifier,
+		SPONSORSHIPREASONID uniqueidentifier)
+
+	begin try
+		insert into @TempTbl(SPONSORSHIPREASONID) 
+			select 
+				SPONSORSHIPREASONID
+			from 
+				dbo.UFN_SPONSORSHIPSETTINGS_CHILDPENDINGREASONS_FROMITEMLISTXML(@REASONLIST)
+		update @TempTbl set ID = newid() where (ID is null) or (ID = '00000000-0000-0000-0000-000000000000');
+	
+		-- insert new items			
+		insert into dbo.SPONSORSHIPOPPORTUNITYREASON 
+			(ID,
+			SPONSORSHIPOPPORTUNITYID,
+			SPONSORSHIPREASONID,				
+			ADDEDBYID, 
+			CHANGEDBYID, 
+			DATEADDED, 
+			DATECHANGED)
+		
+		select	ID,
+				@SPONSORSHIPOPPORTUNITYID,
+				SPONSORSHIPREASONID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CURRENTDATE, 
+				@CURRENTDATE
+		  from	@TempTbl as temp
+		 where	not exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON as SPR where SPR.SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYID and SPR.SPONSORSHIPREASONID = temp.SPONSORSHIPREASONID)
+
+		--- update SO pending status 
+		-- **** Removed this, so it can be taken care of outside of this sproc ****
+		--declare @REASONCOUNT tinyint
+		--select @REASONCOUNT = count(*) from @TempTbl
+		--exec.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYMAKEPENDING @SPONSORSHIPOPPORTUNITYID, @CHANGEAGENTID
+	end try
+
+	begin catch
+		exec dbo.USP_RAISE_ERROR;
+		return 1;
+	end catch
+
+	return 0;	
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
