@@ -1,0 +1,55 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="FAE219F9-E355-40AD-A4EE-BC4C554D06E4"
+	Name="Child Photo Add Batch Row Commit Add Form"
+	Description="Adds a child photo the system from a given batch." 
+	Author="Cary Mayeda"
+	DataFormInstanceID="BAAF6704-2D6C-4A5E-8F69-5E00572C1A4F" 
+	RecordType="Sponsorship Opportunity"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+	SecurityUIDisplayFeature="false" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	-->
+
+
+	<!-- indicate the server-side catalog implementation that will be used to load and save this form.  This should refer to a class
+	that inherits AppCatalog.AppAddDataForm.
+	 -->
+	<CLRDataForm AssemblyName="MoM.Sponsorship.Child.Catalog.dll" ClassName="MoM.Sponsorship.Child.Catalog.ChildPhotoAddBatchCommitAddDataForm" />
+	
+
+	<!-- describe the context ID for this form (if applicable).  Note that the RecordIDParameter is not used for CLR forms; the context ID
+	can be obtained in the implementing class via Me.ProcessContext.ContextRecordID. -->
+	<!--<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="DUMMYVALUE"/>-->
+
+	<!-- describe fields on the form, which correspond to public fields on the class.  Note that system parameters 
+	like the context ID, DATALOADED, and CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+      <common:FormField FieldID="VALIDATEONLY" DataType="Boolean" Caption="Validate only" />
+
+      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYLOOKUPID" Caption="Child Lookup ID" Required="true" DataType="String" MaxLength="100" />
+<!--        <common:SearchList EnableQuickFind="true" SearchListID="AB076868-114A-4696-AFE9-8D590677708C"></common:SearchList>
+      </common:FormField>-->
+
+      <common:FormField FieldID="ATTACHMENTTYPECODEID" Caption="Attachment type" Required="true" DataType="Guid" >
+        <common:CodeTable CodeTableName="SPROPPATTACHMENTTYPECODE"  />
+      </common:FormField>
+
+      <common:FormField FieldID="PICTURETITLE" Required="true" MaxLength="100" Caption="Picture title" />
+      <common:FormField FieldID="FILENAME" Required="true" MaxLength="255" Caption="File name" />
+
+      <common:FormField FieldID="FILELOCATION" Caption="File location" Required="true" DataType="String" MaxLength="1000"/>
+
+    </common:FormFields>
+
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>
