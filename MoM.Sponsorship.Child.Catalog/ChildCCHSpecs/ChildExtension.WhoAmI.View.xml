@@ -104,7 +104,7 @@ as
 			<common:FormField FieldID="CHILDPROJECTSTATUS" Caption="Child project status" DataType="String" />
 			<common:FormField FieldID="CHILDPROJECTID" Caption="Child project system record id" Hidden="true" DataType="Guid" />
 			<common:FormField FieldID="CURRENTCHILDSPONSORSHIPSTATUSCODEID" Caption="Current child sponsorship status" DataType="Guid">
-				<common:CodeTable CodeTableName="USR_CURRENTSPONSORSHIPSTATUSCODE" />
+				<common:CodeTable CodeTableName="USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE" />
 			</common:FormField>
 		</common:FormFields>
 	
