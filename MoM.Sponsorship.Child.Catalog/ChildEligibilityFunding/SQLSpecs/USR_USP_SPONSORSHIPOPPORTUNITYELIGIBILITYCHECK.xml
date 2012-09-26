@@ -1,0 +1,61 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c61f7601-359a-401a-992e-384c0ebab90f"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK"
+	Description="This calls all the Eligibility checks"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK"
+	>
+
+	<!-- 
+	Remarks:	This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  
+				
+	History:
+	Date			Modified By		Comments
+    26-Mar-2012		CMayeda			Initial Version
+	01-Aug-2012		CMayeda			Changed this to use USR_UDT_CHILDIDLIST instead the two fields ID or IDSETREGISTERID
+	28-Aug-2012		CMayeda			Added NEWCHILDVERIFICATION and REQUESTINGINFO and Funding check
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to check eligibilty
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for ChangedByID and AddedByID fields
+	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output)					-- Output parm that specifies how many pending reasons were inserted
+
+as
+begin
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+	
+    begin try
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED @childIDList, @changeAgentID
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD @childIDList, @changeAgentID
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED @childIDList, @changeAgentID
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE @childIDList, @changeAgentID	
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE @childIDList, @changeAgentID	
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING @childIDList, @changeAgentID	
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT @childIDList, @changeAgentID	
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED @childIDList, @changeAgentID		
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEWCHILDVERIFICATION @childIDList, @changeAgentID	
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFO @childIDList, @changeAgentID	
+		
+		exec dbo.USR_USP_CHILDREN_SETFUNDING @childIDList, @changeAgentID
+		
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+end
+
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

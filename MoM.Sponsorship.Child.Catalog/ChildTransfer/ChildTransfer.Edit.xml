@@ -1,0 +1,197 @@
+﻿<EditDataFormTemplateSpec 
+  xmlns="bb_appfx_editdataformtemplate"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="76d01158-84c5-4a65-9e73-b298ac970184" 
+  Name="ChildTransfer Edit Data Form"
+  Description="ChildTransfer Edit Data Form" 
+  Author="Memphis Sellers"
+  DataFormInstanceID="cb8a5aa3-832f-4510-891c-502a24ea5650" 
+  RecordType="SponsorshipOpportunityChild"
+  common:SecurityUIFolder="Sponsorship\Opportunity"
+  >
+
+  <SPDataForm>
+    <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_TRANSFER">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_TRANSFER
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+    @FORMCOMPLETIONDATE datetime = null output,
+    @FORMCOMPLETEDBY nvarchar(50) = null output,
+    @FORMENTEREDBY nvarchar(50) = null output,
+    @CRMDATEOFTRANSFER datetime = null output,
+    @FIELDDATEOFTRANSFER datetime = null output,
+    @EXPLANATION nvarchar(1000) = null output,
+    @FROMPROJECTNAME nvarchar(100) = null output,
+    @FROMPROJECLOOKUPTID nvarchar(100) = null output,
+    @TOPROJECTNAME nvarchar(100) = null output,
+    --@TOPROJECTID uniqueidentifier = null output,
+    @TOPROJECTLOOKUPID nvarchar(100) = null output
+    --@FROMREGISTRATIONDATE datetime = null output
+)
+as
+
+  set nocount on;
+
+  -- be sure to set these, in case the select returns no rows
+  set @DATALOADED = 0
+  set @TSLONG = 0
+
+  --declare @FROMPROJECTNAME nvarchar(100);
+  
+  
+  -- populate the output parameters, which correspond to fields on the form.  Note that
+  -- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+  -- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+  -- can be considered.
+  select
+    @DATALOADED = 1,
+    @TSLONG = TSLONG,
+        @SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID, 
+        @FORMCOMPLETIONDATE = FORMCOMPLETIONDATE, 
+        @FORMCOMPLETEDBY = FORMCOMPLETEDBY, 
+        @FORMENTEREDBY = FORMENTEREDBY, 
+        @CRMDATEOFTRANSFER = CRMDATEOFTRANSFER, 
+        @FIELDDATEOFTRANSFER = FIELDDATEOFTRANSFER, 
+        @EXPLANATION = EXPLANATION, 
+        @FROMPROJECTNAME = dbo.USR_UFN_CHILD_GETCHILDPROJECTNAME(FROMPROJECTID),
+        @TOPROJECTLOOKUPID = dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(TOPROJECTID), 
+        @FROMPROJECLOOKUPTID = dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(FROMPROJECTID), 
+        @TOPROJECTNAME = dbo.USR_UFN_CHILD_GETCHILDPROJECTNAME(TOPROJECTID)
+        --@TOPROJECTID = TOPROJECTID
+        --@FROMREGISTRATIONDATE = FROMREGISTRATIONDATE
+  from dbo.USR_CHILDTRANSFER
+  where ID = @ID
+
+
+/*
+  select
+    @DATALOADED = 1,
+    @TSLONG = TSLONG,
+    @SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID, 
+    @FORMCOMPLETIONDATE = FORMCOMPLETIONDATE, 
+    @FORMCOMPLETEDBY = FORMCOMPLETEDBY, 
+    @FORMENTEREDBY = FORMENTEREDBY, 
+    @CRMDATEOFTRANSFER = CRMDATEOFTRANSFER, 
+    @FIELDDATEOFTRANSFER = FIELDDATEOFTRANSFER, 
+    @EXPLANATION = EXPLANATION, 
+    @FROMPROJECTNAME = projectconst.NAME,
+    @FROMPROJECTLOOKUPID = projectconst.LOOKUPID,
+    @SPONSORSHIPOPPORTUNITYCHILDID = so.ID,
+    @FROMPROJECTID = slocation.ID
+  from        dbo.SPONSORSHIPOPPORTUNITY so
+  inner join  dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so.ID = so_child.ID
+  inner join  dbo.SPONSORSHIPLOCATION slocation on so.SPONSORSHIPLOCATIONID = slocation.ID   
+  inner join  dbo.USR_CHILDPROJECTEXTENSION projectext on slocation.FIELDOFFICEID = projectext.ID
+  inner join  dbo.CONSTITUENT projectconst ON projectconst.ID = projectext.ID
+  where so.ID = @CONTEXTID
+*/
+
+  return 0;
+]]>
+      </common:CreateProcedureSQL>
+    </LoadImplementation>
+    <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILD_TRANSFER">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILD_TRANSFER
+(
+  @ID uniqueidentifier,
+  @CHANGEAGENTID uniqueidentifier = null,
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier,
+    @FORMCOMPLETIONDATE datetime,
+    @FORMCOMPLETEDBY nvarchar(50),
+    @FORMENTEREDBY nvarchar(50),
+    @CRMDATEOFTRANSFER datetime,
+    @FIELDDATEOFTRANSFER datetime,
+    @EXPLANATION nvarchar(1000)
+    --@FROMPROJECTNAME nvarchar(100),
+    --@FROMPROJECTID uniqueidentifier,
+    --@TOPROJECTNAME nvarchar(100),
+    --@TOPROJECTID uniqueidentifier
+)
+as
+
+  set nocount on;
+
+  if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+            
+  begin try
+    -- handle updating the data
+    update dbo.USR_CHILDTRANSFER set
+            SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID,
+            FORMCOMPLETIONDATE = @FORMCOMPLETIONDATE,
+            FORMCOMPLETEDBY = @FORMCOMPLETEDBY,
+            FORMENTEREDBY = @FORMENTEREDBY,
+            CRMDATEOFTRANSFER = @CRMDATEOFTRANSFER,
+            FIELDDATEOFTRANSFER = @FIELDDATEOFTRANSFER,
+            EXPLANATION = @EXPLANATION,
+            --FROMPROJECTNAME = @FROMPROJECTNAME,
+            --FROMPROJECTID = @FROMPROJECTID,
+            --TOPROJECTNAME = @TOPROJECTNAME,
+            --TOPROJECTID = @TOPROJECTID,
+      CHANGEDBYID = @CHANGEAGENTID,
+      DATECHANGED = getdate()
+    where ID = @ID
+  end try
+  begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+  end catch
+
+return 0;
+]]>
+      </common:CreateProcedureSQL>
+      <common:ExpectedDBExceptions>
+        <common:Constraints>
+          <common:Constraint Name="FK_USR_CHILDTRANSFER_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+          <common:Constraint Name="CK_USR_CHILDTRANSFER_FORMCOMPLETEDBY" Field="FORMCOMPLETEDBY" Type="Required" />
+          <common:Constraint Name="CK_USR_CHILDTRANSFER_EXPLANATION" Field="EXPLANATION" Type="Required" />
+          <!--<common:Constraint Name="CK_USR_CHILDTRANSFER_FROMPROJECTNAME" Field="FROMPROJECTNAME" Type="Required" />
+          <common:Constraint Name="CK_USR_CHILDTRANSFER_TOPROJECTNAME" Field="TOPROJECTNAME" Type="Required" />-->
+        </common:Constraints>
+      </common:ExpectedDBExceptions>
+    </SaveImplementation>
+  </SPDataForm>
+  <common:FormMetaData FixedDialog="true">
+    <common:FormFields>
+      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true"/>
+      <common:FormField FieldID="FORMCOMPLETIONDATE" DataType="Date" Required="true" Caption="Form date" />
+      <common:FormField FieldID="FORMCOMPLETEDBY" Required="true" MaxLength="50" Caption="Form completed by" />
+      <common:FormField FieldID="FORMENTEREDBY" MaxLength="50" Caption="Form entered by" />
+      <common:FormField FieldID="CRMDATEOFTRANSFER" DataType="Date" Required="true" Caption="Crmdateoftransfer" Hidden="true" />
+      <common:FormField FieldID="FIELDDATEOFTRANSFER" DataType="Date" Required="true" Caption="Field transfer date" />
+      <common:FormField FieldID="EXPLANATION" Required="true" MaxLength="1000" Caption="Explanation" Multiline="true" />
+      <common:FormField FieldID="FROMPROJECTNAME" Required="true" MaxLength="100" Caption="From project" ReadOnly="true" />
+      <common:FormField FieldID="FROMPROJECLOOKUPTID" DataType="String" Required="true" Caption="From project lookupid" ReadOnly="true" />
+      <!--<common:FormField FieldID="FROMREGISTRATIONDATE" Caption="Registration Date" IncludeTimeOnDate="false" ReadOnly="true" />-->
+
+      
+      <!-- This is uneditable so display the name & lookupid values only-->
+      <common:FormField FieldID="TOPROJECTLOOKUPID" DataType="String" Required="true" Caption="To project lookupid" ReadOnly="true" />
+      <common:FormField FieldID="TOPROJECTNAME" Required="true" MaxLength="100" Caption="To project name" ReadOnly="true" />
+      
+      
+      <!--<common:FormField FieldID="TOPROJECTID" DataType="Guid" Required="true" Caption="To project" >
+        <common:SearchList SearchListID="7d7ac450-86f7-42f7-9299-e2458592ad14" EnableQuickFind="true">
+          <common:FormFieldOverrides>
+            <common:FormFieldOverride FieldID="INCLUDECHILDNODES" DefaultValueText="1" />
+            <common:FormFieldOverride FieldID="WITHINLOCATION" Hidden="true" />
+            <common:FormFieldOverride FieldID="WITHINLOCATIONDISPLAY" Hidden="true" />
+          </common:FormFieldOverrides>
+        </common:SearchList>
+      </common:FormField>-->
+      <!--<common:FormField FieldID="TOPROJECTNAME" Required="true" MaxLength="100" Caption="Transfer Project name" CaptionResourceKey="$$location" >
+        
+      </common:FormField>-->
+      
+    </common:FormFields>
+    <common:FormUIComponent />
+  </common:FormMetaData>
+
+</EditDataFormTemplateSpec>

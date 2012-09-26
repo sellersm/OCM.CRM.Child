@@ -1,0 +1,151 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes"
+	ID="326ca196-8457-4271-8d6c-54d628b223e9"
+	Name="USR_USP_CHILDPHOTOADD"
+	Description="Adds picture and other sponsorship data to the database."
+	Author="Blackbaud Product Development"
+	SPName="USR_USP_CHILDPHOTOADD"
+	GrantServiceRolePermission="true" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	-->
+
+	<CreateProcedureSQL>
+    <![CDATA[
+create procedure dbo.USR_USP_CHILDPHOTOADD (
+	@ID uniqueidentifier = null output,
+	@VALIDATEONLY bit = 0,
+	@CHANGEAGENTID uniqueidentifier = null,
+	@SPONSORSHIPOPPORTUNITYLOOKUPID varchar(100) = null,      
+	@ATTACHMENTTYPECODEID uniqueidentifier = null,
+	@PICTURETITLE nvarchar(50) = null,
+	@FILENAME nvarchar(255) = null,
+	@PICTURE varbinary(max)=null
+)
+as begin
+    set nocount on;
+	  
+	declare @SPONSORSHIPOPPORTUNITYID uniqueidentifier = null;
+	declare @CONSTITUENTID uniqueidentifier = null;
+	
+    if @ID is null
+        set @ID = newid();
+
+    if @CHANGEAGENTID is null  
+        exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+
+    declare @CURRENTDATE datetime;
+    set @CURRENTDATE = getdate();
+
+    begin try
+        declare @ERRORMSG nvarchar(100)
+        if @VALIDATEONLY = 1
+        begin
+          
+			if @SPONSORSHIPOPPORTUNITYLOOKUPID is null
+			begin
+				set @ERRORMSG = 'The constituent is not selected'
+				RAISERROR (@ERRORMSG, 13, 1)
+			end
+			if @ATTACHMENTTYPECODEID is null
+			begin
+				set @ERRORMSG = 'The attachment type is not selected'
+				RAISERROR (@ERRORMSG, 13, 1)
+			end
+			if @FILENAME is null
+			begin
+				set @ERRORMSG = 'The file name is not selected'
+				RAISERROR (@ERRORMSG, 13, 1)
+			end
+			if @PICTURETITLE is null
+			begin
+				set @ERRORMSG = 'The picture title is not selected'
+				RAISERROR (@ERRORMSG, 13, 1)
+			end
+		end
+		
+		else
+        begin
+			if @SPONSORSHIPOPPORTUNITYLOOKUPID is null
+			begin
+				set @ERRORMSG = 'Sponsorship opportunity lookup id is not selected'
+				RAISERROR (@ERRORMSG, 13, 1)
+			end
+			
+			select @SPONSORSHIPOPPORTUNITYID = ID from dbo.SPONSORSHIPOPPORTUNITY where LOOKUPID = @SPONSORSHIPOPPORTUNITYLOOKUPID
+			if @SPONSORSHIPOPPORTUNITYID is null
+			begin
+				set @ERRORMSG = 'Could not find child with Lookup ID - ' + @SPONSORSHIPOPPORTUNITYLOOKUPID
+				RAISERROR (@ERRORMSG, 13, 1)
+			end
+			
+			insert dbo.SPONSORSHIPOPPORTUNITYATTACHMENT (
+				[ID],
+				[DATEENTERED],
+				[TITLE],
+				[AUTHORID],
+				[SPROPPATTACHMENTTYPECODEID],
+				[FILENAME],
+				[FILE],
+				[SPONSORSHIPOPPORTUNITYID],
+				[ADDEDBYID],
+				[CHANGEDBYID],
+				[DATEADDED],
+				[DATECHANGED]
+			)
+			values ( 
+				@ID,
+				@CURRENTDATE,                                            
+				@PICTURETITLE,
+				@CONSTITUENTID,
+				@ATTACHMENTTYPECODEID,
+				@FILENAME,
+				@PICTURE,
+				@SPONSORSHIPOPPORTUNITYID,
+				@CHANGEAGENTID,
+				@CHANGEAGENTID,
+				@CURRENTDATE,
+				@CURRENTDATE
+			);
+															
+			if	@ATTACHMENTTYPECODEID = 'ADF263FD-387F-48D7-8EFC-F1661DCA2B68' -- headshot
+			begin
+				update	dbo.SPONSORSHIPOPPORTUNITYCHILD
+					set	PICTURE = @PICTURE, 
+						PICTURETHUMBNAIL = @PICTURE,
+						CHANGEDBYID = @CHANGEAGENTID,
+						DATECHANGED = @CURRENTDATE
+					where	ID = @SPONSORSHIPOPPORTUNITYID;
+				
+				select @CONSTITUENTID = CONSTITUENTID from dbo.SPONSORSHIPOPPORTUNITYCHILD where ID = @SPONSORSHIPOPPORTUNITYID;
+				if @SPONSORSHIPOPPORTUNITYID is null
+				begin
+					set @ERRORMSG = 'Could not find child''s constituent record'
+					RAISERROR (@ERRORMSG, 13, 1)
+				end
+				
+				update	dbo.CONSTITUENT
+					set	PICTURE = @PICTURE,
+						PICTURETHUMBNAIL = @PICTURE,
+						CHANGEDBYID = @CHANGEAGENTID,
+						DATECHANGED = @CURRENTDATE
+					where	ID = @CONSTITUENTID
+			end
+		end
+    end try
+    begin catch
+        exec.dbo.USP_RAISE_ERROR;
+        return 1;
+    end catch
+    return 0;
+end;
+		]]>
+  </CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

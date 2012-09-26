@@ -1,0 +1,30 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="62a35b72-60d7-44d5-8fae-337c61d5ec01"
+	Name="USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID"
+	Description="Gets the ChildProject LookupID of the given LocationId"
+	Author="Memphis Sellers"
+	DBFunctionName="USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(
+	@locationID uniqueidentifier
+)
+returns nvarchar(100)
+with execute as caller
+as begin
+	declare @projectLookupID nvarchar(100) = ''
+	select @projectLookupID = fieldoffice.LOOKUPID 
+		from SPONSORSHIPLOCATION sl
+		join CONSTITUENT fieldoffice on sl.FIELDOFFICEID = fieldoffice.ID
+		WHERE sl.ID = @locationID;           
+
+	return @projectLookupID;
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

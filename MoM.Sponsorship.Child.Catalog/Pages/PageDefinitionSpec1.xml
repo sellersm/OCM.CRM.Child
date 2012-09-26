@@ -1,0 +1,233 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="25141856-3d1b-4c6e-b621-73aae9d5f417"
+    Name="EMPTY_BOGUS Page"
+    Description="Empty Bogus Page"
+    Author="memphis-PC\Administrator"
+    ContextRecordType="None"	
+    >
+
+	<!-- Note:  A page can optionally have a view form associated with it as the "Expression form".  While implemented as a view data form,
+	this form has no UI in this context, and is simply used as a way of loading additional information associated with the page.  The fields
+	returned by the expression form can be used as expressions in various properties throughout the page.  To specify an expression form for this
+	page, add the following attribute:		ExpressionDataFormID="<some guid>"-->
+
+	<!-- define how the page header should appear -->
+	<PageHeader Caption="Empty" ImageKey="REPLACE_WITH_IMAGEKEY" />
+
+
+  <AlterExistingPages xmlns="bb_appfx_pagedefinition">
+    <AlterPages>
+      <!--Constituent Page-->
+      <AlterPage PageID="0f392d71-5884-4363-b6e3-a75755f8402a">
+        <AlterTabs>
+          <!--<AddTab >
+            <Tab Caption="Testing" ID="CA281EC7-DE8A-49F6-ABA7-3B5266682FAA" Visible="True">
+              <Sections>
+                <Section Caption="My Test" ID="2DEAD1AD-F5CB-44F4-BC59-EE87F4D68373" >
+                  <DataList ID="aa31ed30-32f3-4afd-920b-25945dde7bc8" >
+                    <RenderStyle>
+                      <StandardView></StandardView>
+                    </RenderStyle>
+                  </DataList>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>-->
+          <AddTab>
+            <Tab Caption="Who Am I" ID="b6cecb36-a9ab-4f9b-a9f5-c4e2cf10e790" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1" CaptionResourceKey="$$details">
+              <Sections>
+                <Section ID="c3587b66-6801-4e42-83b2-066a43ccc1b4" HideCaption="true">
+                  <DataForm ID="2c5e91ff-ec60-4f8a-9361-9eae6549aa69" />
+                  <SectionContext>
+                    <PageContextID xmlns="bb_appfx_commontypes" />
+                  </SectionContext>
+                  <HelpKey>SPChildPageDetails.html</HelpKey>
+                </Section>
+                <Section ID="367dfbdf-8017-4179-a63f-141ca9f9531d" HideCaption="True">
+                  <DataForm ID="341c23a6-648b-4c2c-bd6f-d33ddebda22b" />
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+          <AddTab>
+            <Tab Caption="Who I Live With" ID="23d9e267-00e4-47ae-ae66-22733aa111c4">
+              <Sections>
+                <Section ID="7d37fbb4-4b4d-4bd6-a6b2-699d7ebc2836">
+                  <DataForm ID="3626cd83-acd8-4277-9fd4-96477d76e385" ShowBorder="true" IsScrollable="true" />
+                  <Actions>
+                    <Action ID="1b2fcc6d-4202-44f1-aa42-495973cdc47b" Caption="Edit">
+                      <ShowDataForm DataFormID="eea105ac-bc35-40e5-b8ef-91126478848d" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <PageContextID />
+                        </ActionContext>
+                      </ShowDataForm>
+                    </Action>
+                  </Actions>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+          <AddTab>
+            <Tab Caption="Siblings" ID="c0ab1f6e-c06d-4f81-9d70-a4e9eb6d7f0a">
+              <Sections>
+                <Section ID="529084d4-c556-41fb-ab1b-001ceea05e14" Caption="Child Siblings">
+                  <DataList ID="aa31ed30-32f3-4afd-920b-25945dde7bc8">
+                    <RenderStyle>
+                      <StandardView />
+                    </RenderStyle>
+                  </DataList>
+                  <Actions>
+                    <Action ID="78664887-8c40-4c7c-9a9c-cc93d6d4c9ac" Caption="Add Sibling">
+                      <ShowAddDataForm DataFormID="173d9386-e5d8-4628-b756-2beac170f91f" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <PageContextID />
+                        </ActionContext>
+                      </ShowAddDataForm>
+                    </Action>
+                    <Action ID="b996c7d8-12ef-484b-98bf-9687b67a9162" Caption="Edit Sibling">
+                      <ShowDataForm DataFormID="4d77ddc3-6245-4173-a15f-2aaa346fb6e5" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <Expression>= Fields!ID</Expression>
+                        </ActionContext>
+                      </ShowDataForm>
+                    </Action>
+                  </Actions>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+          <AddTab>
+            <Tab Caption="Where I Live" ID="9f8240e4-6c9e-4336-9992-f8bfdc59e9a2">
+              <Sections>
+                <Section ID="26368b3a-fbdc-4650-942e-30cff758d2c4">
+                  <DataForm ID="ed76eb09-aea1-4121-811c-c0ba5fb8ccd5" />
+                  <Actions>
+                    <Action ID="27a62b39-79c0-4681-9817-71f22c6a756e" Caption="Edit">
+                      <ShowDataForm DataFormID="c19be720-044a-47fb-a9db-9a56f53d389e" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <PageContextID />
+                        </ActionContext>
+                      </ShowDataForm>
+                    </Action>
+                  </Actions>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+          <AddTab>
+            <Tab Caption="About Me" ID="e25b8d62-010c-441b-8832-3d26c585b8f0">
+              <Sections>
+                <Section ID="eb687bb4-8cfd-49b6-ac4d-845cb2554e3a" Caption="Child Interests">
+                  <DataForm ID="ca862083-b06e-4f92-98d3-fc4b883c8f38" />
+                  <Actions>
+                    <Action ID="98bac6e7-85c8-4d12-92ea-33d160656205" Caption="Edit">
+                      <ShowDataForm DataFormID="55f5b7f0-5207-40c6-ba5a-5907a7721aa7" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <PageContextID />
+                        </ActionContext>
+                      </ShowDataForm>
+                    </Action>
+                  </Actions>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+          <AddTab>
+            <Tab Caption="Development" ID="c067b874-af3e-446c-b267-05026ad56c60">
+              <Sections>
+                <Section ID="d2599666-799c-4c69-8f39-7d51ef6d76b9">
+                  <DataForm ID="72fb51be-6011-4c70-b58f-bf6ad204bc94" />
+                  <Actions>
+                    <Action ID="23ea57af-a5ad-4ed7-a79a-c85124f3897a" Caption="Edit">
+                      <ShowDataForm DataFormID="262037d6-634d-4be6-b9c8-36847751b97c" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <PageContextID />
+                        </ActionContext>
+                      </ShowDataForm>
+                    </Action>
+                  </Actions>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+          <AddTab>
+            <Tab Caption="Additional Info" ID="d80f3b37-c0af-4afe-a832-319b9efb7c79">
+              <Sections>
+                <Section ID="4338a934-8c2b-48cc-863e-6f9c363389c1">
+                  <DataForm ID="b9390174-f5b7-4a6a-b73b-9d5b9cb5b1c4" />
+                  <Actions>
+                    <Action ID="932a050c-60c7-4503-beec-8ab65b7a3202" Caption="Edit">
+                      <ShowDataForm DataFormID="4491a326-4cf5-4008-acbc-7b10d138ec41" xmlns="bb_appfx_commontypes">
+                        <ActionContext>
+                          <PageContextID />
+                        </ActionContext>
+                      </ShowDataForm>
+                    </Action>
+                  </Actions>
+                </Section>
+              </Sections>
+            </Tab>
+          </AddTab>
+        </AlterTabs>
+        
+        <AlterOrAddPageActionGroups>
+          <AlterOrAddPageActionGroup ID="0e7d8ecf-9d0a-42d8-9142-55432c059081" Caption="Child Information" >
+            <AddAction>
+              <Action ID="54e7bb79-6dda-484d-9045-d068a7a52fad" Caption="=String.Format(&quot;Depart {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square">
+                <ShowAddDataForm DataFormID="307cc6ec-885c-45f6-a832-b48e1d1b4624" xmlns="bb_appfx_commontypes">
+                  <ActionContext>
+                    <PageContextID />
+                  </ActionContext>
+                </ShowAddDataForm>
+              </Action>
+            </AddAction>
+          </AlterOrAddPageActionGroup>
+
+          <AlterOrAddPageActionGroup ID="0e7d8ecf-9d0a-42d8-9142-55432c059081" Caption="Child Information" >
+            <AddAction>
+              <Action ID="111cc29b-19c9-4321-bc9a-0289b30d2643" Caption="=String.Format(&quot;Transfer {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square">
+                <ShowPage PageID="0fe6bebd-bfee-4aea-9791-44e559c41806" TabID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+                  <ActionContext>
+                    <PageContextID />
+                  </ActionContext>
+                </ShowPage>
+              </Action>
+            </AddAction>
+          </AlterOrAddPageActionGroup>
+          
+          <AlterOrAddPageActionGroup ID="0e7d8ecf-9d0a-42d8-9142-55432c059081" Caption="Child Information" >
+            <AddAction>
+              <Action ID="20028044-e188-4793-8b8c-6da6d5129de7" Caption="=String.Format(&quot;Reactivate {0}&quot;, Page.Fields!FIRSTNAME)" ImageKey="RES:goto_square">
+                <ShowAddDataForm DataFormID="51e41274-0cb7-4655-b808-8c4afa545bdb" xmlns="bb_appfx_commontypes" />
+              </Action>
+            </AddAction>
+              </AlterOrAddPageActionGroup>
+          <AlterOrAddPageActionGroup ID="0e7d8ecf-9d0a-42d8-9142-55432c059081" Caption="Child Information" >
+            <AddAction>
+              <Action ID="6e77b0ca-c228-4579-9c71-bb4c5452f353" Caption="Add Child">
+                <ShowAddDataForm DataFormID="f7ca0191-ad70-4203-a22f-0938be928e14" xmlns="bb_appfx_commontypes" />
+              </Action>
+            </AddAction>
+          </AlterOrAddPageActionGroup>
+
+          <AlterOrAddPageActionGroup ID="0e7d8ecf-9d0a-42d8-9142-55432c059081" Caption="Child Information" >
+            <AddAction>
+              <Action ID="511e9d3b-e2af-46cc-904a-f560dae993b1" Caption="Add CCH">
+                <ShowAddDataForm DataFormID="199882b0-1b47-4af7-b1f6-186f88e5c343" xmlns="bb_appfx_commontypes">
+                  <ActionContext>
+                    <PageContextID />
+                  </ActionContext>
+                </ShowAddDataForm>
+              </Action>
+            </AddAction>
+          </AlterOrAddPageActionGroup>
+        </AlterOrAddPageActionGroups>
+        
+      </AlterPage>
+    </AlterPages>
+  </AlterExistingPages>
+  
+	
+</PageDefinitionSpec>
