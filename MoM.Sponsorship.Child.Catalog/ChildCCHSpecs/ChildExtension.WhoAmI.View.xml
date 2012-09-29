@@ -17,6 +17,7 @@
 	22-Aug-2012		CMayeda			Added Project fields - Fogbugz Case 776
 	22-Aug-2012		Memphis			Added CHILDNICKNAME field - Fogbugz Case 777
 	26-Sep-2012		CMayeda			Added CURRENTCHILDSPONSORSHIPSTATUSCODEID field - Fogbugz Case 854
+	29-Sep-2012		Memphis			Modified the current sponsorship status to be a string field and call a UFN to populate it.
 	-->
 	
 	<!-- define the SP that returns the data used by the form -->
@@ -36,7 +37,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_WHOAMI
 	@CHILDPROJECTLOOKUPID nvarchar(36) = null output,					-- child project status lookup id
 	@CHILDPROJECTNAME nvarchar(154) = null output,						-- child project name	
 	@CHILDPROJECTSTATUS nvarchar(100) = null output,					-- child project status	
-	@CURRENTCHILDSPONSORSHIPSTATUSCODEID nvarchar(100) = null output	-- The child's current sponsorship status (Sponsored, Prospect Sponsored)
+	@CURRENTCHILDSPONSORSHIPSTATUS nvarchar(100) = null output			-- The child's current sponsorship status (Sponsored, Prospect Sponsored)
 )
 as
 	set nocount on;
@@ -49,8 +50,7 @@ as
 	-- will display a "no data loaded" message.
 	select @DATALOADED = 1,
 			@CHILDNAMESUFFIXCODEID = CHILDNAMESUFFIXCODEID,
-			@BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID,
-			@CURRENTCHILDSPONSORSHIPSTATUSCODEID = CURRENTCHILDSPONSORSHIPSTATUSCODEID
+			@BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID
 	from dbo.USR_CHILDEXTENSION
 	where SPONSORSHIPOPPORTUNITYCHILDID = @ID
 	--where ID = @ID
@@ -78,6 +78,8 @@ as
 	join dbo.CONSTITUENT con on soc.CONSTITUENTID = con.ID
 	where soc.ID = @ID
 
+	select @CURRENTCHILDSPONSORSHIPSTATUS = dbo.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION(@ID)
+	
 	return 0;
 			]]>
 		</common:CreateProcedureSQL>
@@ -103,9 +105,7 @@ as
 			<common:FormField FieldID="CHILDPROJECTNAME" Caption="Child project name" DataType="String"  />
 			<common:FormField FieldID="CHILDPROJECTSTATUS" Caption="Child project status" DataType="String" />
 			<common:FormField FieldID="CHILDPROJECTID" Caption="Child project system record id" Hidden="true" DataType="Guid" />
-			<common:FormField FieldID="CURRENTCHILDSPONSORSHIPSTATUSCODEID" Caption="Current child sponsorship status" DataType="Guid">
-				<common:CodeTable CodeTableName="USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE" />
-			</common:FormField>
+			<common:FormField FieldID="CURRENTCHILDSPONSORSHIPSTATUS" Caption="Current child sponsorship status" DataType="String" />
 		</common:FormFields>
 	
 	</common:FormMetaData>

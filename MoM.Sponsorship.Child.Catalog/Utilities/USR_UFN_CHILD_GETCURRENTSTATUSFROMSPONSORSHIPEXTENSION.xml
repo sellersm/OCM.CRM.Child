@@ -7,7 +7,16 @@
 	Author="Memphis Sellers"
 	DBFunctionName="USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION"
 	>
+	
+	<!-- 
+	Remarks:    Retrieves the 'current' row from sponsorship extension table for the given opportunity.
 
+	History:
+	Date            Modified By     Comments
+	29-Sep-2012		Memphis			It lives!!
+	-->
+
+	
 	<CreateFunctionSQL>
 		<![CDATA[
 create function dbo.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION(
@@ -23,7 +32,7 @@ as begin
 	from dbo.usr_sponsorshipextension se 
 	join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = se.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
 	where se.SPONSORSHIPOPPORTUNITYID = @OPPORTUNITYID
-	and se.ISCURRENT = 1
+	--and se.ISCURRENT = 1
 
 	return @currentStatus
 end
