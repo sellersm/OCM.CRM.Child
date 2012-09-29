@@ -428,7 +428,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDNAME.xml" />
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION.xml" />
     <EmbeddedResource Include="Reservations\ChildReservation.DataList.xml" />
     <EmbeddedResource Include="Tables\ChildReservation.Table.xml" />
     <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetFundedYes.RecordOperation.xml" />
