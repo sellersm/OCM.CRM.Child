@@ -32,7 +32,7 @@ as begin
 	from dbo.usr_sponsorshipextension se 
 	join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = se.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
 	where se.SPONSORSHIPOPPORTUNITYID = @OPPORTUNITYID
-	--and se.ISCURRENT = 1
+	and se.ISCURRENT = 1
 
 	return @currentStatus
 end
