@@ -428,6 +428,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Query Views\ChildExtension.Interaction.Query.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDNAME.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION.xml" />
     <EmbeddedResource Include="Reservations\ChildReservation.DataList.xml" />
@@ -465,7 +466,6 @@
     <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Package.xml" />
     <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.Table.xml" />
     <EmbeddedResource Include="Photos\USR_USP_CHILDPHOTOADD.xml" />
-    <Content Include="Query Views\ChildExtension.ChildAsConstituent.Query.xml" />
     <EmbeddedResource Include="Tables\ChildReactivation.Table.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
   </ItemGroup>
