@@ -20,7 +20,8 @@
 	30-Aug-2012		Memphis			Added Edit form for Departure.DateProcessed. FogBugz Case 792
 	05-Sep-2012		CMayeda			Added Child Reservation specs
 	29-Sep-2012		CMayeda			Added ChildExtension.Interaction.Query.xml - FogBugz Case 825
--->
+	30-Sep-2012		CMayeda			Added ChildExtension.ReservationKeys.Query.xml - FogBugz Case 836
+	-->
 
 	<c:DependencyList>
     <!-- Codetables -->
@@ -58,11 +59,12 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION.xml" />
 
 
-		<!-- Queries -->
+	<!-- Queries -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SponsorshipOpportunityExt.Query.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Query.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Query.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.Interaction.Query.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ReservationKeys.Query.xml" />
 		
 	<!-- Datalists -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Transfer Table.DataList.xml" />

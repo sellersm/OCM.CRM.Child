@@ -435,6 +435,7 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPLOADED.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED.xml" />
+    <EmbeddedResource Include="Query Views\ChildExtension.ReservationKeys.Query.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDNAME.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION.xml" />
     <EmbeddedResource Include="Reservations\ChildReservation.DataList.xml" />
