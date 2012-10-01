@@ -1,0 +1,44 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="532958c5-800a-413b-bf55-20a6887ede70"
+	Name="Child Extension Waiting Duration Smart Field"
+	Description="Used to determine the duration in days from the time the child was added to the system to when they were registered. If not registered current waiting time."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDWAITINGDURATION"
+	DataType="Integer"
+	RecordType="Sponsorship opportunity child"
+	DisplayName="Child waiting duration"
+	SmartFieldFolder="Sponsorship opportunity child" >
+
+	<!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDWAITINGDURATION
+(
+	@ASOF datetime 
+)
+as
+begin
+	  select so_child.ID, datediff (d,so_child.DATEADDED, child_ext.REGISTRATIONDATE)
+		from dbo.SPONSORSHIPOPPORTUNITYCHILD so_child
+		join USR_CHILDEXTENSION child_ext on
+			 so_child.ID = child_ext.SPONSORSHIPOPPORTUNITYCHILDID		
+	 where child_ext.REGISTRATIONDATE is not null
+ 
+	 union all   
+
+	-- Kids still not registered. How long not registered
+	  select so_child.ID, datediff (d,so_child.DATEADDED, GETDATE())
+		from dbo.SPONSORSHIPOPPORTUNITYCHILD so_child
+		join USR_CHILDEXTENSION child_ext on
+			 so_child.ID = child_ext.SPONSORSHIPOPPORTUNITYCHILDID		
+	   where child_ext.REGISTRATIONDATE is null
+
+end 
+		]]>
+	</CreateProcedureSQL>
+
+	<!-- describe any parameters (other than the ASOF date) defined on the SP -->
+	
+</SmartFieldSpec>

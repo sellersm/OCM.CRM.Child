@@ -430,6 +430,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Query Views\ChildExtension.Interaction.Query.xml" />
     <EmbeddedResource Include="Smart Fields\ChildGreatestNeed.SmartField.xml" />
+    <EmbeddedResource Include="Smart Fields\ChildQuota.WaitingListReason.SmartField.xml" />
+    <EmbeddedResource Include="Smart Fields\ChildExtension.WaitingDurationDays.SmartField.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPLOADED.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED.xml" />
     <Content Include="Utilities\USR_UFN_CHILD_GETCHILDNAME.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION.xml" />
     <EmbeddedResource Include="Reservations\ChildReservation.DataList.xml" />
