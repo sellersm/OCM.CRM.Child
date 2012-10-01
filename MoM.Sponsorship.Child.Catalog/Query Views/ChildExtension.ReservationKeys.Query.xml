@@ -57,7 +57,7 @@
 	
 
 	<RelationshipOperations>
-		<AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="ID" PathAlias="Reservation keys" />
+		<AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="SPONSORSHIPOPPORTUNITYCHILDID" PathAlias="Reservation keys" />
 		<AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="SOLICITORID" PathAlias="Fundraiser" DisplayAliasResourceKey="$$owner" />
 	</RelationshipOperations>
 
