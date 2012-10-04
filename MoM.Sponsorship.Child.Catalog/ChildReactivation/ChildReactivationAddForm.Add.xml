@@ -107,7 +107,8 @@ begin try
   -- update funded to yes
   update dbo.USR_CHILDEXTENSION 
   set REGISTRATIONDATE = getdate(),
-      FUNDED = 1
+      FUNDED = 1,
+	  DEPARTUREFORMRECEIVED = NULL
   where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
   
   -- set all the departures for this child to inactive
