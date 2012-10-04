@@ -135,7 +135,11 @@ begin try
         @sponsorshipOpportunityChildID = @CONTEXTID,
         @includeIneligibleInUpdate = 1,
         @changeAgentID = @CHANGEAGENTID
-  
+		
+  exec dbo.USR_USP_CHILD_SETFUNDING
+		@childID =  @CONTEXTID,		-- Specify a Sponsorship Opportunity ID (same as the child's ID) of the child to set ineligible
+		@changeAgentID = @CHANGEAGENTID
+
 end try
 
 begin catch
