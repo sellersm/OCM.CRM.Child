@@ -458,7 +458,6 @@
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />
-    <EmbeddedResource Include="ChildReactivation\Child Reactivation Table.Package.xml" />
     <EmbeddedResource Include="ChildReactivation\ChildReactivation.DataList.xml" />
     <EmbeddedResource Include="ChildReactivation\ChildReactivation.Query.xml" />
     <EmbeddedResource Include="ChildReactivation\ChildReactivationAddForm.Add.xml" />
