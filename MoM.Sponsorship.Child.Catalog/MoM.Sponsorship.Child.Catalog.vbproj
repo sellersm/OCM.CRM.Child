@@ -149,7 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
-    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING.xml" />
@@ -452,7 +454,7 @@
     <EmbeddedResource Include="ChildDepartureSpecs\USR_USP_SPONSORSHIPOPPORTUNITY_DEPARTURETRANSFER.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILDREN_SETFUNDING.xml" />
-    <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />
