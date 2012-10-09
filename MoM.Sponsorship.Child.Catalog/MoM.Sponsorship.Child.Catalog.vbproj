@@ -160,8 +160,6 @@
     <EmbeddedResource Include="PageExpressions\ChildExtension.ExpressionDataForm.View.xml" />
     <EmbeddedResource Include="Pages\ChildCCH.Page.xml" />
     <EmbeddedResource Include="Pages\ChildDeparture.Page.xml" />
-    <EmbeddedResource Include="Pages\ChildTransfers.Page.xml" />
-    <EmbeddedResource Include="Pages\PageDefinitionSpec1.xml" />
     <EmbeddedResource Include="Pages\SponsorshipOpportunity.Page.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -378,9 +376,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetRegistrationDateNull.RecordOperation.xml" />
     <EmbeddedResource Include="AdminChildTasks\ChildExtension.SetFundedNo.RecordOperation.xml" />
-    <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPage.Package.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="CRUD\ChildExtension\ChildExtension.PackageVersion.DataList.xml" />
     <EmbeddedResource Include="ChildBio\ChildBioPackageVersion.DataList.xml" />
     <EmbeddedResource Include="Batch\ChildExtensionBatchPackageVersion.DataList.xml" />
@@ -394,9 +389,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.CCHVerificationFailedInterationWrapped.Add.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Pages\TestSponsorshipOpportunityPackageVersion.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Batch\USR_UFN_ISBATCHCOMMITTED.xml" />
@@ -439,7 +431,7 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED.xml" />
     <EmbeddedResource Include="Query Views\ChildExtension.ReservationKeys.Query.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_SETFUNDING.xml" />
-    <Content Include="Utilities\USR_UFN_CHILD_GETCHILDNAME.xml" />
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDNAME.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION.xml" />
     <EmbeddedResource Include="Reservations\ChildReservation.DataList.xml" />
     <EmbeddedResource Include="Tables\ChildReservation.Table.xml" />

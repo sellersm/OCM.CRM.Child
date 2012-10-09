@@ -18,10 +18,6 @@ create procedure dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDWAITINGLISTREA
 	@ASOF datetime
 ) as begin 
 
-	--select * from SPONSORSHIPOPPORTUNITYCHILD where ID = '631C958A-8431-4083-B87C-8D4F0699122F'
-
-	--select * from SPONSORSHIPOPPORTUNITYAUDIT order by auditkey
-	--select auditkey, count(*) from SPONSORSHIPOPPORTUNITYAUDIT group by auditkey order by count(*)
 	declare @waitingListProjectQuotaDesc as nvarchar(100)
 	declare @waitingListProjectNoChildrenDesc as nvarchar(100)
 	declare @waitingListProjectStatusDesc as nvarchar(100)
