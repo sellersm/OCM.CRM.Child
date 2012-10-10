@@ -17,6 +17,7 @@
 	History:
 	Date            Modified By     Comments
 	28-Aug-2012		Memphis			FogBugz Case 797  never use the reason 'Departure - Other', but use 'Departure' instead unless child is deceased.
+	10-Oct-2012		Memphis			FogBugz Case 892:  add call to cancel pending interactions.
 	-->
 	
 	
@@ -209,6 +210,24 @@ begin try
 			  and   SPONSORSHIP.STATUSCODE = 1 --STATUSCODE is defined as (0)'Active’ (1)'Held’ (2)'Terminated' (3)'Completed' (4)'Canceled'  
 			)
 	  end
+	  
+	  -- FogBugz Case 892 cancel any pending interactions for this child's sponsorship
+	  -- get the sponsorshipId for this child's sponsorship:
+	  declare @sponsorshipId uniqueidentifier = null;
+	  declare @cancelComment nvarchar(max);
+	  declare @removeChildComment nvarchar(max) = '';
+	  
+      select @sponsorshipId = ID
+		from dbo.SPONSORSHIP
+		where SPONSORSHIPOPPORTUNITYID = @CONTEXTID
+
+	  exec dbo.USR_USP_INTERACTION_SPONSOR_CANCELPENDINGCHILDINTERACTIONS 
+		@sponsorshipID = @sponsorshipId,                    
+		@sponsorshipOpportunityChildID = @CONTEXTID,        
+		@cancelComment  = @cancelComment,                      
+		@removeChildComment = @removeChildComment,																
+		@changeAgentID = @CHANGEAGENTID                       
+	
   end
   
   return 0;
