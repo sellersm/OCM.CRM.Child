@@ -12,6 +12,7 @@
   <!-- define fields on the table -->
   <Fields>
     <DateField Name="DATE_PROOFED" Description="Date that a note was proofed" Required="false"/>
+	<GuidField Name="PROOFEDBY" Description="The user id of the person who proofed the bio"/>
   </Fields>
 
   <!-- define any indexes on the table -->

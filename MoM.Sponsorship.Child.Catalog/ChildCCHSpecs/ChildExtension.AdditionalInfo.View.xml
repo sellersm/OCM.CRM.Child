@@ -88,7 +88,7 @@ as
 			</common:FormField>
 			
 			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
-			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" ReadOnly="true" />
+			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Verified" DataType="Boolean" ReadOnly="true" />
 			<common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
 			<common:FormField FieldID="CCHZIPFILENAME" Caption="CCH zip file name" DataType="String" />
 		</common:FormFields>

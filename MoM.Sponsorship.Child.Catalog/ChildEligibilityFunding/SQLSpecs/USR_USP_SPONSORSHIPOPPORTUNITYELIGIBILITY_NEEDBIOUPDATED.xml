@@ -20,6 +20,7 @@
     26-Mar-2012		CMayeda			Initial Version	
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	10-Oct-2012		CMayeda			Changed @BioValidAge to 22 per Susan Staats
 	-->
 
 	<CreateProcedureSQL>
@@ -39,7 +40,7 @@ as begin
 
 	-- How old a bio can be and still be valid in months
 	declare @BioValidAge int
-	set @BioValidAge = 24 
+	set @BioValidAge = 22 
 
 	-- Get ChangeAgent if none was passed into the sproc
   	if @CHANGEAGENTID is null  
