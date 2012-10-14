@@ -10,7 +10,7 @@
 	common:SecurityUIFolder="Sponsorship\Opportunity\Documentation\Note"
   HelpKey="GLBAddNoteScreen.html" 
   OwnerIDMapperID="00000000-0000-0000-0000-000000000000" 
-  FormHeader="Edit note" 
+  FormHeader="Edit child bio" 
   FormHeaderResourceKey="$$edit_note"
   >
   <!-- 
@@ -21,6 +21,7 @@
     01-May-2012     BElfstrom       FogBugz case 740 - Added check to make the Date Proofed is removed 
                                     if the note type is something other than 
                                     "Child Bio - Old" or "Child Bio".
+	13-Oct-2012		CMayeda			Changed name to be standard
   -->
 
   <common:DependencyList>

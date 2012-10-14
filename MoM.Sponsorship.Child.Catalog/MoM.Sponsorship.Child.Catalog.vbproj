@@ -120,6 +120,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChildBio\ConvertChildBioToChildBioOld.Sproc.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SponsorshipOpportunityEligibilityCheck.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -144,7 +145,7 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_SETELIGIBILITY.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHLIDAGE.xml">
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
@@ -281,10 +282,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChildBio\ChildBioDataList.xml" />
-    <EmbeddedResource Include="ChildBio\ChildBioNote.EditDataForm.xml">
+    <EmbeddedResource Include="ChildBio\ChildBioNote.Edit.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildBio\SponOpNoteAddWithEligCheck.AddDataForm.xml" />
+    <EmbeddedResource Include="ChildBio\ChildBioNote.Add.xml" />
     <EmbeddedResource Include="Batch\BatchLock\BatchLock.Table.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT.xml" />
     <EmbeddedResource Include="Batch\BatchLock\USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS.xml" />
@@ -296,7 +297,6 @@
     <EmbeddedResource Include="ChildBio\ChildBio.Package.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChildBio\ConvertChildBioToChildBioOld.Sproc.xml" />
     <EmbeddedResource Include="ChildBio\ProcessProofedChildBio.RecordOperation.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\AddChild.Task.xml" />
     <EmbeddedResource Include="Batch\ChildExtensionBatch.Package.xml">
@@ -422,12 +422,14 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_BANGLADESHCONTACTABLECHILD.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDCURRENTPHOTOINCRM.xml" />
     <EmbeddedResource Include="Query Views\ChildExtension.Interaction.Query.xml" />
     <EmbeddedResource Include="Smart Fields\ChildGreatestNeed.SmartField.xml" />
     <EmbeddedResource Include="Smart Fields\ChildQuota.WaitingListReason.SmartField.xml" />
     <EmbeddedResource Include="Smart Fields\ChildExtension.WaitingDurationDays.SmartField.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED.xml" />
-    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPLOADED.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED.xml" />
     <EmbeddedResource Include="Query Views\ChildExtension.ReservationKeys.Query.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_SETFUNDING.xml" />

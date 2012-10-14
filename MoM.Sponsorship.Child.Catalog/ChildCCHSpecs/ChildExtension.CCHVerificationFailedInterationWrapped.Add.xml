@@ -118,8 +118,8 @@ as begin
 		-- Constants
 		declare @includeIneligibleInUpdate_False bit = 0    -- Do not include Ineligible children in eligible/pending updates.
 		
-		declare @pendingReasonString_NeedInformationVerified nvarchar(100) = 'Need Information Verified - New Child'
-		declare @pendingReasonString_NewChildVerification nvarchar(100) = 'New Child Verification'
+		declare @pendingReasonString_NeedInformationVerified nvarchar(100) = 'Need information verified - new child'
+		declare @pendingReasonString_NewChildVerification nvarchar(100) = 'New child verification'
 
 		-- Get SPONSORSHIPOPPORTUNITYCHILDID from CONSTITUENTID, because the CONSTITUENTID is the context passed to this form
 		declare @sponsorshipOpportunityChildID uniqueidentifier = null
@@ -142,10 +142,6 @@ as begin
 		exec dbo.USR_USP_CHILD_REMOVEPENDINGREASON	@sponsorshipOpportunityChildID, null, @pendingReasonString_NewChildVerification, @CHANGEAGENTID
 		exec dbo.USR_USP_CHILD_SETPENDINGREASON		@sponsorshipOpportunityChildID, null, @pendingReasonString_NeedInformationVerified, @CHANGEAGENTID
 		
-		-- Add or remove other pending reasons and set the child to pending (we know there's at least one reason added above)
-		exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @sponsorshipOpportunityChildID, @CHANGEAGENTID
-		exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING	@sponsorshipOpportunityChildID, @includeIneligibleInUpdate_False, @CHANGEAGENTID 	
-
 end try
 	begin catch
 		exec dbo.USP_RAISE_ERROR;
@@ -185,16 +181,19 @@ end try
 			return 1;
 		end
 
-	/*
+	
 	begin try
-		-- Handle any custom "after-save" logic here 
+		-- Add or remove other pending reasons and set the child to pending (we know there's at least one reason added above)
+		exec dbo.USR_USP_CHILD_CHECKELIGIBILITY @sponsorshipOpportunityChildID, @CHANGEAGENTID
+		exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING	@sponsorshipOpportunityChildID, @includeIneligibleInUpdate_False, @CHANGEAGENTID 	
+
 					
 	end try
 	begin catch
 		exec dbo.USP_RAISE_ERROR;
 		return 1;
 	end catch
-	*/
+	
 
 	return @r;
 

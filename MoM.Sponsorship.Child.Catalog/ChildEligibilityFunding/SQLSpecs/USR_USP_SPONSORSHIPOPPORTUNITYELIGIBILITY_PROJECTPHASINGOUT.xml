@@ -3,23 +3,23 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="ec931734-d8af-4e04-85ea-e658e77115b9"
 	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT"
-	Description="Used to add/delete 'Project on Phasing Out Status' pending reasons"
+	Description="Used to add/delete 'Project on phasing out status' pending reasons"
 	Author="Cary Mayeda"
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT" >
 
 	<!-- 
-	Remarks:	The 'Project on Phasing Out Status' pending reason is added if the child's/children's project is set to Inactive, Pending - Under Investigation
+	Remarks:	The 'Project on phasing out status' pending reason is added if the child's/children's project is set to Inactive, Pending - Under Investigation
 				Also, the child needs to not be sponsored.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
-				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
-				a Sponsorship Opportunity selection.  
+				and with the Sponsorship Opportunity Eligibility Business Process.  
 				
 	History:
 	Date			Modified By		Comments
     28-Mar-2012		CMayeda			Initial Version
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
 	-->
 
 	<CreateProcedureSQL>
@@ -51,9 +51,9 @@ as begin
 		
 		-- This is the pending reason id on the child
 		declare @ProjectPendingID uniqueidentifier  
-		select @ProjectPendingID = ID from dbo.SPONSORSHIPREASON where UPPER (REASON) = 'PROJECT ON PHASING OUT STATUS'
+		select @ProjectPendingID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Project on phasing out status')
 		if @ProjectPendingID is null
-			RAISERROR 1000000 'Couldn''t find the "Project on Phasing Out Status" Sponsorship Reason'		
+			RAISERROR 1000000 'Couldn''t find the "Project on phasing out status" Sponsorship Reason'		
 		
 		-- This is the location pending reason id
 		declare @LocationPendingID uniqueidentifier

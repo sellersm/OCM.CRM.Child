@@ -26,7 +26,8 @@
     26-Mar-2012		CMayeda			Initial Version
 	01-Aug-2012		CMayeda			Modified for the changed signature of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK - using USR_USP_CHILD_CHECKELIGIBILITY instead.
 									Modified to use USR_USP_CHILD_SETELIGIBLEORPENDING instead of doing it manually.
-	14-Aug-2012		CMayeda			Added @includeIneligibleInUpdate_False constant to make the sproc call easier to read									
+	14-Aug-2012		CMayeda			Added @includeIneligibleInUpdate_False constant to make the sproc call easier to read		
+	13-Oct-2012		CMayeda			Added call to set funding
 	-->
 	
 	<SPRecord>
@@ -49,6 +50,8 @@ as begin
 	
 	exec dbo.USR_USP_CHILD_SETELIGIBLEORPENDING @ID, @includeIneligibleInUpdate_False, @CHANGEAGENTID	
 	
+	exec dbo.USR_USP_CHILD_SETFUNDING @ID, @changeAgentID
+
 	return 0;
 	
 end

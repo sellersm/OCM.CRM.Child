@@ -19,6 +19,7 @@
 									Moved Siblings section under Who I Live With tab and removed the Siblings tab - Fogbugz Case 851
 									Commented out Docked sections, since this doesn't do anything in Web shell
 									Added Globals.CurrentAppUserIsSysAdmin() to visible criteria for Smart Fields tab (both child and project)																	
+	13-Oct-2012		CMayeda			Fixed references to old child bio data forms
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -255,7 +256,8 @@
 					</DataList>
 					<Actions>
 						<Action ID="b9c30bdf-c63b-41ae-9172-bffea2e2dd5e" Caption="Add" ImageKey="RES:NewItem" CaptionResourceKey="$$note">
-							<ShowAddDataForm DataFormID="bd3f4bc6-51d6-409c-98f3-90927c533465" xmlns="bb_appfx_commontypes">
+							<ShowAddDataForm DataFormID="d22d309b-33e8-440e-9acc-c60a1b52931c" xmlns="bb_appfx_commontypes">
+								
 								<ActionContext>
 									<PageContextID />
 								</ActionContext>
@@ -266,7 +268,7 @@
 							<HelpKey>GLBEditNotes.html</HelpKey>
 						</Action>
 						<Action ID="cb3411c0-f0f4-4fce-bdff-cc587a94e261" Caption="Edit" ImageKey="RES:Edit" DefaultAction="True" CaptionResourceKey="$$edit">
-							<ShowDataForm DataFormID="6ae14992-c9f8-4760-bb0f-225ab86eba96" xmlns="bb_appfx_commontypes">
+							<ShowDataForm DataFormID="741f3d26-7bcd-4026-9df9-29ffa45c09ae" xmlns="bb_appfx_commontypes">
 								<ActionContext>
 									<SectionField>Notes\System record ID</SectionField>
 								</ActionContext>

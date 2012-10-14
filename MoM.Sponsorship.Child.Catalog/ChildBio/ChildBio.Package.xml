@@ -14,8 +14,8 @@
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ProcessProofedChildBio.RecordOperation.xml" />
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityNoteExt.Query.xml" />
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildBioDataList.xml" />
-        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponOpNoteAddWithEligCheck.AddDataForm.xml" /> <!-- This wasn't in the alter page script -->
-        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildBioNote.EditDataForm.xml" />				 <!-- This wasn't in the alter page script -->
+        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildBioNote.Add.xml" />				<!-- This wasn't in the alter page script (fixed manually in page spec) -->
+        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildBioNote.Edit.xml" />				<!-- This wasn't in the alter page script (fixed manually in page spec) -->
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityNoteExt.DateProofed.Edit.xml" />
 		
 		<!-- This was put in the SponsorshipOpportunity.Page.xml -->

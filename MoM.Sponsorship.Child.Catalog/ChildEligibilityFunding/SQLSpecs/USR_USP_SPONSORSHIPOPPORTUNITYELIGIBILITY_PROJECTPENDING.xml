@@ -3,27 +3,23 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="cdb0a71f-c94d-4467-a5e7-5eaaadef0f56"
 	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING"
-	Description="Used to add/delete 'Project on Pending Status' pending reasons"
+	Description="Used to add/delete 'Project on pending status' pending reasons"
 	Author="Cary Mayeda"
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING" >
 
 	<!-- 
-	Remarks:	The 'Project on Pending Status' pending reason is added if the child's/children's project is set to Inactive, Pending - Under Investigation
+	Remarks:	The 'Project on pending status' pending reason is added if the child's/children's project is set to Inactive, Pending - Under Investigation
 				Also, the child needs to not be sponsored.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
-				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
-				a Sponsorship Opportunity selection.  
-				
-				This is accomplished with the @ID and @IDSETREGISTERID parameters.
-				If @ID is not null, then the sproc uses @ID to specify the Sponsorship Opportunity ID
-				If @ID is null, then the sproc uses @IDSETREGISTERID to specify the collection of children to check.
+				and with the Sponsorship Opportunity Eligibility Business Process.  
 				
 	History:
 	Date			Modified By		Comments
     27-Mar-2012		CMayeda			Initial Version
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
 	-->
 	
 	<CreateProcedureSQL>
@@ -55,9 +51,9 @@ as begin
 		
 		-- This is the pending reason id on the child
 		declare @ProjectPendingID uniqueidentifier  
-		select @ProjectPendingID = ID from dbo.SPONSORSHIPREASON where UPPER (REASON) = 'PROJECT ON PENDING STATUS'
+		select @ProjectPendingID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Project on pending status')
 		if @ProjectPendingID is null
-			RAISERROR 1000000 'Couldn''t find the "Project on Pending Status" Sponsorship Reason'		
+			RAISERROR 1000000 'Couldn''t find the "Project on pending status" Sponsorship Reason'		
 		
 		-- This is the location pending reason id
 		declare @LocationPendingID uniqueidentifier
@@ -115,7 +111,7 @@ as begin
 
 				-- Find children whose project is on Pending Status
 		   and	exists (select so.ID from dbo.SPONSORSHIPOPPORTUNITY so				      
-						 inner join dbo.SPONSORSHIPLOCATION slocation ON slocation .ID = so.SPONSORSHIPLOCATIONID					      
+						 inner join dbo.SPONSORSHIPLOCATION slocation ON slocation.ID = so.SPONSORSHIPLOCATIONID					      
 						 where so_child.ID = so.ID
 			               and slocation.SPONSORSHIPREASONID = @LocationPendingID)
 

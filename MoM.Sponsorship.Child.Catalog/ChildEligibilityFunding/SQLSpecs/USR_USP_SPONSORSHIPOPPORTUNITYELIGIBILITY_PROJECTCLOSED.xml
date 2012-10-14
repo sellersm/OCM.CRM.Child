@@ -3,22 +3,22 @@
 	xmlns:common="bb_appfx_commontypes" 
 	ID="5b8abdda-7486-497a-b9b8-ddecd7766b65"
 	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED"
-	Description="Used to add/delete 'Project is Closed' pending reasons"
+	Description="Used to add/delete 'Project is closed' pending reasons"
 	Author="Cary Mayeda"
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED" >
 
 	<!-- 
-	Remarks:	The 'Project is Closed' pending reason is added if the child's/children's project is Closed
+	Remarks:	The 'Project is closed' pending reason is added if the child's/children's project is Closed
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
-				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
-				a Sponsorship Opportunity selection.  
+				and with the Sponsorship Opportunity Eligibility Business Process.  
 				
 	History:
 	Date			Modified By		Comments
     03-Apr-2012		CMayeda			Initial Version
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
 	-->
 
 	<CreateProcedureSQL>
@@ -53,9 +53,9 @@ as begin
 		
 		-- This is the pending reason id on the child
 		declare @ProjectClosedID uniqueidentifier  
-		select @ProjectClosedID = ID from dbo.SPONSORSHIPREASON where UPPER (REASON) = 'PROJECT IS CLOSED'
+		select @ProjectClosedID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Project is closed')
 		if @ProjectClosedID is null
-			RAISERROR 1000000 'Couldn''t find the "Project is Closed" Sponsorship Reason'		
+			RAISERROR 1000000 'Couldn''t find the "Project is closed" Sponsorship Reason'		
 				
 	end try
 	begin catch

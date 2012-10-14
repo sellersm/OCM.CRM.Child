@@ -8,19 +8,17 @@
 	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFO" >
 	
 	<!-- 
-	Remarks:	The 'Field Memo - Requesting Information' pending reason is added to the child/children if the interaction category is Field Memo and the status is Pending.
+	Remarks:	The 'Field memo - requesting information' pending reason is added to the child/children if the interaction category is Field Memo and the status is Pending.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
-				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
-				a Sponsorship Opportunity selection.  
-				
-				This is accomplished with the @ID and @IDSETREGISTERID parameters.
-				If @ID is not null, then the sproc uses @ID to specify the Sponsorship Opportunity ID
-				If @ID is null, then the sproc uses @IDSETREGISTERID to specify the collection of children to check.
+				and with the Sponsorship Opportunity Eligibility Business Process.  
 				
 	History:
 	Date			Modified By		Comments
     27-Aug-2012		CMayeda			Initial Version	
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
+									Changed so it won't insert if 'Need information verified - new child' pending reason already exists - FogBugz Case 896
+
 	-->
 	
 	<CreateProcedureSQL>
@@ -43,8 +41,12 @@ as begin
 
 	declare @categoryName_ChildFieldMemo nvarchar(100) = 'Child Field Memo'
 
-	declare @sponsorshipReason_FieldMemoRequestingInfo nvarchar(100) = 'Field Memo - Requesting Information'
+	declare @sponsorshipReason_FieldMemoRequestingInfo nvarchar(100) = 'Field memo - requesting information'
 	declare @errorMessageFieldMemoRequestingInfo nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_FieldMemoRequestingInfo + '" Sponsorship Reason'	
+
+	declare @sponsorshipReason_FieldMemoRequestingInfoNewChild nvarchar(100) = 'Need information verified - new child'
+	declare @errorMessageFieldMemoRequestingInfoNewChild nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_FieldMemoRequestingInfoNewChild + '" Sponsorship Reason'	
+
 
 	-- Get ChangeAgent if none was passed into the sproc
   	if @CHANGEAGENTID is null  
@@ -61,7 +63,12 @@ as begin
 		select @fieldMemoRequestingInfoID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_FieldMemoRequestingInfo) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @fieldMemoRequestingInfoID is null
 			RAISERROR 1000000 @errorMessageFieldMemoRequestingInfo					
-		
+
+		declare @fieldMemoRequestingInfoNewChildID uniqueidentifier
+		select @fieldMemoRequestingInfoNewChildID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_FieldMemoRequestingInfoNewChild) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @fieldMemoRequestingInfoNewChildID is null
+			RAISERROR 1000000 @errorMessageFieldMemoRequestingInfoNewChild					
+
 		
 		declare @fieldMemoCategoryID uniqueidentifier = null
 		exec dbo.USR_USP_INTERACTION_GETCATEGORYID
@@ -79,11 +86,11 @@ as begin
 	-- This needs to be set to off for the output parms to be set properly
 	set nocount off
 	
-	-- Remove 'Field Memo - Requesting Information' pending reason if there aren't any pending field memos on the child
+	-- Remove 'Field memo - requesting information' pending reason if there aren't any pending field memos on the child
 	delete  dbo.SPONSORSHIPOPPORTUNITYREASON
 	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
 			
-	 where  -- Find children who are specified to be reviewed and have the 'Field Memo - Requesting Information' pending reason  			
+	 where  -- Find children who are specified to be reviewed and have the 'Field memo - requesting information' pending reason  			
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   and	so_reason.SPONSORSHIPREASONID = @fieldMemoRequestingInfoID
 
@@ -103,7 +110,7 @@ as begin
 	set @DELETEDROWS = @@ROWCOUNT
 	
 	
-	-- Insert 'Field Memo - Requesting Information' pending reason if there are pending field memos on the child
+	-- Insert 'Field memo - requesting information' pending reason if there are pending field memos on the child
 	insert dbo.SPONSORSHIPOPPORTUNITYREASON
 				(SPONSORSHIPOPPORTUNITYID,
 				 SPONSORSHIPREASONID,				
@@ -123,10 +130,11 @@ as begin
 		 
 		 where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so.ID )	           
 	      
-				-- Verify that the children do not already have a 'Field Memo - Requesting Information' pending reason
+				-- Verify that the children do not already have a 'Field memo - requesting information' pending reason or a 'Need information verified - new child' pending reason
    	       and	not exists (select so_reason.SPONSORSHIPOPPORTUNITYID 
 							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
-		                     where so_reason.SPONSORSHIPREASONID = @fieldMemoRequestingInfoID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
+		                     where so_reason.SPONSORSHIPREASONID in (@fieldMemoRequestingInfoID, @fieldMemoRequestingInfoNewChildID)
+							   and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
 
 				-- Check if there is a pending field memo
 		   and	exists (select	inter.ID 
@@ -139,11 +147,9 @@ as begin
 						   and	sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID
 						   and	inter.STATUSCODE = @interactionStatusCode_Pending
 				  )
-	
-				-- Don't add to ineligible kids that are not quota waiting list
-		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
-		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
-				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
+				  
+				-- Don't add to ineligible kids 'Need information verified - new child' is used when on waiting list
+		   and so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
 						
 	
 	set @INSERTEDROWS = @@ROWCOUNT

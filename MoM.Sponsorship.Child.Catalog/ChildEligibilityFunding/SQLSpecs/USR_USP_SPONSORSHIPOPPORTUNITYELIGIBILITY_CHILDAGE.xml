@@ -14,8 +14,7 @@
 				It uses the first day of the month if not specified and January if the month is not specified.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
-				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
-				a Sponsorship Opportunity selection.  
+				and with the Sponsorship Opportunity Eligibility Business Process. 
 				
 	History:
 	Date			Modified By		Comments
@@ -23,7 +22,8 @@
 	29-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTERID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
 	25-Aug-2012		CMayeda			Standardized camel case of variables
-	11-Sep-2012		CMayeda			Removed the Not Sponsored criteria Fogbugz Case 814
+	11-Sep-2012		CMayeda			Removed the Not Sponsored criteria FogBugz Case 814
+	13-Oct-2012		CMayeda			Changed pending reason to Child is 16.5 years or older - FogBugz Case 898
 	-->
 
 	<CreateProcedureSQL>
@@ -41,6 +41,8 @@ begin
 	declare @eligibilityCode_Pending tinyint = 0
 	declare @eligibilityCode_Eligible tinyint = 1
 	declare @eligibilityCode_Ineligible tinyint = 2
+
+	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0  -- Child Mark Pending Eligibiltiy sponsorship reason enum 
 	
 	-- Maximum age of the child in months (16.5 years)
 	declare @maxValidAge int
@@ -59,9 +61,9 @@ begin
 	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
 		
     	declare @childAgeID uniqueidentifier
-		select @childAgeID = ID from dbo.SPONSORSHIPREASON where UPPER (REASON) = 'CHILD IS 16 YEARS OR OLDER'
+		select @childAgeID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Child is 16.5 years or older') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @childAgeID is null
-			RAISERROR 1000000 'Couldn''t find the "Child is 16 years or older" Sponsorship Reason'		
+			RAISERROR 1000000 'Couldn''t find the "Child is 16.5 years or older" Sponsorship Reason'		
 
 	end try
 	begin catch

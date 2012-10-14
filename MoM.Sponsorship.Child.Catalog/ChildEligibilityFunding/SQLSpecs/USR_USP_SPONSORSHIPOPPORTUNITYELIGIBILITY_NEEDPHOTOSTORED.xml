@@ -11,12 +11,7 @@
 	Remarks:	The 'Need Photo Stored' pending reason is added to the child/children if the Photo has not been stored in filenexus.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
-				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
-				a Sponsorship Opportunity selection.  
-				
-				This is accomplished with the @ID and @IDSETREGISTERID parameters.
-				If @ID is not null, then the sproc uses @ID to specify the Sponsorship Opportunity ID
-				If @ID is null, then the sproc uses @IDSETREGISTERID to specify the collection of children to check.
+				and with the Sponsorship Opportunity Eligibility Business Process.  
 				
 	History:
 	Date			Modified By		Comments
