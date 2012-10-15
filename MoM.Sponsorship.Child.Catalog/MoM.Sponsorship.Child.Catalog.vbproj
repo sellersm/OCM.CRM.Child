@@ -422,6 +422,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Pages\AlterChildPage.Page.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_BANGLADESHCONTACTABLECHILD.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDCURRENTPHOTOINCRM.xml" />
@@ -449,6 +450,7 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILDREN_SETFUNDING.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.SetRegistrationDate.Edit.xml" />
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />

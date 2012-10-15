@@ -21,6 +21,7 @@
 	05-Sep-2012		CMayeda			Added Child Reservation specs
 	29-Sep-2012		CMayeda			Added ChildExtension.Interaction.Query.xml - FogBugz Case 825
 	30-Sep-2012		CMayeda			Added ChildExtension.ReservationKeys.Query.xml - FogBugz Case 836
+	14-Oct-2012		Memphs			Added ChildExtension.SetRegistrationDate.Edit.xml - FogBugz Case 793.
 	-->
 
 	<c:DependencyList>
@@ -101,8 +102,9 @@
     <!--<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildAddWrapped.Add.xml" />-->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensionAddChild.Add.xml" />
     <!--<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtensions.Add.xml" />-->
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetRegistrationDate.Edit.xml" />
 
-	<!-- CCH Verification Form -->
+		<!-- CCH Verification Form -->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.CCHVerificationFailedInterationWrapped.Add.xml"/>
 
 	<!-- Departure Forms -->

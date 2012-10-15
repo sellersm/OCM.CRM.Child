@@ -13,7 +13,7 @@
 	Date            Modified By     Comments
 	19-Jul-2012		CMayeda			Initial Version
 	15-Aug-2012		Cmayeda			Put SponsorshipOpportunity.Page back
-
+	14-Oct-2012		Memphis			Added AlterChildPage.Page.xml FogBugz Case 793.
 	-->
 	
 	<common:DependencyList>
@@ -21,6 +21,7 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildCCH.Page.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Page.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Page.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AlterChildPage.Page.xml" />
 
 		<!-- Tasks -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AddChild.Task.xml" />
