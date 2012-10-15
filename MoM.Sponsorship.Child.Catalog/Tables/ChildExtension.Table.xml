@@ -19,6 +19,8 @@
 	17-Sep-2012		Memphis			Added the Departure Form Received, increased field size of "Other" fields (MotherWorksAsOther, FatherWorksAsOther, CaregiverWorksAsOther)
 	24-Sep-2012		Memphis			Added CCHZIPFILENAME field.
 	26-Sep-2012		CMayeda			Added CURRENTCHILDSPONSORSHIPSTATUSCODEID field - Fogbugz Case 854
+	14-Oct-2012		CMayeda			Changed trigger based on final dataconversion identity reset
+									Modifed trigger to only insert the value for the CUSTOMIDENTIFIER if none is already there
     -->
 
 	<Fields>
@@ -142,9 +144,10 @@
                 create trigger TR_CHILDEXTENSION_LOOKUPID_INSERT on dbo.USR_CHILDEXTENSION after insert not for replication
                 as begin
                     update	SPONSORSHIPOPPORTUNITY
-                       set	CUSTOMIDENTIFIER = 'C' + cast ((SPONSORSHIPOPPORTUNITY.SEQUENCEID - 10000000 + 400000) as varchar(6))
+                       set	CUSTOMIDENTIFIER = 'C' + cast ((SPONSORSHIPOPPORTUNITY.SEQUENCEID - 11000000) as varchar(6))
                      where	exists (select ID from SPONSORSHIPOPPORTUNITYCHILD sop_child where sop_child.ID = SPONSORSHIPOPPORTUNITY.ID)
                        and	exists (select ID from inserted where inserted.SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITY.ID)
+					   and  coalesce (CUSTOMIDENTIFIER, '') = ''					   
                 end
                  ]]>
 			</CreateTriggerSQL>
