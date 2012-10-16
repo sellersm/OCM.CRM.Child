@@ -422,6 +422,10 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Website and App Specs\Original.Website.ChildSearch.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\TempOrignialWeb.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\WebsiteAndApp.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Website.ChildSearch.Query .xml" />
     <EmbeddedResource Include="Pages\AlterChildPage.Page.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_BANGLADESHCONTACTABLECHILD.xml" />
