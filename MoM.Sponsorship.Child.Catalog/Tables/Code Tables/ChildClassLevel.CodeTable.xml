@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="c1cab3a2-52bb-4cff-9b6e-9a85954ad2ec" 
+	Name="Class Level Code"
+	Description="Class Level Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CHILDCLASSLEVEL_CODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

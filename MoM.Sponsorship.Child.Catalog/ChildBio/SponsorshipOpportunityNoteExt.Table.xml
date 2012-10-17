@@ -1,0 +1,26 @@
+﻿<TableSpec
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes"
+	ID="e2a6ebce-c026-48f8-b660-a89890f23572"
+	Name="Sponsorship Opportunity Note Extension"
+	Description="Sponsorship Opportunity Note Table Extension"
+	Author="Bill Elfstrom"
+	Tablename="USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION"
+	PrimaryKeyAsForeignKeyTablename="SPONSORSHIPOPPORTUNITYNOTE"
+	>
+
+  <!-- define fields on the table -->
+  <Fields>
+    <DateField Name="DATE_PROOFED" Description="Date that a note was proofed" Required="false"/>
+	<GuidField Name="PROOFEDBY" Description="The user id of the person who proofed the bio"/>
+  </Fields>
+
+  <!-- define any indexes on the table -->
+  <Indexes>
+    <Index>
+      <IndexFields>
+        <IndexField Name="DATE_PROOFED" />
+      </IndexFields>
+    </Index>
+  </Indexes>
+</TableSpec>

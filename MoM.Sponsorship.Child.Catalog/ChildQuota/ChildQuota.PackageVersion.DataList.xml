@@ -1,0 +1,50 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c1199cc6-5a8e-4ed1-a060-365db9b7e294" 
+	Name="Quota Package Version Data List"
+	Description="Used to display the version of the package deployment."
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
+
+	<!-- 
+	Remarks:    This is used to view the package version that has been loaded.  #VersionNumber# is modifed automatically on the build machine to match the build version number.
+
+	History:
+	Date            Modified By     Comments
+	17-Jul-2012		CMayeda			Initial Version
+	-->
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+			
+create procedure dbo.USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION
+as
+begin
+	select 'Version #VersionNumber#' as version
+end 
+
+]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="Version" Caption="Child Quota Package" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

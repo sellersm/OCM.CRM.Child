@@ -1,0 +1,46 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="57c3a7d4-be34-4054-a2dc-8c34f3a13484"
+    Name="AlterChildPage Page"
+    Description="Alters the Child Page to put a new Action task in the Admin Tasks"
+    Author="Memphis Sellers"
+    ContextRecordType="SponsorshipOpportunity"	
+    >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	14-Oct-2012		Memphis			Added the task to Admin actions for Set Registration Date. FogBugz Case 793.
+	-->	
+
+	<!-- define how the page header should appear -->
+	<PageHeader Caption="REPLACE_WITH_CAPTION" ImageKey="REPLACE_WITH_IMAGEKEY" />
+
+	<AlterExistingPages>
+		<AlterPages>
+			<AlterPage PageID="0f392d71-5884-4363-b6e3-a75755f8402a" >
+				<AlterOrAddPageActionGroups>
+					<AlterOrAddPageActionGroup ID="6a23ead0-0148-430b-baaf-7aa5697d3ec8" Caption="Admin Tasks" >
+						<AddAction>
+							<Action ID="e4543421-1170-4a7e-8efd-605c5556ea61" Caption="Set Registration Date" ImageKey="res:Edit">
+								<ShowDataForm DataFormID="7e3e34eb-9ac0-499b-a34b-9515bfe59706" xmlns="bb_appfx_commontypes">
+									<ActionContext>
+										<PageContextID />
+									</ActionContext>
+									<PostActionEvent>
+										<RefreshPage />
+									</PostActionEvent>
+								</ShowDataForm>
+							</Action>						
+						</AddAction>
+					</AlterOrAddPageActionGroup>
+				</AlterOrAddPageActionGroups>
+			</AlterPage>
+		</AlterPages>
+	</AlterExistingPages>	
+	
+
+</PageDefinitionSpec>

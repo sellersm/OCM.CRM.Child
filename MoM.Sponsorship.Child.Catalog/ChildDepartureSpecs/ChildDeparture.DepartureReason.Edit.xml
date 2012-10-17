@@ -1,0 +1,252 @@
+<EditDataFormTemplateSpec 
+    xmlns="bb_appfx_editdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="2bd5152b-7763-428d-b131-185183ef434b"
+    Name="ChildDeparture Reason for Departure Tab Edit"
+    Description="ChildDeparture Reason for Departure Tab Edit Form"
+    Author="Memphis Sellers"
+    DataFormInstanceID="d4f6b9ab-1167-4bcf-bac7-a4be916e264a"
+    RecordType="ChildDeparture"
+    common:SecurityUIFolder="ChildDeparture"
+    >
+
+  <SPDataForm>
+
+    <!-- define the edit load SP, which is used to load the data for the form -->
+    <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTUREREASONSTABEDIT">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTUREREASONSTABEDIT(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,     
+    @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+    @DEPARTURETYPECODE tinyint = null output,
+    @ISDEPARTURE bit = null output,
+    @ISPROGRAMCOMPLETION bit = null output,
+    @DEPARTURE_LIVESWITHRELATIVES bit = null output,
+    @DEPARTURE_FAMILYMOVED bit = null output,
+    @DEPARTURE_FAMILYNOWPROVIDES bit = null output,
+    @DEPARTURE_PROJECTTOOFAR bit = null output,
+    @DEPARTURE_REMOVEDBYPARENTS bit = null output,
+    @DEPARTURE_LACKOFINTEREST bit = null output,
+    @DEPARTURE_NEEDEDATHOME bit = null output,
+    @DEPARTURE_EMPLOYED bit = null output,
+    @DEPARTURE_TRANSFERRED bit = null output,
+    @DEPARTURE_FAILED bit = null output,
+    @DEPARTURE_DEATHOFCHILD bit = null output,
+    @DEPARTURE_ILLNESS bit = null output,
+    @DEPARTURE_PREGNANCY bit = null output,
+    @DEPARTURE_MARRIED bit = null output,
+    @DEPARTURE_OTHER nvarchar(250) = null output,
+    @DETAILEDEXPLANATION nvarchar(1000) = null output,
+    @DEPARTURENEWSITUATION nvarchar(1000) = null output,
+    @PROGRAMCOMPLETIONNEWSITUATION nvarchar(1000) = null output
+)
+as
+
+  set nocount on;
+
+  -- be sure to set these, in case the select returns no rows
+  set @DATALOADED = 0
+  set @TSLONG = 0
+
+  -- populate the output parameters, which correspond to fields on the form.  Note that
+  -- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+  -- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+  -- can be considered.
+ select @DATALOADED = 1,
+        @TSLONG = TSLONG,
+        @SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID,
+        @DEPARTURETYPECODE = DEPARTURETYPECODE,
+        @ISDEPARTURE = ISDEPARTURE, 
+        @ISPROGRAMCOMPLETION = ISPROGRAMCOMPLETION, 
+        @DEPARTURE_LIVESWITHRELATIVES = DEPARTURE_LIVESWITHRELATIVES, 
+        @DEPARTURE_FAMILYMOVED = DEPARTURE_FAMILYMOVED, 
+        @DEPARTURE_FAMILYNOWPROVIDES = DEPARTURE_FAMILYNOWPROVIDES, 
+        @DEPARTURE_PROJECTTOOFAR = DEPARTURE_PROJECTTOOFAR, 
+        @DEPARTURE_REMOVEDBYPARENTS = DEPARTURE_REMOVEDBYPARENTS, 
+        @DEPARTURE_LACKOFINTEREST = DEPARTURE_LACKOFINTEREST, 
+        @DEPARTURE_NEEDEDATHOME = DEPARTURE_NEEDEDATHOME, 
+        @DEPARTURE_EMPLOYED = DEPARTURE_EMPLOYED, 
+        @DEPARTURE_TRANSFERRED = DEPARTURE_TRANSFERRED, 
+        @DEPARTURE_FAILED = DEPARTURE_FAILED, 
+        @DEPARTURE_DEATHOFCHILD = DEPARTURE_DEATHOFCHILD, 
+        @DEPARTURE_ILLNESS = DEPARTURE_ILLNESS, 
+        @DEPARTURE_PREGNANCY = DEPARTURE_PREGNANCY, 
+        @DEPARTURE_MARRIED = DEPARTURE_MARRIED, 
+        @DEPARTURE_OTHER = DEPARTURE_OTHER, 
+        @DETAILEDEXPLANATION = DETAILEDEXPLANATION, 
+        @DEPARTURENEWSITUATION = DEPARTURENEWSITUATION, 
+        @PROGRAMCOMPLETIONNEWSITUATION = PROGRAMCOMPLETIONNEWSITUATION
+  from dbo.USR_CHILDDEPARTURE
+  --where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+  where ID = @ID;    -- Memphis changed this to test getting to this page from the Reactivations Tab's Departure's DataList
+
+  return 0;
+        ]]>
+      </common:CreateProcedureSQL>
+    </LoadImplementation>
+
+    <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILDDEPARTUREREASONSTABEDIT">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDDEPARTUREREASONSTABEDIT (
+  @ID uniqueidentifier,
+  @CHANGEAGENTID uniqueidentifier = null,
+  @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier,  
+  @DEPARTURETYPECODE tinyint,
+  @ISDEPARTURE bit,
+  @ISPROGRAMCOMPLETION bit,
+  @DEPARTURE_LIVESWITHRELATIVES bit,
+  @DEPARTURE_FAMILYMOVED bit,
+  @DEPARTURE_FAMILYNOWPROVIDES bit,
+  @DEPARTURE_PROJECTTOOFAR bit,
+  @DEPARTURE_REMOVEDBYPARENTS bit,
+  @DEPARTURE_LACKOFINTEREST bit,
+  @DEPARTURE_NEEDEDATHOME bit,
+  @DEPARTURE_EMPLOYED bit,
+  @DEPARTURE_TRANSFERRED bit,
+  @DEPARTURE_FAILED bit,
+  @DEPARTURE_DEATHOFCHILD bit,
+  @DEPARTURE_ILLNESS bit,
+  @DEPARTURE_PREGNANCY bit,
+  @DEPARTURE_MARRIED bit,
+  @DEPARTURE_OTHER nvarchar(250),
+  @DETAILEDEXPLANATION nvarchar(1000),
+  @DEPARTURENEWSITUATION nvarchar(1000),
+  @PROGRAMCOMPLETIONNEWSITUATION nvarchar(1000)
+)
+as
+
+  set nocount on;
+
+  if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+        
+  declare @CURRENTDATE datetime
+  set @CURRENTDATE = getdate()
+
+  begin try
+    -- handle updating the data
+    update dbo.USR_CHILDDEPARTURE set
+      DEPARTURETYPECODE = @DEPARTURETYPECODE,
+      ISDEPARTURE = @ISDEPARTURE,
+      ISPROGRAMCOMPLETION = @ISPROGRAMCOMPLETION,
+      DEPARTURE_LIVESWITHRELATIVES = @DEPARTURE_LIVESWITHRELATIVES,
+      DEPARTURE_FAMILYMOVED = @DEPARTURE_FAMILYMOVED,
+      DEPARTURE_FAMILYNOWPROVIDES = @DEPARTURE_FAMILYNOWPROVIDES,
+      DEPARTURE_PROJECTTOOFAR = @DEPARTURE_PROJECTTOOFAR,
+      DEPARTURE_REMOVEDBYPARENTS = @DEPARTURE_REMOVEDBYPARENTS,
+      DEPARTURE_LACKOFINTEREST = @DEPARTURE_LACKOFINTEREST,
+      DEPARTURE_NEEDEDATHOME = @DEPARTURE_NEEDEDATHOME,
+      DEPARTURE_EMPLOYED = @DEPARTURE_EMPLOYED,
+      DEPARTURE_TRANSFERRED = @DEPARTURE_TRANSFERRED,
+      DEPARTURE_FAILED = @DEPARTURE_FAILED,
+      DEPARTURE_DEATHOFCHILD = @DEPARTURE_DEATHOFCHILD,
+      DEPARTURE_ILLNESS = @DEPARTURE_ILLNESS,
+      DEPARTURE_PREGNANCY = @DEPARTURE_PREGNANCY,
+      DEPARTURE_MARRIED = @DEPARTURE_MARRIED,
+      DEPARTURE_OTHER = @DEPARTURE_OTHER,
+      DETAILEDEXPLANATION = @DETAILEDEXPLANATION,
+      DEPARTURENEWSITUATION = @DEPARTURENEWSITUATION,
+      PROGRAMCOMPLETIONNEWSITUATION = @PROGRAMCOMPLETIONNEWSITUATION,
+      CHANGEDBYID = @CHANGEAGENTID,
+      DATECHANGED = @CURRENTDATE
+  --where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+  where ID = @ID;    -- Memphis changed this to test getting to this page from the Reactivations Tab's Departure's DataList
+  end try
+  begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+  end catch
+
+return 0;
+        ]]>
+      </common:CreateProcedureSQL>
+    </SaveImplementation>
+
+  </SPDataForm>
+
+  <!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+  like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
+  <common:FormMetaData FixedDialog="true">
+    <common:FormFields>
+      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true" />
+      <common:FormField FieldID="DEPARTURETYPECODE" DataType="TinyInt" Caption="Type of departure" DefaultValueText="0" Required="true">
+        <common:ValueList>
+          <common:Items>
+            <common:Item>
+              <common:Value>0</common:Value>
+              <common:Label>Departure</common:Label>
+            </common:Item>
+            <common:Item>
+              <common:Value>1</common:Value>
+              <common:Label>Completion</common:Label>
+            </common:Item>
+            <common:Item>
+              <common:Value>2</common:Value>
+              <common:Label>Administrative</common:Label>
+            </common:Item>
+          </common:Items>
+        </common:ValueList>
+      </common:FormField>
+      <!--<common:FormField FieldID="NODEPARTUREFORM" DataType="Boolean" Caption="No Departure Form" />-->
+      <!--<common:FormField FieldID="RECEIVEDFAREWELLLETTERCODE" DataType="TinyInt" Caption="Received farewell letter" DefaultValueText="1">
+        <common:ValueList>
+          <common:Items>
+            <common:Item>
+              <common:Value>0</common:Value>
+              <common:Label>No</common:Label>
+            </common:Item>
+            <common:Item>
+              <common:Value>1</common:Value>
+              <common:Label>Yes</common:Label>
+            </common:Item>
+          </common:Items>
+        </common:ValueList>
+      </common:FormField>
+      <common:FormField FieldID="DATEFORMCOMPLETED" DataType="Date" Caption="Form Completed Date" />
+      <common:FormField FieldID="FORMCOMPLETEDBY" MaxLength="50" DataType="String" Caption="Form Completed By" />-->
+      <!--<common:FormField FieldID="DATEOFDEPARTURE" DataType="Date" Caption="Date of the departure or program completion" />
+      <common:FormField FieldID="DATEPROCESSED" DataType="Date" Caption="Date processed" Hidden="true" />-->
+      <!--<common:FormField FieldID="ADMINISTRATIVECODEID" DataType="Guid" Caption="Administrative">
+        <common:CodeTable CodeTableName="USR_DEPARTURE_ADMINISTRATIVE_CODE" />
+      </common:FormField>
+      <common:FormField FieldID="ADMINISTRATIVEEXPLANATION" MaxLength="50" DataType="String" Caption="Explanation" />-->
+      <common:FormField FieldID="ISDEPARTURE" DataType="Boolean" Caption="Is Departure" />
+      <common:FormField FieldID="ISPROGRAMCOMPLETION" DataType="Boolean" Caption="Completed Program" />
+      <common:FormField FieldID="DEPARTURE_LIVESWITHRELATIVES" DataType="Boolean" Caption="Gone to live with relatives" />
+      <common:FormField FieldID="DEPARTURE_FAMILYMOVED" DataType="Boolean" Caption="Moved from project area" />
+      <common:FormField FieldID="DEPARTURE_FAMILYNOWPROVIDES" DataType="Boolean" Caption="Family provides for child" />
+      <common:FormField FieldID="DEPARTURE_PROJECTTOOFAR" DataType="Boolean" Caption="Too far for the child to attend" />
+      <common:FormField FieldID="DEPARTURE_REMOVEDBYPARENTS" DataType="Boolean" Caption="Removed by parents" />
+      <common:FormField FieldID="DEPARTURE_LACKOFINTEREST" DataType="Boolean" Caption="Lack of interest or commitment" />
+      <common:FormField FieldID="DEPARTURE_NEEDEDATHOME" DataType="Boolean" Caption="Need at home to help family" />
+      <common:FormField FieldID="DEPARTURE_EMPLOYED" DataType="Boolean" Caption="Employed to help family" />
+      <common:FormField FieldID="DEPARTURE_TRANSFERRED" DataType="Boolean" Caption="Transferred to a different school" />
+      <common:FormField FieldID="DEPARTURE_FAILED" DataType="Boolean" Caption="Failed school courses" />
+      <common:FormField FieldID="DEPARTURE_DEATHOFCHILD" DataType="Boolean" Caption="Death of Child" />
+      <common:FormField FieldID="DEPARTURE_ILLNESS" DataType="Boolean" Caption="Illness" />
+      <common:FormField FieldID="DEPARTURE_PREGNANCY" DataType="Boolean" Caption="Pregnancy" />
+      <common:FormField FieldID="DEPARTURE_MARRIED" DataType="Boolean" Caption="Married" />
+      <common:FormField FieldID="DEPARTURE_OTHER" MaxLength="250" Caption="Other Departure Reason" DataType="String" Multiline="true" />
+      <common:FormField FieldID="DETAILEDEXPLANATION" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of all departure reasons selected" Multiline="true" />
+      <common:FormField FieldID="DEPARTURENEWSITUATION" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of the child's new situation, if known" Multiline="true" />
+      <common:FormField FieldID="PROGRAMCOMPLETIONNEWSITUATION" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered" Multiline="true" />
+    </common:FormFields>
+
+        <common:WebUIComponent>
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildDepartureReasonForDepartureTabEditUIModel" />
+            <common:WebUI>
+                <common:ExternalResource Url="browser/htmlforms/custom/ChildDepartureReasonForDepartureTabEdit.html" />
+            </common:WebUI>
+        </common:WebUIComponent>
+
+    <!-- indicate the client-side component for the user interface -->
+    <!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+      <common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+    </common:FormUIComponent>-->
+  </common:FormMetaData>
+
+</EditDataFormTemplateSpec>

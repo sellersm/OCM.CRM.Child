@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="ba5da3ff-448e-4d9b-83e1-704eb1cfb25a" 
+	Name="Child Lives With Code Values"
+	Description="Child Lives With Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CHILDLIVESWITHCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>
