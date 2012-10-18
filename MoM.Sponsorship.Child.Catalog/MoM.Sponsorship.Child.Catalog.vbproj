@@ -426,6 +426,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Photos\DataListSpec.DataList1.xml" />
     <EmbeddedResource Include="Photos\USR_USP_IMPORT_GETIMPORTSOURCE.xml" />
     <EmbeddedResource Include="Website and App Specs\App.Sponsor.ChildList.DataList.xml" />
     <EmbeddedResource Include="Website and App Specs\App.ChildSearch.Datalist.xml" />

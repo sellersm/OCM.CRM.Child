@@ -59,9 +59,9 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 				.Parameters.AddWithValue("@VALIDATEONLY", VALIDATEONLY)
 				.Parameters.AddWithValue("@SPONSORSHIPOPPORTUNITYLOOKUPID", SponsorshipOpportunityLookupID)
 				.Parameters.AddWithValue("@ATTACHMENTTYPECODEID", AttachmentTypeCodeID)
-				.Parameters.AddWithValue("@PICTURETITLE", PictureTitle)
+				.Parameters.AddWithValue("@PICTURETITLE", "2012 Health Update")
 				.Parameters.AddWithValue("@FILENAME", PictureFile)
-				.Parameters.AddWithValue("@PICTURE", GetImage(PictureFile))
+				.Parameters.AddWithValue("@PICTURE", GetImage(PictureFile, PictureTitle))
 
 				.ExecuteNonQuery()
 
@@ -74,16 +74,23 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 	End Function
 
 
-	Public Shared Function GetImage(ByVal filePath As String) As Byte()
+	Public Shared Function GetImage(ByVal filePath As String, ByVal cred As String) As Byte()
+		Dim username As String = ""
+		Dim password As String = ""
+
+		username = cred.Substring(0, cred.IndexOf(","))
+		password = cred.Substring(cred.IndexOf(",") + 1)
+
 
 		Dim impersonationScope As UserImpersonationScope = Nothing
-		Try
-			impersonationScope = ImpersonationHelper.GetImpersonationScope("blackbaudhost\cmayeda21195p", "T#pPE2ki@P")
-		Catch ex As Exception
-			impersonationScope = ImpersonationHelper.GetImpersonationScope("blackbaudhost\caryma21195D", "T#pPE2ki@P")
+		impersonationScope = ImpersonationHelper.GetImpersonationScope(username, password)
+		'impersonationScope = ImpersonationHelper.GetImpersonationScope("blackbaudhost\caryma21195D", password)
+		'impersonationScope = ImpersonationHelper.GetImpersonationScope("cmayeda21195p@bbec", "T#pPE2ki@P")
+		'impersonationScope = ImpersonationHelper.GetImpersonationScope("Import21195P@bbec", password)
+		'impersonationScope = ImpersonationHelper.GetImpersonationScope("blackbaudhost\cmayeda21195p", "T#pPE2ki@P")
+		'impersonationScope = ImpersonationHelper.GetImpersonationScope("BLACKBAUDHOST\Import21195P", password)
+		'impersonationScope = ImpersonationHelper.GetImpersonationScope("caryma21195D@bbec", password)
 
-		End Try
-		
 		Dim stream As FileStream = New FileStream( _
 		   filePath, FileMode.Open, FileAccess.Read)
 		Dim reader As BinaryReader = New BinaryReader(stream)
