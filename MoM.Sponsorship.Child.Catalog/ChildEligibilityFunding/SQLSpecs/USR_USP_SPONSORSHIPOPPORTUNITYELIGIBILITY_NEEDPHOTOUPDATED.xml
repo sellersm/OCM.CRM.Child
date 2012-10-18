@@ -78,7 +78,7 @@ as begin
 	 where  -- Find children who are specified to be reviewed and have the 'Need Photo Updated' pending reason  			
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   and	so_reason.SPONSORSHIPREASONID = @needPhotoUpdatedID
-
+/*
 		   -- Check if CURRENTPHOTODATE is valid (Photo is recent)
 	   and exists (	select	ID
 					  from	dbo.USR_CHILDEXTENSION 
@@ -86,10 +86,10 @@ as begin
 					   and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
 					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   
-					  
+	*/				  
 	set @DELETEDROWS = @@ROWCOUNT
 	
-	
+	/*
 	-- Insert 'Need Photo Updated' pending reason if CURRENTPHOTODATE is null (Photo has not been Updated)
 	insert dbo.SPONSORSHIPOPPORTUNITYREASON
 				(SPONSORSHIPOPPORTUNITYID,
@@ -128,7 +128,7 @@ as begin
 		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
 				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
 						
-	
+	*/
 	set @INSERTEDROWS = @@ROWCOUNT
 
 end

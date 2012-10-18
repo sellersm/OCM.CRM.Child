@@ -2,7 +2,7 @@
     xmlns="bb_appfx_package"
     xmlns:common="bb_appfx_commontypes"
     ID="150e76c8-958f-4c11-b056-ac6af5b41045"
-    Name="WebsiteAndApp Package"
+    Name="Website And App Package"
     Description="Specs for the Website and for the App"
     Author="Cary Mayeda"
     >
@@ -51,6 +51,8 @@
 	
 	<common:DependencyList>
         <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.Query .xml" />
-    </common:DependencyList>
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.Sponsor.ChildList.DataList.xml"/>
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.ChildSearch.Datalist.xml" />						  
+	</common:DependencyList>
 
 </PackageSpec>

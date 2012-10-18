@@ -72,6 +72,9 @@
       <HintPath>..\..\..\References\Third Party\Blackbaud.AppFx.Server.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Blackbaud.AppFx.SpWrap, Version=2.93.2034.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\References\Third Party\Blackbaud.AppFx.SpWrap.dll</HintPath>
+    </Reference>
     <Reference Include="Blackbaud.AppFx.XmlTypes, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\Third Party\Blackbaud.AppFx.XmlTypes.dll</HintPath>
@@ -94,6 +97,7 @@
     <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Photos\ChildPhoto.BatchAdd.Commit.Add.vb" />
+    <Compile Include="Photos\ImpersonationHelper.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
@@ -422,6 +426,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Photos\USR_USP_IMPORT_GETIMPORTSOURCE.xml" />
     <EmbeddedResource Include="Website and App Specs\App.Sponsor.ChildList.DataList.xml" />
     <EmbeddedResource Include="Website and App Specs\App.ChildSearch.Datalist.xml" />
     <EmbeddedResource Include="Website and App Specs\Original.Website.ChildSearch.Query.xml" />

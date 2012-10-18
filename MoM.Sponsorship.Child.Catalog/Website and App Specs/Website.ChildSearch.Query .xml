@@ -13,7 +13,7 @@
 		<ViewSQL>
 			<![CDATA[
 
-	 SELECT	so.ID,
+	 SELECT top 2000 so.ID,
 			so_child.FIRSTNAME,
 			so_child.LASTNAME,
 			so_child.FIRSTNAME + ' ' + so_child.LASTNAME AS FULLNAME,
@@ -45,7 +45,7 @@
         and ELIGIBILITY = 'Eligible'
 	    and AVAILABILITY = 'Available'
 
-   order by sf.VALUE desc
+   order by newid()
 
 ]]>
 		</ViewSQL>

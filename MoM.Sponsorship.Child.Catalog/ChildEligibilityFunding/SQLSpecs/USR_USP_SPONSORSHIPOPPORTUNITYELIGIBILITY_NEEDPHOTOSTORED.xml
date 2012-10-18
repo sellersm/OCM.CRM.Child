@@ -70,16 +70,16 @@ as begin
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   and	so_reason.SPONSORSHIPREASONID = @needPhotoStoredID
 
-		   -- Check if PHOTOSTORED = 1 (Photo has been stored)
+/*		   -- Check if PHOTOSTORED = 1 (Photo has been stored)
 	   and exists (	select	ID
 					  from	dbo.USR_CHILDEXTENSION 
 					 where	PHOTOSTORED = 1
 					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
-	   
+*/	   
 					  
 	set @DELETEDROWS = @@ROWCOUNT
 	
-	
+	/*
 	-- Insert 'Need Photo Stored' pending reason if PHOTOSTORED = 0 (Photo has not been verified)
 	insert dbo.SPONSORSHIPOPPORTUNITYREASON
 				(SPONSORSHIPOPPORTUNITYID,
@@ -116,7 +116,7 @@ as begin
 		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
 		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
 				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
-						
+		*/				
 	
 	set @INSERTEDROWS = @@ROWCOUNT
 

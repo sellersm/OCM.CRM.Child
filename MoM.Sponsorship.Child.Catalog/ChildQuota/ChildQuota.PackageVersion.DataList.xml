@@ -23,7 +23,7 @@
 create procedure dbo.USR_USP_DATALIST_CHILDQUOTAPACKAGEVERSION
 as
 begin
-	select 'Version #VersionNumber#' as version
+	select 'Version #VersionNumber#R' as version
 end 
 
 ]]>
