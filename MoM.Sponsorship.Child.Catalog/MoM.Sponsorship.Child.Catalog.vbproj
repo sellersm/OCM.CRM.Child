@@ -422,6 +422,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID.xml" />
     <EmbeddedResource Include="Website and App Specs\Original.Website.ChildSearch.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\TempOrignialWeb.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\WebsiteAndApp.Package.xml" />
@@ -455,6 +456,13 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILDREN_SETFUNDING.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_CHILD_CHECKELIGIBILITY.xml" />
     <EmbeddedResource Include="ChildCCHSpecs\ChildExtension.SetRegistrationDate.Edit.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnly.BatchType.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnly.AddBatch.Commit.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnly.Batch.Table.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.EditRow.Edit.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.AddRow.Add.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.Package.xml" />
+    <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.DeleteRow.Delete.xml" />
     <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />
