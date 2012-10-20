@@ -1,0 +1,45 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="0318acbe-402e-4ddd-a99c-8e5e0e353acf" 
+	Name="Update Website Reserved Children to CCH Verified" 
+	Description="Update Website Reserved Children to CCH Verified"
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship Opportunity Child"
+	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER"
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_UPDATEWEBSITERESERVEDTOCCHVERIFIED">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_UPDATEWEBSITERESERVEDTOCCHVERIFIED
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+   update ch_ext
+   set ch_ext.CCHVALIDATED = 1
+  from dbo.USR_CHILDEXTENSION ch_ext
+        join SPONSORSHIPOPPORTUNITY  so on so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID        
+where so.RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D'))
+
+
+
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+
+</RecordOperationSpec>

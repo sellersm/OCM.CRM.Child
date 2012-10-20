@@ -426,14 +426,19 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Website and App Specs\Plan B v1\SetAllWebsiteReservedToCCHVerified.RecordOperation.xml" />
+    <EmbeddedResource Include="Website and App Specs\Original BB Version\Original.Website.ChildSearch.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Original BB Version\TempOrignialWeb.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Plan B v1\Website.ChildSearch.TempReservation.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Plan B v1\Website.ChildSearchTempReservationB1.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Plan B v2\Website.ChildSearch.TempReservationB2.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Plan B v2\Website.ChildSearchTempReservationB2.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\App.ChildSearch.Datalist.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\App.Sponsor.ChildList.DataList.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildSearch.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\WebsiteAndApp.Package.xml" />
     <EmbeddedResource Include="Photos\DataListSpec.DataList1.xml" />
     <EmbeddedResource Include="Photos\USR_USP_IMPORT_GETIMPORTSOURCE.xml" />
-    <EmbeddedResource Include="Website and App Specs\App.Sponsor.ChildList.DataList.xml" />
-    <EmbeddedResource Include="Website and App Specs\App.ChildSearch.Datalist.xml" />
-    <EmbeddedResource Include="Website and App Specs\Original.Website.ChildSearch.Query.xml" />
-    <EmbeddedResource Include="Website and App Specs\TempOrignialWeb.Package.xml" />
-    <EmbeddedResource Include="Website and App Specs\WebsiteAndApp.Package.xml" />
-    <EmbeddedResource Include="Website and App Specs\Website.ChildSearch.Query .xml" />
     <EmbeddedResource Include="Pages\AlterChildPage.Page.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_BANGLADESHCONTACTABLECHILD.xml" />
@@ -470,7 +475,7 @@
     <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.AddRow.Add.xml" />
     <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.Package.xml" />
     <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.DeleteRow.Delete.xml" />
-    <Content Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK.xml" />
     <EmbeddedResource Include="ChildTransfer\USR_USP_RECURRINGGIFTDEVELOPMENTFUNCTIONHISTORY_INSERT.xml" />
     <EmbeddedResource Include="ChildQuota\USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS.xml" />
     <EmbeddedResource Include="ChildReactivation\ChildReactivation.DataList.xml" />

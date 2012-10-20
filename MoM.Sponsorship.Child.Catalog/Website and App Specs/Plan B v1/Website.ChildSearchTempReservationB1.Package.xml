@@ -1,9 +1,9 @@
 <PackageSpec 
     xmlns="bb_appfx_package"
     xmlns:common="bb_appfx_commontypes"
-    ID="150e76c8-958f-4c11-b056-ac6af5b41045"
-    Name="Website And App Package"
-    Description="Specs for the Website and for the App"
+    ID="3de5afb4-9801-45b7-9f8b-3d669d9e9713"
+    Name="Website Package - Plan B - 1"
+    Description="Used to deploy the temporary website query based on 'Website' reservation - only one reservation key"
     Author="Cary Mayeda"
     >
 
@@ -50,9 +50,8 @@
 	-->
 	
 	<common:DependencyList>
-        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.Query .xml" />
-		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.Sponsor.ChildList.DataList.xml"/>
-		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.ChildSearch.Datalist.xml" />						  
+        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.TempReservation.Query.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SetAllWebsiteReservedToCCHVerified.RecordOperation.xml" />
 	</common:DependencyList>
 
 </PackageSpec>
