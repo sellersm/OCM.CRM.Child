@@ -2,9 +2,9 @@
 	xmlns="bb_appfx_package"
 	xmlns:common="bb_appfx_commontypes" 
 	ID="a147e267-f4fb-4e5b-a68c-4b57c6a680ab" 
-	Name="SomeFeature Package"
-	Description="REPLACE_WITH_DESCRIPTION" 
-	Author="$author$"
+    Name="Website Package - Plan B - 2"
+    Description="Used to deploy the temporary website query based on 'Website' reservation - multiple reservation keys"
+    Author="Cary Mayeda"
 	>
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
