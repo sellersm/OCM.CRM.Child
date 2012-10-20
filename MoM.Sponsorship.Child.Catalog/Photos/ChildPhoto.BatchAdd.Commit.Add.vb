@@ -88,29 +88,58 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 
 
 	Public Shared Function GetImage(ByVal filePath As String, ByVal cred As String) As Byte()
-		Dim username As String = ""
+		Dim domainName As String = ""
+		Dim userName As String = ""
 		Dim password As String = ""
 
-		username = cred.Substring(0, cred.IndexOf(","))
+		ParseDomainAndUserName(cred, domainName, userName)
+		userName = cred.Substring(0, cred.IndexOf(","))
 		password = cred.Substring(cred.IndexOf(",") + 1)
 
 		Dim impersonationScope As UserImpersonationScope = Nothing
-		impersonationScope = ImpersonationHelper.GetImpersonationScope(username, password)
+		Dim imageByte() As Byte = Nothing
+		Try
+			impersonationScope = New UserImpersonationScope(userName, domainName, password, True)
 
-		Dim stream As FileStream = New FileStream( _
-			  filePath, FileMode.Open, FileAccess.Read)
-		Dim reader As BinaryReader = New BinaryReader(stream)
+			'impersonationScope = ImpersonationHelper.GetImpersonationScope(username, password)
 
-		Dim imageByte() As Byte = reader.ReadBytes(stream.Length)
+			Dim stream As FileStream = New FileStream( _
+			   filePath, FileMode.Open, FileAccess.Read)
+			Dim reader As BinaryReader = New BinaryReader(stream)
 
-		reader.Close()
-		stream.Close()
+			imageByte = reader.ReadBytes(stream.Length)
 
-		If impersonationScope IsNot Nothing Then
-			impersonationScope.Dispose()
-		End If
+			reader.Close()
+			stream.Close()
+
+
+		Catch ex As Exception
+			If filePath Is Nothing Then
+				Throw New Exception("Error reading file - no file name provided", ex)
+			Else
+				Throw New Exception("Error reading file " & filePath, ex)
+			End If
+
+		Finally
+			If impersonationScope IsNot Nothing Then
+				impersonationScope.Dispose()
+			End If
+
+		End Try
+
 
 		Return imageByte
 	End Function
 
+	Private Shared Sub ParseDomainAndUserName(ByVal domainAndUserName As String, ByRef domain As String, ByRef userName As String)
+		Dim indexOfSlash = domainAndUserName.IndexOf("\", StringComparison.CurrentCulture)
+
+		If indexOfSlash > 0 Then
+			domain = domainAndUserName.Substring(0, indexOfSlash)
+			userName = domainAndUserName.Remove(0, domain.Length + 1)
+		Else
+			domain = String.Empty
+			userName = domainAndUserName
+		End If
+	End Sub
 End Class

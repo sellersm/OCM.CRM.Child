@@ -97,7 +97,6 @@
     <Compile Include="ChildQuota\ChildQuota.WaitingList.BusinessProcess.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Photos\ChildPhoto.BatchAdd.Commit.Add.vb" />
-    <Compile Include="Photos\ImpersonationHelper.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
@@ -426,6 +425,7 @@
     <EmbeddedResource Include="ChildTransfer\Child Transfer Table.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.PackageVersion.DataList.xml" />
     <Content Include="Website and App Specs\Plan B v1\SetAllWebsiteReservedToCCHVerified.RecordOperation.xml" />
     <EmbeddedResource Include="Website and App Specs\Original BB Version\Original.Website.ChildSearch.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Original BB Version\TempOrignialWeb.Package.xml" />
