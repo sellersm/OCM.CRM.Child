@@ -16,8 +16,9 @@
 
 
 	History:
-	Date            Modified By     Comments
-	01-Aug-2012		CMayeda			Recreated with new ids and more standard sproc names to fix deployment issues.								
+	Date          Modified By     Comments
+	01-Aug-2012		CMayeda			    Recreated with new ids and more standard sproc names to fix deployment issues.
+  17-Oct-2012   BElfstrom       Fixed issue with Child Bio note type not updating Date Proofed.  FogBugz 894.
 	-->
 
 	<SPDataForm>
@@ -113,7 +114,7 @@ as
 	        where ID = @ID    
           
 			/* Eligibility check */	
-			exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildID, null, @CHANGEAGENTID
+			exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildID, @CHANGEAGENTID
 		end
 		else
 			-- Change   
@@ -131,9 +132,9 @@ as
 		-- If they entered a value and the Date Proofed record does not exit
 		-- so create a new Date Proofed extension record.
 		if @DATE_PROOFED IS NOT NULL
-			/* Check to make sure the record exists and it's a Child Bio Draft */
+			/* Check to make sure the record exists and it's a Child Bio Draft or Child Bio*/
 			if (SELECT [ID] from dbo.SPONSORSHIPOPPORTUNITYNOTE 
-				where ([ID] = @ID) and (SPROPPNOTETYPECODEID = @ChildBioDraftCodeID)) is not null 
+				where ([ID] = @ID)) is not null 
 
 			begin
 				Insert into dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION

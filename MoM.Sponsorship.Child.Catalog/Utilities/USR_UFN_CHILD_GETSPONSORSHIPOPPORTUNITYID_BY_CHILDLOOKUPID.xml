@@ -5,7 +5,8 @@
 	Name="USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID"
 	Description="Gets the sponsorshipopportunityid for a given lookupid"
 	Author="Memphis Sellers"
-	DBFunctionName="USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID"
+	DBFunctionName="USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID" 
+	GrantServiceRolePermission="true"
 	>
 
 	<CreateFunctionSQL>

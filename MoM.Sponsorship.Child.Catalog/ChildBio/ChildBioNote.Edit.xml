@@ -14,14 +14,13 @@
   FormHeaderResourceKey="$$edit_note"
   >
   <!-- 
-  Remarks:    Adapted from Sponsorship Opportunity Note Edit Form 2
- 
   History:
     Date            Modified By     Comments
     01-May-2012     BElfstrom       FogBugz case 740 - Added check to make the Date Proofed is removed 
                                     if the note type is something other than 
                                     "Child Bio - Old" or "Child Bio".
-	13-Oct-2012		CMayeda			Changed name to be standard
+	  13-Oct-2012		CMayeda			Changed name to be standard
+    17-Oct-2012   BElfstrom   Added check for more than 1 Child Bio record.  FogBugz 917.
   -->
 
   <common:DependencyList>
@@ -45,7 +44,8 @@
         @TEXTNOTE nvarchar(max) = null output,
         @NOTETYPECODEID uniqueidentifier = null output,
         @TSLONG bigint = 0 output,
-        @HTMLNOTE nvarchar(max) = null output
+        @HTMLNOTE nvarchar(max) = null output,
+        @SPONSORSHIPOPPORTUNITYID uniqueidentifier = null output
         )
         as
 
@@ -61,7 +61,8 @@
         @TEXTNOTE=[TEXTNOTE],
         @NOTETYPECODEID=[SPROPPNOTETYPECODEID],
         @HTMLNOTE = [HTMLNOTE],
-        @TSLONG=[TSLONG]
+        @TSLONG=[TSLONG],
+        @SPONSORSHIPOPPORTUNITYID=[SPONSORSHIPOPPORTUNITYID]
         from
         dbo.[SPONSORSHIPOPPORTUNITYNOTE]
         where
@@ -83,7 +84,8 @@
         @AUTHORID uniqueidentifier,
         @TEXTNOTE nvarchar(max),
         @NOTETYPECODEID uniqueidentifier,
-        @HTMLNOTE nvarchar(max)
+        @HTMLNOTE nvarchar(max),
+        @SPONSORSHIPOPPORTUNITYID uniqueidentifier
         )
         as
 
@@ -95,19 +97,29 @@
 
 
         /* The only note type to have a Date Proofed are Child Bio and Child Bio - Old*/
-        declare @ChildBioDraftCodeID uniqueidentifier;
+        declare @ChildBioCodeID uniqueidentifier;
         declare @ChildBioOldID uniqueidentifier;
 
-        select @ChildBioDraftCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
+        select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
         select @ChildBioOldID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - old'
 
-        if (@ChildBioDraftCodeID != @NOTETYPECODEID) and (@ChildBioOldID != @NOTETYPECODEID)
+        if (@ChildBioCodeID != @NOTETYPECODEID) and (@ChildBioOldID != @NOTETYPECODEID)
         begin
         -- Don't leave orphaned records.
         -- delete the Date Proofed extension record.
         delete dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
         where  ID = @ID
         end
+
+
+        /* If the user has changed the note type to Child Bio, make sure no other Child Bio records exist */
+        if @NOTETYPECODEID = @ChildBioCodeID
+          if EXISTS(select ID FROM dbo.SPONSORSHIPOPPORTUNITYNOTE
+            where SPONSORSHIPOPPORTUNITYID =  @SPONSORSHIPOPPORTUNITYID
+            and SPROPPNOTETYPECODEID = @ChildBioCodeID
+            and ID != @ID)
+              RAISERROR 1000000 'Only one Child Bio note type is allowed.'
+
 
         if @CHANGEAGENTID is null
         exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
@@ -167,10 +179,11 @@
       <common:FormField FieldID="NOTETYPECODEID" DataType="Guid" Required="true" Caption="Type" Description="The user-defined type of this note" CaptionResourceKey="$$type">
         <common:CodeTable CodeTableName="SPROPPNOTETYPECODE" />
       </common:FormField>
-      <common:FormField FieldID="TEXTNOTE" Hidden="true" Caption="Notes" Description="The plain text that comprises this note" CaptionResourceKey="$$notes" />
+        <common:FormField FieldID="TEXTNOTE" Hidden="true" Caption="Notes" Description="The plain text that comprises this note" CaptionResourceKey="$$notes" />
       <common:FormField FieldID="HTMLNOTE" Caption="Notes" Description="The HTML that comprises this note" CaptionResourceKey="$$notes">
         <common:Html PlainTextFieldID="TEXTNOTE" />
       </common:FormField>
+      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYID" DataType="Guid" Caption="Sponsorship Oppoptunity ID" Description="Child note belongs to" Hidden="true"/>
     </common:FormFields>
     <common:WebUIComponent>
       <common:UIModel AssemblyName="Blackbaud.AppFx.Documentation.UIModel.dll" ClassName="Blackbaud.AppFx.Documentation.UIModel.GenericNoteAddEditFormUIModel" />

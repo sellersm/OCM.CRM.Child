@@ -74,6 +74,7 @@
     </Reference>
     <Reference Include="Blackbaud.AppFx.SpWrap, Version=2.93.2034.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\References\Third Party\Blackbaud.AppFx.SpWrap.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Blackbaud.AppFx.XmlTypes, Version=2.91.1535.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -498,6 +499,9 @@
     <EmbeddedResource Include="Photos\USR_USP_CHILDPHOTOADD.xml" />
     <EmbeddedResource Include="Tables\ChildReactivation.Table.xml" />
     <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Utilities\USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

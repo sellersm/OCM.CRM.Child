@@ -23,6 +23,7 @@
 	30-Sep-2012		CMayeda			Added ChildExtension.ReservationKeys.Query.xml - FogBugz Case 836
 	14-Oct-2012		Memphis			Added ChildExtension.SetRegistrationDate.Edit.xml - FogBugz Case 793.
 	17-Oct-2012		Memphis			Added USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID.xml
+	21-Oct-2012		CMayeda			Added InitialCleanup.SetChildCCHVerified.RecordOperation.xml
 	-->
 
 	<c:DependencyList>
@@ -83,7 +84,7 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedNo.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedYes.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetRegistrationDateNull.RecordOperation.xml" />
-	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.InitialCleanup.SetChildCCHVerified.RecordOperation.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.InitialCleanup.SetChildCCHVerified.RecordOperation.xml" />
 		
 		<!-- CCH Forms -->
     <!--<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Add.xml" />-->
