@@ -83,7 +83,8 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedNo.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedYes.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetRegistrationDateNull.RecordOperation.xml" />
-
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.InitialCleanup.SetChildCCHVerified.RecordOperation.xml" />
+		
 		<!-- CCH Forms -->
     <!--<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Add.xml" />-->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.AboutMe.Edit.xml" />
@@ -166,6 +167,7 @@
 		
 	<!-- Pamela's temporary data list. This should be moved up with the other data lists when it is the final product-->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.PamelasChildReservations.DataList.xml" />
-	
+
+		
 	</c:DependencyList>
 </PackageSpec>

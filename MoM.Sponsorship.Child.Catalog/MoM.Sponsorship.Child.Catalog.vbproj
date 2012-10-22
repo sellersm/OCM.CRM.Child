@@ -426,7 +426,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Photos\ChildPhoto.BatchAdd.PackageVersion.DataList.xml" />
-    <Content Include="Website and App Specs\Plan B v1\SetAllWebsiteReservedToCCHVerified.RecordOperation.xml" />
+    <EmbeddedResource Include="AdminChildTasks\InitialCleanup.SetChildCCHVerified.RecordOperation.xml" />
+    <EmbeddedResource Include="Website and App Specs\Plan B v1\SetAllWebsiteReservedToCCHVerified.RecordOperation.xml" />
     <EmbeddedResource Include="Website and App Specs\Original BB Version\Original.Website.ChildSearch.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Original BB Version\TempOrignialWeb.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\Plan B v1\Website.ChildSearch.TempReservation.Query.xml" />

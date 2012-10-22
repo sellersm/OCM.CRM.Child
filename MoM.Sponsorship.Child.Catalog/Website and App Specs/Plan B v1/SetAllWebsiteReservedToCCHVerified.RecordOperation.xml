@@ -26,7 +26,7 @@ as begin
    set ch_ext.CCHVALIDATED = 1
   from dbo.USR_CHILDEXTENSION ch_ext
         join SPONSORSHIPOPPORTUNITY  so on so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID        
-where so.RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D'))
+ where so.RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D'))
 
 
 
