@@ -23,7 +23,7 @@
 create procedure dbo.USR_USP_DATALIST_CHILDPHOTOBATCHADDPACKAGEVERSION
 as
 begin
-	select 'Version #VersionNumber#T1' as version
+	select 'Version #VersionNumber#T17' as version
 end 
 
 ]]>

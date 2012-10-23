@@ -41,6 +41,7 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 		SaveDataDB(SPONSORSHIPOPPORTUNITYLOOKUPID, ATTACHMENTTYPECODEID, PICTURETITLE, PictureFile, FILENAME, image)
 
 		Return New AppCatalog.AppAddDataFormSaveResult() With {.ID = Guid.NewGuid().ToString()}
+
 	End Function
 
 	Private Function SaveDataDB(ByVal SponsorshipOpportunityLookupID As String, ByVal AttachmentTypeCodeID As Guid, ByVal PictureTitle As String, ByVal PictureFile As String, ByVal FileName As String, ByVal Image As Byte())
@@ -48,7 +49,6 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 		Using Connection As SqlClient.SqlConnection = New SqlClient.SqlConnection(RequestContext.AppDBConnectionString)
 			Dim command As SqlClient.SqlCommand = Connection.CreateCommand()
 			With command
-
 
 				'.CommandText = "dbo.USR_USP_IMPORT_GETIMPORTSOURCE"
 				'.CommandType = CommandType.StoredProcedure
@@ -71,14 +71,19 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 				.Parameters.AddWithValue("@SPONSORSHIPOPPORTUNITYLOOKUPID", SponsorshipOpportunityLookupID)
 				.Parameters.AddWithValue("@ATTACHMENTTYPECODEID", AttachmentTypeCodeID)
 				.Parameters.AddWithValue("@PICTURETITLE", "2012 Health Update")
-				.Parameters.AddWithValue("@FILENAME", PictureFile)
+				.Parameters.AddWithValue("@FILENAME", FileName)
 				.Parameters.AddWithValue("@PICTURE", Image)
 
-				Connection.Open()
+				Try
+					Connection.Open()
 
-				.ExecuteNonQuery()
+					.ExecuteNonQuery()
 
-				Connection.Close()
+					Connection.Close()
+
+				Catch ex As Exception
+					Throw ex
+				End Try
 			End With
 		End Using
 
@@ -89,22 +94,21 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 
 	Public Shared Function GetImage(ByVal filePath As String, ByVal cred As String) As Byte()
 		Dim domainName As String = ""
+		Dim userNamePwd As String = ""
 		Dim userName As String = ""
 		Dim password As String = ""
 
-		ParseDomainAndUserName(cred, domainName, userName)
-		userName = cred.Substring(0, cred.IndexOf(","))
-		password = cred.Substring(cred.IndexOf(",") + 1)
+		ParseDomainAndUserName(cred, domainName, userNamePwd)
+		userName = userNamePwd.Substring(0, userNamePwd.IndexOf(","))
+		password = userNamePwd.Substring(userNamePwd.IndexOf(",") + 1)
+
 
 		Dim impersonationScope As UserImpersonationScope = Nothing
 		Dim imageByte() As Byte = Nothing
 		Try
 			impersonationScope = New UserImpersonationScope(userName, domainName, password, True)
 
-			'impersonationScope = ImpersonationHelper.GetImpersonationScope(username, password)
-
-			Dim stream As FileStream = New FileStream( _
-			   filePath, FileMode.Open, FileAccess.Read)
+			Dim stream As FileStream = New FileStream(filePath, FileMode.Open, FileAccess.Read)
 			Dim reader As BinaryReader = New BinaryReader(stream)
 
 			imageByte = reader.ReadBytes(stream.Length)
@@ -115,9 +119,9 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 
 		Catch ex As Exception
 			If filePath Is Nothing Then
-				Throw New Exception("Error reading file - no file name provided", ex)
+				Throw New Exception("Error reading file - no file name provided, Username - " & userName & "| domaianname=" & domainName & "| password=" & password, ex)
 			Else
-				Throw New Exception("Error reading file " & filePath, ex)
+				Throw New Exception("Error reading file " & filePath & ", Username - " & userName & "| domaianname=" & domainName & "| password=" & password, ex)
 			End If
 
 		Finally
