@@ -4,7 +4,8 @@ Public Class ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel
         Dim departureHelper As New DepartureFormsHelper(Me, Common.CRMHelper.FormMode.Edit)
         'departureHelper.HandleFormLoad(GetRequestContext().AppUserInfo.AppUserName)\
         departureHelper.UserName = GetRequestContext().AppUserInfo.AppUserName
-        departureHelper.InitializeCodeTableVars()
+		departureHelper.InitializeCodeTableVars()
+		departureHelper.SetupDepartureFields()
         departureHelper.SetRequiredFields()
     End Sub
 

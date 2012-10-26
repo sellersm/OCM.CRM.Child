@@ -50,7 +50,8 @@
     Public Const SKILLS_LIFE As String = "SKILLS_LIFE"
     Public Const SKILLS_VOCATIONALTECHNICAL As String = "SKILLS_VOCATIONALTECHNICAL"
     Public Const SKILLS_OTHER As String = "SKILLS_OTHER"
-    Public Const GENERALCOMMENTS As String = "GENERALCOMMENTS"
+	Public Const GENERALCOMMENTS As String = "GENERALCOMMENTS"
+	Public Const DEPARTURETYPEVALUE As String = "DEPARTURETYPEVALUE"
     Public Enum DepartureType
         [Departure] = 0
         [Completion] = 1

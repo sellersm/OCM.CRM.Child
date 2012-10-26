@@ -73,60 +73,71 @@ Public NotInheritable Class DepartureFormsHelper
     Public Sub SetupDepartureFields()
         'sets the initial state of departure/program completion fields based on the data values:
         'if this is a program completion, disable all departure reasons
-        'check the departureType and setup based on that:
-        If _model.Fields.Contains(DepartureFieldNames.DEPARTURETYPECODE.ToString()) Then
-            If _model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).ValueObject.ToString() = DepartureFieldNames.DepartureType.Departure.ToString() Then
-                _isDeparture = True
-                _isProgramCompletion = False
-                _isAdminOverride = False
-                SetDepartureReasonFields(True)
-                SetProgramCompletionFieldsRequire(False)
-                SetProgramCompletionFieldsEnable(False)
-            Else
-                If _model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).ValueObject.ToString() = DepartureFieldNames.DepartureType.Completion.ToString() Then
-                    _isProgramCompletion = True
-                    _isDeparture = False
-                    _isAdminOverride = False
-                    SetDepartureReasonFields(False)
-                    SetRequireDepartureExplanation(False)
-                    SetProgramCompletionFieldsEnable(True)
-                    SetProgramCompletionFieldsRequire(True)
-                End If
-            End If
-        Else
-            'we don't have departuretype in this model/form, so check the other way:
-            If _model.Fields.Contains(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()) Then
-                If _model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).HasValue Then
-                    If CBool(_model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).ValueObject) = True Then
-                        SetDepartureReasonFields(False)
-                        SetRequireDepartureExplanation(False)
-                        SetProgramCompletionFieldsEnable(True)
-                        SetProgramCompletionFieldsRequire(True)
-                        _isProgramCompletion = True
-                        _isDeparture = False
-                    Else
-                        'we assume this is a departure then but check:
-                        If DepartureReasonsExist() Then
-                            _isDeparture = True
-                            _isProgramCompletion = False
-                            SetDepartureReasonFields(True)
-                            SetProgramCompletionFieldsRequire(False)
-                            SetProgramCompletionFieldsEnable(False)
-                        End If
-                    End If
-                Else
-                    _isProgramCompletion = False
-                    _isDeparture = True
-                End If
-            Else
-                _isProgramCompletion = False
-                _isDeparture = False
-            End If
-        End If
+		'check the departureType and setup based on that:
+		'10/26/12 Memphis: FogBugz Case 947 need to determine the departure type, could be called from the Edit form/tab, so may not have all the fields:
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURETYPECODE.ToString()) Then
+			If _model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).ValueObject.ToString() = DepartureFieldNames.DepartureType.Departure.ToString() Then
+				_isDeparture = True
+				_isProgramCompletion = False
+				_isAdminOverride = False
+				SetDepartureReasonFields(True)
+				SetProgramCompletionFieldsRequire(False)
+				SetProgramCompletionFieldsEnable(False)
+			Else
+				If _model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).ValueObject.ToString() = DepartureFieldNames.DepartureType.Completion.ToString() Then
+					_isProgramCompletion = True
+					_isDeparture = False
+					_isAdminOverride = False
+					SetDepartureReasonFields(False)
+					SetRequireDepartureExplanation(False)
+					SetProgramCompletionFieldsEnable(True)
+					SetProgramCompletionFieldsRequire(True)
+				End If
+			End If
+		Else
+			'we don't have departuretype in this model/form, so check the other way:
+			If _model.Fields.Contains(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()) Then
+				If _model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).HasValue Then
+					If CBool(_model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).ValueObject) = True Then
+						SetDepartureReasonFields(False)
+						SetRequireDepartureExplanation(False)
+						SetProgramCompletionFieldsEnable(True)
+						SetProgramCompletionFieldsRequire(True)
+						_isProgramCompletion = True
+						_isDeparture = False
+					Else
+						'we assume this is a departure then but check:
+						If DepartureReasonsExist() Then
+							_isDeparture = True
+							_isProgramCompletion = False
+							SetDepartureReasonFields(True)
+							SetProgramCompletionFieldsRequire(False)
+							SetProgramCompletionFieldsEnable(False)
+						End If
+					End If
+				Else
+					_isProgramCompletion = False
+					_isDeparture = True
+				End If
+			Else
+				_isProgramCompletion = False
+				_isDeparture = False
+			End If
+		End If
 
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURETYPEVALUE.ToString()) Then
+			If _model.Fields(DepartureFieldNames.DEPARTURETYPEVALUE.ToString()).ValueObject.ToString() = DepartureFieldNames.DepartureType.Completion.ToString() Then
+				_isProgramCompletion = True
+				_isDeparture = False
+				_isAdminOverride = False
+				SetDepartureReasonFields(False)
+				SetRequireDepartureExplanation(False)
+				SetProgramCompletionFieldsEnable(True)
+				SetProgramCompletionFieldsRequire(True)
+			End If
+		End If
 
-
-    End Sub
+	End Sub
 
     Public Sub SetRequiredFields()
         If _model.Fields.Contains(DepartureFieldNames.ADMINISTRATIVECODEID.ToString()) Then
@@ -183,25 +194,28 @@ Public NotInheritable Class DepartureFormsHelper
     End Sub
 
     Private Sub AdministrativeCodeID_ValueChanged(ByVal sender As Object, ByVal e As ValueChangedEventArgs)
-        ' FogBugz #732: when an administrative reason is selected, turn off all other tabs & fields:
-        If _model.Fields(DepartureFieldNames.ADMINISTRATIVECODEID.ToString()).HasValue Then
-            'make the admin explanation required
-            _model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Required = True
-            _model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Enabled = True
-            'passing False will turn off all required fields since this is an admin departure
-            SetAdministrativeDeparture(False)
-            _isAdminOverride = True
-            'set the departuretype code to Administrative:
-            _model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).ValueObject = 2  'Administrative
-        Else
-            _model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).ValueObject = Nothing
-            _model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Required = False
-            _model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Enabled = False
-            _isAdminOverride = False
-            'passing True will set all required fields
-            SetAdministrativeDeparture(True)
-        End If
-    End Sub
+		' FogBugz #732: when an administrative reason is selected, turn off all other tabs & fields:
+		If _model.Fields.Contains(DepartureFieldNames.ADMINISTRATIVECODEID.ToString()) Then
+			If _model.Fields(DepartureFieldNames.ADMINISTRATIVECODEID.ToString()).HasValue Then
+				'make the admin explanation required
+				_model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Required = True
+				_model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Enabled = True
+				'passing False will turn off all required fields since this is an admin departure
+				SetAdministrativeDeparture(False)
+				_isAdminOverride = True
+				'set the departuretype code to Administrative:
+				_model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).ValueObject = 2	 'Administrative
+			Else
+				_model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).ValueObject = Nothing
+				_model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Required = False
+				_model.Fields(DepartureFieldNames.ADMINISTRATIVEEXPLANATION.ToString()).Enabled = False
+				_isAdminOverride = False
+				'passing True will set all required fields
+				SetAdministrativeDeparture(True)
+			End If
+		End If
+
+	End Sub
 
     Private Sub DepartureDeathOfChild_ValueChanged()
         If _model.Fields(DepartureFieldNames.DEPARTURE_DEATHOFCHILD.ToString()).HasValue Then
@@ -227,43 +241,94 @@ Public NotInheritable Class DepartureFormsHelper
         End If
     End Sub
 
-    Private Sub SetDepartureReasonFields(ByVal isSet As Boolean)
-        _model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).Enabled = isSet
-        If Not isSet Then
-            _model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).ValueObject = Nothing
-        End If
+	Private Sub SetDepartureReasonFields(ByVal isSet As Boolean)
+		If _model.Fields.Contains(DepartureFieldNames.DETAILEDEXPLANATION.ToString()) Then
+			_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).Enabled = isSet
+			If Not isSet Then
+				_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).ValueObject = Nothing
+			End If
+		End If
 
-        '_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.Required = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURENEWSITUATION.ToString()).Enabled = isSet
-        If Not isSet Then
-            _model.Fields(DepartureFieldNames.DEPARTURENEWSITUATION.ToString()).ValueObject = Nothing
-        End If
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURENEWSITUATION.ToString()) Then
+			'_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.Required = isSet
+			_model.Fields(DepartureFieldNames.DEPARTURENEWSITUATION.ToString()).Enabled = isSet
+			If Not isSet Then
+				_model.Fields(DepartureFieldNames.DEPARTURENEWSITUATION.ToString()).ValueObject = Nothing
+			End If
+		End If
 
-        '_model.Fields(DepartureFieldNames.DEPARTURENEWSITUATION.Required = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_DEATHOFCHILD.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_EMPLOYED.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_FAILED.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_FAMILYMOVED.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_FAMILYNOWPROVIDES.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_ILLNESS.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_LACKOFINTEREST.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_LIVESWITHRELATIVES.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_MARRIED.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_NEEDEDATHOME.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_OTHER.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_PREGNANCY.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_PROJECTTOOFAR.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_REMOVEDBYPARENTS.ToString()).Enabled = isSet
-        _model.Fields(DepartureFieldNames.DEPARTURE_TRANSFERRED.ToString()).Enabled = isSet
-    End Sub
+		'_model.Fields(DepartureFieldNames.DEPARTURENEWSITUATION.Required = isSet
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_DEATHOFCHILD.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_DEATHOFCHILD.ToString()).Enabled = isSet
+		End If
 
-    Private Sub SetRequireDepartureExplanation(ByVal isSet As Boolean)
-        _model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).Required = isSet
-        _model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).Enabled = isSet
-        If Not isSet Then
-            _model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).ValueObject = Nothing
-        End If
-    End Sub
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_EMPLOYED.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_EMPLOYED.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_FAILED.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_FAILED.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_FAMILYMOVED.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_FAMILYMOVED.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_FAMILYNOWPROVIDES.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_FAMILYNOWPROVIDES.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_ILLNESS.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_ILLNESS.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_LACKOFINTEREST.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_LACKOFINTEREST.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_LIVESWITHRELATIVES.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_LIVESWITHRELATIVES.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_MARRIED.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_MARRIED.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_NEEDEDATHOME.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_NEEDEDATHOME.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_OTHER.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_OTHER.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_PREGNANCY.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_PREGNANCY.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_PROJECTTOOFAR.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_PROJECTTOOFAR.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_REMOVEDBYPARENTS.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_REMOVEDBYPARENTS.ToString()).Enabled = isSet
+		End If
+
+		If _model.Fields.Contains(DepartureFieldNames.DEPARTURE_TRANSFERRED.ToString()) Then
+			_model.Fields(DepartureFieldNames.DEPARTURE_TRANSFERRED.ToString()).Enabled = isSet
+		End If
+
+	End Sub
+
+	Private Sub SetRequireDepartureExplanation(ByVal isSet As Boolean)
+		If _model.Fields.Contains(DepartureFieldNames.DETAILEDEXPLANATION.ToString()) Then
+			_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).Required = isSet
+			_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).Enabled = isSet
+			If Not isSet Then
+				_model.Fields(DepartureFieldNames.DETAILEDEXPLANATION.ToString()).ValueObject = Nothing
+			End If
+		End If
+	End Sub
 
     'Sets the Program completion fields to the parameter value
     Private Sub SetProgramCompletionFieldsRequire(ByVal isSet As Boolean)
@@ -577,81 +642,84 @@ Public NotInheritable Class DepartureFormsHelper
         Dim requiredMessage As System.Text.StringBuilder = New System.Text.StringBuilder()
 
         'only validate if this isn't an admin type of departure:
-        If Not _isAdminOverride Then
-            'at least one spiritual impact value must be entered:
-            ' note that a checkbox will always have a value, even if it's not checked:
-            ' value will be False if not checked.
-            If _model.Fields.Contains(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()) Then
-                If CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()).ValueObject) = False _
-                    AndAlso CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANEVIDENCE.ToString()).ValueObject) = False _
-                    AndAlso CBool(_model.Fields(DepartureFieldNames.PARTICIPATESCHRISTIANACTIVITIES.ToString()).ValueObject) = False _
-                    AndAlso CBool(_model.Fields(DepartureFieldNames.OWNSBIBLEMATERIALS.ToString()).ValueObject) = False Then
-                    isSpiritualImpactValid = False
-                Else
-                    isSpiritualImpactValid = True
-                End If
-            Else
-                isSpiritualImpactValid = True
-            End If
+		If (Not _isAdminOverride) Then
+			'at least one spiritual impact value must be entered:
+			' note that a checkbox will always have a value, even if it's not checked:
+			' value will be False if not checked.
+			' 10/26/12 Memphis FogBugz Case 947. If program completion, then spiritual checkboxes aren't required.
+			If Not _isProgramCompletion Then
+				If _model.Fields.Contains(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()) Then
+					If CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()).ValueObject) = False _
+					 AndAlso CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANEVIDENCE.ToString()).ValueObject) = False _
+					 AndAlso CBool(_model.Fields(DepartureFieldNames.PARTICIPATESCHRISTIANACTIVITIES.ToString()).ValueObject) = False _
+					 AndAlso CBool(_model.Fields(DepartureFieldNames.OWNSBIBLEMATERIALS.ToString()).ValueObject) = False Then
+						isSpiritualImpactValid = False
+					Else
+						isSpiritualImpactValid = True
+					End If
+				Else
+					isSpiritualImpactValid = True
+				End If
 
-            If Not isSpiritualImpactValid Then
-                requiredMessage.AppendLine("At least one Spiritual Impact checkbox value must be selected!")
-                isValid = False
-            End If
+				If Not isSpiritualImpactValid Then
+					requiredMessage.AppendLine("At least one Spiritual Impact checkbox value must be selected!")
+					isValid = False
+				End If
+			End If
 
-            'check that if there's a program completion reason, then the checkbox must be checked:
-            If _model.Fields.Contains(DepartureFieldNames.PROGRAMCOMPLETIONNEWSITUATION.ToString()) Then
-                If _model.Fields(DepartureFieldNames.PROGRAMCOMPLETIONNEWSITUATION.ToString()).HasValue Then
-                    'always check the hasvalue first, before checking the value:
-                    If Not _model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).HasValue Then
-                        isValid = False
-                        requiredMessage.AppendLine("If you have a Program Completion New Situation entry, then you must select the Is Program Completion checkbox.")
-                    Else
-                        ' it has a value, but it's not checked:
-                        If Not CBool(_model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).ValueObject) Then
-                            isValid = False
-                            requiredMessage.AppendLine("If you have a Program Completion New Situation entry, then you must select the Is Program Completion checkbox.")
-                        End If
-                    End If
-                End If
-            Else
-            End If
+			'check that if there's a program completion reason, then the checkbox must be checked:
+			If _model.Fields.Contains(DepartureFieldNames.PROGRAMCOMPLETIONNEWSITUATION.ToString()) Then
+				If _model.Fields(DepartureFieldNames.PROGRAMCOMPLETIONNEWSITUATION.ToString()).HasValue Then
+					'always check the hasvalue first, before checking the value:
+					If Not _model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).HasValue Then
+						isValid = False
+						requiredMessage.AppendLine("If you have a Program Completion New Situation entry, then you must select the Is Program Completion checkbox.")
+					Else
+						' it has a value, but it's not checked:
+						If Not CBool(_model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).ValueObject) Then
+							isValid = False
+							requiredMessage.AppendLine("If you have a Program Completion New Situation entry, then you must select the Is Program Completion checkbox.")
+						End If
+					End If
+				End If
+			Else
+			End If
 
-            'If the user does not check the ʺIsProgramCompletionʺ checkbox, then one ʺDepartureReasonʺ checkbox is required.
-            If _model.Fields.Contains(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()) Then
-                If _model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).HasValue Then
-                    ' check the value of the checkbox:
-                    If CBool(_model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).ValueObject) = False Then
-                        ' check the departure reasons to see if there's at least one:
-                        If DepartureReasonsExist() Then
-                            isValid = True
-                        Else
-                            isValid = False
-                            requiredMessage.AppendLine("If this is not a Program Completion, then there must be at least one Departure Reason.")
-                        End If
-                    End If
-                End If
-            End If
+			'If the user does not check the ʺIsProgramCompletionʺ checkbox, then one ʺDepartureReasonʺ checkbox is required.
+			If _model.Fields.Contains(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()) Then
+				If _model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).HasValue Then
+					' check the value of the checkbox:
+					If CBool(_model.Fields(DepartureFieldNames.ISPROGRAMCOMPLETION.ToString()).ValueObject) = False Then
+						' check the departure reasons to see if there's at least one:
+						If DepartureReasonsExist() Then
+							isValid = True
+						Else
+							isValid = False
+							requiredMessage.AppendLine("If this is not a Program Completion, then there must be at least one Departure Reason.")
+						End If
+					End If
+				End If
+			End If
 
 
-            If Not isValid Then
-                'ShowMessage(requiredMessage.ToString(), UIPromptButtonStyle.Ok, UIPromptImageStyle.Warning)
-                e.InvalidReason = requiredMessage.ToString()
-                e.Valid = False
-            Else
-                e.Valid = True
-            End If
-        Else
-            ''display the required fields to debug:
-            'Dim fields As List(Of UIField) = _model.Fields.ToList()
-            'For Each field As UIField In fields
-            '    If field.Required Then
-            '        CRMHelper.ShowMessage(field.Name.ToString(), UIPromptButtonStyle.Ok, UIPromptImageStyle.Information, _model)
-            '    End If
-            'Next
-        End If
+			If Not isValid Then
+				'ShowMessage(requiredMessage.ToString(), UIPromptButtonStyle.Ok, UIPromptImageStyle.Warning)
+				e.InvalidReason = requiredMessage.ToString()
+				e.Valid = False
+			Else
+				e.Valid = True
+			End If
+		Else
+			''display the required fields to debug:
+			'Dim fields As List(Of UIField) = _model.Fields.ToList()
+			'For Each field As UIField In fields
+			'    If field.Required Then
+			'        CRMHelper.ShowMessage(field.Name.ToString(), UIPromptButtonStyle.Ok, UIPromptImageStyle.Information, _model)
+			'    End If
+			'Next
+		End If
 
-    End Sub
+	End Sub
 
     Private Sub HighestClassLevelCodeID_ValueChanged(ByVal sender As Object, ByVal e As ValueChangedEventArgs)
         If _model.Fields(DepartureFieldNames.HIGHESTCLASSLEVELCODEID.ToString()).HasValue Then

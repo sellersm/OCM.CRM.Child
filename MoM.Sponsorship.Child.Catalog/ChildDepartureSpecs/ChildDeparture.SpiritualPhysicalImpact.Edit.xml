@@ -28,7 +28,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDDEPARTURESPIRITUALPH
     @SHOWSCHRISTIANEVIDENCE bit = null output,
     @OWNSBIBLEMATERIALS bit = null output,
     @CHILDCHRISTIANEXPERIENCE nvarchar(1000) = null output,
-    @HEALTHCONDITIONS nvarchar(1000) = null output
+    @HEALTHCONDITIONS nvarchar(1000) = null output,
+	@DEPARTURETYPEVALUE nvarchar(14) = null output
 )
 as
 
@@ -43,18 +44,19 @@ as
   -- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
   -- can be considered.
   select
-    @DATALOADED = 1,
-    @TSLONG = TSLONG,
-   @ISCHILDCHRISTIANCODE = ISCHILDCHRISTIANCODE, 
-  @CHILDCHRISTIANCOMMENTS = CHILDCHRISTIANCOMMENTS, 
-  @DIDBECOMECHRISTIANCODE = DIDBECOMECHRISTIANCODE, 
-  @SHOWSCHRISTIANKNOWLEDGE = SHOWSCHRISTIANKNOWLEDGE, 
-  @PARTICIPATESCHRISTIANACTIVITIES = PARTICIPATESCHRISTIANACTIVITIES, 
-  @SHOWSCHRISTIANEVIDENCE = SHOWSCHRISTIANEVIDENCE, 
-  @OWNSBIBLEMATERIALS = OWNSBIBLEMATERIALS, 
-  @CHILDCHRISTIANEXPERIENCE = CHILDCHRISTIANEXPERIENCE, 
-  @HEALTHCONDITIONS = HEALTHCONDITIONS	
-from dbo.USR_CHILDDEPARTURE
+	@DATALOADED = 1,
+	@TSLONG = TSLONG,
+	@ISCHILDCHRISTIANCODE = ISCHILDCHRISTIANCODE, 
+	@CHILDCHRISTIANCOMMENTS = CHILDCHRISTIANCOMMENTS, 
+	@DIDBECOMECHRISTIANCODE = DIDBECOMECHRISTIANCODE, 
+	@SHOWSCHRISTIANKNOWLEDGE = SHOWSCHRISTIANKNOWLEDGE, 
+	@PARTICIPATESCHRISTIANACTIVITIES = PARTICIPATESCHRISTIANACTIVITIES, 
+	@SHOWSCHRISTIANEVIDENCE = SHOWSCHRISTIANEVIDENCE, 
+	@OWNSBIBLEMATERIALS = OWNSBIBLEMATERIALS, 
+	@CHILDCHRISTIANEXPERIENCE = CHILDCHRISTIANEXPERIENCE, 
+	@HEALTHCONDITIONS = HEALTHCONDITIONS,
+	@DEPARTURETYPEVALUE = DEPARTURETYPE
+  from dbo.USR_CHILDDEPARTURE
   --where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
   where ID = @ID;    -- Memphis changed this to test getting to this page from the Reactivations Tab's Departure's DataList
 
@@ -167,6 +169,7 @@ return 0;
       <common:FormField FieldID="OWNSBIBLEMATERIALS" DataType="Boolean" Caption="Child has Scripture materials" />
       <common:FormField FieldID="CHILDCHRISTIANEXPERIENCE" MaxLength="1000" DataType="String" Caption="Provide a detailed explanation of the child's Christian experience" Multiline="true" />
       <common:FormField FieldID="HEALTHCONDITIONS" MaxLength="1000" DataType="String" Caption="Note any illnesses the child had during their participaton in the program as well as what the child's current health is" AllowZoom="true" Multiline="true" />
+	  <common:FormField FieldID="DEPARTURETYPEVALUE" DataType="String" Caption="Departure Type" ReadOnly="true" />
     </common:FormFields>
 
         <common:WebUIComponent>
