@@ -15,6 +15,7 @@
 	Date            Modified By     Comments
 	03-Sep-2012		CMayeda			Initial Beta Version for demo
 	11-Sep-2012		CMayeda			Completed initial version 
+	26-Oct-2012		CMayeda			Fixed raiserror numbers to be 100000 instead of 10000
 	-->
 
 	<CreateProcedureSQL>
@@ -102,7 +103,7 @@ as begin
 	begin try
 		set @financialSponsorID = dbo.USR_UFN_SPONSORSHIP_GETFINANCIALSPONSOR_BYSPONSORSHIPOPP (@sponsorshipOpportunityChildID)
 		if @financialSponsorID is null
-			raiserror 10000 'Could not find Financial Sponsor. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			raiserror 100000 'Could not find Financial Sponsor. No interactions were created, and the recurring gift was not processed (held if EFT).'
 
 		-- Get Departure info for Interaction
 		declare @departureExists bit = 0
@@ -135,14 +136,14 @@ as begin
 
 
 		if @departureExists = 0
-			raiserror 10000 'Could not departure form. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			raiserror 100000 'Could not find departure form. No interactions were created, and the recurring gift was not processed (held if EFT).'
 
 		
 		declare @sponsorshipID uniqueidentifier = null
 		set @sponsorshipID  = dbo.USR_UFN_SPONSORSHIP_GETSPONSORSHIPID (@sponsorshipOpportunityChildID)
 		
 		if @sponsorshipID  is null
-			raiserror 10000 'Could not find an active sponsorship for the child. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			raiserror 100000 'Could not find an active sponsorship for the child. No interactions were created, and the recurring gift was not processed (held if EFT).'
 			
          if dbo.USR_UFN_SPONSORSHIP_ISEFT (@sponsorshipID) = 1		-- If the recurring gift is paid through EFT
          begin

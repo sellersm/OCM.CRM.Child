@@ -6,7 +6,7 @@
 	Author="Memphis Sellers"
 	RecordType="Child Departure"
 	DataFormInstanceID="ac89e520-149a-4a66-83c2-1e5e906a5809"
-	common:SecurityUIFolder="Sponsorship/Opportunity/Child/Child Departure"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child\Child Departure"
 	xmlns="bb_appfx_adddataformtemplate"
 	FormHeader="Child Departure or Program Completion Form"
 	>
@@ -19,6 +19,7 @@
 	28-Aug-2012		Memphis			FogBugz Case 797  never use the reason 'Departure - Other', but use 'Departure' instead unless child is deceased.
 	10-Oct-2012		Memphis			FogBugz Case 892:  add call to cancel pending interactions.
 	15-Oct-2012		Memphis			FogBugz Case 914.
+	26-Oct-2012		CMayeda			Fixed security folder
 	-->
 	
 	
