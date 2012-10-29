@@ -4,11 +4,19 @@
   ID="4f0d56e1-a1fd-48bf-909c-50ccedd0405a"
   Name="ChildExtension Batch Table"
   Description="ChildExtension Batch Table"
-  Author="memphis-PC\Administrator"
+  Author="Memphis Sellers"
   Tablename="USR_BATCHCHILDEXTENSION"		   
   >
 
-  <!-- define fields on the table -->
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Oct-2012		CMayeda			Changed FATHERWORKSASOTHER, MOTHERWORKSASOTHER, CAREGIVERWORKSASOTHER to length of 100
+	-->
+
+	<!-- define fields on the table -->
   <Fields>
 
     <ForeignKeyField Name="SPONSORSHIPOPPORTUNITYGROUPID" Required="true" ForeignTable="SPONSORSHIPOPPORTUNITYGROUP" />
@@ -25,16 +33,16 @@
     <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
 
     <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="false"/>
-    <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" /> <!-- CHANGED BY CMAYEDA Length from 50 to 100-->
 
     <CodeTableField Description="Mother works as code value" CodeTable="USR_MOTHERWORKSASCODE" Name="MOTHERWORKSASCODEID" Required="false"/>
-    <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" /> <!-- CHANGED BY CMAYEDA Length from 50 to 100-->
 
     <CodeTableField CodeTable="USR_CAREGIVERRELATIONCODE" Description="CareGiver Relation Code Values" Name="CAREGIVERRELATIONCODEID" Required="false"/>
     <TextField Description="Caregiver relation other value" Name="CAREGIVERRELATIONOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
 
     <CodeTableField CodeTable="USR_CAREGIVERWORKSASCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERWORKSASCODEID" Required="false"/>
-    <TextField Description="Caregiver Works As Other value" Name="CAREGIVERWORKSASOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Caregiver Works As Other value" Name="CAREGIVERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" />	  <!-- CHANGED BY CMAYEDA Length from 50 to 100-->
 
     <CodeTableField CodeTable="USR_CAREGIVERREASONCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERREASONCODEID" Required="false"/>
     <TextField Description="ReasonForCaregiverOther" Name="REASONFORCAREGIVEROTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
