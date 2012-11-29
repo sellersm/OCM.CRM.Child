@@ -20,6 +20,7 @@
 									Commented out Docked sections, since this doesn't do anything in Web shell
 									Added Globals.CurrentAppUserIsSysAdmin() to visible criteria for Smart Fields tab (both child and project)																	
 	13-Oct-2012		CMayeda			Fixed references to old child bio data forms
+	28-Nov-2012		Memphis			Added the 'Check Lock Status' Action
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -973,6 +974,13 @@
 						<PostActionEvent>
 							<RefreshPage />
 						</PostActionEvent>
+					</ShowAddDataForm>
+				</Action>
+				<Action ID="74452134-edbe-48ff-9663-fc371bc9c0a7" Caption="Check Lock Status">
+					<ShowAddDataForm DataFormID="a932d3ba-8871-4b1d-b1e7-70f7d5b50d0f" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
 					</ShowAddDataForm>
 				</Action>
 			</Actions>

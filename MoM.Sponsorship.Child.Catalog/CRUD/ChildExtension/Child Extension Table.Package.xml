@@ -24,6 +24,7 @@
 	14-Oct-2012		Memphis			Added ChildExtension.SetRegistrationDate.Edit.xml - FogBugz Case 793.
 	17-Oct-2012		Memphis			Added USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID.xml
 	21-Oct-2012		CMayeda			Added InitialCleanup.SetChildCCHVerified.RecordOperation.xml
+	28-Nov-2012		Memphis			Added new form: ChildUnlockForm.Add.xml
 	-->
 
 	<c:DependencyList>
@@ -136,6 +137,9 @@
 
 	<!-- Edit Pending Reasons Form -->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunityPendingReasonsWrapped.Edit.xml" />
+	
+	<!-- Child Unlock Form -->
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildUnlockForm.Add.xml" />
 		
 	<!-- Other Tabs -->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ActiveSponsorships.DataList.xml" />
