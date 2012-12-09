@@ -604,646 +604,646 @@ Partial Public Class [ChildDepartureAddFormUIModel]
         '_socialcognitivetab
         '
         _socialcognitivetab.Name = "SOCIAL_COGNITIVE_TAB"
-        _socialcognitivetab.Caption = "Social and Cognitive Imapct"
-        Me.Fields.Add(_socialcognitivetab)
-        '
-        '_commentstab
-        '
-        _commentstab.Name = "COMMENTS_TAB"
-        _commentstab.Caption = "General Comments"
-        Me.Fields.Add(_commentstab)
+		_socialcognitivetab.Caption = "Social and Cognitive Impact"
+		Me.Fields.Add(_socialcognitivetab)
+		'
+		'_commentstab
+		'
+		_commentstab.Name = "COMMENTS_TAB"
+		_commentstab.Caption = "General Comments"
+		Me.Fields.Add(_commentstab)
 
-        OnCreated()
+		OnCreated()
 
-    End Sub
+	End Sub
 
-    ''' <summary>
-    ''' Sponsorshipopportunitychild
-    ''' </summary>
-    <System.ComponentModel.Description("Sponsorshipopportunitychild")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SPONSORSHIPOPPORTUNITYCHILDID]() As Global.Blackbaud.AppFx.UIModeling.Core.GuidField
-        Get
-            Return _sponsorshipopportunitychildid
-        End Get
-    End Property
+	''' <summary>
+	''' Sponsorshipopportunitychild
+	''' </summary>
+	<System.ComponentModel.Description("Sponsorshipopportunitychild")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SPONSORSHIPOPPORTUNITYCHILDID]() As Global.Blackbaud.AppFx.UIModeling.Core.GuidField
+		Get
+			Return _sponsorshipopportunitychildid
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' No Departure Form
-    ''' </summary>
-    <System.ComponentModel.Description("No Departure Form")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [NODEPARTUREFORM]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _nodepartureform
-        End Get
-    End Property
+	''' <summary>
+	''' No Departure Form
+	''' </summary>
+	<System.ComponentModel.Description("No Departure Form")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [NODEPARTUREFORM]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _nodepartureform
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Type of Departure
-    ''' </summary>
-    <System.ComponentModel.Description("Type of Departure")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURETYPECODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of DEPARTURETYPECODES))
-        Get
-            Return _departuretypecode
-        End Get
-    End Property
+	''' <summary>
+	''' Type of Departure
+	''' </summary>
+	<System.ComponentModel.Description("Type of Departure")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURETYPECODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of DEPARTURETYPECODES))
+		Get
+			Return _departuretypecode
+		End Get
+	End Property
 
 
-    ''' <summary>
-    ''' Received farewell letter
-    ''' </summary>
-    <System.ComponentModel.Description("Received farewell letter")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [RECEIVEDFAREWELLLETTERCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of RECEIVEDFAREWELLLETTERCODES))
-        Get
-            Return _receivedfarewelllettercode
-        End Get
-    End Property
+	''' <summary>
+	''' Received farewell letter
+	''' </summary>
+	<System.ComponentModel.Description("Received farewell letter")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [RECEIVEDFAREWELLLETTERCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of RECEIVEDFAREWELLLETTERCODES))
+		Get
+			Return _receivedfarewelllettercode
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Form Completed Date
-    ''' </summary>
-    <System.ComponentModel.Description("Form Completed Date")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DATEFORMCOMPLETED]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
-        Get
-            Return _dateformcompleted
-        End Get
-    End Property
+	''' <summary>
+	''' Form Completed Date
+	''' </summary>
+	<System.ComponentModel.Description("Form Completed Date")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DATEFORMCOMPLETED]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
+		Get
+			Return _dateformcompleted
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Form Completed By
-    ''' </summary>
-    <System.ComponentModel.Description("Form Completed By")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [FORMCOMPLETEDBY]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _formcompletedby
-        End Get
-    End Property
+	''' <summary>
+	''' Form Completed By
+	''' </summary>
+	<System.ComponentModel.Description("Form Completed By")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [FORMCOMPLETEDBY]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _formcompletedby
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Date of the departure or program completion
-    ''' </summary>
-    <System.ComponentModel.Description("Date of the departure or program completion")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DATEOFDEPARTURE]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
-        Get
-            Return _dateofdeparture
-        End Get
-    End Property
+	''' <summary>
+	''' Date of the departure or program completion
+	''' </summary>
+	<System.ComponentModel.Description("Date of the departure or program completion")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DATEOFDEPARTURE]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
+		Get
+			Return _dateofdeparture
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Date processed
-    ''' </summary>
-    <System.ComponentModel.Description("Date processed")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DATEPROCESSED]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
-        Get
-            Return _dateprocessed
-        End Get
-    End Property
+	''' <summary>
+	''' Date processed
+	''' </summary>
+	<System.ComponentModel.Description("Date processed")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DATEPROCESSED]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
+		Get
+			Return _dateprocessed
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Administrative
-    ''' </summary>
-    <System.ComponentModel.Description("Administrative")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [ADMINISTRATIVECODEID]() As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
-        Get
-            Return _administrativecodeid
-        End Get
-    End Property
+	''' <summary>
+	''' Administrative
+	''' </summary>
+	<System.ComponentModel.Description("Administrative")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [ADMINISTRATIVECODEID]() As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
+		Get
+			Return _administrativecodeid
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Explanation
-    ''' </summary>
-    <System.ComponentModel.Description("Explanation")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [ADMINISTRATIVEEXPLANATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _administrativeexplanation
-        End Get
-    End Property
+	''' <summary>
+	''' Explanation
+	''' </summary>
+	<System.ComponentModel.Description("Explanation")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [ADMINISTRATIVEEXPLANATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _administrativeexplanation
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Is Departure
-    ''' </summary>
-    <System.ComponentModel.Description("Is Departure")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [ISDEPARTURE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _isdeparture
-        End Get
-    End Property
+	''' <summary>
+	''' Is Departure
+	''' </summary>
+	<System.ComponentModel.Description("Is Departure")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [ISDEPARTURE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _isdeparture
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Is Program Completion
-    ''' </summary>
-    <System.ComponentModel.Description("Completed Program")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [ISPROGRAMCOMPLETION]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _isprogramcompletion
-        End Get
-    End Property
+	''' <summary>
+	''' Is Program Completion
+	''' </summary>
+	<System.ComponentModel.Description("Completed Program")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [ISPROGRAMCOMPLETION]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _isprogramcompletion
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Gone to live with relatives
-    ''' </summary>
-    <System.ComponentModel.Description("Gone to live with relatives")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_LIVESWITHRELATIVES]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departureliveswithrelatives
-        End Get
-    End Property
+	''' <summary>
+	''' Gone to live with relatives
+	''' </summary>
+	<System.ComponentModel.Description("Gone to live with relatives")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_LIVESWITHRELATIVES]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departureliveswithrelatives
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Moved from project area
-    ''' </summary>
-    <System.ComponentModel.Description("Moved from project area")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_FAMILYMOVED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departurefamilymoved
-        End Get
-    End Property
+	''' <summary>
+	''' Moved from project area
+	''' </summary>
+	<System.ComponentModel.Description("Moved from project area")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_FAMILYMOVED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departurefamilymoved
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Family provides for child
-    ''' </summary>
-    <System.ComponentModel.Description("Family provides for child")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_FAMILYNOWPROVIDES]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departurefamilynowprovides
-        End Get
-    End Property
+	''' <summary>
+	''' Family provides for child
+	''' </summary>
+	<System.ComponentModel.Description("Family provides for child")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_FAMILYNOWPROVIDES]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departurefamilynowprovides
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Too far for the child to attend
-    ''' </summary>
-    <System.ComponentModel.Description("Too far for the child to attend")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_PROJECTTOOFAR]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departureprojecttoofar
-        End Get
-    End Property
+	''' <summary>
+	''' Too far for the child to attend
+	''' </summary>
+	<System.ComponentModel.Description("Too far for the child to attend")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_PROJECTTOOFAR]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departureprojecttoofar
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Removed by parents
-    ''' </summary>
-    <System.ComponentModel.Description("Removed by parents")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_REMOVEDBYPARENTS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departureremovedbyparents
-        End Get
-    End Property
+	''' <summary>
+	''' Removed by parents
+	''' </summary>
+	<System.ComponentModel.Description("Removed by parents")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_REMOVEDBYPARENTS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departureremovedbyparents
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Lack of interest or commitment
-    ''' </summary>
-    <System.ComponentModel.Description("Lack of interest or commitment")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_LACKOFINTEREST]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departurelackofinterest
-        End Get
-    End Property
+	''' <summary>
+	''' Lack of interest or commitment
+	''' </summary>
+	<System.ComponentModel.Description("Lack of interest or commitment")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_LACKOFINTEREST]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departurelackofinterest
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Need at home to help family
-    ''' </summary>
-    <System.ComponentModel.Description("Need at home to help family")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_NEEDEDATHOME]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departureneededathome
-        End Get
-    End Property
+	''' <summary>
+	''' Need at home to help family
+	''' </summary>
+	<System.ComponentModel.Description("Need at home to help family")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_NEEDEDATHOME]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departureneededathome
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Employed to help family
-    ''' </summary>
-    <System.ComponentModel.Description("Employed to help family")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_EMPLOYED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departureemployed
-        End Get
-    End Property
+	''' <summary>
+	''' Employed to help family
+	''' </summary>
+	<System.ComponentModel.Description("Employed to help family")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_EMPLOYED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departureemployed
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Transferred to a different school
-    ''' </summary>
-    <System.ComponentModel.Description("Transferred to a different school")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_TRANSFERRED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departuretransferred
-        End Get
-    End Property
+	''' <summary>
+	''' Transferred to a different school
+	''' </summary>
+	<System.ComponentModel.Description("Transferred to a different school")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_TRANSFERRED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departuretransferred
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Failed school courses
-    ''' </summary>
-    <System.ComponentModel.Description("Failed school courses")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_FAILED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departurefailed
-        End Get
-    End Property
+	''' <summary>
+	''' Failed school courses
+	''' </summary>
+	<System.ComponentModel.Description("Failed school courses")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_FAILED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departurefailed
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Death of Child
-    ''' </summary>
-    <System.ComponentModel.Description("Death of Child")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_DEATHOFCHILD]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departuredeathofchild
-        End Get
-    End Property
+	''' <summary>
+	''' Death of Child
+	''' </summary>
+	<System.ComponentModel.Description("Death of Child")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_DEATHOFCHILD]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departuredeathofchild
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Illness
-    ''' </summary>
-    <System.ComponentModel.Description("Illness")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_ILLNESS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departureillness
-        End Get
-    End Property
+	''' <summary>
+	''' Illness
+	''' </summary>
+	<System.ComponentModel.Description("Illness")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_ILLNESS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departureillness
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Pregnancy
-    ''' </summary>
-    <System.ComponentModel.Description("Pregnancy")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_PREGNANCY]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departurepregnancy
-        End Get
-    End Property
+	''' <summary>
+	''' Pregnancy
+	''' </summary>
+	<System.ComponentModel.Description("Pregnancy")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_PREGNANCY]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departurepregnancy
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Married
-    ''' </summary>
-    <System.ComponentModel.Description("Married")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_MARRIED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _departuremarried
-        End Get
-    End Property
+	''' <summary>
+	''' Married
+	''' </summary>
+	<System.ComponentModel.Description("Married")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_MARRIED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _departuremarried
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Other Departure Reason
-    ''' </summary>
-    <System.ComponentModel.Description("Other Departure Reason")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_OTHER]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _departureother
-        End Get
-    End Property
+	''' <summary>
+	''' Other Departure Reason
+	''' </summary>
+	<System.ComponentModel.Description("Other Departure Reason")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_OTHER]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _departureother
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Provide a detailed explanation of all departure reasons selected
-    ''' </summary>
-    <System.ComponentModel.Description("Provide a detailed explanation of all departure reasons selected")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DETAILEDEXPLANATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _detailedexplanation
-        End Get
-    End Property
+	''' <summary>
+	''' Provide a detailed explanation of all departure reasons selected
+	''' </summary>
+	<System.ComponentModel.Description("Provide a detailed explanation of all departure reasons selected")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DETAILEDEXPLANATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _detailedexplanation
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Provide a detailed explanation of the child's new situation, if known
-    ''' </summary>
-    <System.ComponentModel.Description("Provide a detailed explanation of the child's new situation, if known")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURENEWSITUATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _departurenewsituation
-        End Get
-    End Property
+	''' <summary>
+	''' Provide a detailed explanation of the child's new situation, if known
+	''' </summary>
+	<System.ComponentModel.Description("Provide a detailed explanation of the child's new situation, if known")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURENEWSITUATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _departurenewsituation
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered
-    ''' </summary>
-    <System.ComponentModel.Description("Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [PROGRAMCOMPLETIONNEWSITUATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _programcompletionnewsituation
-        End Get
-    End Property
+	''' <summary>
+	''' Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered
+	''' </summary>
+	<System.ComponentModel.Description("Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [PROGRAMCOMPLETIONNEWSITUATION]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _programcompletionnewsituation
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child is a Christian
-    ''' </summary>
-    <System.ComponentModel.Description("Child is a Christian")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [ISCHILDCHRISTIANCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of ISCHILDCHRISTIANCODES))
-        Get
-            Return _ischildchristiancode
-        End Get
-    End Property
+	''' <summary>
+	''' Child is a Christian
+	''' </summary>
+	<System.ComponentModel.Description("Child is a Christian")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [ISCHILDCHRISTIANCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of ISCHILDCHRISTIANCODES))
+		Get
+			Return _ischildchristiancode
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Comments
-    ''' </summary>
-    <System.ComponentModel.Description("Comments")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [CHILDCHRISTIANCOMMENTS]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _childchristiancomments
-        End Get
-    End Property
+	''' <summary>
+	''' Comments
+	''' </summary>
+	<System.ComponentModel.Description("Comments")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [CHILDCHRISTIANCOMMENTS]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _childchristiancomments
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child became a Christian while in the sponsorship program
-    ''' </summary>
-    <System.ComponentModel.Description("Child became a Christian while in the sponsorship program")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DIDBECOMECHRISTIANCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of DIDBECOMECHRISTIANCODES))
-        Get
-            Return _didbecomechristiancode
-        End Get
-    End Property
+	''' <summary>
+	''' Child became a Christian while in the sponsorship program
+	''' </summary>
+	<System.ComponentModel.Description("Child became a Christian while in the sponsorship program")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DIDBECOMECHRISTIANCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of DIDBECOMECHRISTIANCODES))
+		Get
+			Return _didbecomechristiancode
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child shows some knowledge of the Christian faith
-    ''' </summary>
-    <System.ComponentModel.Description("Child shows some knowledge of the Christian faith")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SHOWSCHRISTIANKNOWLEDGE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _showschristianknowledge
-        End Get
-    End Property
+	''' <summary>
+	''' Child shows some knowledge of the Christian faith
+	''' </summary>
+	<System.ComponentModel.Description("Child shows some knowledge of the Christian faith")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SHOWSCHRISTIANKNOWLEDGE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _showschristianknowledge
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child sometimes participates in Christian activities, but does not lead those activities
-    ''' </summary>
-    <System.ComponentModel.Description("Child sometimes participates in Christian activities, but does not lead those activities")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [PARTICIPATESCHRISTIANACTIVITIES]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _participateschristianactivities
-        End Get
-    End Property
+	''' <summary>
+	''' Child sometimes participates in Christian activities, but does not lead those activities
+	''' </summary>
+	<System.ComponentModel.Description("Child sometimes participates in Christian activities, but does not lead those activities")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [PARTICIPATESCHRISTIANACTIVITIES]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _participateschristianactivities
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child shows some evidence of Christian faith and behavior
-    ''' </summary>
-    <System.ComponentModel.Description("Child shows some evidence of Christian faith and behavior")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SHOWSCHRISTIANEVIDENCE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _showschristianevidence
-        End Get
-    End Property
+	''' <summary>
+	''' Child shows some evidence of Christian faith and behavior
+	''' </summary>
+	<System.ComponentModel.Description("Child shows some evidence of Christian faith and behavior")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SHOWSCHRISTIANEVIDENCE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _showschristianevidence
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child has Scripture materials
-    ''' </summary>
-    <System.ComponentModel.Description("Child has Scripture materials")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [OWNSBIBLEMATERIALS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _ownsbiblematerials
-        End Get
-    End Property
+	''' <summary>
+	''' Child has Scripture materials
+	''' </summary>
+	<System.ComponentModel.Description("Child has Scripture materials")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [OWNSBIBLEMATERIALS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _ownsbiblematerials
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Provide a detailed explanation of the child's Christian experience
-    ''' </summary>
-    <System.ComponentModel.Description("Provide a detailed explanation of the child's Christian experience")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [CHILDCHRISTIANEXPERIENCE]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _childchristianexperience
-        End Get
-    End Property
+	''' <summary>
+	''' Provide a detailed explanation of the child's Christian experience
+	''' </summary>
+	<System.ComponentModel.Description("Provide a detailed explanation of the child's Christian experience")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [CHILDCHRISTIANEXPERIENCE]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _childchristianexperience
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Note any illnesses the child had during their participaton in the program as well as what the child's current health is
-    ''' </summary>
-    <System.ComponentModel.Description("Note any illnesses the child had during their participaton in the program as well as what the child's current health is")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [HEALTHCONDITIONS]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _healthconditions
-        End Get
-    End Property
+	''' <summary>
+	''' Note any illnesses the child had during their participaton in the program as well as what the child's current health is
+	''' </summary>
+	<System.ComponentModel.Description("Note any illnesses the child had during their participaton in the program as well as what the child's current health is")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [HEALTHCONDITIONS]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _healthconditions
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Child has matured appropriately for their age
-    ''' </summary>
-    <System.ComponentModel.Description("Child has matured appropriately for their age")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [CHILDMATUREDCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of CHILDMATUREDCODES))
-        Get
-            Return _childmaturedcode
-        End Get
-    End Property
+	''' <summary>
+	''' Child has matured appropriately for their age
+	''' </summary>
+	<System.ComponentModel.Description("Child has matured appropriately for their age")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [CHILDMATUREDCODE]() As Global.Blackbaud.AppFx.UIModeling.Core.ValueListField(Of Nullable(Of CHILDMATUREDCODES))
+		Get
+			Return _childmaturedcode
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Provide a brief explanation of the chlid's level of maturity and how they relate to others around them
-    ''' </summary>
-    <System.ComponentModel.Description("Provide a brief explanation of the chlid's level of maturity and how they relate to others around them")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [LEVELOFMATURITY]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _levelofmaturity
-        End Get
-    End Property
+	''' <summary>
+	''' Provide a brief explanation of the chlid's level of maturity and how they relate to others around them
+	''' </summary>
+	<System.ComponentModel.Description("Provide a brief explanation of the chlid's level of maturity and how they relate to others around them")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [LEVELOFMATURITY]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _levelofmaturity
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Highest Class Level Completed
-    ''' </summary>
-    <System.ComponentModel.Description("Highest Class Level Completed")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [HIGHESTCLASSLEVELCODEID]() As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
-        Get
-            Return _highestclasslevelcodeid
-        End Get
-    End Property
+	''' <summary>
+	''' Highest Class Level Completed
+	''' </summary>
+	<System.ComponentModel.Description("Highest Class Level Completed")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [HIGHESTCLASSLEVELCODEID]() As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
+		Get
+			Return _highestclasslevelcodeid
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Other
-    ''' </summary>
-    <System.ComponentModel.Description("Other")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [HIGHESTCLASSLEVELOTHER]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _highestclasslevelother
-        End Get
-    End Property
+	''' <summary>
+	''' Other
+	''' </summary>
+	<System.ComponentModel.Description("Other")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [HIGHESTCLASSLEVELOTHER]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _highestclasslevelother
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Course of Study
-    ''' </summary>
-    <System.ComponentModel.Description("Course of Study")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [COURSEOFSTUDY]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _courseofstudy
-        End Get
-    End Property
+	''' <summary>
+	''' Course of Study
+	''' </summary>
+	<System.ComponentModel.Description("Course of Study")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [COURSEOFSTUDY]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _courseofstudy
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Basic Literacy
-    ''' </summary>
-    <System.ComponentModel.Description("Basic Literacy")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_BASICLITERACY]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillsbasicliteracy
-        End Get
-    End Property
+	''' <summary>
+	''' Basic Literacy
+	''' </summary>
+	<System.ComponentModel.Description("Basic Literacy")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_BASICLITERACY]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillsbasicliteracy
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Basic Numeracy
-    ''' </summary>
-    <System.ComponentModel.Description("Basic Numeracy")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_BASICNUMERACY]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillsbasicnumeracy
-        End Get
-    End Property
+	''' <summary>
+	''' Basic Numeracy
+	''' </summary>
+	<System.ComponentModel.Description("Basic Numeracy")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_BASICNUMERACY]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillsbasicnumeracy
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Thinking and problem-solving skills
-    ''' </summary>
-    <System.ComponentModel.Description("Thinking and problem-solving skills")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_THINKINGPROBLEMSOLVING]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillsthinkingproblemsolving
-        End Get
-    End Property
+	''' <summary>
+	''' Thinking and problem-solving skills
+	''' </summary>
+	<System.ComponentModel.Description("Thinking and problem-solving skills")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_THINKINGPROBLEMSOLVING]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillsthinkingproblemsolving
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Self-help Skills
-    ''' </summary>
-    <System.ComponentModel.Description("Self-help Skills")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_SELFHELP]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillsselfhelp
-        End Get
-    End Property
+	''' <summary>
+	''' Self-help Skills
+	''' </summary>
+	<System.ComponentModel.Description("Self-help Skills")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_SELFHELP]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillsselfhelp
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Entrepreneurial (business) skills
-    ''' </summary>
-    <System.ComponentModel.Description("Entrepreneurial (business) skills")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_BUSINESS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillsbusiness
-        End Get
-    End Property
+	''' <summary>
+	''' Entrepreneurial (business) skills
+	''' </summary>
+	<System.ComponentModel.Description("Entrepreneurial (business) skills")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_BUSINESS]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillsbusiness
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Life Skills
-    ''' </summary>
-    <System.ComponentModel.Description("Life Skills")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_LIFE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillslife
-        End Get
-    End Property
+	''' <summary>
+	''' Life Skills
+	''' </summary>
+	<System.ComponentModel.Description("Life Skills")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_LIFE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillslife
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Vocational and Technical Skills
-    ''' </summary>
-    <System.ComponentModel.Description("Vocational and Technical Skills")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_VOCATIONALTECHNICAL]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _skillsvocationaltechnical
-        End Get
-    End Property
+	''' <summary>
+	''' Vocational and Technical Skills
+	''' </summary>
+	<System.ComponentModel.Description("Vocational and Technical Skills")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_VOCATIONALTECHNICAL]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+		Get
+			Return _skillsvocationaltechnical
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Other Skills
-    ''' </summary>
-    <System.ComponentModel.Description("Other Skills")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SKILLS_OTHER]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _skillsother
-        End Get
-    End Property
+	''' <summary>
+	''' Other Skills
+	''' </summary>
+	<System.ComponentModel.Description("Other Skills")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SKILLS_OTHER]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _skillsother
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Summarize the project's overall impact on the child's life and provide any additional comments
-    ''' </summary>
-    <System.ComponentModel.Description("Summarize the project's overall impact on the child's life and provide any additional comments")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [GENERALCOMMENTS]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        Get
-            Return _generalcomments
-        End Get
-    End Property
+	''' <summary>
+	''' Summarize the project's overall impact on the child's life and provide any additional comments
+	''' </summary>
+	<System.ComponentModel.Description("Summarize the project's overall impact on the child's life and provide any additional comments")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [GENERALCOMMENTS]() As Global.Blackbaud.AppFx.UIModeling.Core.StringField
+		Get
+			Return _generalcomments
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' General Information
-    ''' </summary>
-    <System.ComponentModel.Description("General Information")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [GENERAL_INFO_GROUP]() As Global.Blackbaud.AppFx.UIModeling.Core.GroupField
-        Get
-            Return _generalinfogroup
-        End Get
-    End Property
+	''' <summary>
+	''' General Information
+	''' </summary>
+	<System.ComponentModel.Description("General Information")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [GENERAL_INFO_GROUP]() As Global.Blackbaud.AppFx.UIModeling.Core.GroupField
+		Get
+			Return _generalinfogroup
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Reason for Departure
-    ''' </summary>
-    <System.ComponentModel.Description("Reason for Departure")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [DEPARTURE_REASONS_TAB]() As Global.Blackbaud.AppFx.UIModeling.Core.TabField
-        Get
-            Return _departurereasonstab
-        End Get
-    End Property
+	''' <summary>
+	''' Reason for Departure
+	''' </summary>
+	<System.ComponentModel.Description("Reason for Departure")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [DEPARTURE_REASONS_TAB]() As Global.Blackbaud.AppFx.UIModeling.Core.TabField
+		Get
+			Return _departurereasonstab
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Spiritual and Physical Impact
-    ''' </summary>
-    <System.ComponentModel.Description("Spiritual and Physical Impact")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SPIRITUAL_PHYSICAL_TAB]() As Global.Blackbaud.AppFx.UIModeling.Core.TabField
-        Get
-            Return _spiritualphysicaltab
-        End Get
-    End Property
+	''' <summary>
+	''' Spiritual and Physical Impact
+	''' </summary>
+	<System.ComponentModel.Description("Spiritual and Physical Impact")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SPIRITUAL_PHYSICAL_TAB]() As Global.Blackbaud.AppFx.UIModeling.Core.TabField
+		Get
+			Return _spiritualphysicaltab
+		End Get
+	End Property
 
-    ''' <summary>
-    ''' Social and Cognitive Imapct
-    ''' </summary>
-    <System.ComponentModel.Description("Social and Cognitive Imapct")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
-    Public ReadOnly Property [SOCIAL_COGNITIVE_TAB]() As Global.Blackbaud.AppFx.UIModeling.Core.TabField
-        Get
-            Return _socialcognitivetab
-        End Get
-    End Property
+	''' <summary>
+	''' Social and Cognitive Impact
+	''' </summary>
+	<System.ComponentModel.Description("Social and Cognitive Impact")> _
+	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.91.1535.0")> _
+	Public ReadOnly Property [SOCIAL_COGNITIVE_TAB]() As Global.Blackbaud.AppFx.UIModeling.Core.TabField
+		Get
+			Return _socialcognitivetab
+		End Get
+	End Property
 
     ''' <summary>
     ''' General Comments

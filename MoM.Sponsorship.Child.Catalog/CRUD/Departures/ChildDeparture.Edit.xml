@@ -440,7 +440,7 @@ return 0;
       <c:Tabs>
         <c:Tab Caption="Reason for Departure" ID="DEPARTURE_REASONS_TAB" />
         <c:Tab Caption="Spiritual and Physical Impact" ID="SPIRITUAL_PHYSICAL_TAB" />
-        <c:Tab Caption="Social and Cognitive Imapct" ID="SOCIAL_COGNITIVE_TAB" />
+        <c:Tab Caption="Social and Cognitive Impact" ID="SOCIAL_COGNITIVE_TAB" />
         <c:Tab Caption="General Comments" ID="COMMENTS_TAB" />
       </c:Tabs>
         

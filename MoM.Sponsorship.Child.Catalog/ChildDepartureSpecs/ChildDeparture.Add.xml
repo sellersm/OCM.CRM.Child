@@ -467,7 +467,7 @@ return 0
 	  <common:Tabs>
 		<common:Tab Caption="Reason for Departure" ID="DEPARTURE_REASONS_TAB" />
 		<common:Tab Caption="Spiritual and Physical Impact" ID="SPIRITUAL_PHYSICAL_TAB" />
-		<common:Tab Caption="Social and Cognitive Imapct" ID="SOCIAL_COGNITIVE_TAB" />
+		<common:Tab Caption="Social and Cognitive Impact" ID="SOCIAL_COGNITIVE_TAB" />
 		<common:Tab Caption="General Comments" ID="COMMENTS_TAB" />
 	  </common:Tabs>
 
