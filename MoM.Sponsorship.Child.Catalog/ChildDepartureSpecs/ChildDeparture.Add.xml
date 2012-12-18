@@ -20,6 +20,8 @@
 	10-Oct-2012		Memphis			FogBugz Case 892:  add call to cancel pending interactions.
 	15-Oct-2012		Memphis			FogBugz Case 914.
 	26-Oct-2012		CMayeda			Fixed security folder
+	17-Dec-2012		Memphis			FogBugz Case 953: Removed the code to put recurring gift on Hold and added code to add an 
+									attribute to the recurring gift "Held Recurring Gift" and value of Yes with today's date.
 	-->
 	
 	
@@ -198,6 +200,43 @@ begin try
 	  and PAYMENTMETHODCODE IN (2, 3)
 	  and TYPECODE = 2   -- TYPECODE=2 which is 'Recurring Gift'
 	
+	-- Memphis 12/17/12: FogBugz Case 953: don't set to Held, instead create an attribute record for this recurring gift:
+	-- insert into the dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA table
+	-- ID of the attribute is the revenueID of the recurring gift, set booleancode to 0, addedbyid, etc., startdate of today...
+	-- use this UFN to get the revenueID to pass into the attribute insert:  USR_UFN_GETFINANCIALTRANSACTIONID_FORSPONSORSHIP (sponsorshipId)
+
+	-- only do this if an EFT recurring gift:
+	if @FINANCIALTRANSACTIONID is not null
+		begin
+			-- we should already have the correct revenue ID from above
+			--declare @revenueId uniqueidentifier;		
+			--select @revenueId = dbo.USR_UFN_GETFINANCIALTRANSACTIONID_FORSPONSORSHIP(@sponsorshipId)
+			INSERT INTO dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA
+				([ID]
+				,[REVENUEID]
+				,[BOOLEANCODE]
+				,[COMMENT]
+				,[STARTDATE]
+				,[ENDDATE]
+				,[ADDEDBYID]
+				,[CHANGEDBYID]
+				,[DATEADDED]
+				,[DATECHANGED])
+			VALUES
+				(NEWID()
+				,@revenueId
+				,1
+				,'Departure hold'
+				,GETDATE()
+				,NULL
+				,@CHANGEAGENTID
+				,@CHANGEAGENTID
+				,GETDATE()
+				,GETDATE()
+				)
+		end
+		
+	/*
 	-- set the recurring gift to 'Held' if this is an EFT payment:
 	if @FINANCIALTRANSACTIONID is not null
 	begin
@@ -212,6 +251,7 @@ begin try
 			  and   SPONSORSHIP.STATUSCODE = 1 --STATUSCODE is defined as (0)'Active’ (1)'Held’ (2)'Terminated' (3)'Completed' (4)'Canceled'  
 			)
 	  end
+	  */
 	  
 	  -- FogBugz Case 892 cancel any pending interactions for this child's sponsorship
 	  -- get the sponsorshipId for this child's sponsorship:
