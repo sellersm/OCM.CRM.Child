@@ -26,6 +26,7 @@
 	21-Oct-2012		CMayeda			Added InitialCleanup.SetChildCCHVerified.RecordOperation.xml
 	28-Nov-2012		Memphis			Added new form: ChildUnlockForm.Add.xml
 	09-Dec-2012		CMayeda			Added SponsorshipOpportunity.Sponsors.Query.xml
+	31-Dec-2012		CMayeda			Added ChildProjectDisbursement.Query.xml
 	-->
 
 	<c:DependencyList>
@@ -72,7 +73,8 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.Interaction.Query.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ReservationKeys.Query.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Sponsors.Query.xml" />
-		
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildProjectDisbursement.Query.xml" />
+
 		<!-- Datalists -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Transfer Table.DataList.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.DataList.xml" />
