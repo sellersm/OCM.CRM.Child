@@ -17,6 +17,7 @@
 	11-Sep-2012		CMayeda			Completed initial version 
 	26-Oct-2012		CMayeda			Fixed raiserror numbers to be 100000 instead of 10000
 	21-Jan-2012		CMayeda			Removed setting recurring gift to held.  This will be changed back later.
+									Fixed Interaction Summary for program completion.
 	-->
 
 	<CreateProcedureSQL>
@@ -178,7 +179,7 @@ as begin
 		else
 		begin
 			set @interactionSummary =	case 
-											when @departureTypeCode = @departureTypeCode_Completion							then @departureOther_Description
+											when @departureTypeCode = @departureTypeCode_Completion							then @departureCompletedProgram_Description
 											when @departureTypeCode = @departureTypeCode_Administrative						then coalesce (@departureAdministrative_Description, @departureUnknownAdminCode_Description)
 											when @departureTypeCode = @departureTypeCode_Departure and @departureOther = 1	then @departureOther_Description
 											when @departureTypeCode = @departureTypeCode_Departure and @departureOther = 0	then -- Child departure - use specific reason
