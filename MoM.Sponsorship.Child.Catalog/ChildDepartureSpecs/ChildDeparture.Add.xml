@@ -22,6 +22,8 @@
 	26-Oct-2012		CMayeda			Fixed security folder
 	17-Dec-2012		Memphis			FogBugz Case 953: Removed the code to put recurring gift on Hold and added code to add an 
 									attribute to the recurring gift "Held Recurring Gift" and value of Yes with today's date.
+	21-Jan-2013		Memphis			FogBugz Case 960: Check for the attribute before adding it, set the PreDepartureGiftStatus value in the 
+									USR_FINANCIALTRANSACTION_EXTENSION table.
 	-->
 	
 	
@@ -208,32 +210,52 @@ begin try
 	-- only do this if an EFT recurring gift:
 	if @FINANCIALTRANSACTIONID is not null
 		begin
-			-- we should already have the correct revenue ID from above
-			--declare @revenueId uniqueidentifier;		
-			--select @revenueId = dbo.USR_UFN_GETFINANCIALTRANSACTIONID_FORSPONSORSHIP(@sponsorshipId)
-			INSERT INTO dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA
-				([ID]
-				,[REVENUEID]
-				,[BOOLEANCODE]
-				,[COMMENT]
-				,[STARTDATE]
-				,[ENDDATE]
-				,[ADDEDBYID]
-				,[CHANGEDBYID]
-				,[DATEADDED]
-				,[DATECHANGED])
-			VALUES
-				(NEWID()
-				,@revenueId
-				,1
-				,'Departure hold'
-				,GETDATE()
-				,NULL
-				,@CHANGEAGENTID
-				,@CHANGEAGENTID
-				,GETDATE()
-				,GETDATE()
-				)
+			--Memphis 1/21/13: Fogbugz Case 960: check for the attribute first & only add it if not already there!
+			declare @attributeCount int = 0
+			
+			select @attributeCount = count(*)
+			from dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA
+			where REVENUEID = @revenueId
+			and BOOLEANCODE = 1
+			and ((STARTDATE is null) or (STARTDATE < GETDATE()))
+			and ((ENDDATE is null) or (ENDDATE > GETDATE()))
+
+			if @attributeCount = 0 
+				begin
+					-- we should already have the correct revenue ID from above
+					--declare @revenueId uniqueidentifier;		
+					--select @revenueId = dbo.USR_UFN_GETFINANCIALTRANSACTIONID_FORSPONSORSHIP(@sponsorshipId)
+					INSERT INTO dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA
+						([ID]
+						,[REVENUEID]
+						,[BOOLEANCODE]
+						,[COMMENT]
+						,[STARTDATE]
+						,[ENDDATE]
+						,[ADDEDBYID]
+						,[CHANGEDBYID]
+						,[DATEADDED]
+						,[DATECHANGED])
+					VALUES
+						(NEWID()
+						,@revenueId
+						,1
+						,'Departure hold'
+						,GETDATE()
+						,NULL
+						,@CHANGEAGENTID
+						,@CHANGEAGENTID
+						,GETDATE()
+						,GETDATE()
+						)
+				end
+				
+			--2nd part of fogbugz case 960: set the PreDepartureGiftStatus value in the USR_FINANCIALTRANSACTION_EXTENSION table
+			-- if attribute does not exist, PreDepartureGiftStatus = Active
+			-- if attribute does exist, PreDepartureGiftStatus = Held
+			update dbo.USR_FINANCIALTRANSACTION_EXTENSION
+			set PREDEPARTUREGIFTSTATUS = (case when @attributeCount = 0 then 'Active' else 'Held' end)
+			where ID = @revenueId
 		end
 		
 	/*
