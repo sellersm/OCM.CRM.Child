@@ -1,0 +1,33 @@
+﻿<BatchTypeSpec
+	xmlns="bb_appfx_batchtype"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="85B302A7-C122-48B6-B236-C7C106BBDD02" 
+	Name="Child Photo Add Batch"
+	Description="Batch type for adding child photos." 
+	Author="Cary Mayeda"
+	BaseTableName="USR_BATCHCHILDPHOTOADD" 
+	Category="Sponsorship Opportunity" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	-->
+
+	<!-- indicate the form used to add a row to the batch (note that this is the template ID, not the instance ID) -->
+	<AddRowDataFormTemplate CatalogItemID="CA1DC37B-305D-4D38-86D7-4881BCCC162C" />
+
+	<!-- indicate the form used to edit a row in the batch (note that this is the template ID, not the instance ID) -->
+	<EditRowDataFormTemplate CatalogItemID="0C6B7085-48BD-45B3-B0F5-B12641CA0952" />
+
+	<!-- indicate the form used to commit a row in the batch (note that this is the template ID, not the instance ID) -->
+	<CommitRowDataForms>
+		<CommitRowAddDataFormTemplate CatalogItemID="FAE219F9-E355-40AD-A4EE-BC4C554D06E4" />
+	</CommitRowDataForms>
+	
+	<!-- indicate the record operation used to delete a row from the batch -->
+	<BatchDeleteRowRecordOperation CatalogItemID="6957BD6B-93D4-492F-85FB-A8B8642729D5" />
+
+</BatchTypeSpec>

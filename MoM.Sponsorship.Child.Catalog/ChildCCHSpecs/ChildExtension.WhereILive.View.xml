@@ -1,0 +1,189 @@
+﻿<ViewDataFormTemplateSpec 
+    xmlns="bb_appfx_viewdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="dfc33554-fd48-4a76-a552-ad99097de37b"
+    Name="CCH ChildExtension Where I Live Form"
+    Description="CCH ChildExtension Where I Live Data View"
+    Author="memphis-PC\Administrator"
+    DataFormInstanceID="ed76eb09-aea1-4121-811c-c0ba5fb8ccd5"
+    RecordType="Child Extension"
+    common:SecurityUIFolder="Sponsorship\Opportunity"
+    >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	19-Sep-2012		CMayeda			Made Area Description multiline
+	-->
+
+	<!-- define the SP that returns the data used by the form -->
+	<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_CCH_WHEREILIVE">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CCH_WHEREILIVE
+(
+	@ID uniqueidentifier,
+	@DATALOADED bit = 0 output,
+	@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+	@HOUSINGWALLWOOD bit = null output,
+    @HOUSINGWALLMUD bit = null output,
+    @HOUSINGWALLBAMBOO bit = null output,
+    @HOUSINGWALLBLOCK bit = null output,
+    @HOUSINGWALLOTHER nvarchar(50) = null output,
+    @ROOFINGTIN bit = null output,
+    @ROOFINGGRASSLEAVES bit = null output,
+    @ROOFINGWOOD bit = null output,
+    @ROOFINGTILE bit = null output,
+    @ROOFINGOTHER nvarchar(50) = null output,
+    @WATERSOURCEINDOOR bit = null output,
+    @WATERSOURCECOMMUNITYTAP bit = null output,
+    @WATERSOURCEBOREHOLEWELL bit = null output,
+    @WATERSOURCERIVER bit = null output,
+    @WATERSOURCEOTHER nvarchar(50) = null output,
+    @COOKINGSOURCEWOODFIRE bit = null output,
+    @COOKINGSOURCEELECTRICSTOVE bit = null output,
+    @COOKINGSOURCEGASSTOVE bit = null output,
+    @COOKINGSOURCEOTHER nvarchar(50) = null output,
+    @LIGHTSOURCEELECTRICITY bit = null output,
+    @LIGHTSOURCEOILLAMP bit = null output,
+    @LIGHTSOURCEGENERATOR bit = null output,
+    @LIGHTSOURCENONE bit = null output,
+    @LIGHTSOURCEOTHER nvarchar(50) = null output,
+    @AREADESCRIPTION nvarchar(1000) = null output
+)
+as
+	set nocount on;
+	
+	-- be sure to set this, in case the select returns no rows
+	set @DATALOADED = 0;
+	
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.
+	select @DATALOADED = 1,
+		       @HOUSINGWALLWOOD = HOUSINGWALLWOOD,
+    @HOUSINGWALLMUD = HOUSINGWALLMUD,
+    @HOUSINGWALLBAMBOO = HOUSINGWALLBAMBOO,
+    @HOUSINGWALLBLOCK = HOUSINGWALLBLOCK,
+    @HOUSINGWALLOTHER = HOUSINGWALLOTHER,
+    @ROOFINGTIN = ROOFINGTIN,
+    @ROOFINGGRASSLEAVES = ROOFINGGRASSLEAVES,
+    @ROOFINGWOOD = ROOFINGWOOD,
+    @ROOFINGTILE = ROOFINGTILE,
+    @ROOFINGOTHER = ROOFINGOTHER,
+    @WATERSOURCEINDOOR = WATERSOURCEINDOOR,
+    @WATERSOURCECOMMUNITYTAP = WATERSOURCECOMMUNITYTAP,
+    @WATERSOURCEBOREHOLEWELL = WATERSOURCEBOREHOLEWELL,
+    @WATERSOURCERIVER = WATERSOURCERIVER,
+    @WATERSOURCEOTHER = WATERSOURCEOTHER,
+    @COOKINGSOURCEWOODFIRE = COOKINGSOURCEWOODFIRE,
+    @COOKINGSOURCEELECTRICSTOVE = COOKINGSOURCEELECTRICSTOVE,
+    @COOKINGSOURCEGASSTOVE = COOKINGSOURCEGASSTOVE,
+    @COOKINGSOURCEOTHER = COOKINGSOURCEOTHER,
+    @LIGHTSOURCEELECTRICITY = LIGHTSOURCEELECTRICITY,
+    @LIGHTSOURCEOILLAMP = LIGHTSOURCEOILLAMP,
+    @LIGHTSOURCEGENERATOR = LIGHTSOURCEGENERATOR,
+    @LIGHTSOURCENONE = LIGHTSOURCENONE,
+    @LIGHTSOURCEOTHER = LIGHTSOURCEOTHER,
+    @AREADESCRIPTION = AREADESCRIPTION
+	from dbo.USR_CHILDEXTENSION
+	--where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+
+	
+	return 0;
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataForm>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+      <common:FormField FieldID="HOUSINGWALLWOOD" Caption="Wood" DataType="Boolean" />
+      <common:FormField FieldID="HOUSINGWALLMUD" Caption="Mud" DataType="Boolean" />
+      <common:FormField FieldID="HOUSINGWALLBAMBOO" Caption="Bamboo" DataType="Boolean" />
+      <common:FormField FieldID="HOUSINGWALLBLOCK" Caption="Block" DataType="Boolean" />
+      <common:FormField FieldID="HOUSINGWALLOTHER" Caption="Other" DataType="String" />
+
+      <common:FormField FieldID="ROOFINGTIN" Caption="Tin" DataType="Boolean" />
+      <common:FormField FieldID="ROOFINGGRASSLEAVES" Caption="Grass/Leaves" DataType="Boolean" />
+      <common:FormField FieldID="ROOFINGWOOD" Caption="Wood" DataType="Boolean" />
+      <common:FormField FieldID="ROOFINGTILE" Caption="Tile" DataType="Boolean" />
+      <common:FormField FieldID="ROOFINGOTHER" Caption="Other" DataType="String" />
+
+      <common:FormField FieldID="WATERSOURCEINDOOR" Caption="Indoor" DataType="Boolean" />
+      <common:FormField FieldID="WATERSOURCECOMMUNITYTAP" Caption="Community Tap" DataType="Boolean" />
+      <common:FormField FieldID="WATERSOURCEBOREHOLEWELL" Caption="Borehole/Well" DataType="Boolean" />
+      <common:FormField FieldID="WATERSOURCERIVER" Caption="River" DataType="Boolean" />
+      <common:FormField FieldID="WATERSOURCEOTHER" Caption="Other" DataType="String" />
+
+      <common:FormField FieldID="COOKINGSOURCEWOODFIRE" Caption="Wood Fire" DataType="Boolean" />
+      <common:FormField FieldID="COOKINGSOURCEELECTRICSTOVE" Caption="Electric Stove" DataType="Boolean" />
+      <common:FormField FieldID="COOKINGSOURCEGASSTOVE" Caption="Gas Stove" DataType="Boolean" />
+      <common:FormField FieldID="COOKINGSOURCEOTHER" Caption="Other" DataType="String" />
+
+      <common:FormField FieldID="LIGHTSOURCEELECTRICITY" Caption="Electricity" DataType="Boolean" />
+      <common:FormField FieldID="LIGHTSOURCEOILLAMP" Caption="Oil Lamp" DataType="Boolean" />
+      <common:FormField FieldID="LIGHTSOURCEGENERATOR" Caption="Generator" DataType="Boolean" />
+      <common:FormField FieldID="LIGHTSOURCENONE" Caption="None" DataType="Boolean" />
+      <common:FormField FieldID="LIGHTSOURCEOTHER" Caption="Other" DataType="String" />
+
+      <common:FormField FieldID="AREADESCRIPTION" Caption="Area Description" DataType="String" Required="false"  Multiline="true"/>
+
+			<common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
+		</common:FormFields>
+
+        <common:WebUIComponent>
+            <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.CCHChildExtensionWhereILiveFormUIModel" />
+            <common:WebUI>
+                <common:ExternalResource Url="browser/htmlforms/custom/CCHChildExtensionWhereILiveForm.html" />
+            </common:WebUI>
+        </common:WebUIComponent>
+
+    <common:FieldGroups>
+      <common:FieldGroup ID="HOUSINGMATERIALGROUP" Caption="Housing Material">
+        <common:Fields>
+          <common:Field>HOUSINGWALLWOOD</common:Field>
+          <common:Field>HOUSINGWALLMUD</common:Field>
+          <common:Field>HOUSINGWALLBAMBOO</common:Field>
+          <common:Field>HOUSINGWALLBLOCK</common:Field>
+          <common:Field>HOUSINGWALLOTHER</common:Field>
+          <common:Field>ROOFINGTIN</common:Field>
+          <common:Field>ROOFINGGRASSLEAVES</common:Field>
+          <common:Field>ROOFINGWOOD</common:Field>
+          <common:Field>ROOFINGTILE</common:Field>
+          <common:Field>ROOFINGOTHER</common:Field>
+        </common:Fields>
+      </common:FieldGroup>
+      <common:FieldGroup ID="ENERGYWATERGROUP" Caption="Energy and Water Source">
+        <common:Fields>
+          <common:Field>WATERSOURCEINDOOR</common:Field>
+          <common:Field>WATERSOURCECOMMUNITYTAP</common:Field>
+          <common:Field>WATERSOURCEBOREHOLEWELL</common:Field>
+          <common:Field>WATERSOURCERIVER</common:Field>
+          <common:Field>WATERSOURCEOTHER</common:Field>
+          <common:Field>COOKINGSOURCEWOODFIRE</common:Field>
+          <common:Field>COOKINGSOURCEELECTRICSTOVE</common:Field>
+          <common:Field>COOKINGSOURCEGASSTOVE</common:Field>
+          <common:Field>COOKINGSOURCEOTHER</common:Field>
+          <common:Field>LIGHTSOURCEELECTRICITY</common:Field>
+          <common:Field>LIGHTSOURCEOILLAMP</common:Field>
+          <common:Field>LIGHTSOURCEGENERATOR</common:Field>
+          <common:Field>LIGHTSOURCENONE</common:Field>
+          <common:Field>LIGHTSOURCEOTHER</common:Field>          
+        </common:Fields>
+      </common:FieldGroup>
+      <common:FieldGroup ID="AREAGROUP" Caption="Area Description">
+        <common:Fields>
+          <common:Field>AREADESCRIPTION</common:Field>
+        </common:Fields>
+      </common:FieldGroup>
+    </common:FieldGroups>
+
+
+  </common:FormMetaData>
+
+</ViewDataFormTemplateSpec>

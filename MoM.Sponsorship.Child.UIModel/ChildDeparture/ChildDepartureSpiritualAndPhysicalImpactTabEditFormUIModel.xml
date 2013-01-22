@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildDeparture.SpiritualPhysicalImpact.Edit.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildDepartureSpiritualAndPhysicalImpactTabEditFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildDepartureSpiritualAndPhysicalImpactTabEditForm.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

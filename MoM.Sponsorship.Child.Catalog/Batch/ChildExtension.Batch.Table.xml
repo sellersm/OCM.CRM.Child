@@ -1,0 +1,160 @@
+﻿<TableSpec 
+  xmlns="bb_appfx_table"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="4f0d56e1-a1fd-48bf-909c-50ccedd0405a"
+  Name="ChildExtension Batch Table"
+  Description="ChildExtension Batch Table"
+  Author="Memphis Sellers"
+  Tablename="USR_BATCHCHILDEXTENSION"		   
+  >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Oct-2012		CMayeda			Changed FATHERWORKSASOTHER, MOTHERWORKSASOTHER, CAREGIVERWORKSASOTHER to length of 100
+	-->
+
+	<!-- define fields on the table -->
+  <Fields>
+
+    <ForeignKeyField Name="SPONSORSHIPOPPORTUNITYGROUPID" Required="true" ForeignTable="SPONSORSHIPOPPORTUNITYGROUP" />
+    <ForeignKeyField Description="The location for this sponsorship opportunity." Name="SPONSORSHIPLOCATIONID" Required="true" ForeignTable="SPONSORSHIPLOCATION" />
+    
+    <ForeignKeyField Name="BATCHID" ForeignTable="BATCH" Description="The primary ID from the batch table." OnDelete="CascadeDelete" Required="true"/>
+    <SequenceField Name="SEQUENCE" Description="The incremental sequence number to identify each record in a batch."/>
+    <!--<ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" Cardinality="OneToOne" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" />
+    <ForeignKeyField Description="Foreign Key Field to Siblings Table" Cardinality="ManyToOne" ForeignTable="USR_CHILDSIBLINGS" Name="SIBLINGSID" OnDelete="RaiseError" />-->
+
+    <CodeTableField Description="Birthdate Accuracy" Name="BIRTHDATEACCURACYCODEID" CodeTable="USR_BIRTHDATEACCURACYCODE" Required="false" />
+    <DateField Description="Current Program Completion Date" Name="CURRENTPROGRAMCOMPLETIONDATE" Required="false" IncludeTime="false" />
+    <CodeTableField Description="Name Suffix" CodeTable="USR_CHILDNAMESUFFIXCODE" Name="CHILDNAMESUFFIXCODEID"  Required="false"/>
+    <CodeTableField Description="Who lives with Child" Name="CHILDLIVESWITHCODEID" CodeTable="USR_CHILDLIVESWITHCODE" Required="false" />
+
+    <CodeTableField Description="Father works as code value" CodeTable="USR_FATHERWORKSASCODE" Name="FATHERWORKSASCODEID" Required="false"/>
+    <TextField Description="Father works as Other value" Name="FATHERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" /> <!-- CHANGED BY CMAYEDA Length from 50 to 100-->
+
+    <CodeTableField Description="Mother works as code value" CodeTable="USR_MOTHERWORKSASCODE" Name="MOTHERWORKSASCODEID" Required="false"/>
+    <TextField Description="Mother Works As Other value" Name="MOTHERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" /> <!-- CHANGED BY CMAYEDA Length from 50 to 100-->
+
+    <CodeTableField CodeTable="USR_CAREGIVERRELATIONCODE" Description="CareGiver Relation Code Values" Name="CAREGIVERRELATIONCODEID" Required="false"/>
+    <TextField Description="Caregiver relation other value" Name="CAREGIVERRELATIONOTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <CodeTableField CodeTable="USR_CAREGIVERWORKSASCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERWORKSASCODEID" Required="false"/>
+    <TextField Description="Caregiver Works As Other value" Name="CAREGIVERWORKSASOTHER" Length="100" Required="false" DefaultIsFunction="false" IsUnique="false" />	  <!-- CHANGED BY CMAYEDA Length from 50 to 100-->
+
+    <CodeTableField CodeTable="USR_CAREGIVERREASONCODE" Description="CareGiver Reason Code Values" Name="CAREGIVERREASONCODEID" Required="false"/>
+    <TextField Description="ReasonForCaregiverOther" Name="REASONFORCAREGIVEROTHER" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
+
+    <NumberField Description="Number of sisters" Name="NUMBEROFSISTERS" Type="tinyint" DefaultValue="0" />
+    <NumberField Description="Number of brothers" Name="NUMBEROFBROTHERS" Type="tinyint" DefaultValue="0" />
+
+    <BooleanField Description="Housing Wall Wood" Name="HOUSINGWALLWOOD" />
+    <BooleanField Description="Housing Wall Mud" Name="HOUSINGWALLMUD" />
+    <BooleanField Description="Housing Wall Bamboo" Name="HOUSINGWALLBAMBOO" />
+    <BooleanField Description="Housing Wall Block" Name="HOUSINGWALLBLOCK" />
+    <TextField Description="Housing Wall Other" Name="HOUSINGWALLOTHER"  Length="50"/>
+
+    <BooleanField Description="Roofing Tin" Name="ROOFINGTIN" />
+    <BooleanField Description="Roofing Grass_Leaves" Name="ROOFINGGRASSLEAVES" />
+    <BooleanField Description="Roofing Wood" Name="ROOFINGWOOD" />
+    <BooleanField Description="Roofing Tile" Name="ROOFINGTILE" />
+    <TextField Description="Roofing Other" Name="ROOFINGOTHER" Length="50"/>
+
+    <BooleanField Description="Water Source Indoor" Name="WATERSOURCEINDOOR" />
+    <BooleanField Description="Water Source Community Tap" Name="WATERSOURCECOMMUNITYTAP" />
+    <BooleanField Description="Water Source Borehole_Well" Name="WATERSOURCEBOREHOLEWELL" />
+    <BooleanField Description="Water Source River" Name="WATERSOURCERIVER" />
+    <TextField Description="Water Source Other" Name="WATERSOURCEOTHER" Length="50" />
+
+    <BooleanField Description="Cooking Source WoodFire" Name="COOKINGSOURCEWOODFIRE" />
+    <BooleanField Description="Cooking Source Electric Stove" Name="COOKINGSOURCEELECTRICSTOVE" />
+    <BooleanField Description="Cooking Source Gas Stove" Name="COOKINGSOURCEGASSTOVE" />
+    <TextField Description="Cooking Source Other" Name="COOKINGSOURCEOTHER" Length="50"  />
+
+    <BooleanField Description="Light Source Elictricity" Name="LIGHTSOURCEELECTRICITY" />
+    <BooleanField Description="Light Source Oil Lamp" Name="LIGHTSOURCEOILLAMP" />
+    <BooleanField Description="Light Source Generator" Name="LIGHTSOURCEGENERATOR" />
+    <BooleanField Description="Light Source None" Name="LIGHTSOURCENONE" />
+    <TextField Description="Light Source Other" Name="LIGHTSOURCEOTHER" Length="50"  />
+
+    <TextField Description="Area Description" Name="AREADESCRIPTION" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Favorite thing" Name="MYFAVORITETHINGTODO" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Playing with friends text" Name="WHENIPLAYWITHFRIENDSWE" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Help out at home text" Name="WHENATHOMEIHELPOUTBY" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Prayer text" Name="WHENITALKTOGODIASKHIM" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <!--<TextField Description="School likes" Name="WHENIAMATSCHOOLILIKELEARNING" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />-->
+    <TextField Description="Dreams of future text" Name="SOMEDAYI" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="2 favorite things" Name="TWOMOSTFAVORITETHINGS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Other likes" Name="OTHERTHINGSTHECHILDENJOYS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Personality" Name="CHILDPERSONALITY" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Health" Name="CHILDHEALTH" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Spiritual development text" Name="SPIRITUALDEVELOPMENT" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <BooleanField Description="Attending school" Name="ATTENDINGSCHOOL" DefaultValue="false" />
+    <TextField Description="reason not attending school" Name="REASONNOTATTENDINGSCHOOL" Length="255" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="Class level" Name="CLASSLEVEL" Length="20" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="childs favorite subject " Name="FAVORITESUBJECT" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <TextField Description="vocational skills text" Name="VOCATIONALSKILLS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
+    <MemoField Description="Additional info" Name="ADDITIONALCHILDINFORMATION" />
+    <TextField Description="CCH Entered By" Name="CCHENTEREDBY" Length="100" Required="false" IsUnique="false" />
+    <TextField Description="CH CCH Temp ID" Name="CCHTEMPID" Length="250" Required="false" IsUnique="true" />
+    <DateField Description="Current Photo Date" Name="CURRENTPHOTODATE" IncludeTime="false" Required="false"/>
+    <BooleanField Description="Photo Stored" Name="PHOTOSTORED"/>
+    <CodeTableField Description="Profile Status Code" CodeTable="USR_CHILDPROFILESTATUSCODE" Name="CHILDPROFILESTATUSCODEID" Required="false"/>
+    <CodeTableField Description="Profile Update Code" CodeTable="USR_CHILDPROFILEUPDATECODE" Name="CHILDPROFILEUPDATECODEID" Required="false"/>
+    <BooleanField Description="Profile Update Notification" Name="PROFILEUPDATENOTIFICATION"/>
+    <DateField Description="Original Program Completion Date" Name="ORIGINALPROGRAMCOMPLETIONDATE"/>
+    <BooleanField Description="Funded" Name="FUNDED"/>
+    <!--<TextField Description="Temporary Child ID" IsUnique="true" Length="50" Name="TEMPCHILDID" Required="true"/>-->
+    <TextField Description="Batch Number" Name="BATCHNUMBER" Length="100" Required="true"/>
+    <DateField Description="Registration Date" Name="REGISTRATIONDATE" />
+
+    <!-- These are the fields for the sponsorship opportunity child  -->
+    <TextField Description="For individuals, stores the first name." Name="FIRSTNAME" Length="50" />
+    <TextField Description="For individuals, stores the middle name." Name="MIDDLENAME" Length="50" />
+    <TextField Description="Last name of child" Name="LASTNAME" Length="100" Required="true" />
+    <EnumField Name="GENDERCODE" DefaultValue="0">
+      <EnumValues>
+        <EnumValue ID="0" Translation="Unknown" />
+        <EnumValue ID="1" Translation="Male" />
+        <EnumValue ID="2" Translation="Female" />
+      </EnumValues>
+    </EnumField>
+    <FuzzyDateField Description="For individuals, stores the date of birth." Name="BIRTHDATE" />
+    <BooleanField Description="Indicates if child sponsorship opportunity is HIV+" Name="ISHIVPOSITIVE" />
+    <CodeTableField Name="SPROPPCHILDCONDITIONCODEID" CodeTable="SPROPPCHILDCONDITIONCODE" />
+    <BooleanField Description="Indicates if a child sponsorship opportunity is an orphan" Name="ISORPHANED" />
+    <ImageField Description="A photo or emblem for this child." Name="PICTURE" CreateThumbnail="true" />
+    <BooleanField Description="CCH Validated" Name="CCHVALIDATED" DefaultValue="false"/>
+	  <!-- Memphis 9/24/12 added to capture the cch filename used for this batch -->
+	  <TextField Description="CCH zip file name" Name="CCHZIPFILENAME" Length="200" Required="false" />
+	  
+    <!--<ComputedColumnField Description="For child, returns the age." Name="AGE" Expression="dbo.UFN_CONSTITUENT_GETAGE(SPONSORSHIPOPPORTUNITYCHILD.CONSTITUENTID)" />
+    <ComputedColumnField Description="Returns the child name (First + Middle Initial + Last (individuals))." Name="NAME" Expression="CASE FIRSTNAME WHEN '' THEN '' ELSE FIRSTNAME + ' ' END    &#xD;&#xA;                    +    &#xD;&#xA;                    CASE MIDDLENAME WHEN '' THEN '' ELSE LEFT(MIDDLENAME,1) + '. ' END    &#xD;&#xA;                    +     LASTNAME" />-->
+    <!--<ForeignKeyField Description="Constituent record for this child" Name="CONSTITUENTID" Required="true" ForeignTable="CONSTITUENT" Cardinality="OneToOne" />-->
+    
+  </Fields>
+
+  <!-- define any additional check constraints on the table --><!--
+  <CheckConstraints>
+
+  </CheckConstraints>
+
+  -->
+  <!-- define any indexes on the table -->
+<Indexes>
+    <Index IsUnique="true">
+      <IndexFields>
+        <IndexField Name="BATCHID"/>
+        <IndexField Name="CCHTEMPID"/>
+      </IndexFields>
+    </Index>
+  </Indexes>	
+  
+    <!-- define any triggers on the table --><!--
+  <Triggers>
+
+  </Triggers>-->
+
+</TableSpec>

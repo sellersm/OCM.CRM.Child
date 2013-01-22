@@ -1,0 +1,58 @@
+<DataListSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="12ce4824-be88-4433-8328-37c71b9f28df"
+    Name="Child Transfer Data List"
+    Description="Returns all Child Transfer Table records for the given child."
+    Author="Memphis Sellers"
+    c:SecurityUIFolder="Child Transfer Table"
+    xmlns="bb_appfx_datalist"
+    >
+    <SPDataList SPName="USR_USP_DATALIST_CHILD_TRANSFER_TABLE">
+        <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATALIST_CHILD_TRANSFER_TABLE(
+       @CONTEXTID uniqueidentifier
+)
+as
+	set nocount on;
+
+  select 
+        uct.[ID],
+        uct.[SPONSORSHIPOPPORTUNITYCHILDID],
+        uct.[FORMCOMPLETIONDATE],
+        uct.[FORMCOMPLETEDBY],
+        uct.[FORMENTEREDBY],
+        uct.[FIELDDATEOFTRANSFER],
+        uct.[EXPLANATION],
+        uct.FROMREGISTRATIONDATE,
+        dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.FROMPROJECTID) as FROMPROJECTNAME,
+        uct.[CRMDATEOFTRANSFER],
+        dbo.USR_UFN_CHILD_GETCHILDPROJECTLOOKUPID(uct.TOPROJECTID) as TOPROJECTLOOKUPID,
+        uct.DATEADDED
+	from dbo.USR_CHILDTRANSFER uct 
+  where uct.SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID;
+
+  
+]]>
+</c:CreateProcedureSQL>
+    </SPDataList>
+
+  <Context ContextRecordType="SPONSORSHIPOPPORTUNITY" RecordIDParameter="CONTEXTID"/>
+  
+    <Output>
+        <OutputFields>
+            <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+            <OutputField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Caption="" IsHidden="true" />
+            <OutputField FieldID="FORMCOMPLETIONDATE" Caption="Form Completed On" DataType="Date" />
+            <OutputField FieldID="FORMCOMPLETEDBY" Caption="Form Completed By" DataType="String" />
+            <OutputField FieldID="FORMENTEREDBY" Caption="Form Entered By" DataType="String" />
+            <OutputField FieldID="FIELDDATEOFTRANSFER" Caption="Field Transfer Date" DataType="Date" />
+            <OutputField FieldID="EXPLANATION" Caption="Explanation" DataType="String" />
+            <OutputField FieldID="FROMREGISTRATIONDATE" Caption="Registration Date" DataType="Date" DisplayDateAsDateTime="false" />
+            <OutputField FieldID="FROMPROJECTNAME" Caption="Old Project Lookup ID" DataType="String" />
+          <OutputField FieldID="CRMDATEOFTRANSFER" Caption="Old Project End Date" DataType="Date" />
+          <OutputField FieldID="TOPROJECTLOOKUPID" Caption="New Project Lookup ID" DataType="String" />
+          <OutputField FieldID="DATEADDED" Caption="New Project Date" DataType="Date" />
+        </OutputFields>
+    </Output>
+</DataListSpec>
