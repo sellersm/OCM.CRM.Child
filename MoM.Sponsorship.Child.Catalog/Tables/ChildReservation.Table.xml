@@ -13,6 +13,7 @@
 	History:
 	Date            Modified By     Comments
 	12-Sep-2012		CMayeda			Added Unpaid transfer
+	28-Jan-2013		Memphis			Added Unpaid sponsored statuscode enumvalue.
 	-->
 
 	<!-- define fields on the table -->
@@ -29,6 +30,7 @@
 				<EnumValue ID="2" Translation="Sponsored"/>
 				<EnumValue ID="3" Translation="Prospect sponsored"/>
 				<EnumValue ID="4" Translation="Unpaid transfer" />
+				<EnumValue ID="5" Translation="Unpaid sponsored"/>
 			</EnumValues>
 		</EnumField>
 
