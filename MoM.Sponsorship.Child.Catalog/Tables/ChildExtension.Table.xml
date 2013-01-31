@@ -21,6 +21,7 @@
 	26-Sep-2012		CMayeda			Added CURRENTCHILDSPONSORSHIPSTATUSCODEID field - Fogbugz Case 854
 	14-Oct-2012		CMayeda			Changed trigger based on final dataconversion identity reset
 									Modifed trigger to only insert the value for the CUSTOMIDENTIFIER if none is already there
+	31-Jan-2012		CMayeda			Changed CLASSLEVEL field from 20 to 50 characters.
     -->
 
 	<Fields>
@@ -95,7 +96,7 @@
 		<TextField Description="Spiritual development text" Name="SPIRITUALDEVELOPMENT" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
 		<BooleanField Description="Attending school" Name="ATTENDINGSCHOOL" DefaultValue="false" />
 		<TextField Description="reason not attending school" Name="REASONNOTATTENDINGSCHOOL" Length="255" Required="false" DefaultIsFunction="false" IsUnique="false" />
-		<TextField Description="Class level" Name="CLASSLEVEL" Length="20" Required="false" DefaultIsFunction="false" IsUnique="false" />
+		<TextField Description="Class level" Name="CLASSLEVEL" Length="50" Required="false" DefaultIsFunction="false" IsUnique="false" />
 		<TextField Description="childs favorite subject " Name="FAVORITESUBJECT" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
 		<TextField Description="vocational skills text" Name="VOCATIONALSKILLS" Length="1000" Required="false" DefaultIsFunction="false" IsUnique="false" />
 		<MemoField Description="Additional info" Name="ADDITIONALCHILDINFORMATION" />
