@@ -117,7 +117,7 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 				.Parameters.AddWithValue("@VALIDATEONLY", VALIDATEONLY)
 				.Parameters.AddWithValue("@SPONSORSHIPOPPORTUNITYLOOKUPID", SponsorshipOpportunityLookupID)
 				.Parameters.AddWithValue("@ATTACHMENTTYPECODEID", AttachmentTypeCodeID)
-				.Parameters.AddWithValue("@PICTURETITLE", "2012 Health Update")
+				.Parameters.AddWithValue("@PICTURETITLE", PictureTitle)
 				.Parameters.AddWithValue("@FILENAME", FileName)
 				.Parameters.AddWithValue("@PICTURE", Image)
 
