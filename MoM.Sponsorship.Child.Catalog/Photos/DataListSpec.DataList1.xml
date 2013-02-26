@@ -1,0 +1,59 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="122ae535-3143-4f7b-b62d-ac5b4614851e" 
+	Name="Photo Data List Data List"
+	Description="Photo stuff." 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="SPONSORSHIPOPPORTUNITY">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_TESTGETIMPORT21195">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_TESTGETIMPORT21195(@CONTEXTID uniqueidentifier)
+as
+	set nocount on;
+	
+	declare @importSourceName nvarchar(100) = 'Default Network Import Path'
+    exec dbo.USP_GET_KEY_ACCESS
+
+    begin try
+        select top 1
+				ID,
+				USERNAME,
+                convert(nvarchar(100), DecryptByKey(PASSWORD)) as PASS
+        from dbo.importsource                                  
+        where lower(NAME) = lower (@importSourceName )
+        close symmetric key sym_BBInfinity
+    end try
+    begin catch
+		close symmetric key sym_BBInfinity
+    end catch
+
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="REPLACE_WITH_RECORDTYPE" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="ID" DataType="Guid" IsHidden="true" />
+			<OutputField FieldID="USERNAME" Caption="UserName" DataType="String" />
+			<OutputField FieldID="PASS" Caption="Pass" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

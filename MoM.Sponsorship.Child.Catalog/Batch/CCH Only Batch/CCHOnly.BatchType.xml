@@ -1,0 +1,70 @@
+﻿<BatchTypeSpec
+	xmlns="bb_appfx_batchtype"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="bf895dd5-ef1b-419e-be7e-3df8522de8a5" 
+	Name="CCH Data Only Batch"
+	Description="Batch to import CCH Data for existing children." 
+	Author="Memphis Sellers"
+	BaseTableName="USR_CCH_ONLY_BATCH" 
+	Category="ChildExtension" 
+	>
+
+	<!-- indicate the form used to add a row to the batch (note that this is the template ID, not the instance ID) -->
+	<AddRowDataFormTemplate CatalogItemID="ca641613-879c-4a93-a323-9e3ee5403e36" />
+
+	<!-- indicate the form used to edit a row in the batch (note that this is the template ID, not the instance ID) -->
+	<EditRowDataFormTemplate CatalogItemID="810242ea-3354-4bf6-9f6a-3cc1fbb80780" />
+
+	<!-- indicate the form used to commit a row in the batch (note that this is the template ID, not the instance ID) -->
+	<CommitRowDataForms>
+		<CommitRowAddDataFormTemplate CatalogItemID="70813e29-5d4f-483d-9e9c-6028bcf40332" />
+	</CommitRowDataForms>
+	
+	<!-- indicate the record operation used to delete a row from the batch -->
+	<BatchDeleteRowRecordOperation CatalogItemID="4fa24589-4522-4546-9be0-a2bea17a1b28" />
+
+	<!-- optionally, you can override the default 'batch delete' behavior by specifying the record operation to use deleting a batch of this type -->
+	<!--<DeleteBatchRecordOperation CatalogItemID="REPLACE_WITH_RECORDOPERATIONID" />-->
+
+	<!-- optionally, describe the batch row context window -->
+	<!--<RowContextWindow Caption="REPLACE_WITH_CAPTION" 
+				      ViewDataFormTemplateID="REPLACE_WITH_FORMID" 
+					  EditDataFormTemplateID="REPLACE_WITH_FORMID" 
+					  ImageKey="REPLACE_WITH_IMAGEKEY" 
+					  RecordType="REPLACE_WITH_RECORDTYPE" 
+					  ContextFieldID="REPLACE_WITH_CONTEXTFIELDID" 
+					  />-->
+
+	<!-- optionally, you can indicate a report to use as the validation report for the batch -->
+	<!--<ValidationReport CatalogItemID="REPLACE_WITH_REPORTID" />-->
+
+	<!-- optionally, describe a control report for batches of this type -->
+	<!--<ControlReport QueryViewSpecID="REPLACE_WITH_QUERYID" 
+				   QueryViewJoinField="REPLACE_WITH_JOINFIELD" 
+				   ReportSpecID="REPLACE_WITH_REPORTID" />-->
+
+	<!-- optionally, describe an exception report for batches of this type -->
+	<!--<ExceptionReport QueryViewSpecID="REPLACE_WITH_QUERYID" 
+				     QueryViewJoinField="REPLACE_WITH_JOINFIELD" 
+					 ReportSpecID="REPLACE_WITH_REPORTID" />-->
+
+	<!-- optionally, describe the client-side summary panel for batches of this type.  This should refer to a class that inherits 
+	from Browser.Batch.BatchSummaryPanelHandler -->
+	<!--<SummaryPanelHandler AssemblyName="REPLACE_WITH_FULLASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />-->
+
+	<!-- optionally, list any client-side event handlers that will be plugged into the event model for the batch data entry form.  Each handler
+	refers to a class that inherits from Browser.Batch.BatchEntryHandler -->
+	<!--<EventHandlers>
+		<BatchEventHandler AssemblyName="REPLACE_WITH_FULLASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+	</EventHandlers>-->
+
+	<!-- optionally, indicate a list of fields from the Add/Edit form that should be included by default in the batch design.  This list
+	does not need to include required or hidden fields, as they are already included by default.	
+	-->
+	<!--<DefaultSelectedFields>
+		<Field>FIELD1</Field>
+		<Field>FIELD2</Field>
+		<Field>FIELD3</Field>
+	</DefaultSelectedFields>-->
+
+</BatchTypeSpec>

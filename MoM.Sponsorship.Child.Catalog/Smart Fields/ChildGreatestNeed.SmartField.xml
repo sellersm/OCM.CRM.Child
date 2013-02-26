@@ -1,0 +1,55 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c85ecc37-1eb6-4e77-affb-8c8a93aab8c1"
+	Name="Greatest need - child"
+	Description="Used in the standard Greatest Need rule set for child sponsorship programs"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDGREATESTNEED2"
+	DataType="Integer"
+	RecordType="Sponsorship opportunity child"
+	DisplayName="Greatest Need Smart Field" 
+	SmartFieldFolder="Sponsorship opportunity child"
+	>
+
+	<!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure  dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDGREATESTNEED2 ( 
+	@ASOF datetime
+) as begin 
+	-- case [STATUSCODE] when (0) then N'Pending' when (1) then N'Active' when (2) then N'Inactive'  end)
+
+	-- New kids not sponsored
+	select	so.ID, (DATEDIFF (m,so.dateadded, getdate()) + 1) * 2 as PRIORITY 
+	  from	dbo.SPONSORSHIPOPPORTUNITY so 
+	  inner join 
+			dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on 
+				so.ID = so_child.id 
+	  where	not exists (select ID from dbo.SPONSORSHIP where SPONSORSHIPOPPORTUNITYID = so.ID) 
+	 
+	union all 
+	 
+	-- Formerly Sponsored children - this get a slightly higher priority than new children
+	select	so.ID, ((DATEDIFF (m,max (sp1.ENDDATE), getdate()) + 1) * 2) + 1 as PRIORITY 
+	  from	dbo.SPONSORSHIPOPPORTUNITY so 
+	  join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on 
+				so.ID = so_child.id 
+	  join	SPONSORSHIP sp1 on 
+				sp1.SPONSORSHIPOPPORTUNITYID = so.ID and
+				sp1.ENDDATE is not null and 
+				sp1.STATUSCODE = 2
+				
+	 where exists (select ID from dbo.SPONSORSHIP sp2 where sp2.[STATUSCODE] = 2 and sponsorshipopportunityid = so.ID)				-- Has an inactive sponsorship (formerly sponsored) ** Do we need to filter out formerly prospect sponsored?
+	   and not exists (select ID from dbo.SPONSORSHIP sp2 where sp2.[STATUSCODE] in (0, 1) and sponsorshipopportunityid = so.ID)	-- Is not in a currently active or pending sponsorship
+	   	 
+	 group by so.ID 
+	 
+ end
+		]]>
+	</CreateProcedureSQL>
+
+	<!-- describe any parameters (other than the ASOF date) defined on the SP -->
+
+	
+</SmartFieldSpec>

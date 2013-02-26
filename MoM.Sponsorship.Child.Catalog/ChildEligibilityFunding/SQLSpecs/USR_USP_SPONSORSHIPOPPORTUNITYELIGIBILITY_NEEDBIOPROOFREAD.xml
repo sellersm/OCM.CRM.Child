@@ -1,0 +1,156 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="5fd384e2-27cb-44f5-8f99-f886ff7439a0"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD"
+	Description="Used to add/delete 'Need Bio Proofread' pending reasons."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD" >
+
+	<!-- 
+	Remarks:	The 'Need Bio Proofread' pending reason is added to the child/children if the Child Bio - Draft note exists.  
+	
+				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  
+				
+	History:
+	Date			Modified By		Comments
+    03-Apr-2012		CMayeda			Initial Version
+	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
+	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	13-Oct-2012		CMayeda			Added check for DateProofed blank on Child Bio note	- FogBugz 893
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output					-- Output parm that specifies how many pending reasons were inserted
+)
+as begin
+
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+
+	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0  -- Child Mark Pending Eligibiltiy sponsorship reason enum 
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+	
+		
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
+		declare @ChildBioNoteTypeID uniqueidentifier
+		select @ChildBioNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Child Bio')
+		if @ChildBioNoteTypeID is null
+			RAISERROR 1000000 'Couldn''t find the "Child Bio" Note type code'
+
+    	declare @ChildBioDraftNoteTypeID uniqueidentifier
+		select @ChildBioDraftNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Child Bio - Draft')
+		if @ChildBioDraftNoteTypeID is null
+			RAISERROR 1000000 'Couldn''t find the "Child Bio - Draft" Note type code'
+    
+		declare @NeedBioProofreadID uniqueidentifier
+		select @NeedBioProofreadID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Need bio proofread') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @NeedBioProofreadID is null
+			RAISERROR 1000000 'Couldn''t find the "Need bio proofread" Sponsorship Reason'		
+			
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	-- This needs to be set to off for the output parms to be set properly
+	SET NOCOUNT OFF
+	
+	-- Remove Need Bio Created pending reasons if no child bio - draft exists for the child/children
+	
+	delete  dbo.SPONSORSHIPOPPORTUNITYREASON
+	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+			-- Find children who are specified to be reviewed and have the 'Need Bio Proofread' pending reason 
+	 where  exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   and	so_reason.SPONSORSHIPREASONID = @NeedBioProofreadID
+	    
+			-- Check if a child bio draft exists
+	   and	not exists (select SPONSORSHIPOPPORTUNITYID 
+				         from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+						where so_note.SPONSORSHIPOPPORTUNITYID = so_reason.SPONSORSHIPOPPORTUNITYID
+						  and (so_note.SPROPPNOTETYPECODEID = @ChildBioDraftNoteTypeID))
+			-- Check if a child bio exists without a date proofed
+	   and	not exists (select SPONSORSHIPOPPORTUNITYID 
+				         from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+				         join dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION so_noteext on
+								so_note.ID = so_noteext.id
+						where so_note.SPONSORSHIPOPPORTUNITYID = so_reason.SPONSORSHIPOPPORTUNITYID
+						  and so_note.SPROPPNOTETYPECODEID = @ChildBioNoteTypeID
+						  and so_noteext.DATE_PROOFED is null)
+
+
+	set @DELETEDROWS = @@ROWCOUNT
+	
+	
+	-- Insert Need Bio Created pending reasons if a child/children don't already have it and their child bio does not exist
+	insert dbo.SPONSORSHIPOPPORTUNITYREASON
+				(SPONSORSHIPOPPORTUNITYID,
+				 SPONSORSHIPREASONID,				
+				 ADDEDBYID, 
+				 CHANGEDBYID, 
+				 DATEADDED, 
+				 DATECHANGED)
+				 
+		select  ID,
+				@NeedBioProofreadID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CurrentDate, 
+				@CurrentDate
+				
+		  from	dbo.SPONSORSHIPOPPORTUNITY so
+		 		
+		 where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
+	      
+				-- Verify that the children do not already have a Need Bio Created pending reason
+   	       and	not exists (select SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
+		                    where so_reason.SPONSORSHIPREASONID = @NeedBioProofreadID and SPONSORSHIPOPPORTUNITYID = so.ID)
+   	                       
+				-- Verify that the child/children has a child bio - draft note
+		   and (exists (select SPONSORSHIPOPPORTUNITYID 
+						  from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+						 where so_note.SPONSORSHIPOPPORTUNITYID = so.ID
+					       and (SPROPPNOTETYPECODEID = @ChildBioDraftNoteTypeID))
+						   
+				-- Check if a child bio exists without a date proofed
+				or exists (select SPONSORSHIPOPPORTUNITYID 
+				         from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+				         left join 
+								dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION so_noteext on
+									so_note.ID = so_noteext.id
+						where so_note.SPONSORSHIPOPPORTUNITYID = so.ID
+						  and so_note.SPROPPNOTETYPECODEID = @ChildBioNoteTypeID
+						  and so_noteext.DATE_PROOFED is null))
+	
+				-- Don't add to ineligible kids that are not quota waiting list
+		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
+		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
+				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
+	
+	set @INSERTEDROWS = @@ROWCOUNT
+
+end
+
+		]]>
+</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
+

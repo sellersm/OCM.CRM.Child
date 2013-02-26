@@ -1,0 +1,55 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="ea0e7b60-2c6c-4cc4-a1f6-19338498de9a"
+	Name="USR_UFN_ISBATCHCOMMITTED"
+	Description="Determines if a given batch has been committed or not"
+	Author="Memphis Sellers"
+	DBFunctionName="USR_UFN_ISBATCHCOMMITTED"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+-- =============================================
+-- Author:		Memphis
+-- Create date: 7/2/2012
+-- Description:	Returns a bit that says if the Batch has committed or not
+-- =============================================
+CREATE FUNCTION USR_UFN_ISBATCHCOMMITTED 
+(
+	-- Add the parameters for the function here
+	@BATCH_NUMBER nvarchar(100)
+)
+RETURNS bit
+AS
+BEGIN
+	-- Declare the return variable here
+	DECLARE @Result bit
+	DECLARE @BATCHID uniqueidentifier
+
+	-- Add the T-SQL statements to compute the return value here
+	SELECT @BATCHID = ID
+	FROM BATCH
+	WHERE BATCHNUMBER = @BATCH_NUMBER
+	AND STATUS = 'Committed'
+
+	IF @BATCHID IS NOT NULL
+	  BEGIN
+		  -- the batchid is also the BUSINESSPROCESSPARAMETERSETID
+		  -- the batch is committed so return a 1
+		  SET @Result = 1;
+	  END
+	ELSE
+	  BEGIN
+		  -- the batch isn't finished yet, so return a 0
+		  SET @Result = 0;
+	  END ;	
+	
+	-- Return the result of the function
+	RETURN @Result
+
+END
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

@@ -1,0 +1,33 @@
+﻿<BusinessProcessSpec
+	xmlns="bb_appfx_businessprocess"
+	xmlns:common="bb_appfx_commontypes"
+	ID="967388a8-449b-40aa-be8c-3f9cab94e0df"
+	Name="Child Quota Waiting List Business Process"
+	Description="This business process checks all waiting list children and registers those that can be added"
+	Author="Cary Mayeda"
+	GeneratesOutput="false"
+	ParameterTableName="USR_CHILDQUOTA_WAITINGLISTPROCESS"
+	RecordType="Sponsorship opportunity child"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child">
+
+<!-- 
+	Remarks:    This business process was created so that the waiting list process could be scheduled.  It does not allow the user to specify and parameters / selections.
+				It assumes that the ID for the default parameter set is '2A580C34-C5DD-415D-BB60-0AC3E30BEB78'.  The is created in the "Populate MoM System Tables.sql"
+
+				This also includes the children added through batch who's project/country could not be locked.
+				
+	History:
+	Date            Modified By     Comments
+	03-Jul-2012		CMayeda			Initial Version
+
+-->
+
+	<ProcessorComponent AssemblyName="MoM.Sponsorship.Child.Catalog" ClassName="MoM.Sponsorship.Child.Catalog.ChildQuotaWaitingListBusinessProcess" >
+		<common:GrantExecuteList>
+			<common:GrantExecute>dbo.USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST</common:GrantExecute>			
+		</common:GrantExecuteList>
+		
+	</ProcessorComponent>
+
+
+</BusinessProcessSpec>

@@ -1,0 +1,97 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="48e4998f-6cb6-4d88-a9b3-a5e9128fec77" 
+	Name="App Sponsor Child List"
+	Description="This is the data list used by the app to get a sponsor's children"
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Sponsorship Opportunity Child">
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	17-Oct-2012		CMayeda			Initial Version
+	-->
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_APP_GETSPONSORSCHILDREN">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_APP_GETSPONSORSCHILDREN(@CONTEXTID uniqueidentifier)
+as
+	set nocount on;
+
+	 SELECT	sponsor.ID,
+			sponsor.NAME,
+			so.ID as CHILDID,
+			so_child.FIRSTNAME,
+			so_child.LASTNAME,
+			so_child.FIRSTNAME + ' ' + so_child.LASTNAME AS FULLNAME,
+			countryconst.KEYNAME as COUNTRYNAME,
+			countryconst.ID as COUNTRYID,
+			so_child.AGE,
+			SUBSTRING(so_child.BIRTHDATE,5,2) + '/' + SUBSTRING(so_child.BIRTHDATE,7,2) + '/' + SUBSTRING(so_child.BIRTHDATE,1,4)  as BIRTHDATE,
+			CASE so_child.GENDER
+				WHEN 'Female' THEN 'Girl'
+				WHEN 'Male' THEN 'Boy'
+			END AS GENDER,
+			so_child.GENDERCODE,
+			childprojectconst.KEYNAME as PROJECTNAME,
+			childprojectconst.ID AS PROJECTID,
+			so.LOOKUPID as CHILDNO,
+			so_child.PICTURE
+	   FROM	dbo.SPONSORSHIPOPPORTUNITY so
+ INNER JOIN dbo.SPONSORSHIP on SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = so.ID and SPONSORSHIP.STATUSCODE = 1 -- active
+ INNER JOIN dbo.CONSTITUENT sponsor on SPONSORSHIP.CONSTITUENTID = sponsor.ID
+ INNER JOIN dbo.SPONSORSHIPLOCATION sloc on sloc.ID = so.SPONSORSHIPLOCATIONID
+ INNER JOIN dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = so.ID
+ INNER JOIN dbo.CONSTITUENT childconst on childconst.ID = so_child.CONSTITUENTID    -- This is the constituent record that has the note of type "Child Bio"
+ LEFT OUTER JOIN dbo.USR_CHILDPROJECTEXTENSION projectext on sloc.FIELDOFFICEID = projectext.ID
+ LEFT OUTER JOIN dbo.CONSTITUENT childprojectconst on childprojectconst.ID = projectext.ID       -- This is the constituent record that has note of type "Project Bio"
+ LEFT OUTER JOIN dbo.USR_COUNTRYEXTENSION countryext on projectext.COUNTRYEXTENSIONID = countryext.ID
+ LEFT OUTER JOIN dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID         -- This is the constituent record that has the note of type "Country Bio"
+ 
+	  WHERE sponsor.ID = @CONTEXTID
+
+	]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Constituent" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="System record ID" DataType ="Guid"/>
+			<OutputField FieldID="SPONSORNAME" Caption="First Name" DataType="String" />
+			<OutputField FieldID="CHILDIDID" Caption="Child ID" DataType ="Guid"/>
+			<OutputField FieldID="FIRSTNAME" Caption="First Name" DataType="String" />
+			<OutputField FieldID="LASTNAME" Caption="Last Name" DataType="String" />
+			<OutputField FieldID="FULLNAME" Caption="Full Name" DataType="String" />
+			<OutputField FieldID="COUNTRYNAME" Caption="Country Name" DataType="String" />
+			<OutputField FieldID="COUNTRYID" Caption="Country ID" DataType="Guid"/>
+			<OutputField FieldID="AGE" Caption="Age" DataType="TinyInt"/>
+			<OutputField FieldID="BIRTHDATE" Caption="Birthdate" DataType="Date"/>
+			<OutputField FieldID="GENDER" Caption="Gender" DataType="String"  />
+			<OutputField FieldID="GENDERCODE" Caption="Gender Code" DataType="TinyInt" />
+			<OutputField FieldID="PROJECTNAME" Caption="Project Name"  DataType="String"/>
+			<OutputField FieldID="PROJECTID" Caption="Project ID" DataType="Guid" />
+			<OutputField FieldID="CHILDNO" Caption="Child Number" DataType="String" />
+			<OutputField FieldID="PICTURE" Caption="Child Image" DataType="Binary" />
+			
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

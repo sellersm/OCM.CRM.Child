@@ -1,0 +1,52 @@
+﻿<DataListSpec 
+  xmlns="bb_appfx_datalist"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="87c8c7e2-8e9f-4e5d-ba6e-62ac1d3dc3da" 
+  Name="ChildDeparture Data List"
+  Description="Data List of Chid Departures." 
+  Author="Memphis Sellers"
+  common:SecurityUIFolder="Sponsorship\Opportunity\Child\Child Extension">
+
+  <!-- define the SP that returns the data for the datalist -->
+  <SPDataList SPName="USR_USP_DATALIST_CHILD_DEPARTURE">
+    <common:CreateProcedureSQL>
+      <![CDATA[
+create procedure dbo.USR_USP_DATALIST_CHILD_DEPARTURE(@CONTEXTID uniqueidentifier)
+as
+  set nocount on;
+
+  select ID,
+       DATEPROCESSED,
+       DEPARTURETYPE,
+       ISCURRENTDEPARTURE
+  from dbo.USR_CHILDDEPARTURE
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+  order by ISCURRENTDEPARTURE DESC, DATEPROCESSED DESC
+
+      ]]>
+    </common:CreateProcedureSQL>
+  </SPDataList>
+
+  <!-- describe the context ID parameter for the SP (if applicable)-->
+  <Context ContextRecordType="Sponsorship opportunity" RecordIDParameter="CONTEXTID"/>
+
+  <!-- describe any parameters (other than the context ID) defined on the SP
+  <Parameters>
+    <common:FormMetaData>
+      <common:FormFields>
+        <common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+      </common:FormFields>
+    </common:FormMetaData>
+  </Parameters>-->
+
+  <!-- define the output fields in the list -->
+  <Output>
+    <OutputFields>
+      <OutputField FieldID="ID" Caption="ID" DataType="Guid" IsHidden="true" />
+      <OutputField FieldID="DATEPROCESSED" Caption="Date Processed" DataType="Date" />
+      <OutputField FieldID="DEPARTURETYPE" Caption="Departure Type" DataType="String" />
+      <OutputField FieldID="ISCURRENTDEPARTURE" Caption="Current Departure" DataType="String" />
+    </OutputFields>
+  </Output>
+
+</DataListSpec>

@@ -1,0 +1,41 @@
+﻿<DataListSpec
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes"
+	ID="bcb4220c-f15b-4bda-aea0-ea2bf6574e85"
+	Name="Child Website And App Package Version Data List"
+	Description="Used to display the version of the package deployment."
+	Author="Jason Foster"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child" >
+
+  <!-- 
+	Remarks:    This is used to view the package version that has been loaded.  #VersionNumber# is modifed automatically on the build machine to match the build version number.
+
+	History:
+	Date            Modified By     Comments
+	21-Feb-2013		  JFoster			    Initial Version
+	-->
+
+  <!-- define the SP that returns the data for the datalist -->
+  <SPDataList SPName="USR_USP_DATALIST_CHILDWEBSITEANDAPPPACKAGEVERSION">
+    <common:CreateProcedureSQL>
+      <![CDATA[
+			
+create procedure dbo.USR_USP_DATALIST_CHILDWEBSITEANDAPPPACKAGEVERSION
+as
+begin
+	select 'Version #VersionNumber#' as version
+end
+
+]]>
+    </common:CreateProcedureSQL>
+  </SPDataList>
+
+
+  <!-- define the output fields in the list -->
+  <Output>
+    <OutputFields>
+      <OutputField FieldID="version" Caption="Child Website And App Package" DataType="String" />
+    </OutputFields>
+  </Output>
+
+</DataListSpec>

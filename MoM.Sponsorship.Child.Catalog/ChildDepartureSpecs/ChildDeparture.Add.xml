@@ -1,0 +1,538 @@
+<AddDataFormTemplateSpec 
+	xmlns:common="bb_appfx_commontypes"
+	ID="3ffc5e3b-371b-4c08-aa0d-240b520991ee"
+	Name="Child Departure Add Form"
+	Description="Used for adding a new Child Departure"
+	Author="Memphis Sellers"
+	RecordType="Child Departure"
+	DataFormInstanceID="ac89e520-149a-4a66-83c2-1e5e906a5809"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child\Child Departure"
+	xmlns="bb_appfx_adddataformtemplate"
+	FormHeader="Child Departure or Program Completion Form"
+	>
+
+	<!-- 
+	Remarks:    This is used to create a new Departure for a Child.
+
+	History:
+	Date            Modified By     Comments
+	28-Aug-2012		Memphis			FogBugz Case 797  never use the reason 'Departure - Other', but use 'Departure' instead unless child is deceased.
+	10-Oct-2012		Memphis			FogBugz Case 892:  add call to cancel pending interactions.
+	15-Oct-2012		Memphis			FogBugz Case 914.
+	26-Oct-2012		CMayeda			Fixed security folder
+	17-Dec-2012		Memphis			FogBugz Case 953: Removed the code to put recurring gift on Hold and added code to add an 
+									attribute to the recurring gift "Held Recurring Gift" and value of Yes with today's date.
+	21-Jan-2013		Memphis			FogBugz Case 960: Check for the attribute before adding it, set the PreDepartureGiftStatus value in the 
+									USR_FINANCIALTRANSACTION_EXTENSION table.
+	-->
+	
+	
+	<SPDataForm>
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILDDEPARTURE">
+			<common:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDDEPARTURE
+(
+	@ID uniqueidentifier = null output,
+	@CHANGEAGENTID uniqueidentifier = null,
+	--@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null,
+	@CONTEXTID uniqueidentifier,
+	@NODEPARTUREFORM bit = 0,
+	@RECEIVEDFAREWELLLETTERCODE tinyint = 0,
+	@DATEFORMCOMPLETED datetime = null,
+	@FORMCOMPLETEDBY nvarchar(50) = '',
+	@DATEOFDEPARTURE datetime = null,
+	@DATEPROCESSED datetime = null,
+	@ADMINISTRATIVECODEID uniqueidentifier = null,
+	@ADMINISTRATIVEEXPLANATION nvarchar(50) = '',
+	@ISDEPARTURE bit = 0,
+	@ISPROGRAMCOMPLETION bit = 0,
+	@DEPARTURE_LIVESWITHRELATIVES bit = 0,
+	@DEPARTURE_FAMILYMOVED bit = 0,
+	@DEPARTURE_FAMILYNOWPROVIDES bit = 0,
+	@DEPARTURE_PROJECTTOOFAR bit = 0,
+	@DEPARTURE_REMOVEDBYPARENTS bit = 0,
+	@DEPARTURE_LACKOFINTEREST bit = 0,
+	@DEPARTURE_NEEDEDATHOME bit = 0,
+	@DEPARTURE_EMPLOYED bit = 0,
+	@DEPARTURE_TRANSFERRED bit = 0,
+	@DEPARTURE_FAILED bit = 0,
+	@DEPARTURE_DEATHOFCHILD bit = 0,
+	@DEPARTURE_ILLNESS bit = 0,
+	@DEPARTURE_PREGNANCY bit = 0,
+	@DEPARTURE_MARRIED bit = 0,
+	@DEPARTURE_OTHER nvarchar(250) = '',
+	@DETAILEDEXPLANATION nvarchar(1000) = '',
+	@DEPARTURENEWSITUATION nvarchar(1000) = '',
+	@PROGRAMCOMPLETIONNEWSITUATION nvarchar(1000) = '',
+	@ISCHILDCHRISTIANCODE tinyint = 2,
+	@CHILDCHRISTIANCOMMENTS nvarchar(50) = '',
+	@DIDBECOMECHRISTIANCODE tinyint = 2,
+	@SHOWSCHRISTIANKNOWLEDGE bit = 0,
+	@PARTICIPATESCHRISTIANACTIVITIES bit = 0,
+	@SHOWSCHRISTIANEVIDENCE bit = 0,
+	@OWNSBIBLEMATERIALS bit = 0,
+	@CHILDCHRISTIANEXPERIENCE nvarchar(1000) = '',
+	@HEALTHCONDITIONS nvarchar(1000) = '',
+	@CHILDMATUREDCODE tinyint = 0,
+	@LEVELOFMATURITY nvarchar(1000) = '',
+	@HIGHESTCLASSLEVELCODEID uniqueidentifier = null,
+	@HIGHESTCLASSLEVELOTHER nvarchar(20) = '',
+	@COURSEOFSTUDY nvarchar(50) = '',
+	@SKILLS_BASICLITERACY bit = 0,
+	@SKILLS_BASICNUMERACY bit = 0,
+	@SKILLS_THINKINGPROBLEMSOLVING bit = 0,
+	@SKILLS_SELFHELP bit = 0,
+	@SKILLS_BUSINESS bit = 0,
+	@SKILLS_LIFE bit = 0,
+	@SKILLS_VOCATIONALTECHNICAL bit = 0,
+	@SKILLS_OTHER nvarchar(50) = '',
+	@GENERALCOMMENTS nvarchar(1000) = '',
+	@DEPARTURETYPECODE tinyint = 0
+)
+as
+
+set nocount on;
+
+if @ID is null
+	set @ID = newid()
+
+if @CHANGEAGENTID is null  
+	exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+set @DATEPROCESSED = getdate()
+--set @SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+declare @ISCURRENTDEPARTURECODE tinyint = 1
+declare @CHILDREGISTRATIONDATE datetime
+
+begin try
+  -- get the CHILDREGISTRATIONDATE from the child:
+  select @CHILDREGISTRATIONDATE = REGISTRATIONDATE
+  from dbo.USR_CHILDEXTENSION
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+  
+  -- set all other records to inactive for this child, if there are any:
+  update dbo.USR_CHILDDEPARTURE
+  set ISCURRENTDEPARTURECODE = 0   -- 'No' value = 0, 'Yes' = 1
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+	
+  -- 'clear' all reactivations for this child, if any
+  update dbo.USR_CHILDREACTIVATION
+  set ISCURRENTREACTIVATIONCODE = 0  -- 'No'
+  where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+	
+  -- handle inserting the data
+  insert into dbo.USR_CHILDDEPARTURE
+	(ID, SPONSORSHIPOPPORTUNITYCHILDID, DEPARTURETYPECODE, NODEPARTUREFORM, RECEIVEDFAREWELLLETTERCODE, DATEFORMCOMPLETED, FORMCOMPLETEDBY, DATEOFDEPARTURE, DATEPROCESSED, ADMINISTRATIVECODEID, ADMINISTRATIVEEXPLANATION, ISDEPARTURE, ISPROGRAMCOMPLETION, DEPARTURE_LIVESWITHRELATIVES, DEPARTURE_FAMILYMOVED, DEPARTURE_FAMILYNOWPROVIDES, DEPARTURE_PROJECTTOOFAR, DEPARTURE_REMOVEDBYPARENTS, DEPARTURE_LACKOFINTEREST, DEPARTURE_NEEDEDATHOME, DEPARTURE_EMPLOYED, DEPARTURE_TRANSFERRED, DEPARTURE_FAILED, DEPARTURE_DEATHOFCHILD, DEPARTURE_ILLNESS, DEPARTURE_PREGNANCY, DEPARTURE_MARRIED, DEPARTURE_OTHER, DETAILEDEXPLANATION, DEPARTURENEWSITUATION, PROGRAMCOMPLETIONNEWSITUATION, ISCHILDCHRISTIANCODE, CHILDCHRISTIANCOMMENTS, DIDBECOMECHRISTIANCODE, SHOWSCHRISTIANKNOWLEDGE, PARTICIPATESCHRISTIANACTIVITIES, SHOWSCHRISTIANEVIDENCE, OWNSBIBLEMATERIALS, CHILDCHRISTIANEXPERIENCE, HEALTHCONDITIONS, CHILDMATUREDCODE, LEVELOFMATURITY, HIGHESTCLASSLEVELCODEID, HIGHESTCLASSLEVELOTHER, COURSEOFSTUDY, SKILLS_BASICLITERACY, SKILLS_BASICNUMERACY, SKILLS_THINKINGPROBLEMSOLVING, SKILLS_SELFHELP, SKILLS_BUSINESS, SKILLS_LIFE, SKILLS_VOCATIONALTECHNICAL, SKILLS_OTHER, GENERALCOMMENTS, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED, ISCURRENTDEPARTURECODE, CHILDREGISTRATIONDATE)
+	values
+	(@ID, @CONTEXTID, @DEPARTURETYPECODE, @NODEPARTUREFORM, @RECEIVEDFAREWELLLETTERCODE, @DATEFORMCOMPLETED, @FORMCOMPLETEDBY, @DATEOFDEPARTURE, @DATEPROCESSED, @ADMINISTRATIVECODEID, @ADMINISTRATIVEEXPLANATION, @ISDEPARTURE, @ISPROGRAMCOMPLETION, @DEPARTURE_LIVESWITHRELATIVES, @DEPARTURE_FAMILYMOVED, @DEPARTURE_FAMILYNOWPROVIDES, @DEPARTURE_PROJECTTOOFAR, @DEPARTURE_REMOVEDBYPARENTS, @DEPARTURE_LACKOFINTEREST, @DEPARTURE_NEEDEDATHOME, @DEPARTURE_EMPLOYED, @DEPARTURE_TRANSFERRED, @DEPARTURE_FAILED, @DEPARTURE_DEATHOFCHILD, @DEPARTURE_ILLNESS, @DEPARTURE_PREGNANCY, @DEPARTURE_MARRIED, @DEPARTURE_OTHER, @DETAILEDEXPLANATION, @DEPARTURENEWSITUATION, @PROGRAMCOMPLETIONNEWSITUATION, @ISCHILDCHRISTIANCODE, @CHILDCHRISTIANCOMMENTS, @DIDBECOMECHRISTIANCODE, @SHOWSCHRISTIANKNOWLEDGE, @PARTICIPATESCHRISTIANACTIVITIES, @SHOWSCHRISTIANEVIDENCE, @OWNSBIBLEMATERIALS, @CHILDCHRISTIANEXPERIENCE, @HEALTHCONDITIONS, @CHILDMATUREDCODE, @LEVELOFMATURITY, @HIGHESTCLASSLEVELCODEID, @HIGHESTCLASSLEVELOTHER, @COURSEOFSTUDY, @SKILLS_BASICLITERACY, @SKILLS_BASICNUMERACY, @SKILLS_THINKINGPROBLEMSOLVING, @SKILLS_SELFHELP, @SKILLS_BUSINESS, @SKILLS_LIFE, @SKILLS_VOCATIONALTECHNICAL, @SKILLS_OTHER, @GENERALCOMMENTS, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE, @ISCURRENTDEPARTURECODE, @CHILDREGISTRATIONDATE)
+
+  -- change any pending interactions, if any for this child:
+  declare @nonFieldMemocomment nvarchar(max) = 'Child has been departed from the project'
+  declare @fieldMemocomment nvarchar(max) = 'Departure form has been received'
+  
+  exec dbo.USR_USP_INTERACTION_CHILD_CANCELCOMPLETEALLPENDING @CONTEXTID, @nonFieldMemocomment, @fieldMemocomment 
+  
+  -- set the ineligible reason based on the type of departure:
+  -- call this to set the ineligibile reason based on the departure type the user selected:
+	declare @reasonTypeCode_ChildMarkIneligibile tinyint = 1 --Child - Mark ineligible
+	declare @DepartureTypeCodeText nvarchar(100)             -- = 'Departure - Admin', 'Departure - Other',	'Program Completion'
+	select @DepartureTypeCodeText = (case @DEPARTURETYPECODE when (0) then N'Departure' when (1) then N'Program Completion' when (2) then N'Departure - Admin'  end)
+		
+	-- FogBugz Case 797: need to check for death of child and/or Other reason selected, if this is type 0 (Departure)
+	if @DEPARTURETYPECODE = 0
+	begin
+		-- check for Death of Child & Other
+		if @DEPARTURE_DEATHOFCHILD = 1
+			set @DepartureTypeCodeText = N'Death of Child'
+		-- Per Pamela, 8/28/12, never use the 'Departure - Other' reason
+		--if (@DEPARTURE_OTHER <> '' and @DEPARTURE_OTHER is not null)
+		--	set @DepartureTypeCodeText = N'Departure - Other'
+	end
+	
+	declare @DepartureTypeCodeID uniqueidentifier
+	select @DepartureTypeCodeID = ID		
+	from	dbo.SPONSORSHIPREASON 
+	where	lower (REASON) = lower (@DepartureTypeCodeText) 
+	and	REASONTYPECODE = @reasonTypeCode_ChildMarkIneligibile
+		   
+  exec dbo.USR_USP_CHILD_SETINELIGIBLE	
+	  @childID = @CONTEXTID,			-- Specify a Sponsorship Opportunity ID (same as the child's ID) of the child to set ineligible
+	  @sponsorshipReasonID = @DepartureTypeCodeID,		-- Used to specify the sponsorship reason to add
+	  @changeAgentID = @CHANGEAGENTID
+	
+  -- manage the recurring gift if this child is sponsored
+  declare @statusCodePending tinyint = 0
+  declare @statusCodeActive tinyint = 1 
+  declare @statusCodeInactive tinyint = 2
+  declare @REVENUEID uniqueidentifier
+
+  declare @sponsorshipOpportunityID uniqueidentifier = @CONTEXTID  -- this is being set manually for this sample code (same as SponsorshipOpportunityChild ID)
+
+  -- check for a sponsorhip first:
+  select     @REVENUEID = REVENUEID
+	from     dbo.SPONSORSHIP
+	join     dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+	join     dbo.REVENUESCHEDULE on REVENUESCHEDULE.ID = REVENUESPLIT.REVENUEID
+	where    SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = @sponsorshipOpportunityID 
+	and      SPONSORSHIP.STATUSCODE = @statusCodeActive
+
+  --if we have a sponsorship then proceed
+  if @REVENUEID is not null
+  begin
+	  -- this should tell us if it;s and EFT type of transaction: 
+	  /*
+	   CASE [PAYMENTMETHODCODE] 
+	  a WHEN 2 THEN N'Credit card' 
+	   WHEN 3 THEN N'Direct debit'
+	  */
+	  declare @FINANCIALTRANSACTIONID uniqueidentifier   -- this is used to identify if this is an EFT type of payment
+	
+	  -- check for an EFT type of transaction:
+	  select @FINANCIALTRANSACTIONID = FINANCIALTRANSACTION.ID
+	  from dbo.FINANCIALTRANSACTION
+	  inner join dbo.REVENUE_EXT on FINANCIALTRANSACTION.ID = REVENUE_EXT.ID
+	  inner join dbo.REVENUEPAYMENTMETHOD on FINANCIALTRANSACTION.ID = REVENUEPAYMENTMETHOD.REVENUEID
+	  left join dbo.REVENUESCHEDULE on FINANCIALTRANSACTION.ID = REVENUESCHEDULE.ID
+	  left join dbo.CREDITCARD on CREDITCARD.ID = REVENUESCHEDULE.CREDITCARDID
+	  where FINANCIALTRANSACTION.ID = @REVENUEID
+	  and FINANCIALTRANSACTION.DELETEDON is null
+	  and PAYMENTMETHODCODE IN (2, 3)
+	  and TYPECODE = 2   -- TYPECODE=2 which is 'Recurring Gift'
+	
+	-- Memphis 12/17/12: FogBugz Case 953: don't set to Held, instead create an attribute record for this recurring gift:
+	-- insert into the dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA table
+	-- ID of the attribute is the revenueID of the recurring gift, set booleancode to 0, addedbyid, etc., startdate of today...
+	-- use this UFN to get the revenueID to pass into the attribute insert:  USR_UFN_GETFINANCIALTRANSACTIONID_FORSPONSORSHIP (sponsorshipId)
+
+	-- only do this if an EFT recurring gift:
+	if @FINANCIALTRANSACTIONID is not null
+		begin
+			--Memphis 1/21/13: Fogbugz Case 960: check for the attribute first & only add it if not already there!
+			declare @attributeCount int = 0
+			
+			select @attributeCount = count(*)
+			from dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA
+			where REVENUEID = @revenueId
+			and BOOLEANCODE = 1
+			and ((STARTDATE is null) or (STARTDATE < GETDATE()))
+			and ((ENDDATE is null) or (ENDDATE > GETDATE()))
+
+			if @attributeCount = 0 
+				begin
+					-- we should already have the correct revenue ID from above
+					--declare @revenueId uniqueidentifier;		
+					--select @revenueId = dbo.USR_UFN_GETFINANCIALTRANSACTIONID_FORSPONSORSHIP(@sponsorshipId)
+					INSERT INTO dbo.ATTRIBUTE58705B2A658B4396A8F1BBC9003B9DCA
+						([ID]
+						,[REVENUEID]
+						,[BOOLEANCODE]
+						,[COMMENT]
+						,[STARTDATE]
+						,[ENDDATE]
+						,[ADDEDBYID]
+						,[CHANGEDBYID]
+						,[DATEADDED]
+						,[DATECHANGED])
+					VALUES
+						(NEWID()
+						,@revenueId
+						,1
+						,'Departure hold'
+						,GETDATE()
+						,NULL
+						,@CHANGEAGENTID
+						,@CHANGEAGENTID
+						,GETDATE()
+						,GETDATE()
+						)
+				end
+				
+			--2nd part of fogbugz case 960: set the PreDepartureGiftStatus value in the USR_FINANCIALTRANSACTION_EXTENSION table
+			-- if attribute does not exist, PreDepartureGiftStatus = Active
+			-- if attribute does exist, PreDepartureGiftStatus = Held
+			update dbo.USR_FINANCIALTRANSACTION_EXTENSION
+			set PREDEPARTUREGIFTSTATUS = (case when @attributeCount = 0 then 'Active' else 'Held' end)
+			where ID = @revenueId
+		end
+		
+	/*
+	-- set the recurring gift to 'Held' if this is an EFT payment:
+	if @FINANCIALTRANSACTIONID is not null
+	begin
+			update dbo.REVENUESCHEDULE 
+			set STATUSCODE = 1 
+			where ID IN (
+			select  REVENUESCHEDULE.ID
+			  from  dbo.SPONSORSHIP
+			  join  dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+			  join  dbo.REVENUESCHEDULE on REVENUESCHEDULE.ID = REVENUESPLIT.REVENUEID
+			  where SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = @sponsorshipOpportunityID 
+			  and   SPONSORSHIP.STATUSCODE = 1 --STATUSCODE is defined as (0)'Active’ (1)'Held’ (2)'Terminated' (3)'Completed' (4)'Canceled'  
+			)
+	  end
+	  */
+	  
+	  -- FogBugz Case 892 cancel any pending interactions for this child's sponsorship
+	  -- get the sponsorshipId for this child's sponsorship:
+	  declare @sponsorshipId uniqueidentifier = null;
+	  declare @cancelComment nvarchar(max) = 'Child has been departed from the project';
+	  declare @removeChildComment nvarchar(max) = 'was removed due to child departure';
+	  
+      select @sponsorshipId = ID
+		from dbo.SPONSORSHIP
+		where SPONSORSHIPOPPORTUNITYID = @CONTEXTID
+
+	  exec dbo.USR_USP_INTERACTION_SPONSOR_CANCELPENDINGCHILDINTERACTIONS 
+		@sponsorshipID = @sponsorshipId,                    
+		@sponsorshipOpportunityChildID = @CONTEXTID,        
+		@cancelComment  = @cancelComment,                      
+		@removeChildComment = @removeChildComment,																
+		@changeAgentID = @CHANGEAGENTID                       
+	
+  end
+  
+  return 0;
+  
+end try
+
+begin catch
+	exec dbo.USP_RAISE_ERROR
+	return 1
+end catch
+
+return 0				
+
+]]>
+</common:CreateProcedureSQL>
+			<common:ExpectedDBExceptions>
+				<common:Constraints>
+					<!--<common:Constraint Name="FK_USR_CHILDDEPARTURE_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+					<common:Constraint Name="UC_USR_CHILDDEPARTURE_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="Unique" />-->
+					<common:Constraint Name="FK_USR_CHILDDEPARTURE_ADMINISTRATIVECODEID" Field="ADMINISTRATIVECODEID" Type="ForeignKey" />
+					<common:Constraint Name="FK_USR_CHILDDEPARTURE_HIGHESTCLASSLEVELCODEID" Field="HIGHESTCLASSLEVELCODEID" Type="ForeignKey" />
+				</common:Constraints>
+			</common:ExpectedDBExceptions>
+		</SaveImplementation>
+	</SPDataForm>
+
+
+
+  <!--  This must be re-added if regenerated -->
+  <Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="CONTEXTID" />
+
+  <common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<!--<common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true" />-->
+			<common:FormField FieldID="NODEPARTUREFORM" DataType="Boolean" Caption="No Departure Form" />
+		  <common:FormField FieldID="DEPARTURETYPECODE" DataType="Integer" Caption="Type of Departure" DefaultValueText="0" Required="true">
+			<common:ValueList>
+			  <common:Items>
+				<common:Item>
+				  <common:Value>0</common:Value>
+				  <common:Label>Departure</common:Label>
+				</common:Item>
+				<common:Item>
+				  <common:Value>1</common:Value>
+				  <common:Label>Completion</common:Label>
+				</common:Item>
+				<common:Item>
+				  <common:Value>2</common:Value>
+				  <common:Label>Administrative</common:Label>
+				</common:Item>
+			  </common:Items>
+			</common:ValueList>
+		  </common:FormField>
+			<common:FormField FieldID="RECEIVEDFAREWELLLETTERCODE" DataType="TinyInt" Caption="Received farewell letter" DefaultValueText="0">
+				<common:ValueList>
+					<common:Items>
+						<common:Item>
+							<common:Value>0</common:Value>
+							<common:Label>No</common:Label>
+						</common:Item>
+						<common:Item>
+							<common:Value>1</common:Value>
+							<common:Label>Yes</common:Label>
+						</common:Item>
+					</common:Items>
+				</common:ValueList>
+			</common:FormField>
+			<common:FormField FieldID="DATEFORMCOMPLETED" DataType="Date" Caption="Form Completed Date" />
+			<common:FormField FieldID="FORMCOMPLETEDBY" MaxLength="50" Caption="Form Completed By" />
+			<common:FormField FieldID="DATEOFDEPARTURE" DataType="Date" Caption="Date of the departure or program completion" />
+			<common:FormField FieldID="DATEPROCESSED" DataType="Date" Caption="Date processed" Hidden="true" />
+			<common:FormField FieldID="ADMINISTRATIVECODEID" DataType="Guid" Caption="Administrative">
+				<common:CodeTable CodeTableName="USR_DEPARTURE_ADMINISTRATIVE_CODE" />
+			</common:FormField>
+			<common:FormField FieldID="ADMINISTRATIVEEXPLANATION" MaxLength="50" Caption="Explanation" />
+			<common:FormField FieldID="ISDEPARTURE" DataType="Boolean" Caption="Is Departure" />
+			<common:FormField FieldID="ISPROGRAMCOMPLETION" DataType="Boolean" Caption="Completed Program" />
+			<common:FormField FieldID="DEPARTURE_LIVESWITHRELATIVES" DataType="Boolean" Caption="Gone to live with relatives" />
+			<common:FormField FieldID="DEPARTURE_FAMILYMOVED" DataType="Boolean" Caption="Moved from project area" />
+			<common:FormField FieldID="DEPARTURE_FAMILYNOWPROVIDES" DataType="Boolean" Caption="Family provides for child" />
+			<common:FormField FieldID="DEPARTURE_PROJECTTOOFAR" DataType="Boolean" Caption="Too far for the child to attend" />
+			<common:FormField FieldID="DEPARTURE_REMOVEDBYPARENTS" DataType="Boolean" Caption="Removed by parents" />
+			<common:FormField FieldID="DEPARTURE_LACKOFINTEREST" DataType="Boolean" Caption="Lack of interest or commitment" />
+			<common:FormField FieldID="DEPARTURE_NEEDEDATHOME" DataType="Boolean" Caption="Need at home to help family" />
+			<common:FormField FieldID="DEPARTURE_EMPLOYED" DataType="Boolean" Caption="Employed to help family" />
+			<common:FormField FieldID="DEPARTURE_TRANSFERRED" DataType="Boolean" Caption="Transferred to a different school" />
+			<common:FormField FieldID="DEPARTURE_FAILED" DataType="Boolean" Caption="Failed school courses" />
+			<common:FormField FieldID="DEPARTURE_DEATHOFCHILD" DataType="Boolean" Caption="Death of Child" />
+			<common:FormField FieldID="DEPARTURE_ILLNESS" DataType="Boolean" Caption="Illness" />
+			<common:FormField FieldID="DEPARTURE_PREGNANCY" DataType="Boolean" Caption="Pregnancy" />
+			<common:FormField FieldID="DEPARTURE_MARRIED" DataType="Boolean" Caption="Married" />
+			<common:FormField FieldID="DEPARTURE_OTHER" MaxLength="250" Caption="Other Departure Reason" DataType="String" Multiline="true" />
+			<common:FormField FieldID="DETAILEDEXPLANATION" MaxLength="1000" Caption="Provide a detailed explanation of all departure reasons selected" Multiline="true" />
+			<common:FormField FieldID="DEPARTURENEWSITUATION" MaxLength="1000" Caption="Provide a detailed explanation of the child's new situation, if known" Multiline="true" />
+			<common:FormField FieldID="PROGRAMCOMPLETIONNEWSITUATION" MaxLength="1000" Caption="Provide a detailed explanation of the child's new situation which will occur following the child's satisfactory completion of the program offered" Multiline="true" />
+			<common:FormField FieldID="ISCHILDCHRISTIANCODE" DataType="TinyInt" Caption="Child is a Christian" DefaultValueText="2">
+				<common:ValueList>
+					<common:Items>
+						<common:Item>
+							<common:Value>0</common:Value>
+							<common:Label>No</common:Label>
+						</common:Item>
+						<common:Item>
+							<common:Value>1</common:Value>
+							<common:Label>Yes</common:Label>
+						</common:Item>
+						<common:Item>
+							<common:Value>2</common:Value>
+							<common:Label>Unknown</common:Label>
+						</common:Item>
+					</common:Items>
+				</common:ValueList>
+			</common:FormField>
+			<common:FormField FieldID="CHILDCHRISTIANCOMMENTS" MaxLength="50" Caption="Comments" />
+			<common:FormField FieldID="DIDBECOMECHRISTIANCODE" DataType="TinyInt" Caption="Child became a Christian while in the sponsorship program" DefaultValueText="2">
+				<common:ValueList>
+					<common:Items>
+						<common:Item>
+							<common:Value>0</common:Value>
+							<common:Label>No</common:Label>
+						</common:Item>
+						<common:Item>
+							<common:Value>1</common:Value>
+							<common:Label>Yes</common:Label>
+						</common:Item>
+						<common:Item>
+							<common:Value>2</common:Value>
+							<common:Label>Unknown</common:Label>
+						</common:Item>
+					</common:Items>
+				</common:ValueList>
+			</common:FormField>
+			<common:FormField FieldID="SHOWSCHRISTIANKNOWLEDGE" DataType="Boolean" Caption="Child shows some knowledge of the Christian faith" />
+			<common:FormField FieldID="PARTICIPATESCHRISTIANACTIVITIES" DataType="Boolean" Caption="Child sometimes participates in Christian activities, but does not lead those activities" />
+			<common:FormField FieldID="SHOWSCHRISTIANEVIDENCE" DataType="Boolean" Caption="Child shows some evidence of Christian faith and behavior" />
+			<common:FormField FieldID="OWNSBIBLEMATERIALS" DataType="Boolean" Caption="Child has Scripture materials" />
+			<common:FormField FieldID="CHILDCHRISTIANEXPERIENCE" MaxLength="1000" Caption="Provide a detailed explanation of the child's Christian experience" Multiline="true" />
+			<common:FormField FieldID="HEALTHCONDITIONS" MaxLength="1000" Caption="Note any illnesses the child had during their participaton in the program as well as what the child's current health is" AllowZoom="true" Multiline="true" />
+			<common:FormField FieldID="CHILDMATUREDCODE" DataType="TinyInt" Caption="Child has matured appropriately for their age" DefaultValueText="0">
+				<common:ValueList>
+					<common:Items>
+						<common:Item>
+							<common:Value>0</common:Value>
+							<common:Label>No</common:Label>
+						</common:Item>
+						<common:Item>
+							<common:Value>1</common:Value>
+							<common:Label>Yes</common:Label>
+						</common:Item>
+					</common:Items>
+				</common:ValueList>
+			</common:FormField>
+			<common:FormField FieldID="LEVELOFMATURITY" MaxLength="1000" Caption="Provide a brief explanation of the chlid's level of maturity and how they relate to others around them" AllowZoom="true" Multiline="true" />
+			<common:FormField FieldID="HIGHESTCLASSLEVELCODEID" DataType="Guid" Caption="Highest Class Level Completed">
+				<common:CodeTable CodeTableName="USR_CHILDCLASSLEVEL_CODE" />
+			</common:FormField>
+			<common:FormField FieldID="HIGHESTCLASSLEVELOTHER" MaxLength="20" Caption="Other" />
+			<common:FormField FieldID="COURSEOFSTUDY" MaxLength="50" Caption="Course of Study" />
+			<common:FormField FieldID="SKILLS_BASICLITERACY" DataType="Boolean" Caption="Basic Literacy" />
+			<common:FormField FieldID="SKILLS_BASICNUMERACY" DataType="Boolean" Caption="Basic Numeracy" />
+			<common:FormField FieldID="SKILLS_THINKINGPROBLEMSOLVING" DataType="Boolean" Caption="Thinking and problem-solving skills" />
+			<common:FormField FieldID="SKILLS_SELFHELP" DataType="Boolean" Caption="Self-help Skills" />
+			<common:FormField FieldID="SKILLS_BUSINESS" DataType="Boolean" Caption="Entrepreneurial (business) skills" />
+			<common:FormField FieldID="SKILLS_LIFE" DataType="Boolean" Caption="Life Skills" />
+			<common:FormField FieldID="SKILLS_VOCATIONALTECHNICAL" DataType="Boolean" Caption="Vocational and Technical Skills" />
+			<common:FormField FieldID="SKILLS_OTHER" MaxLength="50" Caption="Other Skills" />
+			<common:FormField FieldID="GENERALCOMMENTS" MaxLength="1000" Caption="Summarize the project's overall impact on the child's life and provide any additional comments" AllowZoom="true" Multiline="true" />
+		</common:FormFields>
+		<common:FormUIComponent />
+
+		<common:WebUIComponent>
+			<common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildDepartureAddFormUIModel" />
+			<common:WebUI>
+				<common:ExternalResource Url="browser/htmlforms/custom/ChildDepartureAddForm.html" />
+			</common:WebUI>
+		</common:WebUIComponent>
+
+
+	  <common:FieldGroups>
+		<common:FieldGroup Caption="General Information" ID="GENERAL_INFO_GROUP">
+		  <common:Fields>
+			<common:Field>DEPARTURETYPECODE</common:Field>
+			<common:Field>NODEPARTUREFORM</common:Field>
+			<common:Field>RECEIVEDFAREWELLLETTERCODE</common:Field>
+			<common:Field>DATEFORMCOMPLETED</common:Field>
+			<common:Field>FORMCOMPLETEDBY</common:Field>
+			<common:Field>DATEOFDEPARTURE</common:Field>
+			<common:Field>ADMINISTRATIVECODEID</common:Field>
+			<common:Field>ADMINISTRATIVEEXPLANATION</common:Field>
+			<common:Field>ISDEPARTURE</common:Field>
+		  </common:Fields>
+		</common:FieldGroup>
+		<!--<common:FieldGroup Caption="Spritual Development" ID="SPIRITUAL_DEVELOPMENT_GROUP">
+		  <common:Fields>
+			<common:Field>SPIRITUALDEVELOPMENT</common:Field>
+		  </common:Fields>
+		</common:FieldGroup>
+		<common:FieldGroup Caption="Parental Information" ID="PARENTAL_INFORMATION_GROUP">
+		  <common:Fields>
+			<common:Field>CHILDLIVESWITHCODEID</common:Field>
+			<common:Field>FATHERWORKSASCODEID</common:Field>
+			<common:Field>FATHERWORKSASOTHER</common:Field>
+			<common:Field>MOTHERWORKSASCODEID</common:Field>
+			<common:Field>MOTHERWORKSASOTHER</common:Field>
+		  </common:Fields>
+		</common:FieldGroup>
+		<common:FieldGroup Caption="Caregiver Information" ID="CAREGIVER_INFORMATION_GROUP">
+		  <common:Fields>
+			<common:Field>CAREGIVERRELATIONCODEID</common:Field>
+			<common:Field>CAREGIVERRELATIONOTHER</common:Field>
+			<common:Field>CAREGIVERWORKSASCODEID</common:Field>
+			<common:Field>CAREGIVERWORKSASOTHER</common:Field>
+			<common:Field>CAREGIVERREASONCODEID</common:Field>
+			<common:Field>REASONFORCAREGIVEROTHER</common:Field>
+		  </common:Fields>
+		</common:FieldGroup>
+		<common:FieldGroup Caption="Sibling Information" ID="SIBLING_INFORMATION_GROUP">
+		  <common:Fields>
+			<common:Field>NUMBEROFSISTERS</common:Field>
+			<common:Field>NUMBEROFBROTHERS</common:Field>
+		  </common:Fields>
+		</common:FieldGroup>
+		<common:FieldGroup Caption="Attending School" ID="ATTENDING_SCHOOL_GROUP">
+		  <common:Fields>
+			<common:Field>ATTENDINGSCHOOL</common:Field>
+			<common:Field>REASONNOTATTENDINGSCHOOL</common:Field>
+			<common:Field>CLASSLEVEL</common:Field>
+			<common:Field>FAVORITESUBJECT</common:Field>
+			<common:Field>VOCATIONALSKILLS</common:Field>
+			<common:Field>CURRENTPROGRAMCOMPLETIONDATE</common:Field>
+		  </common:Fields>
+		</common:FieldGroup>-->
+	  </common:FieldGroups>
+	  
+	  <common:Tabs>
+		<common:Tab Caption="Reason for Departure" ID="DEPARTURE_REASONS_TAB" />
+		<common:Tab Caption="Spiritual and Physical Impact" ID="SPIRITUAL_PHYSICAL_TAB" />
+		<common:Tab Caption="Social and Cognitive Impact" ID="SOCIAL_COGNITIVE_TAB" />
+		<common:Tab Caption="General Comments" ID="COMMENTS_TAB" />
+	  </common:Tabs>
+
+
+	</common:FormMetaData>
+</AddDataFormTemplateSpec>

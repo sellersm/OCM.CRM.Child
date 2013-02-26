@@ -1,0 +1,155 @@
+﻿<AddDataFormTemplateSpec
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes"
+	ID="60965710-b015-4164-8352-f4e03b66e8d9"
+	Name="Child Bio Add Data Form"
+	Description="Child Bio Add with Eligibility Check"
+	Author="Bill Elfstrom"
+	DataFormInstanceID="d22d309b-33e8-440e-9acc-c60a1b52931c"
+	RecordType="Sponsorship Opportunity Note"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Documentation\Note"
+	HelpKey="GLBAddNoteScreen.html" FormHeader="Add a child bio" FormHeaderResourceKey="$$add_a_note" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	13-Oct-2012		  CMayeda			    Changed name to be standard
+  17-Oct-2012     BElfstrom       Prohibit adding bio record if Child Bio type already exists.  Fogbugz 917.
+	-->
+
+	<common:DependencyList>
+		<common:Dependency CatalogAssembly="Blackbaud.AppFx.Constituent.Catalog.dll" CatalogItem="Blackbaud.AppFx.Constituent.Catalog.Constituent.Search.xml" />
+	</common:DependencyList>
+	<common:InstalledProductList>
+		<common:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+	</common:InstalledProductList>
+	<ResourceFile AssemblyName="Blackbaud.AppFx.Sponsorship.Catalog.dll" ClassName="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityNote.Add" />
+	<SPDataForm>
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_CHILDBIO_ADD">
+			<common:CreateProcedureSQL>
+
+        create procedure dbo.USR_USP_DATAFORMTEMPLATE_CHILDBIO_ADD
+        (
+        @ID uniqueidentifier = null output,
+        @CHANGEAGENTID uniqueidentifier = null,
+        @DATEENTERED datetime,
+        @TITLE nvarchar(50) = '',
+        @AUTHORID uniqueidentifier = null,
+        @TEXTNOTE nvarchar(max) = '',
+        @NOTETYPECODEID uniqueidentifier,
+        @SPONSORSHIPOPPORTUNITYID uniqueidentifier,
+        @HTMLNOTE nvarchar(max) = ''
+        )
+        as
+        set nocount on;
+        declare @CURRENTDATE datetime;
+
+        begin try
+
+
+        /* If the user has changed the note type to Child Bio, make sure no other Child Bio records exist */
+
+        declare @ChildBioCodeID uniqueidentifier;
+        select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
+        
+        if @NOTETYPECODEID = @ChildBioCodeID
+            if EXISTS(select ID FROM dbo.SPONSORSHIPOPPORTUNITYNOTE
+            where SPONSORSHIPOPPORTUNITYID =  @SPONSORSHIPOPPORTUNITYID
+            and SPROPPNOTETYPECODEID = @ChildBioCodeID)
+                RAISERROR 1000000 'Only one Child Bio note type is allowed.'
+
+        if @ID is null
+        set @ID = newid();
+
+        if @CHANGEAGENTID is null
+        exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+
+        set @CURRENTDATE = getdate();
+
+
+        insert into dbo.[SPONSORSHIPOPPORTUNITYNOTE] (
+        [ID],
+        [DATEENTERED],
+        [TITLE],
+        [AUTHORID],
+        [TEXTNOTE],
+        [SPROPPNOTETYPECODEID],
+        [SPONSORSHIPOPPORTUNITYID],
+        [HTMLNOTE],
+        [ADDEDBYID],
+        [CHANGEDBYID],
+        [DATEADDED],
+        [DATECHANGED]
+        ) values (
+        @ID,
+        @DATEENTERED,
+        @TITLE,
+        @AUTHORID,
+        @TEXTNOTE,
+        @NOTETYPECODEID,
+        @SPONSORSHIPOPPORTUNITYID,
+        @HTMLNOTE,
+        @CHANGEAGENTID,
+        @CHANGEAGENTID,
+        @CURRENTDATE,
+        @CURRENTDATE
+        );
+
+
+        /* get the Child ID */
+        declare @ChildID as uniqueidentifier
+
+        SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
+        if @ChildID is null
+        RAISERROR 1000000 'Couldn''t find the "Child ID'
+
+        /* Eligibility check */
+        exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK
+        @ChildID, @CHANGEAGENTID
+
+        end try
+        begin catch
+        exec dbo.USP_RAISE_ERROR;
+        return 1;
+        end catch
+
+        return 0;
+
+
+      </common:CreateProcedureSQL>
+			<common:ExpectedDBExceptions>
+				<common:Constraints>
+					<common:Constraint Name="FK_SPONSORSHIPOPPORTUNITYNOTE_SPROPPNOTETYPECODEID" Field="NOTETYPECODEID" Type="ForeignKey" />
+					<common:Constraint Name="SPONSORSHIPOPPORTUNITYNOTE.DATEENTERED" Field="DATEENTERED" Type="Required" />
+					<common:Constraint Name="SPONSORSHIPOPPORTUNITYNOTE.SPROPPNOTETYPECODEID" Field="NOTETYPECODEID" Type="Required" />
+					<common:Constraint Name="FK_SPONSORSHIPOPPORTUNITYNOTE_AUTHORID" Field="AUTHORID" Type="ForeignKey" />
+				</common:Constraints>
+			</common:ExpectedDBExceptions>
+		</SaveImplementation>
+	</SPDataForm>
+	<Context ContextRecordType="Sponsorship Opportunity" RecordIDParameter="SPONSORSHIPOPPORTUNITYID" />
+	<common:FormMetaData>
+		<common:FormFields>
+			<common:FormField FieldID="TITLE" MaxLength="50" Caption="Title" Description="The title of this note" DefaultValueText="" CaptionResourceKey="$$title" />
+			<common:FormField FieldID="DATEENTERED" DataType="Date" Required="true" Caption="Date" Description="The date this note was entered" CaptionResourceKey="$$date" />
+			<common:FormField FieldID="AUTHORID" DataType="Guid" Caption="Author" Description="The author of this note" CaptionResourceKey="$$author">
+				<common:SearchList SearchListID="23c5c603-d7d8-4106-aecc-65392b563887" EnableQuickFind="true" />
+			</common:FormField>
+			<common:FormField FieldID="NOTETYPECODEID" DataType="Guid" Required="true" Caption="Type" Description="The user-defined type of this note" CaptionResourceKey="$$type">
+				<common:CodeTable CodeTableName="SPROPPNOTETYPECODE" />
+			</common:FormField>
+			<common:FormField FieldID="TEXTNOTE" Caption="Notes" Description="The text that comprises this note" DefaultValueText="" CaptionResourceKey="$$notes" />
+			<common:FormField FieldID="HTMLNOTE" Caption="Notes" Description="The HTML that comprises this note" DefaultValueText="" CaptionResourceKey="$$notes">
+				<common:Html PlainTextFieldID="TEXTNOTE" />
+			</common:FormField>
+		</common:FormFields>
+		<common:WebUIComponent>
+			<common:UIModel AssemblyName="Blackbaud.AppFx.Documentation.UIModel.dll" ClassName="Blackbaud.AppFx.Documentation.UIModel.GenericNoteAddEditFormUIModel" />
+			<common:WebUI>
+				<common:ExternalResource Url="browser\htmlforms\documentation\GenericNoteAddEditForm.html" />
+			</common:WebUI>
+		</common:WebUIComponent>
+	</common:FormMetaData>
+</AddDataFormTemplateSpec>

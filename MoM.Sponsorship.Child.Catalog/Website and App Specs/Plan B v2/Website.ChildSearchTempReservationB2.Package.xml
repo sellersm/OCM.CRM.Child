@@ -1,0 +1,57 @@
+﻿<PackageSpec 
+	xmlns="bb_appfx_package"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a147e267-f4fb-4e5b-a68c-4b57c6a680ab" 
+    Name="Website Package - Plan B - 2"
+    Description="Used to deploy the temporary website query based on 'Website' reservation - multiple reservation keys"
+    Author="Cary Mayeda"
+	>
+
+	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
+	a table that hasn't been loaded, etc.  In general, the following order is recommended:
+	
+		(functions and procedures first)
+		SQLFunctionSpec
+		SQLStoredProcedureSpec
+		TranslationFunctionSpec
+
+		(tables next)
+		CodeTableSpec
+		TableSpec
+
+		(features next)
+		SimpleDataListSpec		
+		SearchListSpec
+		RecordOperationSpec
+		DataListSpec
+		
+		(forms next)
+		AddDataFormTemplateSpec
+		EditDataFormTemplateSpec
+		ViewDataFormTemplateSpec		
+
+		(more feature types)
+		BatchTypeSpec
+		BusinessProcessSpec
+		FlashDashSpec
+		IDMapperSpec
+		KpiSpec
+		MergeConfiguration
+		MergeTaskSpec
+		QueryViewSpec
+		ReportSpec
+		SmartFieldSpec
+		SmartQuerySpec
+
+		(functional areas, pages, and tasks last)
+		PageDefinitionSpec
+		FunctionalAreaSpec
+		TaskSpec	
+	-->
+	
+	<common:DependencyList>
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.TempReservationB2.Query.xml"/>
+		
+	</common:DependencyList>
+
+</PackageSpec>
