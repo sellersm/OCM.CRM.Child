@@ -24,6 +24,7 @@
 									attribute to the recurring gift "Held Recurring Gift" and value of Yes with today's date.
 	21-Jan-2013		Memphis			FogBugz Case 960: Check for the attribute before adding it, set the PreDepartureGiftStatus value in the 
 									USR_FINANCIALTRANSACTION_EXTENSION table.
+	20-Feb-2013		Memphis			Fogbugz Case 992.
 	-->
 	
 	
@@ -248,11 +249,26 @@ begin try
 						,GETDATE()
 						,GETDATE()
 						)
+						
 				end
 				
 			--2nd part of fogbugz case 960: set the PreDepartureGiftStatus value in the USR_FINANCIALTRANSACTION_EXTENSION table
 			-- if attribute does not exist, PreDepartureGiftStatus = Active
 			-- if attribute does exist, PreDepartureGiftStatus = Held
+			-- 2/21/13: it appears that there may not be a row in this table, so check for one first, add if not there and then update
+			
+			if not exists(select 1 from dbo.USR_FINANCIALTRANSACTION_EXTENSION where ID = @revenueId)
+				begin
+					exec dbo.USR_USP_FINANCIALTRANSACTION_EXTENSION_INSERTROW 
+						@FINANCIALTRANSACTIONID = @revenueId, 
+						@DIRECTDEBITSCHEDULECODEID = null,
+						@CREDITCARDSCHEDULECODEID = null,
+						@ADDEDBYID = @CHANGEAGENTID,
+						@CHANGEDBYID = @CHANGEAGENTID,
+						@DATEADDED  = GETDATE,
+						@DATECHANGED = GETDATE
+				end
+			
 			update dbo.USR_FINANCIALTRANSACTION_EXTENSION
 			set PREDEPARTUREGIFTSTATUS = (case when @attributeCount = 0 then 'Active' else 'Held' end)
 			where ID = @revenueId
@@ -284,6 +300,7 @@ begin try
       select @sponsorshipId = ID
 		from dbo.SPONSORSHIP
 		where SPONSORSHIPOPPORTUNITYID = @CONTEXTID
+		and STATUSCODE = 1 --(Active)   Fogbugz Case 992: only get the active sponsorship record.
 
 	  exec dbo.USR_USP_INTERACTION_SPONSOR_CANCELPENDINGCHILDINTERACTIONS 
 		@sponsorshipID = @sponsorshipId,                    

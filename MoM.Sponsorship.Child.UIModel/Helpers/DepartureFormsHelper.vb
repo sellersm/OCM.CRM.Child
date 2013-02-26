@@ -167,9 +167,9 @@ Public NotInheritable Class DepartureFormsHelper
             _model.Fields(DepartureFieldNames.FORMCOMPLETEDBY.ToString()).Required = True
         End If
 
-        If _model.Fields.Contains(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()) Then
-            _model.Fields(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()).Required = True
-        End If
+		If _model.Fields.Contains(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()) Then
+			_model.Fields(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()).Required = True
+		End If
 
         If _model.Fields.Contains(DepartureFieldNames.HEALTHCONDITIONS.ToString()) Then
             _model.Fields(DepartureFieldNames.HEALTHCONDITIONS.ToString()).Required = True
@@ -630,8 +630,9 @@ Public NotInheritable Class DepartureFormsHelper
     End Sub
 
     Private Sub DepartureFormUIModel_Validating(ByVal sender As Object, ByVal e As ValidatingEventArgs)
-        'at least one spiritual impact checkbox is required
-        Dim isSpiritualImpactValid As Boolean = False
+		'at least one spiritual impact checkbox is required
+		' Fogbugz Case 1000: No spiritual checkboxes are required anymore:
+		'Dim isSpiritualImpactValid As Boolean = False
         'Dim isRoofValid As Boolean = False
         'Dim isWaterValid As Boolean = False
         'Dim isLightValid As Boolean = False
@@ -647,25 +648,27 @@ Public NotInheritable Class DepartureFormsHelper
 			' note that a checkbox will always have a value, even if it's not checked:
 			' value will be False if not checked.
 			' 10/26/12 Memphis FogBugz Case 947. If program completion, then spiritual checkboxes aren't required.
-			If Not _isProgramCompletion Then
-				If _model.Fields.Contains(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()) Then
-					If CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()).ValueObject) = False _
-					 AndAlso CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANEVIDENCE.ToString()).ValueObject) = False _
-					 AndAlso CBool(_model.Fields(DepartureFieldNames.PARTICIPATESCHRISTIANACTIVITIES.ToString()).ValueObject) = False _
-					 AndAlso CBool(_model.Fields(DepartureFieldNames.OWNSBIBLEMATERIALS.ToString()).ValueObject) = False Then
-						isSpiritualImpactValid = False
-					Else
-						isSpiritualImpactValid = True
-					End If
-				Else
-					isSpiritualImpactValid = True
-				End If
 
-				If Not isSpiritualImpactValid Then
-					requiredMessage.AppendLine("At least one Spiritual Impact checkbox value must be selected!")
-					isValid = False
-				End If
-			End If
+			'2/22/13 Memphis Fogbugz Case 1000: spiritual checkboxes are NOT required, no matter what.
+			'If Not _isProgramCompletion Then
+			'	If _model.Fields.Contains(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()) Then
+			'		If CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANKNOWLEDGE.ToString()).ValueObject) = False _
+			'		 AndAlso CBool(_model.Fields(DepartureFieldNames.SHOWSCHRISTIANEVIDENCE.ToString()).ValueObject) = False _
+			'		 AndAlso CBool(_model.Fields(DepartureFieldNames.PARTICIPATESCHRISTIANACTIVITIES.ToString()).ValueObject) = False _
+			'		 AndAlso CBool(_model.Fields(DepartureFieldNames.OWNSBIBLEMATERIALS.ToString()).ValueObject) = False Then
+			'			isSpiritualImpactValid = False
+			'		Else
+			'			isSpiritualImpactValid = True
+			'		End If
+			'	Else
+			'		isSpiritualImpactValid = True
+			'	End If
+
+			'	If Not isSpiritualImpactValid Then
+			'		requiredMessage.AppendLine("At least one Spiritual Impact checkbox value must be selected!")
+			'		isValid = False
+			'	End If
+			'End If
 
 			'check that if there's a program completion reason, then the checkbox must be checked:
 			If _model.Fields.Contains(DepartureFieldNames.PROGRAMCOMPLETIONNEWSITUATION.ToString()) Then
@@ -1081,9 +1084,9 @@ Public NotInheritable Class DepartureFormsHelper
         '    _model.Fields(DepartureFieldNames.DEPARTURETYPECODE.ToString()).Required = isOn
         'End If
 
-        If _model.Fields.Contains(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()) Then
-            _model.Fields(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()).Required = isOn
-        End If
+		If _model.Fields.Contains(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()) Then
+			_model.Fields(DepartureFieldNames.CHILDCHRISTIANEXPERIENCE.ToString()).Required = isOn
+		End If
 
         If _model.Fields.Contains(DepartureFieldNames.HEALTHCONDITIONS.ToString()) Then
             _model.Fields(DepartureFieldNames.HEALTHCONDITIONS.ToString()).Required = isOn
