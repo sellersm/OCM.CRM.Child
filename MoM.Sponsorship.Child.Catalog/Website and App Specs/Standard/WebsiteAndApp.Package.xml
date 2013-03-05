@@ -50,9 +50,11 @@
 	-->
 	
 	<common:DependencyList>
-        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.Query.xml" />
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.Query.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.Sponsor.ChildList.DataList.xml"/>
-		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.ChildSearch.Datalist.xml" />						  
-	</common:DependencyList>
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.App.ChildSearch.Datalist.xml" />
+    <!-- Package Versions -->
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.WebsiteAndApp.PackageVersion.DataList.xml" />
+  </common:DependencyList>
 
 </PackageSpec>

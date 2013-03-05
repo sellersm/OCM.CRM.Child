@@ -21,12 +21,12 @@
 	History:
 	Date            Modified By     Comments
 	17-Oct-2012		Memphis			Initial version: FogBugz Case 858
-	
+  01-Mar-2013   JFoster     Added Package Versions spec	
 	-->
 	
 	<common:DependencyList>
 		<!-- Batch Table -->
-        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnly.Batch.Table.xml" />
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnly.Batch.Table.xml" />
 
 		<!-- Batch Add -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnlyBatch.AddRow.Add.xml" />
@@ -42,7 +42,9 @@
 
 		<!-- Batch Type -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnly.BatchType.xml"/>
-	
-	</common:DependencyList>
+
+    <!-- Package Versions -->
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnlyBatch.PackageVersion.DataList.xml" />
+  </common:DependencyList>
 
 </PackageSpec>
