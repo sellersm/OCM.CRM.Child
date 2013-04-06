@@ -5,7 +5,7 @@
 	Name="App Sponsor Child List"
 	Description="This is the data list used by the app to get a sponsor's children"
 	Author="Cary Mayeda"
-	common:SecurityUIFolder="Sponsorship Opportunity Child">
+	common:SecurityUIFolder="Mobile App">
 
 	<!-- 
 	Remarks:    
@@ -20,7 +20,7 @@
 		<common:CreateProcedureSQL>
 			<![CDATA[
 create procedure dbo.USR_USP_DATALIST_APP_GETSPONSORSCHILDREN(@CONTEXTID uniqueidentifier)
-as
+as begin
 	set nocount on;
 
 	 SELECT	sponsor.ID,
@@ -54,6 +54,7 @@ as
  LEFT OUTER JOIN dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID         -- This is the constituent record that has the note of type "Country Bio"
  
 	  WHERE sponsor.ID = @CONTEXTID
+end 
 
 	]]>
 		</common:CreateProcedureSQL>

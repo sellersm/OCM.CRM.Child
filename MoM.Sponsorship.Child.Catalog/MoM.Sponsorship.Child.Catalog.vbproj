@@ -434,7 +434,9 @@
     <EmbeddedResource Include="Website and App Specs\Plan B v1\Website.ChildSearch.TempReservation.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Plan B v1\Website.ChildSearchTempReservationB1.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\Plan B v2\Website.ChildSearch.TempReservationB2.Query.xml" />
-    <EmbeddedResource Include="Website and App Specs\Plan B v2\Website.ChildSearchTempReservationB2.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Plan B v2\Website.ChildSearchTempReservationB2.Package.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\App.ChildSearch.Datalist.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\App.Sponsor.ChildList.DataList.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildSearch.Query.xml" />
@@ -516,6 +518,9 @@
     <EmbeddedResource Include="Batch\CCH Only Batch\CCHOnlyBatch.PackageVersion.DataList.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Website and App Specs\Standard\App.ConstituentIDFromBBISAccount.DataList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

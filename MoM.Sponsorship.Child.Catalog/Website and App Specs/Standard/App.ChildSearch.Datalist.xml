@@ -5,8 +5,8 @@
 	Name="App Child Search Data List"
 	Description="This is the data list used by the app"
 	Author="Cary Mayeda"
-	common:SecurityUIFolder="Sponsorship Opportunity Child">
-	<!-- 
+	common:SecurityUIFolder="Mobile App">
+    <!-- 
 	Remarks:    
 
 	History:
@@ -20,9 +20,7 @@
 			<![CDATA[
 create procedure dbo.USR_USP_DATALIST_APP_GETAVAILABLECHILDREN(@CONTEXTID uniqueidentifier)
 as
-	set nocount on;
-
-	 SELECT	so.ID,
+	SELECT top 50 so.ID,
 			so_child.FIRSTNAME,
 			so_child.LASTNAME,
 			so_child.FIRSTNAME + ' ' + so_child.LASTNAME AS FULLNAME,
@@ -56,7 +54,7 @@ as
     and ELIGIBILITY = 'Eligible'
 	AND AVAILABILITY = 'Available'
 
-   order by sf.VALUE desc
+   order by newid()
 
 	]]>
 		</common:CreateProcedureSQL>
