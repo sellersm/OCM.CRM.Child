@@ -76,7 +76,7 @@ end
 	<Output>
 		<OutputFields>
 			<OutputField FieldID="ID" Caption="System record ID" DataType ="Guid"/>
-			<OutputField FieldID="SPONSORNAME" Caption="First Name" DataType="String" />
+			<OutputField FieldID="SPONSORNAME" Caption="Sponsor Name" DataType="String" />
 			<OutputField FieldID="CHILDIDID" Caption="Child ID" DataType ="Guid"/>
 			<OutputField FieldID="FIRSTNAME" Caption="First Name" DataType="String" />
 			<OutputField FieldID="LASTNAME" Caption="Last Name" DataType="String" />
