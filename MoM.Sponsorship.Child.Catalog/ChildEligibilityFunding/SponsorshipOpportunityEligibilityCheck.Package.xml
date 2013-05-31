@@ -17,6 +17,7 @@
 	13-Oct-2012		CMayeda			Added USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDCURRENTPHOTOINCRM.xml, USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_BANGLADESHCONTACTABLECHILD.xml,
 									USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml
 									Fixed spelling on USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE.xml
+	30-May-2013		CMayeda			Added USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD.xml
 	-->
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
@@ -89,6 +90,7 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEWCHILDVERIFICATION.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFO.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD.xml" />
 		
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_CHILD_CHECKELIGIBILITY.xml" />

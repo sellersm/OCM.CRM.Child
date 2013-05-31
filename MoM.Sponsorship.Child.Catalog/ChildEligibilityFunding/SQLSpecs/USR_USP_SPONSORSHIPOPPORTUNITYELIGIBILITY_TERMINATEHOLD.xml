@@ -1,0 +1,126 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="ea5dc2e0-f1c8-4fe0-81b5-f035c337ba52"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD"
+	Description="Used to add/delete 'Terminate Hold' pending reasons."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD"
+	>
+
+	<!-- 
+	Remarks:	The 'Terminate Hold' pending reason is added if the child/children are within 14 days of their sponsorship being terminated 
+				It now includes sponsored and unsponsored kids.
+	
+				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  
+				
+	History:
+	Date			Modified By		Comments
+    30-May-2012		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+		
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output					-- Output parm that specifies how many pending reasons were inserted
+)
+as begin
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+
+	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0  -- Child Mark Pending Eligibiltiy sponsorship reason enum 
+
+	-- Number of months from Completion Date in months that children will get pending reason assigned.
+	declare @terminateHoldDays tinyint
+	set @terminateHoldDays = 14
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+		
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
+		
+    	declare @terminateHoldID uniqueidentifier
+		select @terminateHoldID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Terminate hold') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @terminateHoldID is null
+			RAISERROR 1000000 'Couldn''t find the "Terminate hold" Sponsorship Reason'		
+			
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	-- This needs to be set to off for the output parms to be set properly
+	SET NOCOUNT OFF
+	
+	-- Remove 'Terminate hold' pending reasons if the child shouldn't have it (more than 14 days of the Terminate Hold Start Date (or null))
+	delete	dbo.SPONSORSHIPOPPORTUNITYREASON 
+	  from	dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+	 where	-- Find children who are specified to be reviewed and have the 'Completing Program in 12 Months' pending reason 
+			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   and	so_reason.SPONSORSHIPREASONID = @terminateHoldID	   
+	   
+	   -- Find children that shouldn't have the pending reason anymore because they aren't within 14 days of the Terminate Hold Start Date
+	   and not exists (select so_child.ID 
+						 from dbo.SPONSORSHIPOPPORTUNITYCHILD so_child  
+	               inner join dbo.USR_CHILDEXTENSION childext on so_child.ID = childext.SPONSORSHIPOPPORTUNITYCHILDID
+						where so_child.ID = so_reason.SPONSORSHIPOPPORTUNITYID
+						  and cast (dateadd (d, @terminateHoldDays, isnull(childext.TERMINATEHOLDSTARTDATE, dateadd(d,(@terminateHoldDays+1)*-1, getdate()))) as date) >= cast (getdate() as date) ) 
+															         				
+	set @DELETEDROWS = @@ROWCOUNT
+	
+	-- Insert 'Terminate hold' pending reason if the child/children are less than or equal to 14 days from the Terminate Hold Start Date or it's null
+	insert dbo.SPONSORSHIPOPPORTUNITYREASON
+				(SPONSORSHIPOPPORTUNITYID,
+				 SPONSORSHIPREASONID,				
+				 ADDEDBYID, 
+				 CHANGEDBYID, 
+				 DATEADDED, 
+				 DATECHANGED)
+				 
+		select  so_child.ID,
+				@terminateHoldID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CurrentDate, 
+				@CurrentDate
+				
+	      from	dbo.SPONSORSHIPOPPORTUNITYCHILD	so_child 
+    inner join	dbo.USR_CHILDEXTENSION childext on 
+					so_child.ID = childext.SPONSORSHIPOPPORTUNITYCHILDID
+				       
+				
+         where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID )
+
+				-- Verify that the child/children do not already have a 'Terminate hold' pending reason
+				
+   	       and	not exists (select SPONSORSHIPOPPORTUNITYID 
+							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+			                 where so_reason.SPONSORSHIPREASONID = @terminateHoldID and so_reason.SPONSORSHIPOPPORTUNITYID = so_child.ID)
+
+				-- Find children that are within 14 days of the Terminate Hold Start Date	   	   
+		   and cast (dateadd (d, @terminateHoldDays, isnull(childext.TERMINATEHOLDSTARTDATE, dateadd(d,(@terminateHoldDays+1)*-1, getdate()))) as date) >= cast (getdate() as date)  
+
+
+	set @INSERTEDROWS = @@ROWCOUNT
+		
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

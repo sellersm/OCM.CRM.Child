@@ -521,6 +521,10 @@
     <EmbeddedResource Include="Website and App Specs\Standard\App.ConstituentIDFromBBISAccount.DataList.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="OtherTabs\ChildExtension.Admin.View.xml" />
+    <EmbeddedResource Include="OtherTabs\ChildExtension.Admin.Edit.xml" />
+    <EmbeddedResource Include="OtherTabs\EditDataFormTemplate.Edit1.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

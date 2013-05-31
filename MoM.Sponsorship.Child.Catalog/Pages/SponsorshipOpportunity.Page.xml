@@ -21,6 +21,8 @@
 									Added Globals.CurrentAppUserIsSysAdmin() to visible criteria for Smart Fields tab (both child and project)																	
 	13-Oct-2012		CMayeda			Fixed references to old child bio data forms
 	28-Nov-2012		Memphis			Added the 'Check Lock Status' Action
+	30-May-2013		CMayeda			Added Admin tab
+
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -725,6 +727,27 @@
 					</Actions>
 				</Section>
 			</Sections>
+		</Tab>
+		<Tab ID="59BF1A19-EA6E-4ADD-A82F-125F88EF8910" Caption="Admin">
+			<Sections>
+				<Section ID="81344229-5B90-4F50-BE7E-AEDD0F92372D" Caption="Administrative fields">
+					<DataForm ID="6b57212c-0210-4049-b9d4-1dd66ae47c5b"/>
+					<Actions>
+						<Action ID="e0936ada-4919-4df5-8ea0-68d2608a9457" Caption="Edit">
+							<ShowDataForm DataFormID="95dcbe4e-3820-4c10-ab03-545e9ed92955" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<PageContextID />
+								</ActionContext>
+								<PostActionEvent>
+									<RefreshSection />
+								</PostActionEvent>
+							</ShowDataForm>
+						</Action>
+					</Actions>
+
+				</Section>
+			</Sections>
+			
 		</Tab>
 	</Tabs>
 	<PageActionGroups>

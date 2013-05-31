@@ -27,7 +27,8 @@
 	28-Nov-2012		Memphis			Added new form: ChildUnlockForm.Add.xml
 	09-Dec-2012		CMayeda			Added SponsorshipOpportunity.Sponsors.Query.xml
 	31-Dec-2012		CMayeda			Added ChildProjectDisbursement.Query.xml
-	-->
+	30-May-2013		CMayeda			Added ChildExtension.Admin.View.xml and ChildExtension.Admin.Edit.xml
+-->
 
 	<c:DependencyList>
     <!-- Codetables -->
@@ -148,8 +149,11 @@
 	<!-- Other Tabs -->
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ActiveSponsorships.DataList.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.FormerSponsorships.DataList.xml" />
-  
-	<!-- Page Expressions -->
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.Admin.View.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.Admin.Edit.xml" />
+
+
+		<!-- Page Expressions -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.ExpressionDataForm.View.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ExpressionDataForm.View.xml" />
 

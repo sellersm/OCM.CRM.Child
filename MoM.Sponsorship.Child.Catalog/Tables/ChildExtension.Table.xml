@@ -22,6 +22,7 @@
 	14-Oct-2012		CMayeda			Changed trigger based on final dataconversion identity reset
 									Modifed trigger to only insert the value for the CUSTOMIDENTIFIER if none is already there
 	31-Jan-2012		CMayeda			Changed CLASSLEVEL field from 20 to 50 characters.
+	30-May-2013		CMayeda			Added TERMINATEHOLDSTARTDATE
     -->
 
 	<Fields>
@@ -131,7 +132,9 @@
 
 		<TextField Description="CCH zip file name" Name="CCHZIPFILENAME" Length="200" Required="false" />
 
-		<CodeTableField Description="Current Child Sponsorship Status" Name="CURRENTCHILDSPONSORSHIPSTATUSCODEID" CodeTable="USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE"/> 
+		<CodeTableField Description="Current Child Sponsorship Status" Name="CURRENTCHILDSPONSORSHIPSTATUSCODEID" CodeTable="USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE"/>
+
+		<DateField Description="Terminate Hold Start Date" Name="TERMINATEHOLDSTARTDATE"  />
 		
 	</Fields>
 	<!--<CheckConstraints />
