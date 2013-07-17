@@ -25,7 +25,7 @@
 				<AlterOrAddPageActionGroups>
 					<AlterOrAddPageActionGroup ID="6a23ead0-0148-430b-baaf-7aa5697d3ec8" Caption="Admin Tasks" >
 						<AddAction>
-							<Action ID="e4543421-1170-4a7e-8efd-605c5556ea61" Caption="Set Registration Date" ImageKey="res:Edit">
+							<Action ID="c9e3d194-eba5-49ed-8212-a4c27a950823" Caption="Set Registration Date" ImageKey="res:Edit">
 								<ShowDataForm DataFormID="7e3e34eb-9ac0-499b-a34b-9515bfe59706" xmlns="bb_appfx_commontypes">
 									<ActionContext>
 										<PageContextID />
@@ -34,7 +34,7 @@
 										<RefreshPage />
 									</PostActionEvent>
 								</ShowDataForm>
-							</Action>						
+							</Action>					
 						</AddAction>
 					</AlterOrAddPageActionGroup>
 				</AlterOrAddPageActionGroups>
