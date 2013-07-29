@@ -1,0 +1,260 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a63a4339-8dd4-4ce3-9305-ae499e98ea66"
+	Name="EOM Report Child Status Smart Field"
+	Description="Used to display the Child's status to be used in EOM reports"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILD_EOMREPORTCHILDSTATUS"
+	DataType="String"
+	RecordType="Sponsorship opportunity child"
+	DisplayName="EOM Report Child Status"
+	SmartFieldFolder="Sponsorship opportunity child" >
+
+	<!-- 
+	Remarks:    Need to use Configuration Import (see file EOM_Report_Child_Status_Smart_Field_ConfigurationData.xml) 
+				because the EOM Reports need a consistent GUID across environments
+
+	History:
+	Date            Modified By     Comments
+	19-Jul-2013		CMayeda			Initial Version - TK-01004 for B-01027
+	-->	
+	
+	<!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILD_EOMREPORTCHILDSTATUS
+(
+	@ASOF datetime 
+)
+as
+begin
+
+	declare @projectStatusDesc_Active as nvarchar(100) = 'Active'
+	declare @projectStatusDesc_ActiveReserved as nvarchar(100) = 'Active - Reserved'
+	declare @projectStatusDesc_Pending as nvarchar(100) = 'Pending'
+	declare @projectStatusDesc_PhasingOut as nvarchar(100) = 'Phasing Out'
+	declare @projectStatusDesc_Closed as nvarchar(100) = 'Closed'
+
+    declare @projectStatusID_Active as uniqueidentifier = null
+	declare @projectStatusID_ActiveReserved as uniqueidentifier = null
+	declare @projectStatusID_Pending as uniqueidentifier = null
+	declare @projectStatusID_PhasingOut as uniqueidentifier = null
+	declare @projectStatusID_Closed as uniqueidentifier = null
+
+
+    declare @sponsorshipReasonDesc_ChildAge as nvarchar(100) = 'Child is 16.5 years or older'
+	declare @sponsorshipReasonDesc_FieldMemoRequestingInfo as nvarchar(100) = 'Field memo - requesting information'
+	declare @sponsorshipReasonDesc_ProjectPending as nvarchar(100) = 'Project on pending status'
+    declare @sponsorshipReasonDesc_ProjectPhasingOut as nvarchar(100) = 'Project on phasing out status'
+    declare @sponsorshipReasonDesc_ProgramCompletion as nvarchar(100) = 'Completing program in 12 months'
+	declare @sponsorshipReasonDesc_NewChildVerification as nvarchar(100) = 'Need information verified - new child'
+	declare @sponsorshipReasonDesc_DepartureInProcess as nvarchar(100) = 'Departure in process'
+	declare @sponsorshipReasonDesc_BangladeshContactable as nvarchar(100) = 'Bangladesh contactable child'
+	
+    declare @sponsorshipReasonID_ChildAge uniqueidentifier = null
+    declare @sponsorshipReasonID_FieldMemoRequestingInfo as uniqueidentifier = null
+    declare @sponsorshipReasonID_ProjectPending as uniqueidentifier = null
+    declare @sponsorshipReasonID_ProjectPhasingOut as uniqueidentifier = null
+    declare @sponsorshipReasonID_ProgramCompletion as uniqueidentifier = null
+    declare @sponsorshipReasonID_NewChildVerification as uniqueidentifier = null
+    declare @sponsorshipReasonID_DepartureInProcess as uniqueidentifier = null
+    declare @sponsorshipReasonID_BangladeshContactable as uniqueidentifier = null
+
+    declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0  -- Child Mark Pending Eligibiltiy sponsorship reason enum 
+
+    declare @eligibilityCode_Pending tinyint = 0 
+    declare @eligibilityCode_Eligible tinyint = 1
+    declare @eligibilityCode_Ineligible tinyint = 2
+    
+    declare @availabilityCode_Available tinyint = 0
+    
+    declare @errorMessage nvarchar(max)
+
+    
+    begin try
+        select @sponsorshipReasonID_ChildAge = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ChildAge and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_ChildAge is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ChildAge + '" Sponsorship Reason'
+        	raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_FieldMemoRequestingInfo = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_FieldMemoRequestingInfo and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_FieldMemoRequestingInfo is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_FieldMemoRequestingInfo + '" Sponsorship Reason'		
+        	raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_ProjectPending = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ProjectPending and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_ProjectPending is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ProjectPending + '" Sponsorship Reason'		
+            raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_ProjectPhasingOut = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ProjectPhasingOut and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_ProjectPhasingOut is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ProjectPhasingOut + '" Sponsorship Reason'		
+            raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_ProgramCompletion = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ProgramCompletion and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_ProgramCompletion is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ProgramCompletion + '" Sponsorship Reason'		
+        	raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_ProgramCompletion = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_NewChildVerification and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_ProgramCompletion is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_NewChildVerification + '" Sponsorship Reason'		
+        	raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_DepartureInProcess = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_DepartureInProcess and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_DepartureInProcess is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_DepartureInProcess + '" Sponsorship Reason'		
+        	raiserror 100000 @errorMessage
+        end
+
+        select @sponsorshipReasonID_BangladeshContactable = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_BangladeshContactable and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_BangladeshContactable is null
+        begin
+            set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_BangladeshContactable + '" Sponsorship Reason'		
+        	raiserror 100000 @errorMessage
+        end
+
+        select @projectStatusID_Active = ID from USR_CHILDPROJECTSTATUSCODE where DESCRIPTION = @projectStatusDesc_Active		
+    	if @projectStatusID_Active is null
+    	begin
+    		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_Active + '" Project Status '
+    		raiserror 100000 @errorMessage
+    	end
+
+    	select @projectStatusID_ActiveReserved = ID from USR_CHILDPROJECTSTATUSCODE where DESCRIPTION = @projectStatusDesc_ActiveReserved		
+    	if @projectStatusID_ActiveReserved is null
+    	begin
+    		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_ActiveReserved + '" Project Status '
+    		raiserror 100000 @errorMessage
+    	end
+
+    	select @projectStatusID_Pending = ID from USR_CHILDPROJECTSTATUSCODE where DESCRIPTION = @projectStatusDesc_Pending		
+    	if @projectStatusID_Pending is null
+    	begin
+    		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_Pending + '" Project Status '
+    		raiserror 100000 @errorMessage
+    	end
+
+    	select @projectStatusID_PhasingOut = ID from USR_CHILDPROJECTSTATUSCODE where lower (DESCRIPTION) = @projectStatusDesc_PhasingOut		
+    	if @projectStatusID_PhasingOut is null
+    	begin
+    		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_PhasingOut + '" Project Status '
+    		raiserror 100000 @errorMessage
+    	end
+
+    	select @projectStatusID_Closed = ID from USR_CHILDPROJECTSTATUSCODE where lower (DESCRIPTION) = @projectStatusDesc_Closed		
+    	if @projectStatusID_Closed is null
+    	begin
+    		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_Closed + '" Project Status '
+    		raiserror 100000 @errorMessage
+    	end
+    end try
+    begin catch
+    	 exec dbo.USP_RAISE_ERROR
+    		return 1	
+    end catch;
+
+    select 
+    	so.ID,
+        
+    	case
+            -- Only create a value for children that are Eligible or Pending
+            when so.ELIGIBILITYCODE = @eligibilityCode_Ineligible then ''
+            
+            when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 0
+             and so_reasonDeparture.ID is not null then 'Departure Pending'
+
+            when so.AVAILABILITYCODE = @availabilityCode_Available 
+             and so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 0
+             and so_reasonFieldMemo.ID is not null then 'Field Memo Delinquency'
+
+            when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 0
+             and so_reasonHoldingNew.ID is not null then 'Holding New'
+             
+            when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_PhasingOut  
+             and so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1 
+             and so_reasonProjectPhasingOut.ID is not null then 'Phasing Out'
+             
+            when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1 
+             and so_reasonProjectPending.ID is not null then 'Pending'
+
+            when so.AVAILABILITYCODE = @availabilityCode_Available 
+             and so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 0 
+             and so_reasonBDContactable.ID is not null then 'BD Contactable'
+
+            when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1 
+             and so_reasonProgramCompletion.ID is not null then 'Program Completion'
+            
+            when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1 
+             and so_reasonChildAge.ID is not null then 'Teen16'
+
+            when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1 
+             and so_reasonFieldMemo.ID is not null then 'Holding'
+
+
+    		when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_Active  
+    		 and so.ELIGIBILITYCODE = @eligibilityCode_Eligible
+    		 and ch_ext.FUNDED = 1  then 'Active - Ready'
+    		 
+    		when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_Active  
+    		 and so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1  then 'Active - Not Ready'
+    		
+    		when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_ActiveReserved   
+    		 and so.ELIGIBILITYCODE = @eligibilityCode_Eligible
+    		 and ch_ext.FUNDED = 1  then 'Reserved - Ready'
+    		
+    		when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_ActiveReserved 
+    		 and so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1  then 'Reserved - Not Ready'
+            
+            else ''
+    		
+    	end as Status
+		
+    from 
+    	dbo.SPONSORSHIPOPPORTUNITY so
+    	inner join dbo.USR_CHILDEXTENSION ch_ext on so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
+    	inner join dbo.SPONSORSHIPLOCATION sl on sl.ID = so.SPONSORSHIPLOCATIONID
+    	inner join dbo.USR_CHILDPROJECTEXTENSION chpr_ext on chpr_ext.ID = sl.FIELDOFFICEID
+    	left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonDeparture on so_reasonDeparture.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonDeparture.SPONSORSHIPREASONID = @sponsorshipReasonID_DepartureInProcess
+    	left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonFieldMemo on so_reasonFieldMemo.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonFieldMemo.SPONSORSHIPREASONID = @sponsorshipReasonID_FieldMemoRequestingInfo
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonChildAge on so_reasonChildAge.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonChildAge.SPONSORSHIPREASONID = @sponsorshipReasonID_ChildAge
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonHoldingNew on so_reasonHoldingNew.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonHoldingNew.SPONSORSHIPREASONID = @sponsorshipReasonID_NewChildVerification
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProjectPending on so_reasonProjectPending.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProjectPending.SPONSORSHIPREASONID = @sponsorshipReasonID_ProjectPending
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProjectPhasingOut on so_reasonProjectPending.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProjectPhasingOut.SPONSORSHIPREASONID = @sponsorshipReasonID_ProjectPhasingOut
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProgramCompletion on so_reasonProjectPending.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProgramCompletion.SPONSORSHIPREASONID = @sponsorshipReasonID_ProgramCompletion
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonBDContactable on so_reasonBDContactable.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonBDContactable.SPONSORSHIPREASONID = @sponsorshipReasonID_BangladeshContactable
+    	
+	return 0
+end
+
+
+		]]>
+	</CreateProcedureSQL>
+
+</SmartFieldSpec>

@@ -28,6 +28,7 @@
 	09-Dec-2012		CMayeda			Added SponsorshipOpportunity.Sponsors.Query.xml
 	31-Dec-2012		CMayeda			Added ChildProjectDisbursement.Query.xml
 	30-May-2013		CMayeda			Added ChildExtension.Admin.View.xml and ChildExtension.Admin.Edit.xml
+	25-Jul-2013		CMayeda			Added EOMReportStatus.SmartField.xml
 -->
 
 	<c:DependencyList>
@@ -161,7 +162,8 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildGreatestNeed.SmartField.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildQuota.WaitingListReason.SmartField.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.WaitingDurationDays.SmartField.xml"/>
-
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child.EOMReportStatus.SmartField.xml"/>
+	
 	<!-- Pages -->
 		
 	<!-- Moved to Child Extension TablePagesTasks.Package.xml -->
