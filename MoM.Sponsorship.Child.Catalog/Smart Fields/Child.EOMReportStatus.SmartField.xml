@@ -170,6 +170,8 @@ begin
     end catch;
 
     select 
+		distinct 
+		
     	so.ID,
         
     	case
