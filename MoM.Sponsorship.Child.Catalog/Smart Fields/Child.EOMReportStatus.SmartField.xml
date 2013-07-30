@@ -108,8 +108,8 @@ begin
         	raiserror 100000 @errorMessage
         end
 
-        select @sponsorshipReasonID_ProgramCompletion = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_NewChildVerification and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
-        if @sponsorshipReasonID_ProgramCompletion is null
+        select @sponsorshipReasonID_NewChildVerification = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_NewChildVerification and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @sponsorshipReasonID_NewChildVerification is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_NewChildVerification + '" Sponsorship Reason'		
         	raiserror 100000 @errorMessage
@@ -166,7 +166,7 @@ begin
     end try
     begin catch
     	 exec dbo.USP_RAISE_ERROR
-    		return 1	
+--    	return 1	
     end catch;
 
     select 
@@ -202,7 +202,7 @@ begin
 
             when so.AVAILABILITYCODE = @availabilityCode_Available 
              and so.ELIGIBILITYCODE = @eligibilityCode_Pending
-    		 and ch_ext.FUNDED = 0 
+    		 and ch_ext.FUNDED = 1 
              and so_reasonBDContactable.ID is not null then 'BD Contactable'
 
             when so.ELIGIBILITYCODE = @eligibilityCode_Pending
@@ -248,8 +248,8 @@ begin
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonChildAge on so_reasonChildAge.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonChildAge.SPONSORSHIPREASONID = @sponsorshipReasonID_ChildAge
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonHoldingNew on so_reasonHoldingNew.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonHoldingNew.SPONSORSHIPREASONID = @sponsorshipReasonID_NewChildVerification
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProjectPending on so_reasonProjectPending.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProjectPending.SPONSORSHIPREASONID = @sponsorshipReasonID_ProjectPending
-        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProjectPhasingOut on so_reasonProjectPending.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProjectPhasingOut.SPONSORSHIPREASONID = @sponsorshipReasonID_ProjectPhasingOut
-        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProgramCompletion on so_reasonProjectPending.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProgramCompletion.SPONSORSHIPREASONID = @sponsorshipReasonID_ProgramCompletion
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProjectPhasingOut on so_reasonProjectPhasingOut.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProjectPhasingOut.SPONSORSHIPREASONID = @sponsorshipReasonID_ProjectPhasingOut
+        left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProgramCompletion on so_reasonProgramCompletion.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProgramCompletion.SPONSORSHIPREASONID = @sponsorshipReasonID_ProgramCompletion
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonBDContactable on so_reasonBDContactable.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonBDContactable.SPONSORSHIPREASONID = @sponsorshipReasonID_BangladeshContactable
     	
 	return 0
