@@ -15,6 +15,7 @@
 	20-Oct-2012		CMayeda			Modified logic to ignore Child Photo Update and Medical Information Request subcategories
 									and to only include Unusable 2012 Health Photo subcategory if it is 90 days or older - FogBugz Case 918
 	25-Jul-2013		CMayeda			Removed check for FIELDMEMODATESENT being null and only use the EXPECTEDDATE
+	29-Jul-2013		CMayeda			Modified so that sponsored chidlren are funded when a project is phase out. TK-01005 of B-01027
 	-->
 	
 	<CreateProcedureSQL>
@@ -44,7 +45,7 @@ begin
 	declare @pendingReason_DepartureInProcess nvarchar(100) = 'Departure in Process'
 	declare @pendingReason_NeedInformationVerified nvarchar(100) = 'Need Information Verified - New Child'
 	declare @pendingReason_ProjectOnPhasingOutStatus nvarchar(100) = 'Project on Phasing Out Status'
-	declare	@numberofPendingReasons tinyint = 3
+	declare	@numberofPendingReasons tinyint = 2
 		
 	declare @maxDaysPastDue smallint = 60
 	declare @maxDaysHealthPhotoPastDue smallint = 90
@@ -91,13 +92,20 @@ begin
 		select	ID from dbo.SPONSORSHIPREASON 
 		 where	REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		   and	lower (REASON) in ( lower (@pendingReason_DepartureInProcess),
-									lower (@pendingReason_NeedInformationVerified),
-									lower (@pendingReason_ProjectOnPhasingOutStatus)
+									lower (@pendingReason_NeedInformationVerified)
 								  )
 
-		if (select COUNT(*) from @pendingReasonsNotFunded) <> @numberofPendingReasons 
+		if ((select COUNT(*) from @pendingReasonsNotFunded) <> @numberofPendingReasons)
 			RAISERROR 1000000 'Did not find the correct number of pending reasons'
 	
+        declare @pendingReasonID_ProjectOnPhasingOutStatus uniqueidentifier = null
+        select @pendingReasonID_ProjectOnPhasingOutStatus = ID from dbo.SPONSORSHIPREASON where REASON = @pendingReason_ProjectOnPhasingOutStatus and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @pendingReasonID_ProjectOnPhasingOutStatus is null
+        begin
+			declare @errorMessage nvarchar(max)
+            set @errorMessage = 'Couldn''t find the "' + @pendingReason_ProjectOnPhasingOutStatus + '" Sponsorship Reason'
+        	raiserror 100000 @errorMessage
+        end
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR
@@ -124,7 +132,11 @@ begin
 			((so.ELIGIBILITYCODE = @eligibilityCode_Pending)
 				and (exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON sr 
 							   where sr.SPONSORSHIPOPPORTUNITYID = so.ID
-								 and sr.SPONSORSHIPREASONID in (select sponsorshipReasonID from @pendingReasonsNotFunded))))
+								 and (sr.SPONSORSHIPREASONID in (select sponsorshipReasonID from @pendingReasonsNotFunded)
+                                      or (sr.SPONSORSHIPREASONID = @pendingReasonID_ProjectOnPhasingOutStatus and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS (so.ID) = 0)))
+				    )
+			)
+                  
 			or
 			(ch_ext.REGISTRATIONDATE is null)
 			or
@@ -157,10 +169,11 @@ begin
 	   and	ch_ext.FUNDED = 0
 	   and	ch_ext.REGISTRATIONDATE is not null
 	   and	((so.ELIGIBILITYCODE = @eligibilityCode_Eligible)
-			 or		((so.ELIGIBILITYCODE = @eligibilityCode_Pending)
-				and  (not exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON sr 
-								   where sr.SPONSORSHIPOPPORTUNITYID = so.ID
-									 and sr.SPONSORSHIPREASONID in (select sponsorshipReasonID from @pendingReasonsNotFunded)))
+			 or	 ((so.ELIGIBILITYCODE = @eligibilityCode_Pending)
+				      and  (not exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON sr 
+				 	   		             where sr.SPONSORSHIPOPPORTUNITYID = so.ID
+								           and (sr.SPONSORSHIPREASONID in (select sponsorshipReasonID from @pendingReasonsNotFunded)
+                                                or (sr.SPONSORSHIPREASONID = @pendingReasonID_ProjectOnPhasingOutStatus and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS (so.ID) = 0)))) 
 				 )
 			)
 	   and	not exists (select	inter.ID 
