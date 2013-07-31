@@ -10,7 +10,14 @@
 	RecordType="Child Project Extension"
 	common:SecurityUIFolder="REPLACE_WITH_SECURITY_UI_FOLDER"
 	>
+	<!-- 
+	Remarks:    
 
+	History:
+	Date            Modified By     Comments
+	30-Jul-2013		CMayeda			Updated to remove logic for phasing out projects. It only includes funded children.
+
+	-->
 	<!-- define the view used to return data for the query -->
 	<ViewImplementation ViewName="USR_V_QUERY_CHILDPROJECTDISBURSEMENTS">
 		<ViewSQL>
@@ -40,9 +47,9 @@ left join dbo.usr_sponsorshipextension se on se.SPONSORSHIPOPPORTUNITYID = so.ID
 left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = se.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
 
 	where (ch_ext.Funded=1
-	       or 
+/*	       or 
 	       (slocation.STATUSCODE = 1 -- Inactive
-	        and slocation.SPONSORSHIPREASONID = '3EC2BD25-FEC7-41B9-8C4F-DDA63C063DEC') -- phasing out
+	        and slocation.SPONSORSHIPREASONID = '3EC2BD25-FEC7-41B9-8C4F-DDA63C063DEC') -- phasing out */
 	      )
 	       
 	   and	so.ELIGIBILITYCODE in (0,1) -- @eligibilityCodePending, @eligibilityCodeEligible)
