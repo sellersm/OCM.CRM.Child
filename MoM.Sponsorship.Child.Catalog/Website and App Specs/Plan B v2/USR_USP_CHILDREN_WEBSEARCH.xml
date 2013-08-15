@@ -8,7 +8,16 @@
 	SPName="USR_USP_CHILDREN_WEBSEARCH"
     GrantServiceRolePermission="true"
 	>
+	
+	<!-- 
+	Remarks:    This is version of Blackbaud's (Chris W.) USR_USP_CHILDREN_SEARCH used in the child search.
+				This was deployed prior to the completion of Chris' modifications. 
+				Once Chris' parts / catalog items are deployed, this will not be needed.
 
+	History:
+	Date            Modified By     Comments
+	15-Aug-2013		CMayeda			Initial Version
+	-->
 	<CreateProcedureSQL>
 		<![CDATA[
             create procedure dbo.USR_USP_CHILDREN_WEBSEARCH
