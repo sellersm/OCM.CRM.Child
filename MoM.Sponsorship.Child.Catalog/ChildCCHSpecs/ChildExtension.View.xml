@@ -1,0 +1,259 @@
+﻿<ViewDataFormTemplateSpec
+	xmlns="bb_appfx_viewdataformtemplate"
+	xmlns:common="bb_appfx_commontypes"
+	ID="1c570d40-f8d0-4cc3-97b8-81f0090e4165"
+	Name="ChildExtension View Form"
+	Description="ChildExtension View Form"
+	Author="memphis-PC\Administrator"
+	DataFormInstanceID="125e2b38-200c-4389-b290-030a6b6ac1e6"
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+  FormHeader="View CCH Data"
+	>
+
+  <!-- define the SP that returns the data used by the form -->
+  <SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSION">
+    <common:CreateProcedureSQL>
+      <![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_CHILDEXTENSION
+(
+	@ID uniqueidentifier,
+  @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+	@DATALOADED bit = 0 output,
+	@PROGRAMCOMPLETIONDATE datetime = null output,
+	@NUMBEROFSISTERS tinyint = null output,
+	@NUMBEROFBROTHERS tinyint = null output,
+  @CHILDLIVESWITHCODEID uniqueidentifier = null output,
+  @FATHERWORKSASCODEID uniqueidentifier = null output,
+  @MOTHERWORKSASCODEID uniqueidentifier = null output,
+  @CAREGIVERRELATIONCODEID uniqueidentifier = null output,
+  @CAREGIVERREASONCODEID uniqueidentifier = null output,
+  @BIRTHDATEACCURACYCODEID uniqueidentifier = null output,
+    @FATHERWORKSASOTHER nvarchar(100) = null output,
+    @MOTHERWORKSASOTHER nvarchar(100) = null output,
+    @CAREGIVERRELATIONOTHER nvarchar(50) = null output,
+    @CAREGIVERWORKSASCODEID uniqueidentifier = null output,
+    @CAREGIVERWORKSASOTHER nvarchar(100) = null output,
+    @REASONFORCAREGIVEROTHER nvarchar(50) = null output,
+    @HOUSINGWALLSTRUCTURECODEID uniqueidentifier = null output,
+    @HOUSINGWALLSTRUCTUREOTHER nvarchar(50) = null output,
+    @HOUSINGROOFINGMATERIALCODEID uniqueidentifier = null output,
+    @HOUSINGROOFINGMATERIALOTHER nvarchar(50) = null output,
+    @WATERSOURCECODEID uniqueidentifier = null output,
+    @WATERSOURCEOTHER nvarchar(50) = null output,
+    @COOKINGSOURCECODEID uniqueidentifier = null output,
+    @COOKINGSOURCEOTHER nvarchar(50) = null output,
+    @LIGHTSOURCECODEID uniqueidentifier = null output,
+    @LIGHTSOURCEOTHER nvarchar(50) = null output,
+    @AREADESCRIPTION nvarchar(1000) = null output,
+    @MYFAVORITETHINGTODO nvarchar(1000) = null output,
+    @WHENIPLAYWITHFRIENDSWE nvarchar(1000) = null output,
+    @WHENATHOMEIHELPOUTBY nvarchar(1000) = null output,
+    @WHENITALKTOGODIASKHIM nvarchar(1000) = null output,
+    @SOMEDAYI nvarchar(1000) = null output,
+    @TWOMOSTFAVORITETHINGS nvarchar(1000) = null output,
+    @OTHERTHINGSTHECHILDENJOYS nvarchar(1000) = null output,
+    @CHILDPERSONALITY nvarchar(1000) = null output,
+    @CHILDHEALTH nvarchar(1000) = null output,
+    @SPIRITUALDEVELOPMENT nvarchar(1000) = null output,
+    @ATTENDINGSCHOOL bit = null output,
+    @REASONNOTATTENDINGSCHOOL nvarchar(255) = null output,
+    @CLASSLEVEL nvarchar(20) = null output,
+    @FAVORITESUBJECT nvarchar(1000) = null output,
+    @VOCATIONALSKILLS nvarchar(1000) = null output,
+    @ADDITIONALCHILDINFORMATION nvarchar(max) = null output
+)
+as
+	set nocount on;
+	
+	-- be sure to set this, in case the select returns no rows
+	set @DATALOADED = 0;
+	
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.
+	select 
+      @DATALOADED = 1,
+		  @PROGRAMCOMPLETIONDATE = PROGRAMCOMPLETIONDATE,
+	    @NUMBEROFSISTERS = NUMBEROFSISTERS,
+	    @NUMBEROFBROTHERS = NUMBEROFBROTHERS,
+      @CHILDLIVESWITHCODEID = CHILDLIVESWITHCODEID,
+      @FATHERWORKSASCODEID = FATHERWORKSASCODEID,
+      @MOTHERWORKSASCODEID = MOTHERWORKSASCODEID,
+    @CAREGIVERRELATIONCODEID = CAREGIVERRELATIONCODEID,
+    @CAREGIVERREASONCODEID = CAREGIVERREASONCODEID,
+    @BIRTHDATEACCURACYCODEID = BIRTHDATEACCURACYCODEID,
+    @FATHERWORKSASOTHER = FATHERWORKSASOTHER,
+    @MOTHERWORKSASOTHER = MOTHERWORKSASOTHER,
+    @CAREGIVERRELATIONOTHER = CAREGIVERRELATIONOTHER,
+    @CAREGIVERWORKSASCODEID = CAREGIVERWORKSASCODEID,
+    @CAREGIVERWORKSASOTHER = CAREGIVERWORKSASOTHER,
+    @REASONFORCAREGIVEROTHER = REASONFORCAREGIVEROTHER,
+    @HOUSINGWALLSTRUCTURECODEID = HOUSINGWALLSTRUCTURECODEID,
+    @HOUSINGWALLSTRUCTUREOTHER = HOUSINGWALLSTRUCTUREOTHER,
+    @HOUSINGROOFINGMATERIALCODEID = HOUSINGROOFINGMATERIALCODEID,
+    @HOUSINGROOFINGMATERIALOTHER = HOUSINGROOFINGMATERIALOTHER,
+    @WATERSOURCECODEID = WATERSOURCECODEID,
+    @WATERSOURCEOTHER = WATERSOURCEOTHER,
+    @COOKINGSOURCECODEID = COOKINGSOURCECODEID,
+    @COOKINGSOURCEOTHER = COOKINGSOURCEOTHER,
+    @LIGHTSOURCECODEID = LIGHTSOURCECODEID,
+    @LIGHTSOURCEOTHER = LIGHTSOURCEOTHER,
+    @AREADESCRIPTION = AREADESCRIPTION,
+    @MYFAVORITETHINGTODO = MYFAVORITETHINGTODO,
+    @WHENIPLAYWITHFRIENDSWE = WHENIPLAYWITHFRIENDSWE,
+    @WHENATHOMEIHELPOUTBY = WHENATHOMEIHELPOUTBY,
+    @WHENITALKTOGODIASKHIM = WHENITALKTOGODIASKHIM,
+    @SOMEDAYI = SOMEDAYI,
+    @TWOMOSTFAVORITETHINGS = TWOMOSTFAVORITETHINGS,
+    @OTHERTHINGSTHECHILDENJOYS = OTHERTHINGSTHECHILDENJOYS,
+    @CHILDPERSONALITY = CHILDPERSONALITY,
+    @CHILDHEALTH = CHILDHEALTH,
+    @SPIRITUALDEVELOPMENT = SPIRITUALDEVELOPMENT,
+    @ATTENDINGSCHOOL = ATTENDINGSCHOOL,
+    @REASONNOTATTENDINGSCHOOL = REASONNOTATTENDINGSCHOOL,
+    @CLASSLEVEL = CLASSLEVEL,
+    @FAVORITESUBJECT = FAVORITESUBJECT,
+    @VOCATIONALSKILLS = VOCATIONALSKILLS,
+    @ADDITIONALCHILDINFORMATION = ADDITIONALCHILDINFORMATION
+	from dbo.USR_CHILDEXTENSION
+	--where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID
+  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+
+	
+	return 0;
+			]]>
+    </common:CreateProcedureSQL>
+  </SPDataForm>
+
+  <!--<Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="SPONSORSHIPOPPORTUNITYGROUPID"/>-->
+
+  <!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
+  <common:FormMetaData FixedDialog="true">
+    <common:FormFields>
+      <common:FormField FieldID="PROGRAMCOMPLETIONDATE" Caption="Program Completion Date" DataType="Date" />
+      <common:FormField FieldID="NUMBEROFSISTERS" Caption="Number of Sisters" DataType="TinyInt"  />
+      <common:FormField FieldID="NUMBEROFBROTHERS" Caption="Number of Brothers" DataType="TinyInt" />
+
+      <common:FormField FieldID="BIRTHDATEACCURACYCODEID" Caption="Birthdate Accuracy" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_BIRTHDATEACCURACYCODE"/>
+      </common:FormField>
+
+      <common:FormField FieldID="CHILDLIVESWITHCODEID" Caption="Child Lives With" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CHILDLIVESWITHCODE"/>
+      </common:FormField>
+
+      <common:FormField FieldID="FATHERWORKSASCODEID" Caption="Father Works As" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_FATHERWORKSASCODE"/>
+      </common:FormField>
+      <common:FormField FieldID="FATHERWORKSASOTHER" Caption="Father Works As other value" DataType="String" />
+
+      <common:FormField FieldID="MOTHERWORKSASCODEID" Caption="Mother Works As" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_MOTHERWORKSASCODE"/>
+      </common:FormField>
+      <common:FormField FieldID="MOTHERWORKSASOTHER" Caption="Mother Works As other value" DataType="String" />
+
+      <common:FormField FieldID="CAREGIVERRELATIONCODEID" Caption="Caregiver Relation" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CAREGIVERRELATIONCODE"/>
+      </common:FormField>
+      <common:FormField FieldID="CAREGIVERRELATIONOTHER" Caption="Caregiver Relation other value" DataType="String" />
+
+      <common:FormField FieldID="CAREGIVERWORKSASCODEID" Caption="Caregiver Works As" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CAREGIVERWORKSASCODE"/>
+      </common:FormField>
+      <common:FormField FieldID="CAREGIVERWORKSASOTHER" Caption="Caregiver Works As other value" DataType="String" />
+
+      <common:FormField FieldID="CAREGIVERREASONCODEID" Caption="Reason for Caregiver" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CAREGIVERREASONCODE"/>
+      </common:FormField>
+      <common:FormField FieldID="REASONFORCAREGIVEROTHER" Caption="Caregiver Reason other value" DataType="String" />
+
+      <common:FormField FieldID="HOUSINGWALLSTRUCTURECODEID" Caption="Housing Wall Structure" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_HOUSINGWALLSTRUCTURECODE"/>
+      </common:FormField>
+      <common:FormField FieldID="HOUSINGWALLSTRUCTUREOTHER" Caption="Wall Structure other value" DataType="String" />
+
+      <common:FormField FieldID="HOUSINGROOFINGMATERIALCODEID" Caption="Housing Roof Structure" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_HOUSINGROOFINGMATERIALCODE"/>
+      </common:FormField>
+      <common:FormField FieldID="HOUSINGROOFINGMATERIALOTHER" Caption="Roof Structure other value" DataType="String" />
+
+      <common:FormField FieldID="WATERSOURCECODEID" Caption="Water Source" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_WATERSOURCECODE"/>
+      </common:FormField>
+      <common:FormField FieldID="WATERSOURCEOTHER" Caption="Water Source other value" DataType="String" />
+
+      <common:FormField FieldID="COOKINGSOURCECODEID" Caption="Cooking Source" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_COOKINGSOURCECODE"/>
+      </common:FormField>
+      <common:FormField FieldID="COOKINGSOURCEOTHER" Caption="Cooking Source other value" DataType="String" />
+
+      <common:FormField FieldID="LIGHTSOURCECODEID" Caption="Light Source" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_LIGHTSOURCECODE"/>
+      </common:FormField>
+      <common:FormField FieldID="LIGHTSOURCEOTHER" Caption="Light Source other value" DataType="String" />
+
+      <common:FormField FieldID="AREADESCRIPTION" Caption="Area Description" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="MYFAVORITETHINGTODO" Caption="Favorite thing" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="WHENIPLAYWITHFRIENDSWE" Caption="Playing with friends text" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="WHENATHOMEIHELPOUTBY" Caption="Help out at home text" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="WHENITALKTOGODIASKHIM" Caption="Prayer text" DataType="String" Required="false"/>
+
+      <!--<common:FormField FieldID="WHENIAMATSCHOOLILIKELEARNING" Caption="School likes" DataType="String" Required="false"/>-->
+
+      <common:FormField FieldID="SOMEDAYI" Caption="Dreams of future text" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="TWOMOSTFAVORITETHINGS" Caption="Two Favorite Things Text" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="OTHERTHINGSTHECHILDENJOYS" Caption="Other Likes Text" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="CHILDPERSONALITY" Caption="Personality" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="CHILDHEALTH" Caption="Health" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="SPIRITUALDEVELOPMENT" Caption="Spiritual Development Text" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="ATTENDINGSCHOOL" Caption="Attending School" DataType="Boolean" Required="false"/>
+
+      <common:FormField FieldID="REASONNOTATTENDINGSCHOOL" Caption="Reason Not Attending School" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="CLASSLEVEL" Caption="Class Level" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="FAVORITESUBJECT" Caption="Favorite Subject" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="VOCATIONALSKILLS" Caption="Vocation Skills" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Info" DataType="String" Required="false"/>
+
+      <common:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" ReadOnly="true" Hidden="true" Caption="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" />
+
+    </common:FormFields>
+
+    <common:WebUIComponent>
+      <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildExtensionsAddDataFormUIModel" />
+      <common:WebUI>
+        <common:ExternalResource Url="browser/htmlforms/custom/ChildExtensionsViewForm.html" />
+      </common:WebUI>
+    </common:WebUIComponent>
+
+    <common:Tabs>
+      <common:Tab ID="FAMILYTAB" Caption="Family Info" CaptionResourceKey="$$individual" />
+      <common:Tab ID="SCHOOLTAB" Caption="School Info" CaptionResourceKey="$$individual" />
+      <common:Tab ID="OTHERTAB" Caption="Other Info" CaptionResourceKey="$$individual" />
+    </common:Tabs>
+
+    <common:UIActions>
+      <common:UIAction ActionID="ADDSIBLINGSACTION" Caption="Add Siblings" Description="Add Siblings Action" >
+        <common:ShowAddForm DataFormInstanceID="173d9386-e5d8-4628-b756-2beac170f91f" >          
+        </common:ShowAddForm>
+      </common:UIAction>
+    </common:UIActions>
+
+  </common:FormMetaData>
+
+</ViewDataFormTemplateSpec>

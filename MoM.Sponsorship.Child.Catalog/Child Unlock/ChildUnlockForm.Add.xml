@@ -1,0 +1,131 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="09ee7ab2-229f-471a-bb47-e019cfe306a5" 
+	Name="Child Unlock Form Add Data Form"
+	Description="Allows user to unlock a child if locked by Blackbaud or by OCM." 
+	Author="Memphis Sellers"
+	DataFormInstanceID="a932d3ba-8871-4b1d-b1e7-70f7d5b50d0f" 
+	RecordType="Sponsorship Opportunity Child"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+	FormHeader="Child lock status"
+	>
+
+	<SPDataForm>
+		<!-- describe the preload SP (if applicable), which should be used to fetch field default values from the database.  If no
+		preload is needed, then this section can be removed -->
+		<LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILDUNLOCK_PRELOAD">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDUNLOCK_PRELOAD
+(
+	@CONTEXTID uniqueidentifier,
+	@ISLOCKED bit = null output,
+	@LOCKEDTEXT nvarchar(100) = null output
+)
+as
+	set nocount on;
+	declare @BBLOCKED bit = 0;
+	declare @OCMLOCKED bit = 0;
+
+	-- populate the fields that have default values that should be fetched from the database
+	-- get the lock from the blackbaud lock table:
+	select @BBLOCKED = LOCKED  -- 0 = false, 1 = true
+	from dbo.SPONSORSHIPOPPORTUNITYLOCK 
+	where ID = @CONTEXTID
+
+	-- get the lock from the OCM custom lock table:
+	select @OCMLOCKED = dbo.USR_UFN_IS_SELECTED_CHILD_LOCKED_FOR_SPONSORSHIP_SELECTION(@CONTEXTID)
+	
+	-- if either is locked, set the locked bit
+	if @BBLOCKED = 1 or @OCMLOCKED = 1
+		begin
+			set @ISLOCKED = 1;
+			set @LOCKEDTEXT = 'Locked. To unlock, check the box below & click Save button, otherwise click the Cancel button.';
+		end
+	else
+		set @LOCKEDTEXT = 'NOT locked. Please click the Cancel button to close this form.';
+	
+	return 0;				
+				]]>
+			</common:CreateProcedureSQL>
+		</LoadImplementation>
+
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILDUNLOCK">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDUNLOCK
+(
+    @ID uniqueidentifier = null output,
+	@CONTEXTID uniqueidentifier,
+    @CHANGEAGENTID uniqueidentifier = null,
+	@UNLOCKCHILD bit = 0
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- we don't actually save any data here, we just call the sprocs to unlock the given child!
+	If @UNLOCKCHILD = 1
+		begin
+			-- go ahead and unlock child
+			-- first unlock the blackbaud one
+			exec dbo.USP_SPONSORSHIPOPPORTUNITY_UNLOCK
+				@ID = @CONTEXTID,    -- sponsorship opportunity id value, which is the sponsorshipopportunitychild id value
+				@SPONSORCOUNT = 0,   -- 0 = No change (just unlock), 1 = Sponsorship created/activated (increment sponsor count)
+				@CHANGEAGENTID = @CHANGEAGENTID
+				
+			-- then unlock the OCM table:
+			exec dbo.USR_DELETE_LOCK_CHILD_FOR_SPONSORSHIP_SELECTION 
+				@OPPORTUNITYID = @CONTEXTID
+		end
+
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="ISLOCKED" Caption="Child is locked" DataType="Boolean" ReadOnly="true" Hidden="true"/>
+			<common:FormField FieldID="LOCKEDTEXT" Caption="Lock status" DataType="String" ReadOnly="true" MaxLength="100" Multiline="true" />
+			<!--<common:FormField FieldID="FIELD2" Caption="Field 2" DataType="String" MaxLength="20" />
+			<common:FormField FieldID="FIELD3" Caption="Field 3" DataType="String" />-->
+			<common:FormField Caption="Unlock Child" DataType="Boolean" FieldID="UNLOCKCHILD" DefaultValueText="False" />
+		</common:FormFields>
+
+		<!--<common:UIFields>
+			<common:FormField Caption="Unlock Child" DataType="Boolean" FieldID="UNLOCKCHILD" />
+		</common:UIFields>-->
+		
+		<!-- indicate the client-side component for the user interface -->
+		<!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+		</common:FormUIComponent>-->
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

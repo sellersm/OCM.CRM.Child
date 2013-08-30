@@ -1,0 +1,168 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes"
+	ID="f2bc9520-9f56-4afe-89c0-1c959cac8991"
+	Name="Sponsorship Opportunity Child Interaction Query"
+	Description="Interactions for a Sponsorship Opportunity Child"
+	Author="Cary Mayeda"
+	IsRoot="false"
+	PrimaryKeyField="ID"
+	RecordType="Interaction"
+    common:SecurityUIFolder="Sponsorship\Opportunity"
+	UseInReportModelGenerator="true"
+	EnforceRecordAccessSecurity="true" >
+	
+	<!-- 
+	Remarks:    Parent is Sponsorship Opportunity (V_QUERY_SPONSORSHIPOPPORTUNITY) and it relates to USR_V_QUERY_INTERACTIONEXTENSION 
+
+	History:
+	Date            Modified By     Comments
+	29-Sep-2012		CMayeda			Initial Version - FogBugz Case 825
+	-->
+	
+	<ViewImplementation ViewName="USR_V_QUERY_INTERACTION_SPONSORSHIPOPPORTUNITYCHILD">
+		<ViewSQL>
+			<![CDATA[
+		
+	select	so_child.ID as ID,
+			INTERACTION.ID as INTERACTIONID,
+			INTERACTION.CONSTITUENTID, --From Interaction.Query.xml only
+			INTERACTIONTYPECODE.DESCRIPTION as TYPE,
+			INTERACTION.OBJECTIVE,
+			INTERACTION.FUNDRAISERID OWNERID,
+			INTERACTION.DATE,
+			INTERACTION.EXPECTEDDATE,
+			INTERACTION.ACTUALDATE,
+			INTERACTION.COMPLETED, --From Interaction.Query.xml only
+			INTERACTION.DATEADDED,
+			INTERACTION.DATECHANGED,
+			INTERACTION.TSLONG,
+			ADDEDBY.APPLICATIONNAME as ADDEDBY_APPLICATION,
+			ADDEDBY.USERNAME as ADDEDBY_USERNAME,
+			CHANGEDBY.APPLICATIONNAME as CHANGEDBY_APPLICATION,
+			CHANGEDBY.USERNAME as CHANGEDBY_USERNAME,
+			INTERACTION.COMMENT, --From Interaction.Query.xml and FundingRequestStep.Query.xml
+			INTERACTION.EVENTID, --From Interaction.Query.xml only
+			dbo.UFN_EVENT_GETNAME(INTERACTION.EVENTID) as EVENTNAME, --From Interaction.Query.xml only
+			INTERACTIONCATEGORY.NAME as [CATEGORY_TRANSLATION], --From Interaction.Query.xml and FundingRequestStep.Query.xml
+			INTERACTIONSUBCATEGORY.NAME as [SUBCATEGORY_TRANSLATION], --From Interaction.Query.xml and FundingRequestStep.Query.xml
+			INTERACTION.LOOKUPID, --From Interaction.Query.xml only
+			INTERACTION.ISCONTACTREPORT, --From Step.Query.xml only
+			INTERACTION.ISINTERACTION, --From Step.Query.xml and FundingRequestStep.Query.xml
+			INTERACTION.STATUS, --From Step.Query.xml and FundingRequestStep.Query.xml
+			INTERACTIONTYPECODE.DESCRIPTION as CONTACTMETHOD
+										   
+	  from	dbo.INTERACTION
+	  join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on
+				so_child.CONSTITUENTID = INTERACTION.CONSTITUENTID
+ left join	dbo.CHANGEAGENT ADDEDBY on ADDEDBY.ID = INTERACTION.ADDEDBYID
+ left join	dbo.CHANGEAGENT CHANGEDBY on CHANGEDBY.ID = INTERACTION.CHANGEDBYID
+ left outer join 
+				dbo.INTERACTIONTYPECODE on INTERACTIONTYPECODE.ID = INTERACTION.INTERACTIONTYPECODEID
+ left outer join 
+				dbo.INTERACTIONSUBCATEGORY on INTERACTIONSUBCATEGORY.ID = INTERACTION.INTERACTIONSUBCATEGORYID
+ left outer join 
+				dbo.INTERACTIONCATEGORY on INTERACTIONCATEGORY.ID = INTERACTIONSUBCATEGORY.INTERACTIONCATEGORYID
+				
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+	<Output>
+		<OutputFields>
+			<OutputField Caption="Child record ID" Category="System Fields" Name="ID" />
+			<OutputField Caption="System record ID" Category="System Fields" Name="INTERACTIONID" CaptionResourceKey="$$system_record_id" CategoryResourceKey="$$system_fields" />
+			<OutputField Caption="Constituent ID" Category="System Fields" IsHidden="true" Name="CONSTITUENTID" />
+			<OutputField Caption="Type" Name="TYPE" IsHidden="true" CaptionResourceKey="$$type">
+				<LookupInfo>
+					<CodeTable CodeTableName="INTERACTIONTYPECODE" IncludeInactive="true" />
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Summary" Name="OBJECTIVE" IsDefaultOutput="true" CaptionResourceKey="$$summary" />
+			<OutputField Caption="Owner ID" Name="OWNERID" IsHidden="true" />
+			<OutputField Caption="Expected date" Name="EXPECTEDDATE" CaptionResourceKey="$$expected_date" />
+			<OutputField Caption="Actual date" Name="ACTUALDATE" CaptionResourceKey="$$actual_date" />
+			<OutputField Caption="Date" Name="DATE" CaptionResourceKey="$$date" />
+			<OutputField Caption="Completed" Name="COMPLETED" DataType="Boolean" CaptionResourceKey="$$completed" />
+			<OutputField Caption="Date added" Category="System Fields" Name="DATEADDED" CaptionResourceKey="$$date_added" CategoryResourceKey="$$system_fields" />
+			<OutputField Caption="Date changed" Category="System Fields" Name="DATECHANGED" CaptionResourceKey="$$date_changed" CategoryResourceKey="$$system_fields" />
+			<OutputField Caption="Timestamp value" Category="System Fields" IsHidden="true" Name="TSLONG" />
+			<OutputField Caption="Added by application" Category="System Fields" Name="ADDEDBY_APPLICATION" CaptionResourceKey="$$added_by_application" CategoryResourceKey="$$system_fields">
+				<LookupInfo>
+					<SimpleDataList SimpleDataListID="37E3E458-AF0D-4dbc-8A18-A93885521A42" />
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Added by user name" Category="System Fields" Name="ADDEDBY_USERNAME" CaptionResourceKey="$$added_by_user_name" CategoryResourceKey="$$system_fields">
+				<LookupInfo>
+					<SimpleDataList SimpleDataListID="CEA15E1C-E455-41be-9ECF-6B5453FA96A4" />
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Changed by application" Category="System Fields" Name="CHANGEDBY_APPLICATION" CaptionResourceKey="$$changed_by_application" CategoryResourceKey="$$system_fields">
+				<LookupInfo>
+					<SimpleDataList SimpleDataListID="37E3E458-AF0D-4dbc-8A18-A93885521A42" />
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Changed by user name" Category="System Fields" Name="CHANGEDBY_USERNAME" CaptionResourceKey="$$changed_by_user_name" CategoryResourceKey="$$system_fields">
+				<LookupInfo>
+					<SimpleDataList SimpleDataListID="CEA15E1C-E455-41be-9ECF-6B5453FA96A4" />
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Comment" Name="COMMENT" CaptionResourceKey="$$comment" />
+			<OutputField Caption="Event" Name="EVENTID" CaptionResourceKey="$$event">
+				<LookupInfo>
+					<SearchList ID="21452A39-7C7D-4334-8B89-6C0EA619ACEC" />
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Event name" Name="EVENTNAME" CaptionResourceKey="$$event_name" />
+			<OutputField Caption="Category" Name="CATEGORY_TRANSLATION" CaptionResourceKey="$$category">
+				<LookupInfo>
+					<SimpleDataList SimpleDataListID="CBBA7545-B66F-44AC-AA24-D9C2F8CBC4EC">
+						<common:Params>
+							<common:Param ID="INCLUDEINACTIVE">
+								<common:Value>1</common:Value>
+							</common:Param>
+						</common:Params>
+					</SimpleDataList>
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Subcategory" Name="SUBCATEGORY_TRANSLATION" CaptionResourceKey="$$subcategory">
+				<LookupInfo>
+					<SimpleDataList SimpleDataListID="0EACC39B-07D1-4641-8774-E319559535A7">
+						<common:Params>
+							<common:Param ID="INCLUDEINACTIVE">
+								<common:Value>1</common:Value>
+							</common:Param>
+						</common:Params>
+					</SimpleDataList>
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Interaction lookup ID" Name="LOOKUPID" CaptionResourceKey="$$interaction_lookup_id" />
+			<OutputField Caption="Is contact report" Name="ISCONTACTREPORT" DataType="Boolean" CaptionResourceKey="$$is_contact_report" />
+			<OutputField Caption="Is interaction" Name="ISINTERACTION" DataType="Boolean" CaptionResourceKey="$$is_interaction" />
+			<OutputField Caption="Status" Name="STATUS" CaptionResourceKey="$$status">
+				<LookupInfo>
+					<TranslationList>
+						<common:Options>
+							<common:TranslationListOption Value="Planned" />
+							<common:TranslationListOption Value="Pending" />
+							<common:TranslationListOption Value="Completed" />
+							<common:TranslationListOption Value="Cancelled" />
+							<common:TranslationListOption Value="Declined" />
+						</common:Options>
+					</TranslationList>
+				</LookupInfo>
+			</OutputField>
+			<OutputField Caption="Contact method" Name="CONTACTMETHOD" CaptionResourceKey="$$contact_method">
+				<LookupInfo>
+					<CodeTable CodeTableName="INTERACTIONTYPECODE" IncludeInactive="true" />
+				</LookupInfo>
+			</OutputField>
+		</OutputFields>
+		<IdentifyingFields>
+			<IdentifyingField Name="OBJECTIVE" />
+		</IdentifyingFields>
+	</Output>
+	<RelationshipOperations>
+		<AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="ID" PathAlias="Interactions" />
+		<AddRelatedView RelatedView="USR_V_QUERY_INTERACTIONEXTENSION" RelatedField="ID" Field="INTERACTIONID" PathAlias="Interaction Extension"/>
+	</RelationshipOperations>
+</QueryViewSpec>

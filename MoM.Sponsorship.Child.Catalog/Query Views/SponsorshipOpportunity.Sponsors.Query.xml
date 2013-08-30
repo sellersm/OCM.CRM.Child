@@ -1,0 +1,104 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="61022d98-ec79-4343-80dc-1f156eb40853"
+	Name="Sponsorship Opportunity Sponsors Query"
+	Description="Displays the sponsor and financial sponsor for a sponsorship opportunity"
+	Author="Cary Mayeda"
+	IsRoot="false"
+	PrimaryKeyField="ID"
+	RecordType="Sponsorship Opportunity"
+    common:SecurityUIFolder="Sponsorship\Opportunity"
+	>
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	09-Dec-2012		CMayeda			Initial Version
+	-->
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_SPONSORSHIPOPPORTUNITYSPONSORS">
+		<ViewSQL>
+			<![CDATA[
+		select	SPONSORSHIP.SPONSORSHIPOPPORTUNITYID as ID,
+				SPONSORSHIP.CONSTITUENTID as SPONSORID,
+				case 
+					when SPONSORSHIP.CONSTITUENTID <> REVENUE.CONSTITUENTID then REVENUE.CONSTITUENTID
+					else NULL	
+				end as FINANCIALSPONSORID,
+				-- This was taken from V_QUERY_SPONSORSHIP
+				case SPONSORSHIP.STATUSCODE 
+					when 1 then
+						case LASTTRANSACTION.ACTIONCODE
+							when 6 then 'Active (Transfer pending)'
+							when 5 then 'Active (Reassigned)'
+							else 'Active' 
+						end
+					when 2 then
+						case LASTTRANSACTION.ACTIONCODE
+							when 1 then 'Transferred'
+							when 2 then
+								case SPONSORSHIP.ID
+									when LASTTRANSACTION.CONTEXTSPONSORSHIPID then
+										case SPONSORSHIPREASON.REASONTYPECODE when 11 then 'Expired' else 'Cancelled' end
+									when LASTTRANSACTION.DECLINEDSPONSORSHIPID then 'Declined' 
+								end
+							when 3 then 'Terminated'
+							when 5 then 'Reassigned'
+							when 7 then 
+								case SPONSORSHIP.ID
+									when LASTTRANSACTION.CONTEXTSPONSORSHIPID then 'Transferred'
+									when LASTTRANSACTION.DECLINEDSPONSORSHIPID then 'Declined' 
+								end
+							when 8 then 'Transferred' 
+						end
+				else SPONSORSHIP.STATUS 
+			end as STATUS
+
+		  from	dbo.SPONSORSHIP
+    inner join	dbo.SPONSORSHIPTRANSACTION LASTTRANSACTION on 
+					LASTTRANSACTION.SPONSORSHIPCOMMITMENTID = SPONSORSHIP.SPONSORSHIPCOMMITMENTID and LASTTRANSACTION.TRANSACTIONSEQUENCE = (select max(TRANSACTIONSEQUENCE) from dbo.SPONSORSHIPTRANSACTION MAXSEQUENCE where MAXSEQUENCE.SPONSORSHIPCOMMITMENTID = SPONSORSHIP.SPONSORSHIPCOMMITMENTID and SPONSORSHIP.ID in(MAXSEQUENCE.CONTEXTSPONSORSHIPID,MAXSEQUENCE.TARGETSPONSORSHIPID,MAXSEQUENCE.DECLINEDSPONSORSHIPID) and MAXSEQUENCE.ACTIONCODE <> 9)		  
+	 left join	dbo.REVENUESPLIT on REVENUESPLIT.ID = SPONSORSHIP.REVENUESPLITID
+	 left join	dbo.REVENUE on REVENUE.ID = REVENUESPLIT.REVENUEID	
+	 left join	dbo.SPONSORSHIPREASON on SPONSORSHIPREASON.ID = LASTTRANSACTION.SPONSORSHIPREASONID
+	 
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="Sponsorship Opportunity system record ID" Category="System Fields" Name="ID" DataType="Guid"/>
+			<OutputField Name="SPONSORID" Caption="Sponsor system record ID" DataType="Guid" />
+			<OutputField Name="FINANCIALSPONSORID" Caption="Financial Sponsor system record ID" DataType="Guid" />
+			<OutputField Caption="Status" Name="STATUS" IsDefaultOutput="true" CaptionResourceKey="$$status"> 
+				<LookupInfo>
+					<TranslationList>
+						<common:Options>
+							<common:TranslationListOption Value="Active" />
+							<common:TranslationListOption Value="Active (Transfer pending)" />
+							<common:TranslationListOption Value="Active (Reassigned)" />
+							<common:TranslationListOption Value="Cancelled" />
+							<common:TranslationListOption Value="Pending" />
+							<common:TranslationListOption Value="Reassigned" />
+							<common:TranslationListOption Value="Declined" />
+							<common:TranslationListOption Value="Terminated" />
+							<common:TranslationListOption Value="Transferred" />
+						</common:Options>
+					</TranslationList>
+				</LookupInfo>
+			</OutputField>
+		</OutputFields>
+	</Output>
+
+	<RelationshipOperations>
+		<AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" Field="ID" ParentViewRelatedField="ID" Cardinality="OneToMany" PathAlias="Sponsors" />
+		<AddRelatedView RelatedView="V_QUERY_CONSTITUENT" Field="SPONSORID" RelatedField="ID" Cardinality="OneToOne"  PathAlias="Sponsor"/>
+		<AddRelatedView RelatedView="V_QUERY_CONSTITUENT" Field="FINANCIALSPONSORID" RelatedField="ID" Cardinality="OneToOne"  PathAlias="Financial Sponsor"/>
+	</RelationshipOperations>
+</QueryViewSpec>
+

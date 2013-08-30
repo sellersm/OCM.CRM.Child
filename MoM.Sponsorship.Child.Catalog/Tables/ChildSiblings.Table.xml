@@ -1,0 +1,40 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c2db9e27-ffbf-4641-9964-a327869d3922"
+	Name="Child Siblings"
+	Description="Child Siblings Table"
+	Author="memphis-PC\Administrator"
+	Tablename="USR_CHILDSIBLINGS"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+		<TextField Description="Name of sibling" Length="50" Name="SIBLINGNAME" Required="true"/>
+		<EnumField Description="Gender of sibling" Name="SIBLINGGENDERCODE" DefaultValue="0">
+			<EnumValues>
+				<EnumValue ID="0" Translation="Male"/>
+				<EnumValue ID="1" Translation="Female"/>
+			</EnumValues>
+		</EnumField>
+		<NumberField Description="Sibling Birth Year" Name="SIBLINGBIRTHYEAR" Type="smallint" />
+		<SequenceField Description="SIBLINGCHILDID" Name="SEQUENCE" />
+    <GuidField Description="ChildExtension ID" IsUnique="false" Name="CHILDEXTENSIONID" Required="true" />
+	</Fields>
+
+	<!-- define any additional check constraints on the table --><!--
+	<CheckConstraints>
+
+	</CheckConstraints>
+
+	--><!-- define any indexes on the table --><!--
+	<Indexes>
+
+	</Indexes>
+		
+	--><!-- define any triggers on the table --><!--
+	<Triggers>
+
+	</Triggers>-->
+
+</TableSpec>

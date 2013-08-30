@@ -1,0 +1,185 @@
+﻿<EditDataFormTemplateSpec 
+	xmlns="bb_appfx_editdataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="c4f9ac01-8c6b-45f6-9fb2-64c81d90655f" 
+	Name="Sponsorship Opportunity Note Extension Date Proofed Edit 2"
+	Description="Used to enter a Date Proofed for a Child Bio note" 
+	Author="Bill Elfstrom"
+	DataFormInstanceID="5cd48008-d0e2-4546-9c51-3d200916d6d5" 
+	RecordType="Sponsorship Opportunity Note"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Documentation\Note" >
+	
+	<!-- 
+	Remarks:    Issues with the original
+					ID="D586CC42-6BD4-4E9E-9C03-F8EB9BB5F2E1" 
+					Name="Sponsorship Opportunity Note Enter Date Proofed Edit Data"
+
+
+	History:
+	Date          Modified By     Comments
+	01-Aug-2012		CMayeda			    Recreated with new ids and more standard sproc names to fix deployment issues.
+  17-Oct-2012   BElfstrom       Fixed issue with Child Bio note type not updating Date Proofed.  FogBugz 894.
+	-->
+
+	<SPDataForm>
+
+		<!-- define the edit load SP, which is used to load the data for the form -->
+		<LoadImplementation SPName="USP_DATAFORMTEMPLATE_EDITLOAD_SPONSORSHIPOPPORTUNITYNOTEEXT_DATEPROOFED">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_SPONSORSHIPOPPORTUNITYNOTEEXT_DATEPROOFED(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @DATE_PROOFED datetime = null output
+)
+as
+
+	set nocount on;
+
+	-- @DATALODED is usally set to 0 to indicate no rows returned.
+  -- It's OK in this procedure to not retrieve any records.  The Date Proofed record may not yet exist,
+  -- so we have to set the @DATALODED parm to 1 so that the "no data loaded" message 
+  -- will not display.
+
+	set @DATALOADED = 1
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form. Note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+
+SELECT 
+  @TSLONG = TSLONG,
+  @DATE_PROOFED = DATE_PROOFED
+  FROM [dbo].[USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION]
+  where ID = @ID
+
+
+	return 0;
+				]]>
+			</common:CreateProcedureSQL>
+		</LoadImplementation>
+
+		<SaveImplementation SPName="USP_DATAFORMTEMPLATE_EDIT_SPONSORSHIPOPPORTUNITYNOTEEXT_DATEPROOFED">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_SPONSORSHIPOPPORTUNITYNOTEEXT_DATEPROOFED (
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+	@DATE_PROOFED datetime
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+				
+	declare @CURRENTDATE datetime
+	set @CURRENTDATE = getdate()
+
+	begin try
+		-- handle updating the data
+    -- Pull the data from the form and load it into the table
+
+    /* get the IDs for the Child Bio Draft, and Child Bio type codes */
+    declare @ChildBioDraftCodeID uniqueidentifier
+    declare @ChildBioCodeID uniqueidentifier
+	  declare @ChildID uniqueidentifier
+	
+    select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
+    if @ChildBioCodeID is null
+      RAISERROR 1000000 'Couldn''t find the "Child Bio" sponsorship opportunity note code' 
+        
+    select @ChildBioDraftCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - draft'
+    if @ChildBioDraftCodeID is null
+      RAISERROR 1000000 'Couldn''t find the "Child Bio Draft" sponsorship opportunity note code'    
+
+	  /* get the Child ID */
+	  SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
+	  if @ChildID is null
+		  RAISERROR 1000000 'Couldn''t find the "Child ID'    
+
+  	if exists (select ID from dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION where ID = @ID)    
+		  -- Delete
+		if @DATE_PROOFED IS NULL 
+		begin
+			-- Don't leave orphaned records.  If the Date Proofed is removed, delete the Date Proofed extension record
+			delete USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
+				where  ID = @ID
+         
+			/* Change the type to Child Bio - Draft  */
+	        update dbo.SPONSORSHIPOPPORTUNITYNOTE
+	        set SPROPPNOTETYPECODEID = @ChildBioDraftCodeID
+	        where ID = @ID    
+          
+			/* Eligibility check */	
+			exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildID, @CHANGEAGENTID
+		end
+		else
+			-- Change   
+			-- They changed the date, so update the record
+			-- handle updating the data if the row already exists
+		    update [dbo].[USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION] set
+			  DATE_PROOFED = @DATE_PROOFED,
+			  CHANGEDBYID = @CHANGEAGENTID,
+			  DATECHANGED = @CURRENTDATE
+		    where ID = @ID
+        
+	else
+    
+		-- Add   
+		-- If they entered a value and the Date Proofed record does not exit
+		-- so create a new Date Proofed extension record.
+		if @DATE_PROOFED IS NOT NULL
+			/* Check to make sure the record exists and it's a Child Bio Draft or Child Bio*/
+			if (SELECT [ID] from dbo.SPONSORSHIPOPPORTUNITYNOTE 
+				where ([ID] = @ID)) is not null 
+
+			begin
+				Insert into dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
+						(ID, DATE_PROOFED, ADDEDBYID, CHANGEDBYID)
+						values
+							(@ID, @DATE_PROOFED, @CHANGEAGENTID, @CHANGEAGENTID)
+            
+				/* Convert the any Child Bio notes to Old Child Bio */
+				exec dbo.USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD @ChildID
+            
+				/* Update Draft to Child Bio note type */
+				update dbo.SPONSORSHIPOPPORTUNITYNOTE
+				set SPROPPNOTETYPECODEID = @ChildBioCodeID
+				where ID = @ID    
+	    
+				/* Eligibility check */	
+				exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @ChildID, @CHANGEAGENTID
+			end
+  end try
+  
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+
+	</SPDataForm>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="DATE_PROOFED" Caption="Date Proofed" DataType="Date"/>
+		</common:FormFields>
+
+
+		<common:WebUIComponent>
+			<common:WebUI>
+				<common:DefaultWebUI/>
+			</common:WebUI>
+		</common:WebUIComponent>
+	</common:FormMetaData>
+
+</EditDataFormTemplateSpec>

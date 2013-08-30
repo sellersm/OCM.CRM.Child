@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildExtension.AdditionalInfo.Edit.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildExtensionEditAdditionalInfoDataFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildExtensionEditAdditionalInfoDataForm.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

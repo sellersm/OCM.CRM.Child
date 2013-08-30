@@ -1,0 +1,66 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="2a46396b-e18b-4417-89c4-d609ec52ebfe"
+	Name="USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS"
+	Description="Get a table of sponsorship reasons - both Waiting List and Batch Commit"
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS" >
+	
+	<!-- 
+	Remarks:    This was created to centralize the updating of the waiting list reasons.
+				This will return 0 rows if any of the Waiting List or Batch Commit - Locked Failed sponsorship reason ids are not found.
+	
+				@sponsorhipReasonsToInclude table (return table) matches USR_UDT_SPONSORSHIPREASON
+				
+	History:
+	Date            Modified By     Comments
+	13-Aug-2012		CMayeda			Initial Version
+	-->
+
+	<CreateFunctionSQL>
+		<![CDATA[
+		
+create function dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS()
+returns @sponsorhipReasonsToInclude table
+		(sponsorshipReasonID uniqueidentifier)
+with execute as caller
+as begin
+
+	declare @numberSponsorshipReasons tinyint		-- The number of sponsorship reasons (waiting list and batch commit) that should be checked to include children with that sponsorship reason in the returned set of children
+	set @numberSponsorshipReasons = 6 
+		
+	-- Waiting List reasons - finding these individually instead of all the start with 'Waiting List' in order to minimize accidental data entry issues
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - market demand'
+	
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - maximum quota reached'
+	
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - not accepting new children'
+		
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - project performance'
+
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - project status'
+
+	-- Batch Commit reason 
+	insert @sponsorhipReasonsToInclude
+	select ID from SPONSORSHIPREASON where lower (REASON) = 'batch commit - lock failed'
+	
+	-- Get the number of reasons inserted 
+	declare @reasonCount tinyint
+	select @reasonCount = count(*) from @sponsorhipReasonsToInclude
+	
+	-- Only return rows if the expected number of reasons were inserted
+	if @reasonCount <> @numberSponsorshipReasons  
+		delete  @sponsorhipReasonsToInclude
+	
+	return
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

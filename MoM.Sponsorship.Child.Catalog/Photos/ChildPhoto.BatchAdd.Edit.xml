@@ -1,0 +1,138 @@
+<EditDataFormTemplateSpec 
+    xmlns:common="bb_appfx_commontypes"
+    ID="0C6B7085-48BD-45B3-B0F5-B12641CA0952"
+	Name="Child Photo Add Batch Row Edit Form"
+    Description="Edit dataform template for child photo batch records."
+    Author="Cary Mayeda"
+    RecordType="Child Photo Add Batch"
+    DataFormInstanceID="44DE27C0-40CC-4100-9527-899ED20DC27B"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+    xmlns="bb_appfx_editdataformtemplate" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	-->
+
+	<SPDataForm>
+        <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDPHOTOADD_BATCHROW">
+            <common:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDPHOTOADD_BATCHROW
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @SEQUENCE int = null output,
+    @SPONSORSHIPOPPORTUNITYLOOKUPID nvarchar(100) = null output,
+    @ATTACHMENTTYPECODEID uniqueidentifier = null output,
+    @PICTURETITLE nvarchar(100) = null output,
+    @FILENAME nvarchar(255) = null output,
+    @FILELOCATION nvarchar(1000) = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+        @SEQUENCE = SEQUENCE, 
+        @SPONSORSHIPOPPORTUNITYLOOKUPID = SPONSORSHIPOPPORTUNITYLOOKUPID, 
+        @ATTACHMENTTYPECODEID = ATTACHMENTTYPECODEID, 
+        @PICTURETITLE = PICTURETITLE, 
+        @FILENAME = FILENAME,
+        @FILELOCATION = FILELOCATION
+	from dbo.USR_BATCHCHILDPHOTOADD
+	where ID = @ID
+
+	return 0;
+]]>
+</common:CreateProcedureSQL>
+        </LoadImplementation>
+        <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOADD_BATCHROW">
+            <common:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOADD_BATCHROW
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+    @SEQUENCE int,
+    @SPONSORSHIPOPPORTUNITYLOOKUPID nvarchar(100),
+    @ATTACHMENTTYPECODEID uniqueidentifier,
+    @PICTURETITLE nvarchar(100),
+    @FILENAME nvarchar(255),
+    @FILELOCATION nvarchar(1000)
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+						
+	begin try
+		-- handle updating the data
+		update dbo.USR_BATCHCHILDPHOTOADD set
+            SEQUENCE = @SEQUENCE,
+            SPONSORSHIPOPPORTUNITYLOOKUPID = @SPONSORSHIPOPPORTUNITYLOOKUPID,
+            ATTACHMENTTYPECODEID = @ATTACHMENTTYPECODEID,
+            PICTURETITLE = @PICTURETITLE,
+            FILENAME = @FILENAME,
+            FILELOCATION = @FILELOCATION,
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+		where ID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+]]>
+</common:CreateProcedureSQL>
+            <common:ExpectedDBExceptions>
+                <common:Constraints>
+					<common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_SPONSORSHIPOPPORTUNITYLOOKUPID" Field="SPONSORSHIPOPPORTUNITYLOOKUPID" Type="Required" />
+					<common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_ATTACHMENTTYPECODEID" Field="ATTACHMENTTYPECODEID" Type="Required" />
+					<common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_PICTURETITLE" Field="PICTURETITLE" Type="Required" />
+					<common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_FILENAME" Field="FILENAME" Type="Required" />
+                </common:Constraints>
+            </common:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+    <common:FormMetaData FixedDialog="true">
+        <common:FormFields>
+            <common:FormField FieldID="SEQUENCE" Required="true" Hidden="true" Caption="Sequence" />
+
+            <common:FormField FieldID="SPONSORSHIPOPPORTUNITYLOOKUPID" Caption="Child Lookup ID" Required="true" />
+<!--               <common:SearchList EnableQuickFind="true"  SearchListID="AB076868-114A-4696-AFE9-8D590677708C"></common:SearchList>
+            </common:FormField>-->
+
+            <common:FormField FieldID="ATTACHMENTTYPECODEID" Caption="Attachment type" Required="true">
+              <common:CodeTable CodeTableName="SPROPPATTACHMENTTYPECODE" />
+            </common:FormField>
+
+            <common:FormField FieldID="PICTURETITLE" Required="true" MaxLength="100" Caption="Picture title" />
+              <common:FormField FieldID="FILENAME" Required="true" MaxLength="255" Caption="File name" />
+
+            <common:FormField FieldID="FILELOCATION" Caption="File location" Required="true"/>
+              <!--<common:SimpleDataList SimpleDataListID="be0d5165-f49b-4b14-9aa1-92a4078f9734" />              
+            </common:FormField>-->
+
+        </common:FormFields>
+        <common:FormUIComponent />
+    </common:FormMetaData>
+</EditDataFormTemplateSpec>

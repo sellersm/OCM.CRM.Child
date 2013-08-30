@@ -1,0 +1,47 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1b65a760-a8d2-46c2-801c-04bd38480db8"
+	Name="USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST"
+	Description="This is used to in the business process and cch batch to check waiting list children"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST" >
+	<!-- 
+	Remarks:    This merely packages the waiting list children returned from USR_UFN_CHILDQUOTA_GETWAITINGLIST 
+				into a table to pass to USR_USP_CHILDQUOTA_PROCESS_CHILDLIST to perform the actual tasks.
+				
+	History:
+	Date            Modified By     Comments
+	10-Jul-2012		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_WAITINGLIST (
+	@changeAgentID uniqueidentifier,					-- Used to specify change agent for ChangedByID and AddedByID fields
+	@successTableName nvarchar(128) = '',				-- Table Name to insert children successfuly registered, pass empty string if no table needs to be populated
+	@exceptionTableName nvarchar(128) = '',				-- Table Name to insert exceptions, pass empty string if no table needs to be populated
+	@successCount int = 0 output,						-- Number of children successfully registered
+	@exceptionCount int = 0 output						-- Number of exceptions - this isn't always the number children, because only one row is entered for a lock failure
+)
+as
+begin
+	-- Used to store the children on the waiting list
+	declare @waitingListChildren dbo.USR_UDT_QUOTAPROCESSCHILDREN
+	insert	@waitingListChildren  
+	select	quotaTypeCode,
+			childProjectID,
+			countryID,
+			sponsorshipOpportunityChildID,
+			dateAdded 
+	  from	dbo.USR_UFN_CHILDQUOTA_GETWAITINGLIST ()
+
+
+	exec USR_USP_CHILDQUOTA_PROCESS_CHILDLIST @waitingListChildren, @changeAgentID, @successTableName, @exceptionTableName, @successCount output, @exceptionCount output 
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

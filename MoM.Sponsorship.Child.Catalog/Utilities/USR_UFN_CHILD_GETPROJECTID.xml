@@ -1,0 +1,34 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="6c4547e2-ebd9-4634-876b-409ec46c1c25"
+	Name="USR_UFN_CHILD_GETPROJECTID"
+	Description="Retrieve the Child Project's constituent id (same as child project extension id) for the child specified"
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILD_GETPROJECTID"
+	GrantServiceRolePermission="true"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETPROJECTID (
+	@sponsorshipOpportunityChildID uniqueidentifier
+)
+returns uniqueidentifier
+with execute as caller
+as 
+begin
+	declare @projectID uniqueidentifier
+	
+	select	@projectID = slocation.FIELDOFFICEID
+	  from	dbo.SPONSORSHIPOPPORTUNITY so
+inner join	dbo.SPONSORSHIPLOCATION slocation on
+				so.SPONSORSHIPLOCATIONID = slocation.ID 						
+	 where	so.ID = @sponsorshipOpportunityChildID
+	
+	return @projectID 
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

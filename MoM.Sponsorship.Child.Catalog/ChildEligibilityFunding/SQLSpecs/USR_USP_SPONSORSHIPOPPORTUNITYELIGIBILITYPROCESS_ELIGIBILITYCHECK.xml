@@ -1,0 +1,45 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="839b60b3-86cd-49b4-a280-80d1b0b24737"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK"
+	Description="Check eligibility of children in a selection set"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK" 
+	GrantServiceRolePermission="true">
+
+	<!-- 
+	Remarks:    Used by Sponsorship Opportunity Eligibility business process
+				This wraps the USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, so that the business process can pass it a Selection Set ID instead of a USR_UDT_CHILDIDLIST
+
+	History:
+	Date            Modified By     Comments
+	01-Aug-2012		CMayeda			Initial Version
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_ELIGIBILITYCHECK (
+	@idSetRegisterID uniqueidentifier,		-- Specify a Selection Set ID if the sproc should process all the children in a query selection
+	@changeAgentID uniqueidentifier,		-- Used to specify change agent for ChangedByID and AddedByID fields
+	@deletedRows int = 0 output,			-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output			-- Output parm that specifies how many pending reasons were inserted
+)
+as
+begin
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+	declare @childList dbo.USR_UDT_CHILDIDLIST
+	insert @childList 
+	select ID from dbo.UFN_IDSETREADER_GETRESULTS (@IDSETREGISTERID) 
+
+	exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK @childList, @changeAgentID, @deletedRows output, @insertedRows output
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

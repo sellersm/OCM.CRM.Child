@@ -1,0 +1,49 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="7d50f0e1-d19b-4333-ad0d-abb91040e3c6"
+	Name="USR_USP_CHILDREN_WEBSEARCH"
+	Description="Used by Child Search BBIS custom part"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDREN_WEBSEARCH"
+    GrantServiceRolePermission="true"
+	>
+	
+	<!-- 
+	Remarks:    This is version of Blackbaud's (Chris W.) USR_USP_CHILDREN_SEARCH used in the child search.
+				This was deployed prior to the completion of Chris' modifications. 
+				Once Chris' parts / catalog items are deployed, this will not be needed.
+
+	History:
+	Date            Modified By     Comments
+	15-Aug-2013		CMayeda			Initial Version
+	-->
+	<CreateProcedureSQL>
+		<![CDATA[
+            create procedure dbo.USR_USP_CHILDREN_WEBSEARCH
+            (
+                @GENDER nvarchar(25),
+                @AGE0 nvarchar(10),
+                @AGE1 nvarchar(10),
+                @COUNTRY nvarchar(25)
+            )
+            as
+            begin
+                set @GENDER = nullif(@GENDER, '');
+                set @AGE0 = nullif(@AGE0, '');
+                set @AGE1 = nullif(@AGE1, '');
+                set @COUNTRY = nullif(@COUNTRY, '');
+
+	            select
+                    *
+                from
+                    USR_V_QUERY_SPONSORSHIPOPPORTUNITY
+                where
+                    ((@GENDER is null) or (GENDER = @GENDER))
+	                and ((@COUNTRY is null) or (COUNTRYNAME = @COUNTRY))
+	                and ((@AGE0 is null) or (@AGE1 is null) or (AGE >= @AGE0 and AGE <= @AGE1))
+            end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

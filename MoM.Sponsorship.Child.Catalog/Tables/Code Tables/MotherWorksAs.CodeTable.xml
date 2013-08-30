@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="55678174-9a3d-47ce-ae29-a7a6f972c62d" 
+	Name="Mother Works As Code Values"
+	Description="Mother Works As Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_MOTHERWORKSASCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

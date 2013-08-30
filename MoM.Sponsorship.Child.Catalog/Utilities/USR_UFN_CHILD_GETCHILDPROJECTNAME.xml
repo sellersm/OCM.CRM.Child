@@ -1,0 +1,32 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="80d6b732-83a8-4a25-b03f-3628fc40fc13"
+	Name="USR_UFN_CHILD_GETCHILDPROJECTNAME"
+	Description="Gets the Name of the ChildProject for the given LocationID"
+	Author="Memphis Sellers"
+	DBFunctionName="USR_UFN_CHILD_GETCHILDPROJECTNAME"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETCHILDPROJECTNAME(
+	@locationID uniqueidentifier
+)
+returns nvarchar(100)
+with execute as caller
+as begin
+	declare @projectName nvarchar(100) = ''
+	
+	select @projectName = fieldoffice.NAME
+	from SPONSORSHIPLOCATION sl
+	join CONSTITUENT fieldoffice on
+	sl.FIELDOFFICEID = fieldoffice.ID
+	WHERE sl.ID = @locationID;
+	
+	return @projectName;
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>
