@@ -10,7 +10,19 @@
     c:SecurityUIFolder="Child Departure"
     xmlns="bb_appfx_queryview"
     >
-    <ViewImplementation ViewName="USR_V_QUERY_USR_CHILDDEPARTURE">
+
+	<!-- 
+	  Remarks:    Query to add the Child Departure fields to the Sponsorship Opportunity query.
+
+	  History:
+	  Date			Modified By     Comments
+	  16-Sep-2013	Memphis			B-01414 in V1.
+	 -->
+
+
+
+
+	<ViewImplementation ViewName="USR_V_QUERY_USR_CHILDDEPARTURE">
         <ViewSQL>
 <![CDATA[
 select
@@ -75,7 +87,9 @@ select
   USR_CHILDDEPARTURE.DATEADDED,
   USR_CHILDDEPARTURE.DATECHANGED,
   USR_CHILDDEPARTURE.TSLONG,
-  CONSTITUENTID
+  CONSTITUENTID,
+  USR_CHILDDEPARTURE.ISCURRENTDEPARTURECODE, 
+  USR_CHILDDEPARTURE.ISCURRENTDEPARTURE
 from 
     dbo.USR_CHILDDEPARTURE
     join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDDEPARTURE.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
@@ -172,6 +186,16 @@ from
             <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
             <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
             <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
+			<OutputField Name="ISCURRENTDEPARTURE" Caption="Current Departure?" DataType="String" >
+				<LookupInfo>
+					<TranslationList>
+						<c:Options>
+							<c:TranslationListOption Value="Yes" />
+							<c:TranslationListOption Value="No" />
+						</c:Options>
+					</TranslationList>
+				</LookupInfo>
+			</OutputField>
         </OutputFields>
       <IdentifyingFields>
         <IdentifyingField Name="ID"/>
