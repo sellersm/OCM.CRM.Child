@@ -229,9 +229,13 @@ begin
 
 			when so.ELIGIBILITYCODE = @eligibilityCode_Pending
     		 and ch_ext.FUNDED = 1  
-			 and so_reasonBDContactable.ID is not null then 'Terminate hold'
+			 and so_reasonBDContactable.ID is not null then 'BD Contactable'
 
-    		when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_Active  
+			when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1  
+			 and so_reasonTerminateHold.ID is not null then 'Terminate hold'
+
+		   when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_Active  
     		 and so.ELIGIBILITYCODE = @eligibilityCode_Eligible
     		 and ch_ext.FUNDED = 1  then 'Active - Ready'
     		 
@@ -264,7 +268,7 @@ begin
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProjectPhasingOut on so_reasonProjectPhasingOut.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProjectPhasingOut.SPONSORSHIPREASONID = @sponsorshipReasonID_ProjectPhasingOut
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonProgramCompletion on so_reasonProgramCompletion.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonProgramCompletion.SPONSORSHIPREASONID = @sponsorshipReasonID_ProgramCompletion
         left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonBDContactable on so_reasonBDContactable.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonBDContactable.SPONSORSHIPREASONID = @sponsorshipReasonID_BangladeshContactable
-		
+		left outer join dbo.SPONSORSHIPOPPORTUNITYREASON so_reasonTerminateHold on so_reasonTerminateHold.SPONSORSHIPOPPORTUNITYID = so.ID and so_reasonTerminateHold.SPONSORSHIPREASONID = @sponsorshipReasonID_TerminateHold 
 	return 0
 end
 
