@@ -18,7 +18,8 @@
 	History:
 	Date            Modified By     Comments
 	19-Jul-2013		CMayeda			Initial Version - TK-01004 for B-01027
-	30-Aug-2013		CMayeda			V1: D-01090 - Removed Availability criteria from Field Memo Delinquency and BD Contactable based on change to Requirments (google doc)
+	30-Aug-2013		CMayeda			V1:D-01090 - Removed Availability criteria from Field Memo Delinquency and BD Contactable based on change to Requirments (google doc)
+	18-Sep-2013		CMayeda			V1:D-01092 - Added Terminate hold
 	-->	
 	
 	<!-- describe the SP used to calculate the smart field values -->
@@ -216,6 +217,8 @@ begin
     		 and ch_ext.FUNDED = 1 
              and so_reasonFieldMemo.ID is not null then 'Holding'
 
+			when so.ELIGIBILITYCODE = @eligibilityCode_Pending
+    		 and ch_ext.FUNDED = 1  then 'Terminate hold'
 
     		when chpr_ext.CHILDPROJECTSTATUSCODEID = @projectStatusID_Active  
     		 and so.ELIGIBILITYCODE = @eligibilityCode_Eligible
