@@ -12,6 +12,7 @@
 	History:
 	Date            Modified By     Comments
 	17-Oct-2012		CMayeda			Initial Version
+	02-Oct-2012		CMayeda			Removed order by
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
@@ -54,7 +55,6 @@ as
     and ELIGIBILITY = 'Eligible'
 	AND AVAILABILITY = 'Available'
 
-   order by newid()
 
 	]]>
 		</common:CreateProcedureSQL>
