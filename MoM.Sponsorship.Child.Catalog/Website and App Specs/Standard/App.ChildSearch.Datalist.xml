@@ -55,6 +55,7 @@ as
     and ELIGIBILITY = 'Eligible'
 	AND AVAILABILITY = 'Available'
 
+order by CHILDNO
 
 	]]>
 		</common:CreateProcedureSQL>
