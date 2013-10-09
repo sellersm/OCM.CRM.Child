@@ -12,7 +12,8 @@
 	History:
 	Date            Modified By     Comments
 	17-Oct-2012		CMayeda			Initial Version
-	02-Oct-2012		CMayeda			Removed order by
+	02-Oct-2013		CMayeda			Removed order by
+	09-Oct-2013		CMayeda			Added temporary use of reservation keys
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
@@ -51,9 +52,9 @@ as
  LEFT OUTER JOIN dbo.USR_COUNTRYEXTENSION countryext on projectext.COUNTRYEXTENSIONID = countryext.ID
  LEFT OUTER JOIN dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID         -- This is the constituent record that has the note of type "Country Bio"
  
-	  WHERE sf.VALUE > 3
-    and ELIGIBILITY = 'Eligible'
-	AND AVAILABILITY = 'Available'
+	  WHERE RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))	  
+        and ELIGIBILITY = 'Eligible'
+	    and AVAILABILITY = 'Reserved'
 
 order by CHILDNO
 
