@@ -527,7 +527,10 @@
     <EmbeddedResource Include="Smart Fields\Child.EOMReportStatus.SmartField.xml" />
     <EmbeddedResource Include="Query Views\ChildProjectDisbursementOld.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Plan B v2\USR_USP_CHILDREN_WEBSEARCH.xml" />
-    <EmbeddedResource Include="Website and App Specs\Standard\USR_USP_GETCHILDINFOFORCONSTITUENTID.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\USR_USP_GETCHILDINFOFORCONSTITUENTID.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildInfo.Query.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
