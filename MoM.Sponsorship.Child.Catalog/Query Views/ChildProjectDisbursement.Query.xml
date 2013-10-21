@@ -17,12 +17,14 @@
 	Date            Modified By     Comments
 	30-Jul-2013		CMayeda			Updated to remove logic for phasing out projects. It only includes funded children.
 	18-Oct-2013		CMayeda			Updated for new Child Project UNSPONSOREDFUND field V1:TK-01113
+	20-Oct-2013		CMayeda			Updated to only include Funded = 1 for UNSPONSOREDFUND = 1
 
 	-->
 	<!-- define the view used to return data for the query -->
 	<ViewImplementation ViewName="USR_V_QUERY_CHILDPROJECTDISBURSEMENTS">
 		<ViewSQL>
 			<![CDATA[
+
 
 with RegisteredChildren (FIELDOFFICEID, PROJECTLOOKUPID, SPONSORSHIPOPPORTUNITYID, CURRENTSPONSORSHIPSTATUS)
 as
@@ -48,15 +50,16 @@ left join dbo.USR_CHILDEXTENSION ch_ext on
 left join dbo.usr_sponsorshipextension s_ext on s_ext.SPONSORSHIPOPPORTUNITYID = so.ID and s_ext.ISCURRENT = 1
 left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
 
-	where ((cp_ext.UNSPONSOREDFUND = 0 and ch_ext.Funded=1)
+	where (cp_ext.UNSPONSOREDFUND = 0
 	        or 
-	       (cp_ext.UNSPONSOREDFUND = 1 and s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID is not null)
+	      (cp_ext.UNSPONSOREDFUND = 1 and s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID is not null)
 	      )
 /*	       or 
 	       (slocation.STATUSCODE = 1 -- Inactive
 	        and slocation.SPONSORSHIPREASONID = '3EC2BD25-FEC7-41B9-8C4F-DDA63C063DEC') -- phasing out 
 	      )
-*/	       
+*/	   
+	   and ch_ext.Funded=1    
 	   and	so.ELIGIBILITYCODE in (0,1) -- @eligibilityCodePending, @eligibilityCodeEligible)
 )	
 select FIELDOFFICEID,
@@ -66,8 +69,8 @@ select FIELDOFFICEID,
 	   sum(case when CURRENTSPONSORSHIPSTATUS='Sponsored' then 0 else 1 end) as UNSPONSOREDCOUNT, 
 	   count(*) as TOTALCHILDCOUNT
  from RegisteredChildren
- 
 group by FIELDOFFICEID, PROJECTLOOKUPID
+
 
 			]]>
 		</ViewSQL>
