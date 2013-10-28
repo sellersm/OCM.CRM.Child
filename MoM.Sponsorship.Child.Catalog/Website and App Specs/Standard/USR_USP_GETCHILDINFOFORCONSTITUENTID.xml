@@ -11,43 +11,106 @@
 
 	<CreateProcedureSQL>
 		<![CDATA[
-            create procedure dbo.USR_USP_GETCHILDINFOFORCONSTITUENTID
-            (
-                @ID uniqueidentifier
-            )
-            as
-            begin
-                declare @T table(ID uniqueidentifier, NAME nvarchar(100), LOOKUPID nvarchar(25));
 
-                insert into @T
-                select
-	                FT.ID,
-	                dbo.UFN_SPONSORSHIPOPPORTUNITY_TRANSLATIONFUNCTION(S.SPONSORSHIPOPPORTUNITYID) NAME,
-	                SO.LOOKUPID
-                from
-	                FINANCIALTRANSACTION FT
-	                inner join FINANCIALTRANSACTIONLINEITEM FTLI on FT.ID = FTLI.FINANCIALTRANSACTIONID
-	                inner join SPONSORSHIP S on FTLI.ID = S.REVENUESPLITID
-	                left join SPONSORSHIPOPPORTUNITY SO on S.SPONSORSHIPOPPORTUNITYID = SO.ID	
-                where
-	                FT.CONSTITUENTID = @ID
-	            	                        
-                select
-					ID,
-					NAME,
-					LOOKUPID
-				from
-					@T
-				union all
-                select 
-					RECURRINGGIFTINSTALLMENTPAYMENT.PAYMENTID,
-	                t.NAME,
-	                t.LOOKUPID
-				from 
-					dbo.RECURRINGGIFTINSTALLMENTPAYMENT
-					inner join dbo.RECURRINGGIFTINSTALLMENT on RECURRINGGIFTINSTALLMENT.ID = RECURRINGGIFTINSTALLMENTPAYMENT.RECURRINGGIFTINSTALLMENTID
-					inner join @T t on RECURRINGGIFTINSTALLMENT.REVENUEID = t.ID					
-            end
+create procedure dbo.USR_USP_GETCHILDINFOFORCONSTITUENTID
+(
+    @constituentID uniqueidentifier,
+    @maxChildrenInDesc as int,
+    @minDate as date
+)
+as
+begin
+
+	SELECT	
+		r.[ID], 
+		r.DATE,
+		r.AMOUNT,
+		r.TRANSACTIONTYPECODE,
+		(select distinct D.ID, D.VANITYNAME, D.USERID from dbo.REVENUE Rev inner join dbo.REVENUESPLIT RSplt on RSplt.REVENUEID = Rev.ID inner join dbo.DESIGNATION D on RSplt.DESIGNATIONID = D.ID where Rev.ID = R.ID for xml raw ('d'), root('designations')) as DESIGNATIONS,
+		(select dbo.UDA_BUILDLIST(distinct (case when Rev.TRANSACTIONTYPECODE = 0 then (case RSplt.APPLICATIONCODE when 0 then RSplt.APPLICATION else case Rsplt.TYPECODE when 9 then Rsplt.TYPE + ' ' + lower(RSplt.APPLICATION) + ' ' + lower(Rev.TRANSACTIONTYPE) else RSplt.APPLICATION + ' ' + lower(Rev.TRANSACTIONTYPE) end end) else(case when Rev.TRANSACTIONTYPECODE = 2 and RSplt.TYPECODE = 9 then(RSplt.TYPE + ' ' + lower(Rev.TRANSACTIONTYPE))else Rev.TRANSACTIONTYPE end) end)) from dbo.REVENUE Rev inner join dbo.REVENUESPLIT RSplt on RSplt.REVENUEID = Rev.ID where(Rev.ID = R.ID and RSplt.AMOUNT > 0)) as GIFTTYPE,
+		(select dbo.UDA_BUILDLIST(distinct 
+						case 
+							when so_child1.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, ''))
+							else so_child1.NAME
+						end)
+			FROM 
+				dbo.FINANCIALTRANSACTIONLINEITEM  payment_f_trans_item
+				inner join 
+					dbo.REVENUESPLIT_EXT payment_r_split_ext on payment_r_split_ext.ID = payment_f_trans_item.ID
+				inner join 
+					dbo.DESIGNATION payment_desig on payment_r_split_ext.DESIGNATIONID = payment_desig.ID
+				left join 
+					dbo.RECURRINGGIFTACTIVITY rg_act on rg_act.PAYMENTREVENUEID = payment_f_trans_item.ID
+				left join 
+					dbo.FINANCIALTRANSACTION rg_f_trans on rg_f_trans.ID = rg_act.SOURCEREVENUEID
+				left join 
+					dbo.REVENUESPLIT rg_r_split on rg_r_split.REVENUEID = rg_f_trans.ID
+				left join  
+					--TRANSACTIONTYPECODE 0-Payment, 1-Pledge, 2-Recurring gift, 3-Matching gift claim, 
+					-- If the transaction type is a Payment, then find the sponsorship on the recurring gift that the payment applies to
+					-- If the transaction type is a recurring gift or pledge then find the sponsorship that the recurring gift / pledge is for				
+					-- Also assumption is that a sub child will have a start date the same as the end date
+					dbo.SPONSORSHIP s on ((r.TRANSACTIONTYPECODE in (0,3) and s.REVENUESPLITID = rg_r_split.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate())))				
+										  or (r.TRANSACTIONTYPECODE in (1,2)and s.REVENUESPLITID = payment_r_split_ext.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate()))))
+				left join									  
+					dbo.SPONSORSHIPOPPORTUNITY so on so.ID = s.SPONSORSHIPOPPORTUNITYID
+				left join	
+					dbo.SPONSORSHIPOPPORTUNITYCHILD so_child1 on so_child1.ID = s.SPONSORSHIPOPPORTUNITYID
+
+			WHERE	
+				payment_f_trans_item.FINANCIALTRANSACTIONID = R.ID
+			and payment_f_trans_item.TRANSACTIONAMOUNT > 0) as APPLICATIONS,
+		(select case 
+				  when COUNT (distinct 
+										case 
+											when so_child.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, ''))
+											else so_child.NAME
+										end) > @maxChildrenInDesc
+						then  cast (COUNT (distinct 
+										case 
+											when so_child.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, ''))
+											else so_child.NAME
+										end) as varchar(4)) + ' children'
+				  else
+					(select dbo.UDA_BUILDLIST(distinct 
+						case 
+							when so_child.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, ''))
+							else so_child.NAME
+						end))
+				end
+			FROM 
+				dbo.FINANCIALTRANSACTIONLINEITEM  payment_f_trans_item
+				inner join 
+					dbo.REVENUESPLIT_EXT payment_r_split_ext on payment_r_split_ext.ID = payment_f_trans_item.ID
+				inner join 
+					dbo.DESIGNATION payment_desig on payment_r_split_ext.DESIGNATIONID = payment_desig.ID
+				left join 
+					dbo.RECURRINGGIFTACTIVITY rg_act on rg_act.PAYMENTREVENUEID = payment_f_trans_item.ID
+				left join 
+					dbo.FINANCIALTRANSACTION rg_f_trans on rg_f_trans.ID = rg_act.SOURCEREVENUEID
+				left join 
+					dbo.REVENUESPLIT rg_r_split on rg_r_split.REVENUEID = rg_f_trans.ID
+				left join 
+					dbo.SPONSORSHIP s on ((r.TRANSACTIONTYPECODE in (0,3) and s.REVENUESPLITID = rg_r_split.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate())))				
+										  or (r.TRANSACTIONTYPECODE in (1,2)and s.REVENUESPLITID = payment_r_split_ext.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate()))))
+				left join 
+					dbo.SPONSORSHIPOPPORTUNITY so on so.ID = s.SPONSORSHIPOPPORTUNITYID
+				left join	
+					dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = s.SPONSORSHIPOPPORTUNITYID
+
+			WHERE	
+				payment_f_trans_item.FINANCIALTRANSACTIONID = R.ID
+			and payment_f_trans_item.TRANSACTIONAMOUNT > 0) as APPLICATIONSWITHMAX
+
+	FROM
+		[dbo].[REVENUE] r
+	 
+	 WHERE R.[CONSTITUENTID] = @constituentID
+	   and r.DATE >= @minDate
+
+	order by r.DATE desc 
+
+end
 		]]>
 	</CreateProcedureSQL>
 

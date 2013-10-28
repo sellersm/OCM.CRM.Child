@@ -531,6 +531,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildInfo.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.SponsorshipPayments.DataList.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

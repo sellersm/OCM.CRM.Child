@@ -1,0 +1,66 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="384fedc7-25b7-4cde-873c-dc26f48178ae" 
+	Name="Website Sponsorship Payments Data List"
+	Description="Used to display the payments for a particular child on the website." 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="SPONSORSHIP">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_WEBSITECHILDSPONSORSHIPPAYMENTS">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_WEBSITECHILDSPONSORSHIPPAYMENTS(@ID uniqueidentifier)
+as
+	set nocount on;
+
+SELECT
+	REVENUE.DATE,
+	sum(RECURRINGGIFTINSTALLMENTPAYMENT.AMOUNT) as AMOUNT,  -- sum by date
+	'Payment' as ACTIVITYTYPE
+FROM
+	dbo.RECURRINGGIFTINSTALLMENTPAYMENT
+	inner join 
+		dbo.RECURRINGGIFTINSTALLMENT on RECURRINGGIFTINSTALLMENT.ID = RECURRINGGIFTINSTALLMENTPAYMENT.RECURRINGGIFTINSTALLMENTID	
+	inner join 
+		dbo.REVENUE on REVENUE.ID = RECURRINGGIFTINSTALLMENTPAYMENT.PAYMENTID
+	inner join 
+		dbo.REVENUESPLIT rs on rs.REVENUEID = RECURRINGGIFTINSTALLMENT.REVENUEID
+	inner join 
+		dbo.SPONSORSHIP s on s.REVENUESPLITID = rs.ID 
+	
+WHERE RECURRINGGIFTINSTALLMENT.REVENUEID = @ID
+  and REVENUE.DATE >= '11/1/12'
+  and REVENUE.DATE >= s.STARTDATE
+
+group by REVENUE.DATE
+
+order by DATE desc
+ 
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Revenue" RecordIDParameter="ID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="DATE" Caption="Date" DataType="Date" />
+			<OutputField FieldID="AMOUNT" Caption="Amount" DataType="Money" />
+			<OutputField FieldID="ACTIVITYTYPE" Caption="Activity" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>
