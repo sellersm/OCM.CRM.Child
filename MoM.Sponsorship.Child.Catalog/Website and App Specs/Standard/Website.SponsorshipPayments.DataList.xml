@@ -7,6 +7,14 @@
 	Author="Cary Mayeda"
 	common:SecurityUIFolder="SPONSORSHIP">
 
+	<!-- 
+	Remarks:    Min date is hard coded to 11/1/12. Need to add a filter for this.
+
+	History:
+	Date            Modified By     Comments
+	28-Oct-2013		CMayeda			Initial Version
+	-->
+
 	<!-- define the SP that returns the data for the datalist -->
 	<SPDataList SPName="USR_USP_DATALIST_WEBSITECHILDSPONSORSHIPPAYMENTS">
 		<common:CreateProcedureSQL>

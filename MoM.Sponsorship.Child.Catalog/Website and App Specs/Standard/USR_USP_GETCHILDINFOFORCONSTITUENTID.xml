@@ -9,6 +9,18 @@
     GrantServiceRolePermission="true"
 	>
 
+	<!-- 
+	Remarks:    Returns all pledges and recurring gifts, but only payments after @minDate
+
+	History:
+	Date            Modified By		Comments
+					Chris W.		Initial Version
+	28-Oct-2013		CMayeda			Modified this to 
+										Return APPLICATIONSWITHMAX, which includes all fund descriptions for the payment
+										Remove child id
+										Added maxChildrenInDesc and minDate
+	-->
+
 	<CreateProcedureSQL>
 		<![CDATA[
 
@@ -106,7 +118,8 @@ begin
 		[dbo].[REVENUE] r
 	 
 	 WHERE R.[CONSTITUENTID] = @constituentID
-	   and r.DATE >= @minDate
+	   and (r.TRANSACTIONTYPECODE in (0,3) and r.DATE >= @minDate
+	        or r.TRANSACTIONTYPECODE in (1,2))
 
 	order by r.DATE desc 
 
