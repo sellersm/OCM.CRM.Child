@@ -88,8 +88,8 @@ select
 	USR_CHILDEXTENSION.[ADDITIONALCHILDINFORMATION],
 	USR_CHILDEXTENSION.[CCHENTEREDBY],
 	USR_CHILDEXTENSION.[CCHTEMPID],
-	USR_CHILDEXTENSION.[CURRENTPHOTODATE],
-	USR_CHILDEXTENSION.[PHOTOSTORED],
+	--USR_CHILDEXTENSION.[CURRENTPHOTODATE],
+	--USR_CHILDEXTENSION.[PHOTOSTORED],
 	USR_CHILDEXTENSION.[CCHVALIDATED],
 	USR_CHILDEXTENSION.[REGISTRATIONDATE],
 	USR_CHILDEXTENSION.DEPARTUREFORMRECEIVED,
@@ -107,6 +107,9 @@ select
 	USR_CHILDEXTENSION.DATECHANGED,
 	USR_CHILDEXTENSION.TSLONG,
   USR_CHILDEXTENSION.FUNDED,
+  USR_CHILDEXTENSION.PHOTOUSABLE,
+  USR_CHILDEXTENSION.PHOTOYEAR,
+  USR_CHILDEXTENSION.PROFILEPHOTOYEAR,
   soc.FIRSTNAME, 
 	soc.MIDDLENAME, 
 	soc.LASTNAME, 
@@ -133,7 +136,7 @@ select
 	r.REACTIVATEEXPLANATION,
 	r.ORIGINALREGISTRATIONDATE,
 	r.ENDDATE,
-	r.ISCURRENTREACTIVATION  
+	r.ISCURRENTREACTIVATION
 from 
 	dbo.USR_CHILDEXTENSION
 	join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDEXTENSION.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
@@ -243,8 +246,8 @@ from
 			<OutputField Name="ADDITIONALCHILDINFORMATION" Caption="Additional child information" />
 			<OutputField Name="CCHENTEREDBY" Caption="Cch entered by" />
 			<OutputField Name="CCHTEMPID" Caption="CCH Tempid" />
-			<OutputField Name="CURRENTPHOTODATE" Caption="Current photo date" DataType="Date" />
-			<OutputField Name="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
+			<!--<OutputField Name="CURRENTPHOTODATE" Caption="Current photo date" DataType="Date" />
+			<OutputField Name="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />-->
 		  <OutputField Name="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" />
 		  <OutputField Name="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" />
 			<OutputField Name="CHILDPROFILESTATUSCODEID_TRANSLATION" Caption="Childprofilestatus">
@@ -295,6 +298,9 @@ from
 		  <OutputField Name="BIRTHDATE" Caption="Birthdate" IsHidden="false" DataType="FuzzyDate" />
 
 		  <OutputField Name="FUNDED" Caption="Funded" IsHidden="false" DataType="Boolean" />
+      <OutputField Name="PHOTOUSABLE" Caption="Photo Usable" DataType="Boolean" />
+      <OutputField Name="PHOTOYEAR" Caption="Photo Year" IsHidden="false" DataType="Year" />
+      <OutputField Name="PROFILEPHOTOYEAR" Caption="Profile Photo Year" IsHidden="false" DataType="Year" />
 		  <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
 		  <OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
 		  <OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />

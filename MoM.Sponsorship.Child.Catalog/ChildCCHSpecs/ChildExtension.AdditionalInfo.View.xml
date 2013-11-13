@@ -21,8 +21,6 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CCH_ADDITIONALINFO
 	@ADDITIONALCHILDINFORMATION nvarchar(max) = null output,
 	@CCHENTEREDBY nvarchar(100) = null output,
 	@CCHTEMPID nvarchar(250) = null output,
-	@CURRENTPHOTODATE datetime = null output,
-	@PHOTOSTORED bit = null output,
 	@CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
 	@CHILDPROFILEUPDATECODEID uniqueidentifier = null output,
 	@PROFILEUPDATENOTIFICATION bit = null output,
@@ -46,8 +44,6 @@ as
 			 @ADDITIONALCHILDINFORMATION = ADDITIONALCHILDINFORMATION,
 			 @CCHENTEREDBY = CCHENTEREDBY,
 			 @CCHTEMPID = CCHTEMPID,
-			 @CURRENTPHOTODATE = CURRENTPHOTODATE,
-			 @PHOTOSTORED = PHOTOSTORED,
 			 @CHILDPROFILESTATUSCODEID = CHILDPROFILESTATUSCODEID,
 			 @CHILDPROFILEUPDATECODEID = CHILDPROFILEUPDATECODEID,
 			 @PROFILEUPDATENOTIFICATION = PROFILEUPDATENOTIFICATION,
@@ -68,30 +64,27 @@ as
 
 	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
 	like the context @ID, @DATALOADED, and @CURRENTAPPUSERID need not be listed. -->
-	<common:FormMetaData FixedDialog="true">
-		<common:FormFields>
-			<common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" DataType="String" Multiline="true" />
-			<common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" DataType="String" />      
-			<common:FormField FieldID="CCHENTEREDBY" Caption="CCH Entered By" DataType="String" />
-			<common:FormField FieldID="CCHTEMPID" Caption="CH CCH Temp ID" DataType="String" />
-			<common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" />
-			<common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
-			<common:FormField FieldID="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
-			<common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false" />
+  <common:FormMetaData FixedDialog="true">
+    <common:FormFields>
+      <common:FormField FieldID="ADDITIONALCHILDINFORMATION" Caption="Additional Child Information" DataType="String" Multiline="true" />
+      <common:FormField FieldID="BATCHNUMBER" Caption="Batch Number" DataType="String" />
+      <common:FormField FieldID="CCHENTEREDBY" Caption="CCH Entered By" DataType="String" />
+      <common:FormField FieldID="CCHTEMPID" Caption="CH CCH Temp ID" DataType="String" />
+      <common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" />
+      <common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" />
+      <common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
+      </common:FormField>
 
-			<common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid">
-			<common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
-			</common:FormField>
-			
-			<common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid">
-				<common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE" />
-			</common:FormField>
-			
-			<common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
-			<common:FormField FieldID="CCHVALIDATED" Caption="CCH Verified" DataType="Boolean" ReadOnly="true" />
-			<common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
-			<common:FormField FieldID="CCHZIPFILENAME" Caption="CCH zip file name" DataType="String" />
-		</common:FormFields>
+      <common:FormField FieldID="CHILDPROFILEUPDATECODEID" Caption="Profile Update" DataType="Guid">
+        <common:CodeTable CodeTableName="USR_CHILDPROFILEUPDATECODE" />
+      </common:FormField>
+
+      <common:FormField FieldID="PROFILEUPDATENOTIFICATION" Caption="Profile Update Notification?" DataType="Boolean" />
+      <common:FormField FieldID="CCHVALIDATED" Caption="CCH Verified" DataType="Boolean" ReadOnly="true" />
+      <common:FormField FieldID="DEPARTUREFORMRECEIVED" Caption="Departure form received" DataType="Date" />
+      <common:FormField FieldID="CCHZIPFILENAME" Caption="CCH zip file name" DataType="String" />
+    </common:FormFields>
 
         <common:WebUIComponent>
             <common:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildExtensionAdditionalInfoViewFormUIModel" />

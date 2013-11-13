@@ -16,13 +16,14 @@
     25-Jul-2012		CMayeda			Added trigger for Child Lookup IDs
     13-Aug-2012		Memphis			Removed the field: WHENIAMATSCHOOLILIKELEARNING
     22-Aug-2012		Memphis			took out old commented fields
-	17-Sep-2012		Memphis			Added the Departure Form Received, increased field size of "Other" fields (MotherWorksAsOther, FatherWorksAsOther, CaregiverWorksAsOther)
-	24-Sep-2012		Memphis			Added CCHZIPFILENAME field.
-	26-Sep-2012		CMayeda			Added CURRENTCHILDSPONSORSHIPSTATUSCODEID field - Fogbugz Case 854
-	14-Oct-2012		CMayeda			Changed trigger based on final dataconversion identity reset
-									Modifed trigger to only insert the value for the CUSTOMIDENTIFIER if none is already there
-	31-Jan-2012		CMayeda			Changed CLASSLEVEL field from 20 to 50 characters.
-	30-May-2013		CMayeda			Added TERMINATEHOLDSTARTDATE
+	  17-Sep-2012		Memphis			Added the Departure Form Received, increased field size of "Other" fields (MotherWorksAsOther, FatherWorksAsOther, CaregiverWorksAsOther)
+	  24-Sep-2012		Memphis			Added CCHZIPFILENAME field.
+	  26-Sep-2012		CMayeda			Added CURRENTCHILDSPONSORSHIPSTATUSCODEID field - Fogbugz Case 854
+	  14-Oct-2012		CMayeda			Changed trigger based on final dataconversion identity reset
+									            Modifed trigger to only insert the value for the CUSTOMIDENTIFIER if none is already there
+	  31-Jan-2012		CMayeda			Changed CLASSLEVEL field from 20 to 50 characters.
+	  30-May-2013		CMayeda			Added TERMINATEHOLDSTARTDATE
+    	  06-Nov-2013   TGupta      Added PHOTOYEAR, PROFILEPHOTOYEAR, AND PHOTOUSABLE fields  
     -->
 
 	<Fields>
@@ -134,10 +135,14 @@
 
 		<CodeTableField Description="Current Child Sponsorship Status" Name="CURRENTCHILDSPONSORSHIPSTATUSCODEID" CodeTable="USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE"/>
 
-		<DateField Description="Terminate Hold Start Date" Name="TERMINATEHOLDSTARTDATE"  />
-		
-	</Fields>
-	<!--<CheckConstraints />
+    <DateField Description="Terminate Hold Start Date" Name="TERMINATEHOLDSTARTDATE"  />
+
+    <BooleanField Name="PHOTOUSABLE" Description="YES/NO IF THE PHOTO CAN BE USED" />
+    <YearField Name="PHOTOYEAR" Description="THE YEAR WHEN THE PHOTO WAS TAKEN" Required="true" />
+    <YearField Name="PROFILEPHOTOYEAR" Description="THE YEAR OF WHEN THE PHOTO WAS STORED IN A CHILD'S PROFILE" Required="true" />
+
+  </Fields>
+  <!--<CheckConstraints />
   <Indexes /-->
 
 	<Triggers>

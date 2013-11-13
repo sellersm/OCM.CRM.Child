@@ -79,8 +79,8 @@ select
     USR_CHILDEXTENSION.[ADDITIONALCHILDINFORMATION],
     USR_CHILDEXTENSION.[CCHENTEREDBY],
     USR_CHILDEXTENSION.[CCHTEMPID],
-    USR_CHILDEXTENSION.[CURRENTPHOTODATE],
-    USR_CHILDEXTENSION.[PHOTOSTORED],
+    --USR_CHILDEXTENSION.[CURRENTPHOTODATE],
+    --USR_CHILDEXTENSION.[PHOTOSTORED],
     USR_CHILDEXTENSION.[CCHVALIDATED],
 	USR_CHILDEXTENSION.DEPARTUREFORMRECEIVED,
 	USR_CHILDEXTENSION.BATCHNUMBER,
@@ -95,6 +95,9 @@ select
   USR_CHILDEXTENSION.DATECHANGED,
   USR_CHILDEXTENSION.TSLONG,
   USR_CHILDEXTENSION.FUNDED,
+  USR_CHILDEXTENSION.PHOTOUSABLE,
+  USR_CHILDEXTENSION.PHOTOYEAR,
+  USR_CHILDEXTENSION.PROFILEPHOTOYEAR,
   c.NAME,
   soc.CONSTITUENTID,
 	r.ID as REACTIVATIONID,
@@ -217,8 +220,8 @@ from
       <OutputField Name="ADDITIONALCHILDINFORMATION" Caption="Additional child information" />
       <OutputField Name="CCHENTEREDBY" Caption="Cch entered by" />
       <OutputField Name="CCHTEMPID" Caption="CCH Tempid" />
-      <OutputField Name="CURRENTPHOTODATE" Caption="Current photo date" DataType="Date" />
-      <OutputField Name="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
+      <!--<OutputField Name="CURRENTPHOTODATE" Caption="Current photo date" DataType="Date" />
+      <OutputField Name="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />-->
       <OutputField Name="CCHVALIDATED" Caption="CCH Validated" DataType="Boolean" />
       <OutputField Name="CHILDPROFILESTATUSCODEID_TRANSLATION" Caption="Child profile status">
         <LookupInfo>
@@ -254,7 +257,9 @@ from
       <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
       <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
       <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
-
+      <OutputField Name="PHOTOUSABLE" Caption="Photo Usable" DataType="Boolean" />
+      <OutputField Name="PHOTOYEAR" Caption="Photo Year" IsHidden="false" DataType="Year" />
+      <OutputField Name="PROFILEPHOTOYEAR" Caption="Profile Photo Year" IsHidden="false" DataType="Year" />
       <!--<OutputField Name="FIRSTNAME" Caption="First Name" IsHidden="false" DataType="String" />
 
       <OutputField Name="MIDDLENAME" Caption="Middle Name" IsHidden="false" DataType="String" />

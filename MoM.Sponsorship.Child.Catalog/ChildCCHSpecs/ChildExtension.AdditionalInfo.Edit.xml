@@ -23,8 +23,6 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CCH_ADDITIONALINFO(
 	  @ADDITIONALCHILDINFORMATION nvarchar(max) = null output,
     @CCHENTEREDBY nvarchar(100) = null output,
     @CCHTEMPID nvarchar(250) = null output,
-    @CURRENTPHOTODATE datetime = null output,
-    @PHOTOSTORED bit = null output,
     @CHILDPROFILESTATUSCODEID uniqueidentifier = null output,
     @CHILDPROFILEUPDATECODEID uniqueidentifier = null output,
     @PROFILEUPDATENOTIFICATION bit = null output,
@@ -52,8 +50,6 @@ as
 		@ADDITIONALCHILDINFORMATION = ADDITIONALCHILDINFORMATION,
     @CCHENTEREDBY = CCHENTEREDBY,
     @CCHTEMPID = CCHTEMPID,
-    @CURRENTPHOTODATE = CURRENTPHOTODATE,
-    @PHOTOSTORED = PHOTOSTORED,
     @CHILDPROFILESTATUSCODEID = CHILDPROFILESTATUSCODEID,
     @CHILDPROFILEUPDATECODEID = CHILDPROFILEUPDATECODEID,
     @PROFILEUPDATENOTIFICATION = PROFILEUPDATENOTIFICATION,
@@ -79,8 +75,6 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CCH_ADDITIONALINFO (
 	 @ADDITIONALCHILDINFORMATION nvarchar(max),
    @CCHENTEREDBY nvarchar(100),
    @CCHTEMPID nvarchar(250),
-   @CURRENTPHOTODATE datetime,
-   @PHOTOSTORED bit,
    @CHILDPROFILESTATUSCODEID uniqueidentifier,
    @CHILDPROFILEUPDATECODEID uniqueidentifier,
    @PROFILEUPDATENOTIFICATION bit,
@@ -103,8 +97,6 @@ as
 			ADDITIONALCHILDINFORMATION = @ADDITIONALCHILDINFORMATION,
 			CCHENTEREDBY = @CCHENTEREDBY,
 			CCHTEMPID = @CCHTEMPID,
-			CURRENTPHOTODATE = @CURRENTPHOTODATE,
-			PHOTOSTORED = @PHOTOSTORED,
 			CHILDPROFILESTATUSCODEID = @CHILDPROFILESTATUSCODEID,
 			CHILDPROFILEUPDATECODEID = @CHILDPROFILEUPDATECODEID,
 			PROFILEUPDATENOTIFICATION = @PROFILEUPDATENOTIFICATION,
@@ -136,9 +128,6 @@ return 0;
       <common:FormField FieldID="CCHTEMPID" Caption="CH CCH Temp ID" DataType="String" />
       <common:FormField FieldID="REGISTRATIONDATE" Caption="Registration Date" DataType="Date" ReadOnly="true" />
       <common:FormField FieldID="FUNDED" Caption="Funded" DataType="Boolean" ReadOnly="true" />
-      <common:FormField FieldID="PHOTOSTORED" Caption="Photo Stored" DataType="Boolean" />
-      <common:FormField FieldID="CURRENTPHOTODATE" Caption="Current Photo Date" DataType="Date" IncludeTimeOnDate="false" />
-
       <common:FormField FieldID="CHILDPROFILESTATUSCODEID" Caption="Profile Status" DataType="Guid">
         <common:CodeTable CodeTableName="USR_CHILDPROFILESTATUSCODE" />
       </common:FormField>

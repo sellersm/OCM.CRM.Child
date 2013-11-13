@@ -316,8 +316,84 @@
 				</Section>
 			</Sections>
 		</Tab>
-
-
+<Tab Caption="Photo" ID="1924c53b-e7c1-484a-9166-4b2dad301b01">
+      <Sections>
+        <Section ID="ce9600d2-0c75-4c2c-bb56-a103282e2102" Caption="General Information">
+          <DataForm ID="8c6d4f1e-4734-4971-b73c-361b863d6e43" />
+          <Actions>
+            <Action ID="ec00d927-87e9-4730-814b-b51e71f6eacb" Caption="Edit" ImageKey="RES:edit">
+              <ShowDataForm DataFormID="8ccc996a-a9b0-4379-a1ea-c608f0d9c8b6" xmlns="bb_appfx_commontypes">
+                <ActionContext>
+                  <PageContextID />
+                </ActionContext>
+                <PostActionEvent>
+                  <RefreshSection />
+                </PostActionEvent>
+              </ShowDataForm>
+            </Action>
+          </Actions>
+        </Section>
+        <Section ID="6fb40743-dd4e-4474-9455-17f6ef9c9e21" Caption="Photo">
+          <DataList ID="59a80a9e-ee6b-4ed6-ae66-3915707adf08" HideFilters="True">
+            <RenderStyle>
+              <StandardView>
+                <DetailViewForm ViewDataFormID="=Fields!ViewFormID" />
+              </StandardView>
+            </RenderStyle>
+          </DataList>
+          <Actions>
+            <Action ID="fad1474e-f963-49bb-b729-57d093933383" Caption="Add" ImageKey="RES:newitem">
+              <ActionGroup>
+                <Actions>
+                  <Action ID="d8ebe4fc-81ae-4044-a2de-f310abf7401f" Caption="Add a Photo">
+                    <ShowAddDataForm DataFormID="88f07c68-ba9c-4205-9596-6fcf0b0e4a72" xmlns="bb_appfx_commontypes">
+                      <ActionContext>
+                        <PageContextID />
+                      </ActionContext>
+                      <PostActionEvent>
+                        <RefreshSection />
+                      </PostActionEvent>
+                    </ShowAddDataForm>
+                  </Action>
+                </Actions>
+              </ActionGroup>
+            </Action>
+            <Action ID="7a05cdaf-66c1-4ec7-8a5c-efc6dcb2b21e" Caption="Edit" ImageKey="RES:edit">
+              <ActionGroup>
+                <Actions>
+                  <Action ID="4a02c0cb-a929-410d-9aa1-01779a3e2c8d" Caption="Edit a Photo" ImageKey="RES:edit">
+                    <ShowDataForm DataFormID="a35efe3a-ddff-4d4a-91d2-8fe36e64e3b3" xmlns="bb_appfx_commontypes">
+                      <ActionContext>
+                        <SectionField>ID</SectionField>
+                      </ActionContext>
+                      <PostActionEvent>
+                        <RefreshSection />
+                      </PostActionEvent>
+                    </ShowDataForm>
+                  </Action>
+                </Actions>
+              </ActionGroup>
+            </Action>
+            <Action ID="bf23cf74-94cb-43c0-b59d-255557fda3df" Caption="Delete" ImageKey="RES:delete">
+              <ActionGroup>
+                <Actions>
+                  <Action ID="278e1485-bc8e-47dc-93d8-cc9d86a6b1fe" Caption="Delete a Photo" ImageKey="RES:delete">
+                    <ExecuteRecordOperation RecordOperationID="e166630e-6ec2-49ba-9340-f18f0e06a732" xmlns="bb_appfx_commontypes">
+                      <ActionContext>
+                        <SectionField>ID</SectionField>
+                      </ActionContext>
+                      <PostActionEvent>
+                        <RefreshSection />
+                      </PostActionEvent>
+                    </ExecuteRecordOperation>
+                  </Action>
+                </Actions>
+              </ActionGroup>
+            </Action>
+          </Actions>
+        </Section>
+      </Sections>
+    </Tab>
 
 		<Tab Caption="Sponsorships" ID="a2f561b0-487c-4b01-9a5b-77d548fe976e" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1">
 			<Sections>

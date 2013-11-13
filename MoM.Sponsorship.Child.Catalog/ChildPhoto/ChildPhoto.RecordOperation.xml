@@ -1,0 +1,38 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e166630e-6ec2-49ba-9340-f18f0e06a732" 
+	Name="Child Photo Attachment Delete Data Form" 
+	Description="Child Photo Attachment Delete Data Form"
+	Author="Trucmai Gupta"
+	OperationType="Delete"
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Child Extension"
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_CHILDPHOTOATTACHMENT_DELETE_RECORDOPERATION">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+      create procedure dbo.USR_USP_CHILDPHOTOATTACHMENT_DELETE_RECORDOPERATION
+      (
+	      @ID uniqueidentifier,
+	      @CHANGEAGENTID uniqueidentifier
+      )
+      as begin
+	      -- use the system generated delete routine to allow proper recording of the deleting agent
+	      exec USP_SPONSORSHIPOPPORTUNITYATTACHMENT_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	      return 0;
+	
+      end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to delete this child photo?" />
+	</Prompt>
+
+</RecordOperationSpec>

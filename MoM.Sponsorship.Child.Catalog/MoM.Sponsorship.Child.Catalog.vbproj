@@ -532,6 +532,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildInfo.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.SponsorshipPayments.DataList.xml" />
+    <EmbeddedResource Include="Tables\Code Tables\ChildPhotoTitle.CodeTable.xml" />
+    <EmbeddedResource Include="Tables\Code Tables\ChildPhotoYear.CodeTable.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhoto.DataList.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhoto.Edit.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhoto.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhoto.View.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhotoAttachment.Add.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhotoAttachment.Edit.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

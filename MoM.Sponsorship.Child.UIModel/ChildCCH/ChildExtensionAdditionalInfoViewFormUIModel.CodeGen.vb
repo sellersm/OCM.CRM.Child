@@ -31,8 +31,6 @@ Partial Public Class [ChildExtensionAdditionalInfoViewFormUIModel]
     Private WithEvents _cchtempid As Global.Blackbaud.AppFx.UIModeling.Core.StringField
     Private WithEvents _registrationdate As Global.Blackbaud.AppFx.UIModeling.Core.DateField
     Private WithEvents _funded As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-    Private WithEvents _photostored As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-    Private WithEvents _currentphotodate As Global.Blackbaud.AppFx.UIModeling.Core.DateField
     Private WithEvents _childprofilestatuscodeid As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
     Private WithEvents _childprofileupdatecodeid As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
     Private WithEvents _profileupdatenotification As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
@@ -50,8 +48,6 @@ Partial Public Class [ChildExtensionAdditionalInfoViewFormUIModel]
         _cchtempid = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
         _registrationdate = New Global.Blackbaud.AppFx.UIModeling.Core.DateField
         _funded = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        _photostored = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        _currentphotodate = New Global.Blackbaud.AppFx.UIModeling.Core.DateField
         _childprofilestatuscodeid = New Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
         _childprofileupdatecodeid = New Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
         _profileupdatenotification = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
@@ -112,20 +108,6 @@ Partial Public Class [ChildExtensionAdditionalInfoViewFormUIModel]
         _funded.Caption = "Funded"
         _funded.DBReadOnly = True
         Me.Fields.Add(_funded)
-        '
-        '_photostored
-        '
-        _photostored.Name = "PHOTOSTORED"
-        _photostored.Caption = "Photo Stored"
-        _photostored.DBReadOnly = True
-        Me.Fields.Add(_photostored)
-        '
-        '_currentphotodate
-        '
-        _currentphotodate.Name = "CURRENTPHOTODATE"
-        _currentphotodate.Caption = "Current Photo Date"
-        _currentphotodate.DBReadOnly = True
-        Me.Fields.Add(_currentphotodate)
         '
         '_childprofilestatuscodeid
         '
@@ -239,28 +221,6 @@ Partial Public Class [ChildExtensionAdditionalInfoViewFormUIModel]
     Public ReadOnly Property [FUNDED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         Get
             Return _funded
-        End Get
-    End Property
-    
-    ''' <summary>
-    ''' Photo Stored
-    ''' </summary>
-    <System.ComponentModel.Description("Photo Stored")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
-    Public ReadOnly Property [PHOTOSTORED]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
-        Get
-            Return _photostored
-        End Get
-    End Property
-    
-    ''' <summary>
-    ''' Current Photo Date
-    ''' </summary>
-    <System.ComponentModel.Description("Current Photo Date")> _
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
-    Public ReadOnly Property [CURRENTPHOTODATE]() As Global.Blackbaud.AppFx.UIModeling.Core.DateField
-        Get
-            Return _currentphotodate
         End Get
     End Property
     
