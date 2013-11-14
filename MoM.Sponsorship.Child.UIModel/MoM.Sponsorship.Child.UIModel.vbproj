@@ -244,14 +244,12 @@
     <None Include="..\MoM.Sponsorship.Child.Catalog\ChildPhoto\ChildPhoto.Edit.xml">
       <Link>LinkedSpecs\ChildPhoto.Edit.xml</Link>
     </None>
-    <Content Include="ChildPhotoEditDataForm.html" />
     <Content Include="ChildPhoto\ChildPhotoEditDataFormUIModel.xml">
       <DependentUpon>ChildPhotoEditDataFormUIModel.vb</DependentUpon>
     </Content>
     <None Include="..\MoM.Sponsorship.Child.Catalog\ChildPhoto\ChildPhoto.View.xml">
       <Link>LinkedSpecs\ChildPhoto.View.xml</Link>
     </None>
-    <Content Include="ChildPhotoViewDataForm.html" />
     <Content Include="ChildPhoto\ChildPhotoEditDataForm.html" />
     <Content Include="ChildPhoto\ChildPhotoViewDataForm.html" />
     <Content Include="ChildPhoto\ChildPhotoViewDataFormUIModel.xml">

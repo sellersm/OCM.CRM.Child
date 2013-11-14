@@ -22,6 +22,8 @@
 	13-Oct-2012		CMayeda			Fixed references to old child bio data forms
 	28-Nov-2012		Memphis			Added the 'Check Lock Status' Action
 	30-May-2013		CMayeda			Added Admin tab
+  13-Nov-2013   TGupta      Added Photo tab
+  14-Nov-2013   TGupta      Added an additional Fulfillmentstatus section into the Reservation tab
 
 	-->
 
@@ -316,7 +318,7 @@
 				</Section>
 			</Sections>
 		</Tab>
-<Tab Caption="Photo" ID="1924c53b-e7c1-484a-9166-4b2dad301b01">
+    <Tab Caption="Photo" ID="1924c53b-e7c1-484a-9166-4b2dad301b01">
       <Sections>
         <Section ID="ce9600d2-0c75-4c2c-bb56-a103282e2102" Caption="General Information">
           <DataForm ID="8c6d4f1e-4734-4971-b73c-361b863d6e43" />
@@ -394,7 +396,6 @@
         </Section>
       </Sections>
     </Tab>
-
 		<Tab Caption="Sponsorships" ID="a2f561b0-487c-4b01-9a5b-77d548fe976e" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1">
 			<Sections>
 				<Section ID="7aa09fab-abd1-4cfc-a321-26418ee5806d" Caption="Active Sponsorship">
@@ -497,6 +498,21 @@
 		</Tab>
 		<Tab Caption="Reservation" ID="3a30af81-fa37-4e87-b728-b5ecdca7235a" Visible="=Page.Fields!SPONSORSHIPOPPORTUNITYTYPECODE=1">
 			<Sections>
+          <Section ID="1c77c040-5610-4e57-8acb-ec963bfd67d6" Caption="Fulfillment Status">
+            <DataForm ID="b013463d-e015-4194-b9b1-7dda49a3acfb" />
+            <Actions>
+              <Action ID="f8e87eb3-5c00-4b91-845c-aa7f68513f3e" Caption="Edit" ImageKey="RES:edit">
+                <ShowDataForm DataFormID="2aa7e1b6-d8f4-44df-9ba4-0bb3048646b9" xmlns="bb_appfx_commontypes">
+                  <ActionContext>
+                    <PageContextID />
+                  </ActionContext>
+                  <PostActionEvent>
+                    <RefreshSection />
+                  </PostActionEvent>
+                </ShowDataForm>
+              </Action>
+            </Actions>
+          </Section>  
 <!--				<Section ID="53971005-938c-46d3-a2db-408879f34f13" Caption="Reservations">
 					<DataList ID="bbd211b6-9593-4f30-bea2-7572e447b9ee">
 						<RenderStyle>

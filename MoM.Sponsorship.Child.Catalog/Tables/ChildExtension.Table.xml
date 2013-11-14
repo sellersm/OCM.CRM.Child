@@ -138,9 +138,10 @@
     <DateField Description="Terminate Hold Start Date" Name="TERMINATEHOLDSTARTDATE"  />
 
     <BooleanField Name="PHOTOUSABLE" Description="YES/NO IF THE PHOTO CAN BE USED" />
-    <YearField Name="PHOTOYEAR" Description="THE YEAR WHEN THE PHOTO WAS TAKEN" Required="true" />
-    <YearField Name="PROFILEPHOTOYEAR" Description="THE YEAR OF WHEN THE PHOTO WAS STORED IN A CHILD'S PROFILE" Required="true" />
+    <YearField Name="PHOTOYEAR" Description="THE YEAR WHEN THE PHOTO WAS TAKEN"  />
+    <YearField Name="PROFILEPHOTOYEAR" Description="THE YEAR OF WHEN THE PHOTO WAS STORED IN A CHILD'S PROFILE"  />
 
+    <CodeTableField Description="ID matched with ID from usr_fulfillmentstatuscode" Name="FULFILLMENTSTATUSCODEID" CodeTable="USR_FULFILLMENTSTATUSCODE"/>
   </Fields>
   <!--<CheckConstraints />
   <Indexes /-->

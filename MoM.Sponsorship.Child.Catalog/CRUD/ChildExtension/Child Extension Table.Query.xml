@@ -110,6 +110,7 @@ select
   USR_CHILDEXTENSION.PHOTOUSABLE,
   USR_CHILDEXTENSION.PHOTOYEAR,
   USR_CHILDEXTENSION.PROFILEPHOTOYEAR,
+  (SELECT USR_FULFILLMENTSTATUSCODE.DESCRIPTION FROM dbo.USR_FULFILLMENTSTATUSCODE WHERE USR_FULFILLMENTSTATUSCODE.ID = USR_CHILDEXTENSION.FULFILLMENTSTATUSCODEID) as FULFILLMENTSTATUSCODEID_TRANSLATION,
   soc.FIRSTNAME, 
 	soc.MIDDLENAME, 
 	soc.LASTNAME, 
@@ -301,7 +302,12 @@ from
       <OutputField Name="PHOTOUSABLE" Caption="Photo Usable" DataType="Boolean" />
       <OutputField Name="PHOTOYEAR" Caption="Photo Year" IsHidden="false" DataType="Year" />
       <OutputField Name="PROFILEPHOTOYEAR" Caption="Profile Photo Year" IsHidden="false" DataType="Year" />
-		  <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
+      <OutputField Name="FULFILLMENTSTATUSCODEID_TRANSLATION" Caption="Fulfillment status" IsHidden="false" DataType="String" >
+        <LookupInfo>
+          <CodeTable CodeTableName="USR_FULFILLMENTSTATUSCODE" IncludeInactive="true" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="CHILDTRANSFERID" Caption="ChildTransfer Table Record ID" Category="System Fields" />
 		  <OutputField Name="CHILDTRANSFERCHILDID" Caption="ChildTransfer Child ID" />
 		  <OutputField Name="FORMCOMPLETIONDATE" Caption="Child Transfer Form Date" />
 		  <OutputField Name="FORMCOMPLETEDBY" Caption="Child Transfer Form Completed By" />

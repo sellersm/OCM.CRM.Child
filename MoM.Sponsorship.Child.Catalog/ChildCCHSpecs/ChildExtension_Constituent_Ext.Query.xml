@@ -98,6 +98,7 @@ select
   USR_CHILDEXTENSION.PHOTOUSABLE,
   USR_CHILDEXTENSION.PHOTOYEAR,
   USR_CHILDEXTENSION.PROFILEPHOTOYEAR,
+  (SELECT USR_FULFILLMENTSTATUSCODE.DESCRIPTION FROM dbo.USR_FULFILLMENTSTATUSCODE WHERE USR_FULFILLMENTSTATUSCODE.ID = USR_CHILDEXTENSION.FULFILLMENTSTATUSCODEID) as FULFILLMENTSTATUSCODEID_TRANSLATION,
   c.NAME,
   soc.CONSTITUENTID,
 	r.ID as REACTIVATIONID,
@@ -260,6 +261,11 @@ from
       <OutputField Name="PHOTOUSABLE" Caption="Photo Usable" DataType="Boolean" />
       <OutputField Name="PHOTOYEAR" Caption="Photo Year" IsHidden="false" DataType="Year" />
       <OutputField Name="PROFILEPHOTOYEAR" Caption="Profile Photo Year" IsHidden="false" DataType="Year" />
+      <OutputField Name="FULFILLMENTSTATUSCODEID_TRANSLATION" Caption="Fulfillment status" IsHidden="false" DataType="String" >
+        <LookupInfo>
+          <CodeTable CodeTableName="USR_FULFILLMENTSTATUSCODE" IncludeInactive="true" />
+        </LookupInfo>
+      </OutputField>
       <!--<OutputField Name="FIRSTNAME" Caption="First Name" IsHidden="false" DataType="String" />
 
       <OutputField Name="MIDDLENAME" Caption="Middle Name" IsHidden="false" DataType="String" />
