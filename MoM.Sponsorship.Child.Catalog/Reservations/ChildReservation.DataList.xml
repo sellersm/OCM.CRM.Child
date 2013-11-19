@@ -1,0 +1,56 @@
+<DataListSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="d68b299b-7960-4805-b178-bce9216574a8"
+    Name="Child Reservation List"
+    Description="Returns all Child Reservation records."
+    Author="Cary Mayeda"
+    c:SecurityUIFolder="Child Reservation"
+    xmlns="bb_appfx_datalist" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	04-Sep-2012		CMayeda			Initial Version
+	19-Sep-2012		CMayeda			Change the caption for Solicitor to Fundraiser - Fogbugz case 831
+	-->
+
+
+	<SPDataList SPName="USR_USP_DATALIST_CHILDRESERVATION">
+        <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATALIST_CHILDRESERVATION (
+	@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier
+)
+as
+	set nocount on;
+
+	select	ID,
+			SPONSORSHIPOPPORTUNITYCHILDID,
+			(select NAME from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where ID = USR_CHILDRESERVATION.SPONSORSHIPOPPORTUNITYRESERVEPROCESSID) as SPONSORSHIPOPPORTUNITYRESERVEPROCESSNAME,
+			(select NAME from dbo.UFN_CONSTITUENT_DISPLAYNAME(SOLICITORID)) as SOLICITORNAME,
+			STARTDATE,
+			ENDDATE,
+			STATUS
+	  from	dbo.USR_CHILDRESERVATION
+   where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID
+]]>
+</c:CreateProcedureSQL>
+    </SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Sponsorship opportunity" RecordIDParameter="SPONSORSHIPOPPORTUNITYCHILDID"/>
+
+	<Output>
+        <OutputFields>
+            <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid"/>
+            <OutputField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid"  IsHidden="true"/>
+            <OutputField FieldID="SPONSORSHIPOPPORTUNITYRESERVEPROCESSNAME" Caption="Reservation key" DataType="String" />
+            <OutputField FieldID="SOLICITORNAME" Caption="Fundraiser" DataType="String" />
+            <OutputField FieldID="STARTDATE" Caption="Start date" DataType="Date" />
+            <OutputField FieldID="ENDDATE" Caption="End date" DataType="Date" />
+            <OutputField FieldID="STATUS" Caption="Status" DataType="String" />
+        </OutputFields>
+    </Output>
+</DataListSpec>

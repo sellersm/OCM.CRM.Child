@@ -1,0 +1,101 @@
+<AddDataFormTemplateSpec 
+    xmlns:common="bb_appfx_commontypes"
+    ID="CA1DC37B-305D-4D38-86D7-4881BCCC162C"
+    Name="Child Photo Add Batch Add Form"
+    Description="Add dataform template for child photo batch records."
+    Author="Cary Mayeda"
+    RecordType="Child Photo Add Batch"
+    DataFormInstanceID="EA50FC8E-63EB-49DF-B33E-A972DB8762F8"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+	xmlns="bb_appfx_adddataformtemplate" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	-->
+
+	<SPDataForm>
+        <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_CHILDPHOTOADD_BATCHROW">
+            <common:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDPHOTOADD_BATCHROW
+(
+    @ID uniqueidentifier = null output,
+    @BATCHID uniqueidentifier,
+    @CHANGEAGENTID uniqueidentifier = null,
+    @SEQUENCE int,
+    @SPONSORSHIPOPPORTUNITYLOOKUPID nvarchar(100) = null,
+    @ATTACHMENTTYPECODEID uniqueidentifier = null,
+    @PICTURETITLE nvarchar(100) = null,
+    @FILENAME nvarchar(255) = null,
+    @FILELOCATION nvarchar(1000) = null
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_BATCHCHILDPHOTOADD
+		(ID, BATCHID, SEQUENCE, SPONSORSHIPOPPORTUNITYLOOKUPID, ATTACHMENTTYPECODEID, PICTURETITLE, FILENAME, FILELOCATION, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @BATCHID, @SEQUENCE, @SPONSORSHIPOPPORTUNITYLOOKUPID, @ATTACHMENTTYPECODEID, @PICTURETITLE, @FILENAME, @FILELOCATION, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+
+]]>
+</common:CreateProcedureSQL>
+            <common:ExpectedDBExceptions>
+                <common:Constraints>
+                    <common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_SPONSORSHIPOPPORTUNITYLOOKUPID" Field="SPONSORSHIPOPPORTUNITYLOOKUPID" Type="Required" />
+                    <common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_ATTACHMENTTYPECODEID" Field="ATTACHMENTTYPECODEID" Type="Required" />
+                    <common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_PICTURETITLE" Field="PICTURETITLE" Type="Required" />
+                    <common:Constraint Name="CK_USR_BATCHCHILDPHOTOADD_FILENAME" Field="FILENAME" Type="Required" />
+                </common:Constraints>
+            </common:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+
+  <Context ContextRecordType="Batch" RecordIDParameter="BATCHID" />
+
+  <common:FormMetaData>
+        <common:FormFields>
+            <common:FormField FieldID="SEQUENCE" Required="true" Hidden="true" Caption="Sequence" />
+
+            <common:FormField FieldID="SPONSORSHIPOPPORTUNITYLOOKUPID" Caption="Child Lookup ID" Required="true" />
+<!--              <common:SearchList EnableQuickFind="true"  SearchListID="AB076868-114A-4696-AFE9-8D590677708C"></common:SearchList>
+            </common:FormField> -->
+
+            <common:FormField FieldID="ATTACHMENTTYPECODEID" Caption="Attachment type" Required="true">
+              <common:CodeTable CodeTableName="SPROPPATTACHMENTTYPECODE" />
+            </common:FormField>
+
+            <common:FormField FieldID="PICTURETITLE" Required="true" MaxLength="100" Caption="Picture title" />
+            <common:FormField FieldID="FILENAME" Required="true" MaxLength="255" Caption="File name" />
+
+            <common:FormField FieldID="FILELOCATION" Caption="File location" Required="true" />
+              <!--<common:SimpleDataList SimpleDataListID="be0d5165-f49b-4b14-9aa1-92a4078f9734"></common:SimpleDataList>
+            </common:FormField>-->
+
+        </common:FormFields>
+        <common:FormUIComponent />
+    </common:FormMetaData>
+</AddDataFormTemplateSpec>

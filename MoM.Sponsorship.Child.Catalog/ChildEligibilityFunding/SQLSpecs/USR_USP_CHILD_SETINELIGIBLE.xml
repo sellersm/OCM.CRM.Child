@@ -1,0 +1,58 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1f68a4ca-9f5d-4e75-9b59-9f40d0524836"
+	Name="USR_USP_CHILD_SETINELIGIBLE"
+	Description="Set a child to ineligible"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILD_SETINELIGIBLE"
+	>
+	<!-- 
+	Remarks:    This is used to process a single child to change the child to ineligible with the sponsorship reason passed in @sponsorshipReasonID 
+
+	History:
+	Date            Modified By     Comments
+    21-Mar-2012		CMayeda			Initial Version
+	09-Jul-2012		CMayeda			Modified this to call USR_USP_CHILDREN_SETINELIGIBLE instead of handling the same logic in this sproc
+	-->
+
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILD_SETINELIGIBLE (	
+	@childID uniqueidentifier,					-- Specify a Sponsorship Opportunity ID (same as the child's ID) of the child to set ineligible
+	@sponsorshipReasonID uniqueidentifier,		-- Used to specify the sponsorship reason to add
+	@changeAgentID uniqueidentifier)			-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	
+as
+begin
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+
+	declare @childList dbo.USR_UDT_CHILDIDLIST
+	
+	begin try	
+		if @childID is null 
+			RAISERROR 1000000 '@childID cannot be null'		
+
+		insert @childList
+		select @childID 
+		
+		exec dbo.USR_USP_CHILDREN_SETINELIGIBLE @childList, @sponsorshipReasonID, @changeAgentID
+		
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	return 0
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

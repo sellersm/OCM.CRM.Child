@@ -1,0 +1,39 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="3066f1ea-4f87-4557-8b43-3a754f257df9"
+	Name="USR_BATCHSTARTED"
+	Description="Holds rows for each Child Batch Commit that starts"
+	Author="Memphis Sellers"
+	Tablename="USR_BATCHSTARTED"	
+  EnableAuditTrail="false"
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+    <TextField Name="BATCHNUMBER" Length="100" Required="true"/>
+    <BooleanField Name="HASBATCHSTARTED" Description="Has this batch commit process started or not?"/>
+    <DateField DefaultValue="GETDATE()" IncludeTime="false" Name="BATCHDATE" Required="true"/>
+	</Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!--<CheckConstraints>
+    <CheckConstraint CheckExpression="CONSTRAINT [CK_BATCHNUMBER] UNIQUE [BATCHNUMBER]" Name="CK_BATCHNUMBER"/>
+	</CheckConstraints>-->
+
+
+  <!-- define any indexes on the table -->
+	<Indexes>
+    <Index IsUnique="true">
+      <IndexFields>
+        <IndexField Name="BATCHNUMBER"/>
+      </IndexFields>
+    </Index>
+	</Indexes>
+		
+	<!-- define any triggers on the table -->
+	<!--<Triggers>
+
+	</Triggers>-->
+
+</TableSpec>

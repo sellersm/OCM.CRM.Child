@@ -1,0 +1,49 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1e098b25-90e1-479f-a6a5-b7c3359e15d5"
+	Name="USR_UFN_CHILD_GETCHILDLOOKUPID"
+	Description="Retrieve the Child's lookup id."
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILD_GETCHILDLOOKUPID" 
+	GrantServiceRolePermission="true"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETCHILDLOOKUPID (
+	@sponsorshipOpportunityChildID uniqueidentifier,
+	@includeProjectLookupID as bit = 0
+)
+returns nvarchar(200)
+with execute as caller
+as 
+begin
+	declare @childLookupID nvarchar(200) = ''
+	declare @projectLookupID nvarchar(100) = ''
+
+	select	@childLookupID = so.LOOKUPID
+	  from	dbo.SPONSORSHIPOPPORTUNITY so
+	 where	so.ID = @sponsorshipOpportunityChildID
+
+	if @includeProjectLookupID = 1
+	begin
+			select	@projectLookupID = proj_const.LOOKUPID
+			  from	dbo.SPONSORSHIPOPPORTUNITY so
+		inner join	dbo.SPONSORSHIPLOCATION slocation on
+						so.SPONSORSHIPLOCATIONID = slocation.ID 	
+		inner join	dbo.CONSTITUENT proj_const on
+						proj_const.ID = slocation.FIELDOFFICEID
+			 where	so.ID = @sponsorshipOpportunityChildID
+			 
+	
+		if @projectLookupID <> ''
+			set @childLookupID = @projectLookupID + '-' + @childLookupID 
+	end
+	
+	return @childLookupID 
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

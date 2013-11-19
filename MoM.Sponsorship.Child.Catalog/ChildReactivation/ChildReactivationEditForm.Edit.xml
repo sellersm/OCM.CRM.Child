@@ -1,0 +1,152 @@
+<EditDataFormTemplateSpec 
+		xmlns:c="bb_appfx_commontypes"
+		ID="2072a64d-4652-48e4-b6a6-94c801d49ac9"
+		Name="Child Reactivation Edit Form"
+		Description="Used for editing the given Child Reactivation Table"
+		Author="memphis-PC\Administrator"
+		RecordType="Child Reactivation Table"
+		DataFormInstanceID="c1dc455b-3c7d-4ec2-95ef-c1e3218fa257"
+		c:SecurityUIFolder="Child Reactivation Table"
+		OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+		xmlns="bb_appfx_editdataformtemplate"
+		>
+		<SPDataForm>
+				<LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_REACTIVATION">
+						<c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILD_REACTIVATION
+(
+		@ID uniqueidentifier,
+		@DATALOADED bit = 0 output,
+		@TSLONG bigint = 0 output,
+		@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = null output,
+		@FORMENTEREDDATE datetime = null output,
+		@FORMCOMPLETEDBY nvarchar(50) = null output,
+		@PREVIOUSDEPARTUREREASON nvarchar(500) = null output,
+		@ISCHILDUNDERELEVENCODE tinyint = null output,
+		@REACTIVATEEXPLANATION nvarchar(1000) = null output,
+		@ORIGINALREGISTRATIONDATE datetime = null output,
+		@ENDDATE datetime = null output,
+		@ISCURRENTREACTIVATION nvarchar(3) = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+				@SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID, 
+				@FORMENTEREDDATE = FORMENTEREDDATE, 
+				@FORMCOMPLETEDBY = FORMCOMPLETEDBY, 
+				@PREVIOUSDEPARTUREREASON = PREVIOUSDEPARTUREREASON, 
+				@ISCHILDUNDERELEVENCODE = ISCHILDUNDERELEVENCODE, 
+				@REACTIVATEEXPLANATION = REACTIVATEEXPLANATION, 
+				@ORIGINALREGISTRATIONDATE = ORIGINALREGISTRATIONDATE, 
+				@ENDDATE = ENDDATE, 
+				@ISCURRENTREACTIVATION = ISCURRENTREACTIVATION
+	from dbo.USR_CHILDREACTIVATION
+	where ID = @ID
+
+	return 0;
+]]>
+</c:CreateProcedureSQL>
+				</LoadImplementation>
+      
+				<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILD_REACTIVATION">
+						<c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILD_REACTIVATION
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+		@SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier,
+		@FORMENTEREDDATE datetime,
+		@FORMCOMPLETEDBY nvarchar(50),
+		@PREVIOUSDEPARTUREREASON nvarchar(500),
+		@ISCHILDUNDERELEVENCODE tinyint,
+		@REACTIVATEEXPLANATION nvarchar(1000),
+		--@ORIGINALREGISTRATIONDATE datetime,
+		@ENDDATE datetime
+		--@ISCURRENTREACTIVATIONCODE tinyint
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+						
+	begin try
+		-- handle updating the data
+		update dbo.USR_CHILDREACTIVATION set
+						SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID,
+						FORMENTEREDDATE = @FORMENTEREDDATE,
+						FORMCOMPLETEDBY = @FORMCOMPLETEDBY,
+						PREVIOUSDEPARTUREREASON = @PREVIOUSDEPARTUREREASON,
+						ISCHILDUNDERELEVENCODE = @ISCHILDUNDERELEVENCODE,
+						REACTIVATEEXPLANATION = @REACTIVATEEXPLANATION,
+						--ORIGINALREGISTRATIONDATE = @ORIGINALREGISTRATIONDATE,
+						ENDDATE = @ENDDATE,
+						--ISCURRENTREACTIVATION = @ISCURRENTREACTIVATIONCODE,
+
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+		where ID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+]]>
+</c:CreateProcedureSQL>
+						<c:ExpectedDBExceptions>
+								<c:Constraints>
+										<c:Constraint Name="FK_USR_CHILDREACTIVATION_SPONSORSHIPOPPORTUNITYCHILDID" Field="SPONSORSHIPOPPORTUNITYCHILDID" Type="ForeignKey" />
+										<c:Constraint Name="CK_USR_CHILDREACTIVATION_FORMCOMPLETEDBY" Field="FORMCOMPLETEDBY" Type="Required" />
+										<c:Constraint Name="CK_USR_CHILDREACTIVATION_REACTIVATEEXPLANATION" Field="REACTIVATEEXPLANATION" Type="Required" />
+								</c:Constraints>
+						</c:ExpectedDBExceptions>
+				</SaveImplementation>
+		</SPDataForm>
+		<c:FormMetaData FixedDialog="true">
+				<c:FormFields>
+          <c:FormField FieldID="SPONSORSHIPOPPORTUNITYCHILDID" DataType="Guid" Required="true" Caption="Sponsorshipopportunitychild" Hidden="true" />
+          <c:FormField FieldID="FORMENTEREDDATE" DataType="Date" Required="true" Caption="Reactivation form date" />
+          <c:FormField FieldID="FORMCOMPLETEDBY" Required="true" MaxLength="50" Caption="Form completed by" />
+          <c:FormField FieldID="PREVIOUSDEPARTUREREASON" MaxLength="500" Caption="Previous departure explanation" Multiline="true" />
+          <c:FormField FieldID="ISCHILDUNDERELEVENCODE" DataType="TinyInt" Caption="Is child under eleven" DefaultValueText="" Required="true">
+            <c:ValueList>
+              <c:Items>
+                <c:Item>
+                  <c:Value>0</c:Value>
+                  <c:Label>No</c:Label>
+                </c:Item>
+                <c:Item>
+                  <c:Value>1</c:Value>
+                  <c:Label>Yes</c:Label>
+                </c:Item>
+              </c:Items>
+            </c:ValueList>
+          </c:FormField>
+          <c:FormField FieldID="REACTIVATEEXPLANATION" Required="true" MaxLength="1000" Caption="Reason child returned" Multiline="true" />
+          <c:FormField FieldID="ORIGINALREGISTRATIONDATE" DataType="Date" Required="true" Caption="Previous Registration Date" Hidden="false" ReadOnly="true" />
+          <c:FormField FieldID="ENDDATE" DataType="Date" Caption="Enddate" Hidden="false" />
+          <c:FormField FieldID="ISCURRENTREACTIVATION" DataType="String" Caption="Current Reactivation?" Hidden="false" ReadOnly="true"/>
+				</c:FormFields>
+				<c:FormUIComponent />
+
+      <!-- NOTE: The webshell will respect & use these groups & display in this order, the smart client will use the order above & ignore these! -->
+
+    </c:FormMetaData>
+</EditDataFormTemplateSpec>
