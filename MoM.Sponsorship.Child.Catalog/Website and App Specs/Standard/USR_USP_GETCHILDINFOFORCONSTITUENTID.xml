@@ -19,6 +19,7 @@
 										Return APPLICATIONSWITHMAX, which includes all fund descriptions for the payment
 										Remove child id
 										Added maxChildrenInDesc and minDate
+	20-Nov-2013		CMayeda			Fixed to only summarize sponsored children instead of all applications.
 	-->
 
 	<CreateProcedureSQL>
@@ -33,7 +34,7 @@ create procedure dbo.USR_USP_GETCHILDINFOFORCONSTITUENTID
 as
 begin
 
-	SELECT	
+    	SELECT	
 		r.[ID], 
 		r.DATE,
 		r.AMOUNT,
@@ -64,7 +65,7 @@ begin
 					-- Also assumption is that a sub child will have a start date the same as the end date
 					dbo.SPONSORSHIP s on ((r.TRANSACTIONTYPECODE in (0,3) and s.REVENUESPLITID = rg_r_split.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate())))				
 										  or (r.TRANSACTIONTYPECODE in (1,2)and s.REVENUESPLITID = payment_r_split_ext.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate()))))
-				left join									  
+				left join				 
 					dbo.SPONSORSHIPOPPORTUNITY so on so.ID = s.SPONSORSHIPOPPORTUNITYID
 				left join	
 					dbo.SPONSORSHIPOPPORTUNITYCHILD so_child1 on so_child1.ID = s.SPONSORSHIPOPPORTUNITYID
@@ -73,16 +74,9 @@ begin
 				payment_f_trans_item.FINANCIALTRANSACTIONID = R.ID
 			and payment_f_trans_item.TRANSACTIONAMOUNT > 0) as APPLICATIONS,
 		(select case 
-				  when COUNT (distinct 
-										case 
-											when so_child.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, ''))
-											else so_child.NAME
-										end) > @maxChildrenInDesc
-						then  cast (COUNT (distinct 
-										case 
-											when so_child.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, ''))
-											else so_child.NAME
-										end) as varchar(4)) + ' children'
+				  when count (distinct so_child.NAME) > @maxChildrenInDesc
+						then  cast (COUNT (distinct so_child.NAME) as varchar(4)) + ' children; ' + dbo.UDA_BUILDLIST(distinct 
+								case when so_child.NAME is null then ltrim (replace (payment_desig.NAME,payment_desig.USERID, '')) end)
 				  else
 					(select dbo.UDA_BUILDLIST(distinct 
 						case 
@@ -105,6 +99,7 @@ begin
 				left join 
 					dbo.SPONSORSHIP s on ((r.TRANSACTIONTYPECODE in (0,3) and s.REVENUESPLITID = rg_r_split.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate())))				
 										  or (r.TRANSACTIONTYPECODE in (1,2)and s.REVENUESPLITID = payment_r_split_ext.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate()))))
+										 and exists (select ID from dbo.SPONSORSHIPOPPORTUNITYCHILD where ID = s.SPONSORSHIPOPPORTUNITYID)
 				left join 
 					dbo.SPONSORSHIPOPPORTUNITY so on so.ID = s.SPONSORSHIPOPPORTUNITYID
 				left join	
@@ -122,7 +117,6 @@ begin
 	        or r.TRANSACTIONTYPECODE in (1,2))
 
 	order by r.DATE desc 
-
 end
 		]]>
 	</CreateProcedureSQL>
