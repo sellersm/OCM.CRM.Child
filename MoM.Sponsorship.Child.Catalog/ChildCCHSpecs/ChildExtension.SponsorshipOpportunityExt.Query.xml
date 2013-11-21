@@ -107,7 +107,7 @@ select
   USR_CHILDEXTENSION.DATECHANGED,
   USR_CHILDEXTENSION.TSLONG,
   USR_CHILDEXTENSION.FUNDED,
-  USR_CHILDEXTENSION.PHOTOUSABLE,
+  USR_CHILDEXTENSION.PHOTOUNUSABLE,
   USR_CHILDEXTENSION.PHOTOYEAR,
   USR_CHILDEXTENSION.PROFILEPHOTOYEAR,
   (SELECT USR_FULFILLMENTSTATUSCODE.DESCRIPTION FROM dbo.USR_FULFILLMENTSTATUSCODE WHERE USR_FULFILLMENTSTATUSCODE.ID = USR_CHILDEXTENSION.FULFILLMENTSTATUSCODEID) as FULFILLMENTSTATUSCODEID_TRANSLATION,
@@ -284,7 +284,7 @@ from
 		<OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
 		<OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
 		<OutputField Name="FUNDED" Caption="Funded" />
-    <OutputField Name="PHOTOUSABLE" Caption="Photo Usable" DataType="Boolean" />
+    <OutputField Name="PHOTOUNUSABLE" Caption="Photo Unusable" DataType="Boolean" />
     <OutputField Name="PHOTOYEAR" Caption="Photo Year" IsHidden="false" DataType="Year" />
     <OutputField Name="PROFILEPHOTOYEAR" Caption="Profile Photo Year" IsHidden="false" DataType="Year" />
     <OutputField Name="FULFILLMENTSTATUSCODEID_TRANSLATION" Caption="Fulfillment status" IsHidden="false" DataType="String" >

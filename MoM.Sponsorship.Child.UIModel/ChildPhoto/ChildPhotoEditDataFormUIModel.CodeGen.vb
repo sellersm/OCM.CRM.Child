@@ -26,7 +26,7 @@ Partial Public Class [ChildPhotoEditDataFormUIModel]
 #End Region
 
     Private WithEvents _photoyearcodeid As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
-    Private WithEvents _photousable As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+    Private WithEvents _photounusable As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
     Private WithEvents _profilephotoyearcodeid As Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
 
 	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
@@ -34,7 +34,7 @@ Partial Public Class [ChildPhotoEditDataFormUIModel]
         MyBase.New()
 
         _photoyearcodeid = New Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
-        _photousable = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+        _photounusable = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         _profilephotoyearcodeid = New Global.Blackbaud.AppFx.UIModeling.Core.CodeTableField
 
         MyBase.Mode = Global.Blackbaud.AppFx.UIModeling.Core.DataFormMode.Edit
@@ -53,12 +53,12 @@ Partial Public Class [ChildPhotoEditDataFormUIModel]
         _photoyearcodeid.CodeTableName = "USR_CHILDPHOTOYEARCODE"
         Me.Fields.Add(_photoyearcodeid)
         '
-        '_photousable
+        '_photounusable
         '
-        _photousable.Name = "PHOTOUSABLE"
-        _photousable.Caption = "Photo usable"
-        _photousable.Required = True
-        Me.Fields.Add(_photousable)
+        _photounusable.Name = "PHOTOUNUSABLE"
+        _photounusable.Caption = "Photo unusable"
+        _photounusable.Required = True
+        Me.Fields.Add(_photounusable)
         '
         '_profilephotoyearcodeid
         '
@@ -84,13 +84,13 @@ Partial Public Class [ChildPhotoEditDataFormUIModel]
     End Property
     
     ''' <summary>
-    ''' Photo usable
+    ''' Photo unusable
     ''' </summary>
-    <System.ComponentModel.Description("Photo usable")> _
+    <System.ComponentModel.Description("Photo unusable")> _
     <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
-    Public ReadOnly Property [PHOTOUSABLE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+    Public ReadOnly Property [PHOTOUNUSABLE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         Get
-            Return _photousable
+            Return _photounusable
         End Get
     End Property
     

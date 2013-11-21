@@ -8,6 +8,7 @@
     DataFormInstanceID="8ccc996a-a9b0-4379-a1ea-c608f0d9c8b6"
     RecordType="Child Extension"
     common:SecurityUIFolder="Child Extension"
+    FormHeader="Current Photo Information"
     >
 
 	<SPDataForm>
@@ -20,7 +21,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDPHOTO(
     @ID uniqueidentifier,
     @DATALOADED bit = 0 output,
     @TSLONG bigint = 0 output,
-	  @PHOTOUSABLE bit = null output,
+	  @PHOTOUNUSABLE bit = null output,
 	  @PHOTOYEARCODEID uniqueidentifier = null output,
     @PROFILEPHOTOYEARCODEID uniqueidentifier = null output
 )
@@ -39,7 +40,7 @@ as
 	select
 		@DATALOADED = 1,
 		@TSLONG = TSLONG,
-		@PHOTOUSABLE = PHOTOUSABLE,
+		@PHOTOUNUSABLE = PHOTOUNUSABLE,
 		@PHOTOYEARCODEID = (SELECT ID FROM USR_CHILDPHOTOYEARCODE WHERE DESCRIPTION = CE.PHOTOYEAR),
     @PROFILEPHOTOYEARCODEID = (SELECT ID FROM USR_CHILDPHOTOYEARCODE WHERE DESCRIPTION = CE.PROFILEPHOTOYEAR)
 	from dbo.USR_CHILDEXTENSION CE
@@ -56,7 +57,7 @@ as
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTO (
 	@ID uniqueidentifier,
 	@CHANGEAGENTID uniqueidentifier = null,
-	@PHOTOUSABLE bit,
+	@PHOTOUNUSABLE bit,
 	@PHOTOYEARCODEID uniqueidentifier,
   @PROFILEPHOTOYEARCODEID uniqueidentifier 
 )
@@ -73,7 +74,7 @@ as
 	begin try
 		-- handle updating the data
 		update dbo.USR_CHILDEXTENSION set
-			PHOTOUSABLE = @PHOTOUSABLE,
+			PHOTOUNUSABLE = @PHOTOUNUSABLE,
 			PHOTOYEAR = (SELECT DESCRIPTION FROM USR_CHILDPHOTOYEARCODE WHERE ID = @PHOTOYEARCODEID),
       PROFILEPHOTOYEAR = (SELECT DESCRIPTION FROM USR_CHILDPHOTOYEARCODE WHERE ID = @PROFILEPHOTOYEARCODEID),
 			CHANGEDBYID = @CHANGEAGENTID,
@@ -99,7 +100,7 @@ return 0;
       <common:FormField FieldID="PHOTOYEARCODEID" Caption="Photo year" DataType="Integer" Required="true">
         <common:CodeTable CodeTableName="USR_CHILDPHOTOYEARCODE" />
       </common:FormField>
-			<common:FormField FieldID="PHOTOUSABLE" Caption="Photo usable" DataType="Boolean" Required="true" />
+			<common:FormField FieldID="PHOTOUNUSABLE" Caption="Photo unusable" DataType="Boolean" Required="true" />
       <common:FormField FieldID="PROFILEPHOTOYEARCODEID" Caption="Profile photo year" DataType="Integer" Required="true">
         <common:CodeTable CodeTableName="USR_CHILDPHOTOYEARCODE" />
       </common:FormField>

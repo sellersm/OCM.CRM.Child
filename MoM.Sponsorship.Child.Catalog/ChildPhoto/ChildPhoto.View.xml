@@ -18,7 +18,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_VIEW_CHILDPHOTO
 (
 	@ID uniqueidentifier,
 	@DATALOADED bit = 0 output,
-	@PHOTOUSABLE bit = null output,
+	@PHOTOUNUSABLE bit = null output,
 	@PHOTOYEAR nvarchar(5) = null output,
   @PROFILEPHOTOYEAR nvarchar(5) = null output
 )
@@ -32,7 +32,7 @@ as
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
 	-- will display a "no data loaded" message.
 	select  @DATALOADED = 1,
-  			  @PHOTOUSABLE = PHOTOUSABLE,
+  			  @PHOTOUNUSABLE = PHOTOUNUSABLE,
 		      @PHOTOYEAR = PHOTOYEAR,
           @PROFILEPHOTOYEAR = PROFILEPHOTOYEAR
 	from dbo.USR_CHILDEXTENSION ce
@@ -48,7 +48,7 @@ as
 	<common:FormMetaData FixedDialog="true">
 		<common:FormFields>
       <common:FormField FieldID="PHOTOYEAR" Caption="Photo year" DataType="String" Required="true" />
-			<common:FormField FieldID="PHOTOUSABLE" Caption="Photo usable" DataType="Boolean" />
+			<common:FormField FieldID="PHOTOUNUSABLE" Caption="Photo unusable" DataType="Boolean" />
 			<common:FormField FieldID="PROFILEPHOTOYEAR" Caption="Profile photo year" DataType="String" Required="true" />
 		</common:FormFields>
 

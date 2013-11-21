@@ -64,13 +64,22 @@
           if @ID is null
             set @ID = newid();
           
-          set @SAMPLETITLE = (SELECT TOP 1 DESCRIPTION FROM USR_CHILDPHOTOTITLECODE)
+          set @SAMPLETITLE = (SELECT TOP 1 DESCRIPTION FROM DBO.USR_CHILDPHOTOTITLECODE)
 
           if @CHANGEAGENTID is null
           exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
 
           set @CURRENTDATE = getdate();
    
+          --Validate the Type to be restricted to "photo" only
+          SET @FOUND = (SELECT DESCRIPTION FROM DBO.SPROPPATTACHMENTTYPECODE WHERE ID = @ATTACHMENTTYPECODEID AND DESCRIPTION LIKE '%photo%')
+          IF @FOUND IS NULL
+          BEGIN
+            SET @ERRORMESSAGE = 'Please select a type that is related to photo'
+			      RAISERROR 100000 @ERRORMESSAGE
+          END 
+          
+          --Validate the Title
           IF @TITLE = '' 
           BEGIN
             SET @ERRORMESSAGE = 'TITLE is required - Please enter a valid TITLE'
@@ -78,21 +87,23 @@
           END
           ELSE
           BEGIN
-            set @FOUND = (SELECT DESCRIPTION FROM USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
-            IF @FOUND IS NULL
+            set @FOUND = (SELECT DESCRIPTION 
+                          FROM DBO.SPROPPATTACHMENTTYPECODE 
+                          WHERE 
+                          ID = @ATTACHMENTTYPECODEID) 
+                          --AND ([DESCRIPTION] LIKE 'CHILD PHOTO - FULL BODY%' OR [DESCRIPTION] LIKE 'CHILD PHOTO - HEADSHOT%'))
+            IF @FOUND = 'Child Photo - Full Body' OR @FOUND = 'Child Photo - Full Body - New' OR @FOUND = 'Child Photo - Full Body - Current'
+                OR @FOUND = 'Child Photo - Headshot' OR @FOUND = 'Child Photo - Headshot - New' OR @FOUND = 'Child Photo - Headshot - Current'
             BEGIN
-              SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
-			        RAISERROR 100000 @ERRORMESSAGE
+              SET @FOUND = (SELECT DESCRIPTION FROM DBO.USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
+              IF @FOUND IS NULL
+              BEGIN
+                SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
+			          RAISERROR 100000 @ERRORMESSAGE
+              END
             END
           END
-        
-          SET @FOUND = (SELECT DESCRIPTION FROM DBO.SPROPPATTACHMENTTYPECODE WHERE ID = @ATTACHMENTTYPECODEID AND DESCRIPTION LIKE '%photo%')
-          IF @FOUND IS NULL
-          BEGIN
-            SET @ERRORMESSAGE = 'Please select a type that is related to photo'
-			      RAISERROR 100000 @ERRORMESSAGE
-          END 
-        
+               
           insert into dbo.SPONSORSHIPOPPORTUNITYATTACHMENT (
           [ID],
           [DATEENTERED],

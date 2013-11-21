@@ -99,6 +99,15 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOTATTACHMENT (
 
             set @CURRENTDATE = getdate();
    
+            --Validating Type selection
+            SET @FOUND = (SELECT DESCRIPTION FROM DBO.SPROPPATTACHMENTTYPECODE WHERE ID = @ATTACHMENTTYPECODEID AND DESCRIPTION LIKE '%photo%')
+            IF @FOUND IS NULL
+            BEGIN
+              SET @ERRORMESSAGE = 'Please select a type that is related to photo'
+			        RAISERROR 100000 @ERRORMESSAGE
+            END 
+            
+            --Validating Title
             IF @TITLE = '' 
             BEGIN
               SET @ERRORMESSAGE = 'TITLE is required - Please enter a valid TITLE'
@@ -106,20 +115,30 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOTATTACHMENT (
             END
             ELSE
             BEGIN
-              set @FOUND = (SELECT DESCRIPTION FROM USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
-              IF @FOUND IS NULL
+              --set @FOUND = (SELECT DESCRIPTION FROM USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
+              --IF @FOUND IS NULL
+              --BEGIN
+                --SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
+			          --RAISERROR 100000 @ERRORMESSAGE
+              --END
+              set @FOUND = (SELECT DESCRIPTION 
+                            FROM DBO.SPROPPATTACHMENTTYPECODE 
+                            WHERE 
+                            ID = @ATTACHMENTTYPECODEID) 
+                            --AND ([DESCRIPTION] LIKE 'CHILD PHOTO - FULL BODY%' OR [DESCRIPTION] LIKE 'CHILD PHOTO - HEADSHOT%'))
+              IF @FOUND = 'Child Photo - Full Body' OR @FOUND = 'Child Photo - Full Body - New' OR @FOUND = 'Child Photo - Full Body - Current'
+                  OR @FOUND = 'Child Photo - Headshot' OR @FOUND = 'Child Photo - Headshot - New' OR @FOUND = 'Child Photo - Headshot - Current'
               BEGIN
-                SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
-			          RAISERROR 100000 @ERRORMESSAGE
+                SET @FOUND = (SELECT DESCRIPTION FROM DBO.USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
+                IF @FOUND IS NULL
+                BEGIN
+                  SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
+			            RAISERROR 100000 @ERRORMESSAGE
+                END
               END
             END
         
-            SET @FOUND = (SELECT DESCRIPTION FROM DBO.SPROPPATTACHMENTTYPECODE WHERE ID = @ATTACHMENTTYPECODEID AND DESCRIPTION LIKE '%photo%')
-            IF @FOUND IS NULL
-            BEGIN
-              SET @ERRORMESSAGE = 'Please select a type that is related to photo'
-			        RAISERROR 100000 @ERRORMESSAGE
-            END 
+            
             -- End validating the Title and Type
             
 						if @FILECHANGED = 1

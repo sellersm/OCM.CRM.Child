@@ -26,15 +26,15 @@ Partial Public Class [ChildPhotoViewDataFormUIModel]
 #End Region
 
     Private WithEvents _photoyear As Global.Blackbaud.AppFx.UIModeling.Core.StringField
-    Private WithEvents _photousable As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+    Private WithEvents _photounusable As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
     Private WithEvents _profilephotoyear As Global.Blackbaud.AppFx.UIModeling.Core.StringField
 
-	<System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
     Public Sub New()
         MyBase.New()
 
         _photoyear = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
-        _photousable = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+        _photounusable = New Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         _profilephotoyear = New Global.Blackbaud.AppFx.UIModeling.Core.StringField
 
         MyBase.Mode = Global.Blackbaud.AppFx.UIModeling.Core.DataFormMode.View
@@ -54,12 +54,12 @@ Partial Public Class [ChildPhotoViewDataFormUIModel]
         _photoyear.MaxLength = 5
         Me.Fields.Add(_photoyear)
         '
-        '_photousable
+        '_photounusable
         '
-        _photousable.Name = "PHOTOUSABLE"
-        _photousable.Caption = "Photo usable"
-        _photousable.DBReadOnly = True
-        Me.Fields.Add(_photousable)
+        _photounusable.Name = "PHOTOUNUSABLE"
+        _photounusable.Caption = "Photo unusable"
+        _photounusable.DBReadOnly = True
+        Me.Fields.Add(_photounusable)
         '
         '_profilephotoyear
         '
@@ -70,10 +70,10 @@ Partial Public Class [ChildPhotoViewDataFormUIModel]
         _profilephotoyear.MaxLength = 5
         Me.Fields.Add(_profilephotoyear)
 
-		OnCreated()
+        OnCreated()
 
     End Sub
-    
+
     ''' <summary>
     ''' Photo year
     ''' </summary>
@@ -84,15 +84,15 @@ Partial Public Class [ChildPhotoViewDataFormUIModel]
             Return _photoyear
         End Get
     End Property
-    
+
     ''' <summary>
-    ''' Photo usable
+    ''' Photo unusable
     ''' </summary>
-    <System.ComponentModel.Description("Photo usable")> _
+    <System.ComponentModel.Description("Photo unusable")> _
     <System.CodeDom.Compiler.GeneratedCodeAttribute("BBUIModelLibrary", "2.93.2034.0")> _
-    Public ReadOnly Property [PHOTOUSABLE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
+    Public ReadOnly Property [PHOTOUNUSABLE]() As Global.Blackbaud.AppFx.UIModeling.Core.BooleanField
         Get
-            Return _photousable
+            Return _photounusable
         End Get
     End Property
     
