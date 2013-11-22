@@ -542,7 +542,7 @@
     <EmbeddedResource Include="ChildPhoto\ChildPhotoAttachment.Edit.xml" />
     <EmbeddedResource Include="Reservations\ChildReservationFulfillmentStatus.Edit.xml" />
     <EmbeddedResource Include="Reservations\ChildReservationFulfillmentStatus.View.xml" />
-    <Content Include="Tables\Code Tables\ChildReservationFulfillmentStatus.CodeTable.xml" />
+    <EmbeddedResource Include="Tables\Code Tables\ChildReservationFulfillmentStatus.CodeTable.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

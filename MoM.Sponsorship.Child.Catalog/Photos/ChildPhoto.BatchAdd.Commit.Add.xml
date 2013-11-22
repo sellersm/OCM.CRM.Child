@@ -45,10 +45,12 @@
 
       <common:FormField FieldID="PICTURETITLE" Required="true" MaxLength="100" Caption="Picture title" />
       <common:FormField FieldID="FILENAME" Required="true" MaxLength="255" Caption="File name" />
-
       <common:FormField FieldID="FILELOCATION" Caption="File location" Required="true" DataType="String" MaxLength="1000"/>
+		<common:FormField FieldID="ARCHIVEDPHOTO" Caption="Archive" Required="false" DataType="Boolean" />
+		<common:FormField FieldID="PHOTOYEAR" Caption="Photo year" Required="false" DataType="Integer" />
+		<common:FormField FieldID="UNUSABLEPHOTO" Caption="Unusable" Required="false" DataType="Boolean" />
 
-    </common:FormFields>
+		</common:FormFields>
 
 	</common:FormMetaData>
 

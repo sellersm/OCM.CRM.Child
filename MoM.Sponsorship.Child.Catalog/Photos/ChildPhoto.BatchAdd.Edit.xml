@@ -15,6 +15,7 @@
 	History:
 	Date            Modified By     Comments
 	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	19-Nov-2013		Memphis			Added 2 new fields: ARCHIVEDPHOTO, PHOTOYEAR	
 	-->
 
 	<SPDataForm>
@@ -31,7 +32,10 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDPHOTOADD_BATCHROW
     @ATTACHMENTTYPECODEID uniqueidentifier = null output,
     @PICTURETITLE nvarchar(100) = null output,
     @FILENAME nvarchar(255) = null output,
-    @FILELOCATION nvarchar(1000) = null output
+    @FILELOCATION nvarchar(1000) = null output,
+	@ARCHIVEDPHOTO bit = null output,
+	@PHOTOYEAR int = null output,
+	@UNUSABLEPHOTO bit = null output
 )
 as
 
@@ -53,7 +57,10 @@ as
         @ATTACHMENTTYPECODEID = ATTACHMENTTYPECODEID, 
         @PICTURETITLE = PICTURETITLE, 
         @FILENAME = FILENAME,
-        @FILELOCATION = FILELOCATION
+        @FILELOCATION = FILELOCATION,
+		@ARCHIVEDPHOTO = ARCHIVEDPHOTO, 
+		@PHOTOYEAR = PHOTOYEAR,
+		@UNUSABLEPHOTO = UNUSABLEPHOTO
 	from dbo.USR_BATCHCHILDPHOTOADD
 	where ID = @ID
 
@@ -73,7 +80,10 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOADD_BATCHROW
     @ATTACHMENTTYPECODEID uniqueidentifier,
     @PICTURETITLE nvarchar(100),
     @FILENAME nvarchar(255),
-    @FILELOCATION nvarchar(1000)
+    @FILELOCATION nvarchar(1000),
+	@ARCHIVEDPHOTO bit,
+	@PHOTOYEAR int,
+	@UNUSABLEPHOTO bit
 )
 as
 
@@ -91,6 +101,9 @@ as
             PICTURETITLE = @PICTURETITLE,
             FILENAME = @FILENAME,
             FILELOCATION = @FILELOCATION,
+			ARCHIVEDPHOTO = @ARCHIVEDPHOTO,
+			PHOTOYEAR = @PHOTOYEAR,
+			UNUSABLEPHOTO = @UNUSABLEPHOTO,
 			CHANGEDBYID = @CHANGEAGENTID,
 			DATECHANGED = getdate()
 		where ID = @ID
@@ -129,7 +142,10 @@ return 0;
               <common:FormField FieldID="FILENAME" Required="true" MaxLength="255" Caption="File name" />
 
             <common:FormField FieldID="FILELOCATION" Caption="File location" Required="true"/>
-              <!--<common:SimpleDataList SimpleDataListID="be0d5165-f49b-4b14-9aa1-92a4078f9734" />              
+			<common:FormField FieldID="ARCHIVEDPHOTO" Caption="Archive" Required="false" />
+			<common:FormField FieldID="PHOTOYEAR" Caption="Photo year" Required="false" />
+			<common:FormField FieldID="UNUSABLEPHOTO" Caption="Unusable" Required="false" />
+			<!--<common:SimpleDataList SimpleDataListID="be0d5165-f49b-4b14-9aa1-92a4078f9734" />              
             </common:FormField>-->
 
         </common:FormFields>

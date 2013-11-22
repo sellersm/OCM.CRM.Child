@@ -21,6 +21,9 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 	Public PICTURETITLE As String
 	Public FILENAME As String
 	Public FILELOCATION As String
+	Public ARCHIVEDPHOTO As Boolean
+	Public PHOTOYEAR As Integer
+	Public UNUSABLEPHOTO As Boolean
 
 	Public Overrides Function Save() As Blackbaud.AppFx.Server.AppCatalog.AppAddDataFormSaveResult
 		Dim pictureFile As String = FILELOCATION & "\" & FILENAME
@@ -30,7 +33,7 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 		Dim image As Byte() 
 		image = GetImage(pictureFile, fileShareCredentials.domain, fileShareCredentials.username, fileShareCredentials.password)
 
-		SaveDataDB(SPONSORSHIPOPPORTUNITYLOOKUPID, ATTACHMENTTYPECODEID, PICTURETITLE, pictureFile, FILENAME, image)
+		SaveDataDB(SPONSORSHIPOPPORTUNITYLOOKUPID, ATTACHMENTTYPECODEID, PICTURETITLE, pictureFile, FILENAME, image, ARCHIVEDPHOTO, UNUSABLEPHOTO, PHOTOYEAR)
 
 		Return New AppCatalog.AppAddDataFormSaveResult() With {.ID = Guid.NewGuid().ToString()}
 
@@ -81,7 +84,7 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 	End Function
 
 
-	Private Function SaveDataDB(ByVal SponsorshipOpportunityLookupID As String, ByVal AttachmentTypeCodeID As Guid, ByVal PictureTitle As String, ByVal PictureFile As String, ByVal FileName As String, ByVal Image As Byte())
+	Private Function SaveDataDB(ByVal SponsorshipOpportunityLookupID As String, ByVal AttachmentTypeCodeID As Guid, ByVal PictureTitle As String, ByVal PictureFile As String, ByVal FileName As String, ByVal Image As Byte(), ByVal ArchivePhoto As Boolean, ByVal UnusablePhoto As Boolean, ByVal PhotoYear As Integer)
 
 		Using Connection As SqlClient.SqlConnection = New SqlClient.SqlConnection(RequestContext.AppDBConnectionString)
 			Dim command As SqlClient.SqlCommand = Connection.CreateCommand()
@@ -98,6 +101,9 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 				.Parameters.AddWithValue("@PICTURETITLE", PictureTitle)
 				.Parameters.AddWithValue("@FILENAME", FileName)
 				.Parameters.AddWithValue("@PICTURE", Image)
+				.Parameters.AddWithValue("@ARCHIVEDPHOTO", ArchivePhoto)
+				.Parameters.AddWithValue("@PHOTOYEAR", PhotoYear)
+				.Parameters.AddWithValue("@UNUSABLEPHOTO", UnusablePhoto)
 
 				Try
 					Connection.Open()
@@ -122,7 +128,9 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 		Dim impersonationScope As UserImpersonationScope = Nothing
 		Dim imageByte() As Byte = Nothing
 		Try
-			impersonationScope = New UserImpersonationScope(username, domain, password, True)
+			'************************************
+			'UNCOMMENT THIS BEFORE DEPLOYMENT!! **************
+			'impersonationScope = New UserImpersonationScope(username, domain, password, True)
 
 			Dim stream As FileStream = New FileStream(filePath, FileMode.Open, FileAccess.Read)
 			Dim reader As BinaryReader = New BinaryReader(stream)

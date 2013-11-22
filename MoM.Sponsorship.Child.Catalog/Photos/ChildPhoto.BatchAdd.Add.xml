@@ -15,6 +15,7 @@
 	History:
 	Date            Modified By     Comments
 	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	19-Nov-2013		Memphis			Added 2 new fields: ARCHIVEDPHOTO, PHOTOYEAR	
 	-->
 
 	<SPDataForm>
@@ -31,7 +32,10 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDPHOTOADD_BATCHROW
     @ATTACHMENTTYPECODEID uniqueidentifier = null,
     @PICTURETITLE nvarchar(100) = null,
     @FILENAME nvarchar(255) = null,
-    @FILELOCATION nvarchar(1000) = null
+    @FILELOCATION nvarchar(1000) = null,
+	@ARCHIVEDPHOTO bit = null,
+	@PHOTOYEAR int = null,
+	@UNUSABLEPHOTO bit = null
 )
 as
 
@@ -49,9 +53,9 @@ set @CURRENTDATE = getdate()
 begin try
 	-- handle inserting the data
 	insert into dbo.USR_BATCHCHILDPHOTOADD
-		(ID, BATCHID, SEQUENCE, SPONSORSHIPOPPORTUNITYLOOKUPID, ATTACHMENTTYPECODEID, PICTURETITLE, FILENAME, FILELOCATION, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+		(ID, BATCHID, SEQUENCE, SPONSORSHIPOPPORTUNITYLOOKUPID, ATTACHMENTTYPECODEID, PICTURETITLE, FILENAME, FILELOCATION, ARCHIVEDPHOTO, PHOTOYEAR, UNUSABLEPHOTO, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
     values
-		(@ID, @BATCHID, @SEQUENCE, @SPONSORSHIPOPPORTUNITYLOOKUPID, @ATTACHMENTTYPECODEID, @PICTURETITLE, @FILENAME, @FILELOCATION, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+		(@ID, @BATCHID, @SEQUENCE, @SPONSORSHIPOPPORTUNITYLOOKUPID, @ATTACHMENTTYPECODEID, @PICTURETITLE, @FILENAME, @FILELOCATION, @ARCHIVEDPHOTO, @PHOTOYEAR, @UNUSABLEPHOTO, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
 end try
 
 begin catch
@@ -92,6 +96,9 @@ return 0
             <common:FormField FieldID="FILENAME" Required="true" MaxLength="255" Caption="File name" />
 
             <common:FormField FieldID="FILELOCATION" Caption="File location" Required="true" />
+			<common:FormField FieldID="ARCHIVEDPHOTO" Caption="Archive" Required="false" />
+			<common:FormField FieldID="PHOTOYEAR" Caption="Photo year" Required="false" />
+			<common:FormField FieldID="UNUSABLEPHOTO" Caption="Unusable" Required="false" />
               <!--<common:SimpleDataList SimpleDataListID="be0d5165-f49b-4b14-9aa1-92a4078f9734"></common:SimpleDataList>
             </common:FormField>-->
 
