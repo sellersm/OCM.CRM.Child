@@ -1,54 +1,58 @@
-﻿<TableSpec 
+﻿<TableSpec
 	xmlns="bb_appfx_table"
-	xmlns:common="bb_appfx_commontypes" 
+	xmlns:common="bb_appfx_commontypes"
 	ID="C5EE07B0-4D13-44FA-B89D-6491AFCB98F6"
 	Name="Child Photo Add Batch"
 	Description="Stores child photo batch information."
 	Author="Cary Mayeda"
 	Tablename="USR_BATCHCHILDPHOTOADD" >
-	
+
 	<!-- 
 	Remarks:    
 
 	History:
 	Date            Modified By     Comments
 	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
+	19-Nov-2013		Memphis			Added 2 new fields: ARCHIVEDPHOTO, PHOTOYEAR, UNUSABLEPHOTO
 	-->
 
 	<!-- define fields on the table -->
 	<Fields>
-    <ForeignKeyField Name="BATCHID" ForeignTable="BATCH" Required="true" OnDelete="CascadeDelete"/>
-    <SequenceField Name="SEQUENCE"/>
+		<ForeignKeyField Name="BATCHID" ForeignTable="BATCH" Required="true" OnDelete="CascadeDelete"/>
+		<SequenceField Name="SEQUENCE"/>
 
-    <TextField Name="SPONSORSHIPOPPORTUNITYLOOKUPID" Required="true" Length="100" />
-    <TextField Name="ATTACHMENTTYPECODEID" Required="true" Length="100"/>
-    <TextField Name="PICTURETITLE" Required="true" Length="100"/>
-    <TextField Name="FILENAME" Required="true" Length="255"/>
-    <TextField Name="FILELOCATION" Required="true" Length="1000"/>
-  </Fields>
+		<TextField Name="SPONSORSHIPOPPORTUNITYLOOKUPID" Required="true" Length="100" />
+		<TextField Name="ATTACHMENTTYPECODEID" Required="true" Length="100"/>
+		<TextField Name="PICTURETITLE" Required="true" Length="100"/>
+		<TextField Name="FILENAME" Required="true" Length="255"/>
+		<TextField Name="FILELOCATION" Required="true" Length="1000"/>
+		<BooleanField Name="ARCHIVEDPHOTO" Description="Archived photo"/>
+		<NumberField Name="PHOTOYEAR" Description="Photo year" Type="int" />
+		<BooleanField Name="UNUSABLEPHOTO" Description="Unusable" />
+	</Fields>
 
 	<!-- define any additional check constraints on the table -->
-  <!--
+	<!--
 	<CheckConstraints>
 
 	</CheckConstraints>
   -->
 
 	<!-- define any indexes on the table -->
-  <Indexes>
-    <Index IsUnique="true">
-      <IndexFields >
-        <IndexField Name="BATCHID" />
-        <IndexField Name="SPONSORSHIPOPPORTUNITYLOOKUPID"/>
-        <IndexField Name="FILENAME"/>
-        <IndexField Name="ATTACHMENTTYPECODEID"/>
-      </IndexFields>
-    </Index>
-  </Indexes>
+	<Indexes>
+		<Index IsUnique="true">
+			<IndexFields >
+				<IndexField Name="BATCHID" />
+				<IndexField Name="SPONSORSHIPOPPORTUNITYLOOKUPID"/>
+				<IndexField Name="FILENAME"/>
+				<IndexField Name="ATTACHMENTTYPECODEID"/>
+			</IndexFields>
+		</Index>
+	</Indexes>
 
 
-  <!-- define any triggers on the table -->
-  <!--
+	<!-- define any triggers on the table -->
+	<!--
 	<Triggers>
 
 	</Triggers>
