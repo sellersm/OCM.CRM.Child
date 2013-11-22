@@ -41,7 +41,8 @@ Partial Public Class [ChildPhotoEditDataFormUIModel]
         MyBase.DataFormTemplateId = New Guid("b419ae06-7d63-478e-aac4-5fb2cefa73bc")
         MyBase.DataFormInstanceId = New Guid("8ccc996a-a9b0-4379-a1ea-c608f0d9c8b6")
         MyBase.RecordType = "Child Extension"
-        MyBase.FixedDialog = True
+		MyBase.FixedDialog = True
+		MyBase.FORMHEADER.Value = "Current Photo Information"
         MyBase.UserInterfaceUrl = "browser/htmlforms/custom/ChildPhotoEditDataForm.html"
 
         '
