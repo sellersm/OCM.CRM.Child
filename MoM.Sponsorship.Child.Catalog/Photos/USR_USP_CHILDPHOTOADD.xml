@@ -29,9 +29,9 @@ create procedure dbo.USR_USP_CHILDPHOTOADD (
 	@PICTURETITLE nvarchar(50) = null,
 	@FILENAME nvarchar(255) = null,
 	@PICTURE varbinary(max)=null,
-	@ARCHIVEDPHOTO bit = null,
+	@ARCHIVEDPHOTO bit = 0,
 	@PHOTOYEAR int = null,
-	@UNUSABLEPHOTO bit = null	
+	@UNUSABLEPHOTO bit = 0	
 )
 as begin
     set nocount on;
@@ -53,7 +53,22 @@ as begin
 
     begin try
         declare @ERRORMSG nvarchar(100);
-		
+
+		/*
+		-- ***** TESTING ONLY *******
+		-- need to see if the Archive & Unusable bits are coming with a 1 at all...
+		if @UNUSABLEPHOTO = 1
+			begin
+				set @ERRORMSG = 'The Unusable Photo bit is 1!';
+			end
+		if @ARCHIVEDPHOTO = 1
+			begin
+				set @ERRORMSG = @ERRORMSG + 'and The Unusable Photo bit is 1!';
+			end
+
+		RAISERROR (@ERRORMSG, 13, 1);
+		*/
+
         if @VALIDATEONLY = 1
 			begin          
 				if @SPONSORSHIPOPPORTUNITYLOOKUPID is null
@@ -227,39 +242,40 @@ as begin
 				);
 															
 				if @ATTACHMENTTYPECODEID = @attachmentTypeID_ChildPhotoHeadshotCurrent  
-				begin
-					update	dbo.SPONSORSHIPOPPORTUNITYCHILD
-					set	PICTURE = @PICTURE, 
-						PICTURETHUMBNAIL = @PICTURE,
-						CHANGEDBYID = @CHANGEAGENTID,
-						DATECHANGED = @CURRENTDATE
-					where ID = @SPONSORSHIPOPPORTUNITYID;
+					begin
+						update	dbo.SPONSORSHIPOPPORTUNITYCHILD
+						set	PICTURE = @PICTURE, 
+							PICTURETHUMBNAIL = @PICTURE,
+							CHANGEDBYID = @CHANGEAGENTID,
+							DATECHANGED = @CURRENTDATE
+						where ID = @SPONSORSHIPOPPORTUNITYID;
 				
-					select @CONSTITUENTID = CONSTITUENTID 
-					from dbo.SPONSORSHIPOPPORTUNITYCHILD 
-					where ID = @SPONSORSHIPOPPORTUNITYID;
+						select @CONSTITUENTID = CONSTITUENTID 
+						from dbo.SPONSORSHIPOPPORTUNITYCHILD 
+						where ID = @SPONSORSHIPOPPORTUNITYID;
 				
-					if @CONSTITUENTID is null
-						begin
-							set @ERRORMSG = 'Could not find child''s constituent record'
-							RAISERROR (@ERRORMSG, 13, 1)
-						end
+						if @CONSTITUENTID is null
+							begin
+								set @ERRORMSG = 'Could not find child''s constituent record'
+								RAISERROR (@ERRORMSG, 13, 1)
+							end
 				
-					update dbo.CONSTITUENT
-					set	PICTURE = @PICTURE,
-						PICTURETHUMBNAIL = @PICTURE,
-						CHANGEDBYID = @CHANGEAGENTID,
-						DATECHANGED = @CURRENTDATE
-					where ID = @CONSTITUENTID;
-					
-					--update the new fields in USR_CHILDEXTENSION table: PHOTOYEAR, PROFILEPHOTOYEAR, PHOTOUSABLE
-					--**NOTE**: only update the PhotoYear column if this is NOT an archive import!!  ********
-					update dbo.USR_CHILDEXTENSION
-					set PHOTOYEAR = (case when @ARCHIVEDPHOTO = 1 then @PHOTOYEAR else PHOTOYEAR end),
-						--PROFILEPHOTOYEAR = @PROFILEPHOTOYEAR, 
-						PHOTOUSABLE = @UNUSABLEPHOTO
-					where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYID;					
-				end
+						update dbo.CONSTITUENT
+						set	PICTURE = @PICTURE,
+							PICTURETHUMBNAIL = @PICTURE,
+							CHANGEDBYID = @CHANGEAGENTID,
+							DATECHANGED = @CURRENTDATE
+						where ID = @CONSTITUENTID;					
+					end
+				
+				--update the new fields in USR_CHILDEXTENSION table: PHOTOYEAR, PROFILEPHOTOYEAR, PHOTOUSABLE
+				--**NOTE**: only update the PhotoYear column if this is NOT an archive import!!  ********
+				update dbo.USR_CHILDEXTENSION
+				set PHOTOYEAR = (case when @ARCHIVEDPHOTO = 0 then @PHOTOYEAR else PHOTOYEAR end),
+					--PROFILEPHOTOYEAR = @PROFILEPHOTOYEAR, 
+					PHOTOUNUSABLE = @UNUSABLEPHOTO
+				where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYID;
+				
 			end
     end try
 	

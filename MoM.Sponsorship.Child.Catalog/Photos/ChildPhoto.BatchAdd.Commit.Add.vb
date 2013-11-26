@@ -130,7 +130,7 @@ Public NotInheritable Class ChildPhotoAddBatchCommitAddDataForm
 		Try
 			'************************************
 			'UNCOMMENT THIS BEFORE DEPLOYMENT!! **************
-			'impersonationScope = New UserImpersonationScope(username, domain, password, True)
+			impersonationScope = New UserImpersonationScope(username, domain, password, True)
 
 			Dim stream As FileStream = New FileStream(filePath, FileMode.Open, FileAccess.Read)
 			Dim reader As BinaryReader = New BinaryReader(stream)
