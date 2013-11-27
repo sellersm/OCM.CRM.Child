@@ -1,0 +1,49 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="0cf461de-95e6-41c9-a363-2aa70cf29d2c"
+	Name="USR_USP_IMPORT_GETIMPORTSOURCE"
+	Description="Used to get the Default Import Source"
+	Author="Cary Mayeda"
+	SPName="USR_USP_IMPORT_GETIMPORTSOURCE"
+	GrantServiceRolePermission="true" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	31-Jan-2013		CMayeda			Added @importSourceName parm 
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_IMPORT_GETIMPORTSOURCE (
+    @importSourceName nvarchar(100),
+	@userName nvarchar(100) = '' output,
+	@password nvarchar(100) = '' output
+)
+	
+as
+begin
+	--declare @importSourceName nvarchar(100) = 'Default Network Import Path'  -- changed to parm so that it can be specified by the caller.
+    exec dbo.USP_GET_KEY_ACCESS
+
+    begin try
+        select top 1
+				@userName = USERNAME,
+                @password = convert(nvarchar(100), DecryptByKey(PASSWORD))
+        from dbo.importsource                                  
+        where lower(NAME) = lower (@importSourceName)
+        close symmetric key sym_BBInfinity
+    end try
+    begin catch
+		close symmetric key sym_BBInfinity
+    end catch
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

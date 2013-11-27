@@ -1,0 +1,175 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="532958c5-800a-413b-bf55-20a6887ede70"
+	Name="Child Extension Waiting Duration Smart Field"
+	Description="Used to determine the duration in days from the time the child was added to the system to when they were registered. If not registered current waiting time."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDWAITINGDURATION"
+	DataType="Integer"
+	RecordType="Sponsorship opportunity child"
+	DisplayName="Child waiting duration"
+	SmartFieldFolder="Sponsorship opportunity child" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	30-Sep-2012		CMayeda			Initial Version
+	13-Oct-2012		CMayeda			Only create for those that have a Waiting List Reason smart field - FogBugz Case 906
+	-->
+
+	
+	<!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDWAITINGDURATION
+(
+	@ASOF datetime 
+)
+as
+begin
+	declare @childWaitingListReasonSmartField table (ID uniqueidentifier, reason nvarchar(100))
+	
+	-- In order to make this only create this smart field for children that have a waiting list...
+	-- This was copied from the "Child Waiting List Reason Smart Field" as a stop gap measuer.
+	-- Couldn't use dynamic sql, because of nested insert exec
+	-- Should turn this into a table function and call from both places
+	
+	declare @waitingListProjectQuotaDesc as nvarchar(100)
+	declare @waitingListProjectNoChildrenDesc as nvarchar(100)
+	declare @waitingListProjectStatusDesc as nvarchar(100)
+	declare @waitingListProjectPerformanceDesc as nvarchar(100)
+
+	set @waitingListProjectQuotaDesc = 'Waiting List - maximum quota reached'
+	set @waitingListProjectNoChildrenDesc = 'Waiting List - not accepting new children'
+	set @waitingListProjectStatusDesc = 'Waiting List - project status'
+	set @waitingListProjectPerformanceDesc = 'Waiting List - project performance'
+
+	declare @waitingListProjectQuotaID as uniqueidentifier = null
+	declare @waitingListProjectNoChildrenID as uniqueidentifier  = null
+	declare @waitingListProjectStatusID as uniqueidentifier = null
+	declare @waitingListProjectPerformanceID as uniqueidentifier = null
+
+	declare @errorMessage nvarchar(max)
+
+	begin try
+
+		select @waitingListProjectQuotaID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectQuotaDesc
+		if @waitingListProjectQuotaID is null
+		begin
+			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectQuotaDesc + '" Sponsorship Reason'
+			raiserror 100000 @errorMessage
+		end
+
+		select @waitingListProjectNoChildrenID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectNoChildrenDesc
+		if @waitingListProjectQuotaID is null
+		begin
+			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectNoChildrenDesc + '" Sponsorship Reason'
+			raiserror 100000 @errorMessage
+		end
+
+		select @waitingListProjectStatusID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectStatusDesc
+		if @waitingListProjectStatusID is null
+		begin
+			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectStatusDesc + '" Sponsorship Reason'
+			raiserror 100000 @errorMessage
+		end
+
+		select @waitingListProjectPerformanceID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectPerformanceDesc
+		if @waitingListProjectPerformanceID is null
+		begin
+			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectPerformanceDesc + '" Sponsorship Reason'
+			raiserror 100000 @errorMessage
+		end
+	end try
+	begin catch
+		 exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch;
+	
+
+	with uniqueAuditKeys as
+	(
+	select	distinct 
+			AUDITKEY, 
+			AUDITRECORDID 
+	 from	dbo.SPONSORSHIPOPPORTUNITYAUDIT 
+	),
+
+	sponsorshipReasonAuditRows as
+	(
+	select	distinct 
+			so_child.ID as CHILDID, 
+			afterupdate.AUDITDATE, 
+			beforeupdate.SPONSORSHIPREASONID as BEFOREREASONID,
+			afterupdate.SPONSORSHIPREASONID as AFTERREASONID
+	  from	uniqueAuditKeys u
+	  join	dbo.SPONSORSHIPOPPORTUNITYAUDIT afterupdate on
+				u.AUDITKEY = afterupdate.AUDITKEY and 
+				u.AUDITRECORDID = afterupdate.AUDITRECORDID and
+				afterupdate.AUDITTYPE='AFTER UPDATE' 
+			
+	  join	dbo.SPONSORSHIPOPPORTUNITYAUDIT beforeupdate on
+				u.AUDITKEY = beforeupdate.AUDITKEY and 
+				u.AUDITRECORDID = beforeupdate.AUDITRECORDID and
+				beforeupdate.AUDITTYPE = 'BEFORE UPDATE'
+	
+	  join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on -- This is to only return current children
+				u.AUDITRECORDID = so_child.id
+		
+	 where	afterupdate.SPONSORSHIPREASONID is null and beforeupdate.SPONSORSHIPREASONID is not null
+		or	afterupdate.SPONSORSHIPREASONID is not null and beforeupdate.SPONSORSHIPREASONID is null
+		or	afterupdate.SPONSORSHIPREASONID <> beforeupdate.SPONSORSHIPREASONID 
+  
+	 ),
+ 
+	 -- After this is specific to getting the first waiting list reason
+	 waitingListAfterUpdate as
+	 (
+	 select	CHILDID, AUDITDATE, BEFOREREASONID, AFTERREASONID, ROW_NUMBER() OVER (partition by CHILDID order by AUDITDATE) as ROWNUMBER
+	   from  sponsorshipReasonAuditRows 
+	  where AFTERREASONID in (@waitingListProjectQuotaID,
+							  @waitingListProjectNoChildrenID,
+							  @waitingListProjectStatusID, 
+							  @waitingListProjectPerformanceID)
+
+	 )
+
+	insert into @childWaitingListReasonSmartField 
+	 select CHILDID, sra.REASON  
+	   from waitingListAfterUpdate wl
+	   join dbo.SPONSORSHIPREASON sra on
+			  wl.AFTERREASONID = sra.ID
+	  where ROWNUMBER = 1
+	  
+		
+	select	so_child.ID, datediff (d,so_child.DATEADDED, child_ext.REGISTRATIONDATE)
+	  from	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child
+	  join	@childWaitingListReasonSmartField waitinglist on 
+				so_child.ID = waitinglist.ID
+	  join	dbo.USR_CHILDEXTENSION child_ext on
+				so_child.ID = child_ext.SPONSORSHIPOPPORTUNITYCHILDID		
+	 where	child_ext.REGISTRATIONDATE is not null
+	   
+	 
+ 
+	 union all   
+
+	-- Kids still not registered. How long not registered
+	select	so_child.ID, datediff (d,so_child.DATEADDED, GETDATE())
+	  from	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child
+	  join	@childWaitingListReasonSmartField  waitinglist on 
+				so_child.ID = waitinglist.ID
+	  join	dbo.USR_CHILDEXTENSION child_ext on
+				so_child.ID = child_ext.SPONSORSHIPOPPORTUNITYCHILDID		
+	 where	child_ext.REGISTRATIONDATE is null
+
+end 
+		]]>
+	</CreateProcedureSQL>
+
+	<!-- describe any parameters (other than the ASOF date) defined on the SP -->
+	
+</SmartFieldSpec>

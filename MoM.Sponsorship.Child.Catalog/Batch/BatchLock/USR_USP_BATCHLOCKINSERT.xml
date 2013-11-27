@@ -1,0 +1,48 @@
+﻿<SQLStoredProcedureSpec
+  xmlns="bb_appfx_sqlstoredprocedure"
+  xmlns:common="bb_appfx_commontypes" 
+  ID="7326b5ac-de99-427c-9c78-1350fa820088"
+  Name="USR_USP_BATCHLOCKINSERT"
+  Description="Insert a row into BatchLock table"
+  Author="Memphis"
+  SPName="USR_USP_BATCHLOCKINSERT"
+  >
+
+  <!-- 
+  Remarks:	Used to insert a BatchLock row.
+  
+  History:
+  Date			    Modified By		Comments
+  04-May-2012		Memphis		    Initial Version
+  -->
+
+  <CreateProcedureSQL>
+    <![CDATA[
+CREATE PROCEDURE USR_USP_BATCHLOCKINSERT 
+  -- Add the parameters for the stored procedure here
+  @objectId uniqueidentifier,             --Guid of the object/entity that is being locked: project, country, anything
+  @timeStamp DateTime,                     --datetime value, kind of a timestamp
+  @appUserId nvarchar(100)                 --userId of the person doing the batch
+AS
+BEGIN
+  -- SET NOCOUNT ON added to prevent extra result sets from
+  -- interfering with SELECT statements.
+  SET NOCOUNT ON;
+    INSERT INTO USR_BATCHLOCK
+           ([ID]
+           ,[LOCKED_TS]
+           ,[USERID]
+           ,[OBJECTID])
+     VALUES
+           (newid()
+           ,@timeStamp
+           ,@appUserId
+           ,@objectId
+           )
+
+END
+
+    ]]>
+  </CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

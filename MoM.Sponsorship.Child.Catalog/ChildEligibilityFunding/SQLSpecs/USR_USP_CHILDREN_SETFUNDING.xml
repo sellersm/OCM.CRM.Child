@@ -1,0 +1,203 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes"
+	ID="fea18d5d-2838-4c5d-ac53-00a5d5dbbc52"
+	Name="USR_USP_CHILDREN_SETFUNDING"
+	Description="This is used to set the funding on a list of children based on funding criteria"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDREN_SETFUNDING" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	20-Oct-2012		CMayeda			Modified logic to ignore Child Photo Update and Medical Information Request subcategories
+									and to only include Unusable 2012 Health Photo subcategory if it is 90 days or older - FogBugz Case 918
+	25-Jul-2013		CMayeda			Removed check for FIELDMEMODATESENT being null and only use the EXPECTEDDATE
+	29-Jul-2013		CMayeda			Modified so that sponsored chidlren are funded when a project is phase out. TK-01005 of B-01027
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILDREN_SETFUNDING (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID fields
+	@changedToFunded int = 0 output,				-- Output parm that specifies how many children were set to Eligible
+	@changedToNotFunded int = 0 output				-- Output parm that specifies how many children were set to Pending
+)
+as
+begin
+	-- Constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+	
+	declare @interactionStatusCode_Pending tinyint = 1
+	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0
+	
+	declare @categoryName_ChildFieldMemo nvarchar(100) = 'Child Field Memo'
+	
+	declare @subcategoryName_ChildPhotoUpdate nvarchar(100) = 'Child Photo Update'
+	declare @subcategoryName_MedicalInformationRequest nvarchar(100) = 'Medical Information Request'
+	declare @subcategoryName_Unusable2012HealthPhoto nvarchar(100) = 'Unusable 2012 Health Photo'
+	
+	declare @pendingReason_DepartureInProcess nvarchar(100) = 'Departure in Process'
+	declare @pendingReason_NeedInformationVerified nvarchar(100) = 'Need Information Verified - New Child'
+	declare @pendingReason_ProjectOnPhasingOutStatus nvarchar(100) = 'Project on Phasing Out Status'
+	declare	@numberofPendingReasons tinyint = 2
+		
+	declare @maxDaysPastDue smallint = 60
+	declare @maxDaysHealthPhotoPastDue smallint = 90
+
+		
+	begin try
+		-- Get ChangeAgent if none was passed into the sproc
+  		if @changeAgentID is null  
+			exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+		declare @fieldMemoCategoryID uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETCATEGORYID
+			@categoryID = @fieldMemoCategoryID output,
+			@categoryName = @categoryName_ChildFieldMemo,
+			@raiseErrorIfNotFound = 1	
+
+		declare @subcategoryID_ChildPhotoUpdate uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETSUBCATEGORYID 
+			@subcategoryID =  @subcategoryID_ChildPhotoUpdate output,
+			@categoryName = @categoryName_ChildFieldMemo,
+			@subcategoryName = @subcategoryName_ChildPhotoUpdate,
+			@raiseErrorIfNotFound = 1
+
+		declare @subcategoryID_MedicalInformationRequest uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETSUBCATEGORYID 
+			@subcategoryID =  @subcategoryID_MedicalInformationRequest output,
+			@categoryName = @categoryName_ChildFieldMemo,
+			@subcategoryName = @subcategoryName_MedicalInformationRequest,
+			@raiseErrorIfNotFound = 1
+
+		declare @subcategoryID_Unusable2012HealthPhoto uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETSUBCATEGORYID 
+			@subcategoryID =  @subcategoryID_Unusable2012HealthPhoto output,
+			@categoryName = @categoryName_ChildFieldMemo,
+			@subcategoryName = @subcategoryName_Unusable2012HealthPhoto,
+			@raiseErrorIfNotFound = 1
+
+		declare @pendingReasonsNotFunded table 
+			(
+				sponsorshipReasonID uniqueidentifier
+			)
+		
+		insert	@pendingReasonsNotFunded 
+		select	ID from dbo.SPONSORSHIPREASON 
+		 where	REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		   and	lower (REASON) in ( lower (@pendingReason_DepartureInProcess),
+									lower (@pendingReason_NeedInformationVerified)
+								  )
+
+		if ((select COUNT(*) from @pendingReasonsNotFunded) <> @numberofPendingReasons)
+			RAISERROR 1000000 'Did not find the correct number of pending reasons'
+	
+        declare @pendingReasonID_ProjectOnPhasingOutStatus uniqueidentifier = null
+        select @pendingReasonID_ProjectOnPhasingOutStatus = ID from dbo.SPONSORSHIPREASON where REASON = @pendingReason_ProjectOnPhasingOutStatus and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+        if @pendingReasonID_ProjectOnPhasingOutStatus is null
+        begin
+			declare @errorMessage nvarchar(max)
+            set @errorMessage = 'Couldn''t find the "' + @pendingReason_ProjectOnPhasingOutStatus + '" Sponsorship Reason'
+        	raiserror 100000 @errorMessage
+        end
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	
+	declare @setFundedCount int = 0
+	declare @setNotFundedCount int = 0
+		
+	
+	set nocount off
+	
+	-- Set those to not funded who are ineligible, or with a non-funded pending reason or pending field memo 60 days past due
+	update	dbo.USR_CHILDEXTENSION
+	   set	FUNDED = 0
+	  from	dbo.USR_CHILDEXTENSION ch_ext
+	  join	dbo.SPONSORSHIPOPPORTUNITY so on
+				so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
+	 where	exists (SELECT SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID)
+	   and	ch_ext.FUNDED = 1
+	   and	((so.ELIGIBILITYCODE = @eligibilityCode_Ineligible)
+			or		
+			((so.ELIGIBILITYCODE = @eligibilityCode_Pending)
+				and (exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON sr 
+							   where sr.SPONSORSHIPOPPORTUNITYID = so.ID
+								 and (sr.SPONSORSHIPREASONID in (select sponsorshipReasonID from @pendingReasonsNotFunded)
+                                      or (sr.SPONSORSHIPREASONID = @pendingReasonID_ProjectOnPhasingOutStatus and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS (so.ID) = 0)))
+				    )
+			)
+                  
+			or
+			(ch_ext.REGISTRATIONDATE is null)
+			or
+			(exists (select	inter.ID 
+					  from	dbo.INTERACTION inter
+					  join	dbo.INTERACTIONSUBCATEGORY sub on 
+								inter.INTERACTIONSUBCATEGORYID = sub.ID
+					  join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on
+								so_child.ID = so.ID
+					left outer join 
+							dbo.USR_INTERACTIONEXTENSION int_ext on
+								int_ext.ID = inter.ID
+					 where	so_child.CONSTITUENTID = inter.CONSTITUENTID
+					   and	inter.STATUSCODE = @interactionStatusCode_Pending
+					   and	sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID
+					   and	sub.ID not in (@subcategoryID_ChildPhotoUpdate, @subcategoryID_MedicalInformationRequest, @subcategoryID_Unusable2012HealthPhoto)
+					   and	convert (date, dateadd (d, @maxDaysPastDue, inter.EXPECTEDDATE)) <= convert (date, GETDATE())
+					)
+			))
+			
+		set @setNotFundedCount = @@ROWCOUNT
+
+
+	update	dbo.USR_CHILDEXTENSION
+	   set	FUNDED = 1
+	  from	dbo.USR_CHILDEXTENSION ch_ext
+	  join	dbo.SPONSORSHIPOPPORTUNITY so on
+				so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
+	 where	exists (SELECT SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID)
+	   and	ch_ext.FUNDED = 0
+	   and	ch_ext.REGISTRATIONDATE is not null
+	   and	((so.ELIGIBILITYCODE = @eligibilityCode_Eligible)
+			 or	 ((so.ELIGIBILITYCODE = @eligibilityCode_Pending)
+				      and  (not exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON sr 
+				 	   		             where sr.SPONSORSHIPOPPORTUNITYID = so.ID
+								           and (sr.SPONSORSHIPREASONID in (select sponsorshipReasonID from @pendingReasonsNotFunded)
+                                                or (sr.SPONSORSHIPREASONID = @pendingReasonID_ProjectOnPhasingOutStatus and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS (so.ID) = 0)))) 
+				 )
+			)
+	   and	not exists (select	inter.ID 
+						  from	dbo.INTERACTION inter
+						  join	dbo.INTERACTIONSUBCATEGORY sub on 
+									inter.INTERACTIONSUBCATEGORYID = sub.ID
+						  join	dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on
+									so_child.ID = so.ID
+						left outer join 
+								dbo.USR_INTERACTIONEXTENSION int_ext on
+									int_ext.ID = inter.ID
+						 where	so_child.CONSTITUENTID = inter.CONSTITUENTID
+						   and	inter.STATUSCODE = @interactionStatusCode_Pending
+						   and	sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID
+						   and	sub.ID not in (@subcategoryID_ChildPhotoUpdate, @subcategoryID_MedicalInformationRequest, @subcategoryID_Unusable2012HealthPhoto)
+						   and	convert (date, dateadd (d, @maxDaysPastDue, inter.EXPECTEDDATE)) <= convert (date, GETDATE())
+					)
+			
+		set @setFundedCount = @@ROWCOUNT
+
+	
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

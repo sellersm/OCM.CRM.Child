@@ -1,0 +1,73 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="cc6913de-2ee3-401b-b169-0c030bb95310"
+	Name="USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS"
+	Description="This is used to attempt to lock a batch multiple times with a time delay between attempts"
+	Author="Cary Mayeda"
+	SPName="USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS" >
+
+	<!-- 
+	Remarks:    This uses waitfor delay to pause in between lock attempts via USR_USP_BATCHLOCKINSERT
+				Note: This currently only supports delays of 0 - 59 seconds.
+	History:
+	Date            Modified By     Comments
+	30-Jul-2012		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS (
+	@lockObjectID uniqueidentifier,			-- guid of the object to lock
+	@changeAgentUserName nvarchar(128),		-- changeagent name to use with the lock
+	@lockMaxAttempts tinyint = 1,			-- How many times to retry attempting acquiring a lock
+	@lockDelaySeconds tinyint = 1,			-- How long to wait in between lock attempts.  Delays must be less than 60 seconds, because I'm feeling lazy at the moment
+	@objectLocked bit = 0 output			-- Output parm whether or not the lock was successful
+											--	0 - lock failed
+											--	1 - lock success
+)
+as
+begin
+
+	declare @lockDelayString char(8) 
+	declare @currentDateTime datetime
+	
+	begin try
+	    if @lockObjectID is null
+			RAISERROR 1000000 '@lockObjectId cannot be null'
+
+		if @lockDelaySeconds < 0 or @lockDelaySeconds > 59
+			RAISERROR 1000000 '@lockDelaySeconds must be between 0 - 59'		
+		
+		-- Convert seconds into a delay string to be used with delay.  Must be formatted as time - hh:mm:ss
+		set @lockDelayString = '00:00:' + right ('0' + cast (@lockDelaySeconds as varchar(2)), 2)  
+	
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	
+	declare @lockAttempts int = 0
+	while @lockAttempts < @lockMaxAttempts and @objectLocked = 0 
+	begin
+		set @lockAttempts = @lockAttempts + 1
+		set @objectLocked = 1
+		begin try
+			set @currentDateTime = getdate()
+			exec dbo.USR_USP_BATCHLOCKINSERT @lockObjectID, @currentDateTime, @changeAgentUserName
+		end try
+		begin catch
+			set @objectLocked = 0
+			if @lockAttempts < @lockMaxAttempts
+				waitfor delay @lockDelayString
+		end catch
+	end 
+		
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

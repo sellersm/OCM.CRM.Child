@@ -1,0 +1,53 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="5e80b7c0-bff0-40a5-8af7-e6cfe1ae8e1b" 
+	Name="Set Child CCH Validated to False Record Operation" 
+	Description="Record operation to set the CCH Validated field to false on a child"
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship opportunity child"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child">
+
+	<!-- 
+	Remarks:    Made into a production record operation
+
+	History:
+	Date            Modified By     Comments
+	25-Aug-2012		CMayeda			Initial Version
+	-->
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_CHILDEXTENSION_SETCCHVALIDATEDFALSE_UPDATE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_CHILDEXTENSION_SETCCHVALIDATEDFALSE_UPDATE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+	update	dbo.USR_CHILDEXTENSION 
+	   set	CCHVALIDATED = 0,
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+	   where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+	
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to set CCH Verified to No?" />
+	</Prompt>
+
+</RecordOperationSpec>

@@ -1,0 +1,65 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="7f462f2d-56d5-4e85-8b9e-c6e1cf7d9831"
+	Name="Sponsorship Opportunity Child Reservation Key Query"
+	Description="Reservation Keys for a Sponsorship Opportunity Child"
+	Author="Cary Mayeda"
+	IsRoot="true"
+	PrimaryKeyField="ID"
+	RecordType="Child Reservation"
+    common:SecurityUIFolder="Sponsorship\Opportunity"
+	UseInReportModelGenerator="true"
+	EnforceRecordAccessSecurity="true" >
+	
+	<!-- 
+	Remarks:    Parent is Sponsorship Opportunity (V_QUERY_SPONSORSHIPOPPORTUNITY)
+
+	History:
+	Date            Modified By     Comments
+	30-Sep-2012		CMayeda			Initial Version - FogBugz Case 836
+	-->
+	
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_RESERVATIONKEY_SPONSORSHIPOPPORTUNITYCHILD">
+		<ViewSQL>
+			<![CDATA[
+ select	ID,
+		SPONSORSHIPOPPORTUNITYCHILDID,
+		(select NAME from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where ID = USR_CHILDRESERVATION.SPONSORSHIPOPPORTUNITYRESERVEPROCESSID) as SPONSORSHIPOPPORTUNITYRESERVEPROCESSNAME,
+		SOLICITORID,
+		(select NAME from dbo.UFN_CONSTITUENT_DISPLAYNAME(SOLICITORID)) as SOLICITORNAME,
+		STARTDATE,
+		ENDDATE,
+		STATUS
+   from	dbo.USR_CHILDRESERVATION
+
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="System record ID" Category="System Fields" Name="ID" />
+			<OutputField Name="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Child system record ID" Category="System Fields" DataType="Guid" />
+			<OutputField Name="SPONSORSHIPOPPORTUNITYRESERVEPROCESSNAME" Caption="Reservation process name" DataType="String" />
+			<OutputField Name="SOLICITORID" Caption="Fundraiser system record id" Category="System Fields" DataType="Guid" />
+			<OutputField Name="SOLICITORNAME" Caption="Fundraiser Name" DataType="String" />
+			<OutputField Name="STARTDATE" Caption="Start Date" DataType="Date" />
+			<OutputField Name="ENDDATE" Caption="End Date" DataType="Date" />
+			<OutputField Name="STATUS" Caption="Status" DataType="String" />
+ 		</OutputFields>
+		<IdentifyingFields>
+			<IdentifyingField Name="SPONSORSHIPOPPORTUNITYRESERVEPROCESSNAME" />
+		</IdentifyingFields>
+	</Output>
+	
+
+	<RelationshipOperations>
+		<AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="SPONSORSHIPOPPORTUNITYCHILDID" PathAlias="Reservation keys" />
+		<AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="SOLICITORID" PathAlias="Fundraiser" DisplayAliasResourceKey="$$owner" />
+	</RelationshipOperations>
+
+</QueryViewSpec>
+

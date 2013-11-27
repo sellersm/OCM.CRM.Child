@@ -1,0 +1,50 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="196a0760-070c-447c-adfe-83a603a601d4"
+	Name="USR_UFN_CHILD_GETCHILDNAME"
+	Description="Retrieve the Child's Name with option of prefixing with the lookup id."
+	Author="Cary Mayeda"
+	DBFunctionName="USR_UFN_CHILD_GETCHILDNAME" 
+	GrantServiceRolePermission="true" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	25-Sep-2012		CMayeda			Initial Version
+	-->
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETCHILDNAME (
+	@sponsorshipOpportunityChildID uniqueidentifier = null,
+	@includeChildLookupID as bit = 0,
+	@includeProjectLookupID as bit = 0
+)
+returns nvarchar(200)
+with execute as caller
+as begin
+	declare @childName nvarchar(200) = ''
+	declare @childLookupID nvarchar(200) = ''
+
+	if @sponsorshipOpportunityChildID is not null
+	begin
+		set @childName = @childName + coalesce((select NAME from dbo.SPONSORSHIPOPPORTUNITYCHILD where ID = @sponsorshipOpportunityChildID), '')
+
+		if @includeChildLookupID = 1
+			set @childLookupID = dbo.USR_UFN_CHILD_GETCHILDLOOKUPID (@sponsorshipOpportunityChildID, @includeProjectLookupID)
+		
+		if @ChildName <> '' and @childLookupID <> ''
+			set @childName = @childLookupID + ' ' + @childName 
+		else
+			set @childName = @childLookupID + @childName 
+	end
+
+	return @childName
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

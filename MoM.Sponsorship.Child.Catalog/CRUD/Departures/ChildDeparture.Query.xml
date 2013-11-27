@@ -1,0 +1,211 @@
+<QueryViewSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="ae55919f-c2e7-4df9-9829-0b7b1516dbc3"
+    Name="Child Departure Query"
+    Description="Provides support for querying on Child Departure information."
+    Author="Memphis"
+    PrimaryKeyField="ID"
+    RecordType="Child Departure"
+    IsRoot="true"
+    c:SecurityUIFolder="Child Departure"
+    xmlns="bb_appfx_queryview"
+    >
+
+	<!-- 
+	  Remarks:    Query to add the Child Departure fields to the Sponsorship Opportunity query.
+
+	  History:
+	  Date			Modified By     Comments
+	  16-Sep-2013	Memphis			B-01414 in V1.
+	 -->
+
+
+
+
+	<ViewImplementation ViewName="USR_V_QUERY_USR_CHILDDEPARTURE">
+        <ViewSQL>
+<![CDATA[
+select
+    USR_CHILDDEPARTURE.ID,
+    USR_CHILDDEPARTURE.[SPONSORSHIPOPPORTUNITYCHILDID],
+    USR_CHILDDEPARTURE.[NODEPARTUREFORM],
+    USR_CHILDDEPARTURE.[RECEIVEDFAREWELLLETTERCODE],
+    USR_CHILDDEPARTURE.[DATEFORMCOMPLETED],
+    USR_CHILDDEPARTURE.[FORMCOMPLETEDBY],
+    USR_CHILDDEPARTURE.[DATEOFDEPARTURE],
+    USR_CHILDDEPARTURE.[DATEPROCESSED],
+    (select USR_DEPARTURE_ADMINISTRATIVE_CODE.DESCRIPTION from dbo.USR_DEPARTURE_ADMINISTRATIVE_CODE where USR_DEPARTURE_ADMINISTRATIVE_CODE.ID = USR_CHILDDEPARTURE.[ADMINISTRATIVECODEID]) as ADMINISTRATIVECODEID_TRANSLATION,
+    USR_CHILDDEPARTURE.[ADMINISTRATIVEEXPLANATION],
+    USR_CHILDDEPARTURE.[DEPARTURETYPE],
+    USR_CHILDDEPARTURE.[ISDEPARTURE],
+    USR_CHILDDEPARTURE.[ISPROGRAMCOMPLETION],
+    USR_CHILDDEPARTURE.[DEPARTURE_LIVESWITHRELATIVES],
+    USR_CHILDDEPARTURE.[DEPARTURE_FAMILYMOVED],
+    USR_CHILDDEPARTURE.[DEPARTURE_FAMILYNOWPROVIDES],
+    USR_CHILDDEPARTURE.[DEPARTURE_PROJECTTOOFAR],
+    USR_CHILDDEPARTURE.[DEPARTURE_REMOVEDBYPARENTS],
+    USR_CHILDDEPARTURE.[DEPARTURE_LACKOFINTEREST],
+    USR_CHILDDEPARTURE.[DEPARTURE_NEEDEDATHOME],
+    USR_CHILDDEPARTURE.[DEPARTURE_EMPLOYED],
+    USR_CHILDDEPARTURE.[DEPARTURE_TRANSFERRED],
+    USR_CHILDDEPARTURE.[DEPARTURE_FAILED],
+    USR_CHILDDEPARTURE.[DEPARTURE_DEATHOFCHILD],
+    USR_CHILDDEPARTURE.[DEPARTURE_ILLNESS],
+    USR_CHILDDEPARTURE.[DEPARTURE_PREGNANCY],
+    USR_CHILDDEPARTURE.[DEPARTURE_MARRIED],
+    USR_CHILDDEPARTURE.[DEPARTURE_OTHER],
+    USR_CHILDDEPARTURE.[DETAILEDEXPLANATION],
+    USR_CHILDDEPARTURE.[DEPARTURENEWSITUATION],
+    USR_CHILDDEPARTURE.[PROGRAMCOMPLETIONNEWSITUATION],
+    USR_CHILDDEPARTURE.[ISCHILDCHRISTIANCODE],
+    USR_CHILDDEPARTURE.[CHILDCHRISTIANCOMMENTS],
+    USR_CHILDDEPARTURE.[DIDBECOMECHRISTIANCODE],
+    USR_CHILDDEPARTURE.[SHOWSCHRISTIANKNOWLEDGE],
+    USR_CHILDDEPARTURE.[PARTICIPATESCHRISTIANACTIVITIES],
+    USR_CHILDDEPARTURE.[SHOWSCHRISTIANEVIDENCE],
+    USR_CHILDDEPARTURE.[OWNSBIBLEMATERIALS],
+    USR_CHILDDEPARTURE.[CHILDCHRISTIANEXPERIENCE],
+    USR_CHILDDEPARTURE.[HEALTHCONDITIONS],
+    USR_CHILDDEPARTURE.[CHILDMATUREDCODE],
+    USR_CHILDDEPARTURE.[LEVELOFMATURITY],
+    (select USR_CHILDCLASSLEVEL_CODE.DESCRIPTION from dbo.USR_CHILDCLASSLEVEL_CODE where USR_CHILDCLASSLEVEL_CODE.ID = USR_CHILDDEPARTURE.[HIGHESTCLASSLEVELCODEID]) as HIGHESTCLASSLEVELCODEID_TRANSLATION,
+    USR_CHILDDEPARTURE.[HIGHESTCLASSLEVELOTHER],
+    USR_CHILDDEPARTURE.[COURSEOFSTUDY],
+    USR_CHILDDEPARTURE.[SKILLS_BASICLITERACY],
+    USR_CHILDDEPARTURE.[SKILLS_BASICNUMERACY],
+    USR_CHILDDEPARTURE.[SKILLS_THINKINGPROBLEMSOLVING],
+    USR_CHILDDEPARTURE.[SKILLS_SELFHELP],
+    USR_CHILDDEPARTURE.[SKILLS_BUSINESS],
+    USR_CHILDDEPARTURE.[SKILLS_LIFE],
+    USR_CHILDDEPARTURE.[SKILLS_VOCATIONALTECHNICAL],
+    USR_CHILDDEPARTURE.[SKILLS_OTHER],
+    USR_CHILDDEPARTURE.[GENERALCOMMENTS],
+  ADDEDBY.APPLICATIONNAME as [ADDEDBY_APPLICATION],
+  ADDEDBY.USERNAME as [ADDEDBY_USERNAME],
+  CHANGEDBY.APPLICATIONNAME as [CHANGEDBY_APPLICATION],
+  CHANGEDBY.USERNAME as [CHANGEDBY_USERNAME],
+  USR_CHILDDEPARTURE.DATEADDED,
+  USR_CHILDDEPARTURE.DATECHANGED,
+  USR_CHILDDEPARTURE.TSLONG,
+  CONSTITUENTID,
+  USR_CHILDDEPARTURE.ISCURRENTDEPARTURECODE, 
+  USR_CHILDDEPARTURE.ISCURRENTDEPARTURE
+from 
+    dbo.USR_CHILDDEPARTURE
+    join dbo.SponsorshipOpportunityChild soc on dbo.USR_CHILDDEPARTURE.SPONSORSHIPOPPORTUNITYCHILDID = soc.ID
+    left join dbo.CHANGEAGENT as [ADDEDBY] on [ADDEDBY].ID = USR_CHILDDEPARTURE.ADDEDBYID
+    left join dbo.CHANGEAGENT as [CHANGEDBY] on [CHANGEDBY].ID = USR_CHILDDEPARTURE.CHANGEDBYID
+    
+    ]]>
+</ViewSQL>
+    </ViewImplementation>
+    <Output>
+        <OutputFields>
+            <OutputField Name="ID" Caption="System record ID" Category="System Fields" DataType="Guid" />
+            <OutputField Name="SPONSORSHIPOPPORTUNITYCHILDID" Caption="Sponsorshipopportunitychild" DataType="Guid" />
+            <OutputField Name="NODEPARTUREFORM" Caption="Nodepartureform" DataType="Boolean" />
+            <OutputField Name="RECEIVEDFAREWELLLETTERCODE" Caption="Receivedfarewellletter" DataType="TinyInt" />
+            <OutputField Name="DATEFORMCOMPLETED" Caption="Dateformcompleted" DataType="Date" />
+            <OutputField Name="FORMCOMPLETEDBY" Caption="Formcompletedby" />
+            <OutputField Name="DATEOFDEPARTURE" Caption="Dateofdeparture" DataType="Date" />
+            <OutputField Name="DATEPROCESSED" Caption="Dateprocessed" DataType="Date" />
+            <OutputField Name="ADMINISTRATIVECODEID_TRANSLATION" Caption="Administrative">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_DEPARTURE_ADMINISTRATIVE_CODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+          <OutputField Name="DEPARTURETYPE" Caption="Departure Type" DataType="String" />
+            <OutputField Name="ADMINISTRATIVEEXPLANATION" Caption="Administrativeexplanation" />
+            <OutputField Name="ISDEPARTURE" Caption="Isdeparture" DataType="Boolean" />
+            <OutputField Name="ISPROGRAMCOMPLETION" Caption="Isprogramcompletion" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_LIVESWITHRELATIVES" Caption="Departure liveswithrelatives" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_FAMILYMOVED" Caption="Departure familymoved" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_FAMILYNOWPROVIDES" Caption="Departure familynowprovides" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_PROJECTTOOFAR" Caption="Departure projecttoofar" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_REMOVEDBYPARENTS" Caption="Departure removedbyparents" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_LACKOFINTEREST" Caption="Departure lackofinterest" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_NEEDEDATHOME" Caption="Departure neededathome" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_EMPLOYED" Caption="Departure employed" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_TRANSFERRED" Caption="Departure transferred" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_FAILED" Caption="Departure failed" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_DEATHOFCHILD" Caption="Departure deathofchild" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_ILLNESS" Caption="Departure illness" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_PREGNANCY" Caption="Departure pregnancy" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_MARRIED" Caption="Departure married" DataType="Boolean" />
+            <OutputField Name="DEPARTURE_OTHER" Caption="Departure other" />
+            <OutputField Name="DETAILEDEXPLANATION" Caption="Detailedexplanation" />
+            <OutputField Name="DEPARTURENEWSITUATION" Caption="Departurenewsituation" />
+            <OutputField Name="PROGRAMCOMPLETIONNEWSITUATION" Caption="Programcompletionnewsituation" />
+            <OutputField Name="ISCHILDCHRISTIANCODE" Caption="Ischildchristian" DataType="TinyInt" />
+            <OutputField Name="CHILDCHRISTIANCOMMENTS" Caption="Childchristiancomments" />
+            <OutputField Name="DIDBECOMECHRISTIANCODE" Caption="Didbecomechristian" DataType="TinyInt" />
+            <OutputField Name="SHOWSCHRISTIANKNOWLEDGE" Caption="Showschristianknowledge" DataType="Boolean" />
+            <OutputField Name="PARTICIPATESCHRISTIANACTIVITIES" Caption="Participateschristianactivities" DataType="Boolean" />
+            <OutputField Name="SHOWSCHRISTIANEVIDENCE" Caption="Showschristianevidence" DataType="Boolean" />
+            <OutputField Name="OWNSBIBLEMATERIALS" Caption="Ownsbiblematerials" DataType="Boolean" />
+            <OutputField Name="CHILDCHRISTIANEXPERIENCE" Caption="Childchristianexperience" />
+            <OutputField Name="HEALTHCONDITIONS" Caption="Healthconditions" />
+            <OutputField Name="CHILDMATUREDCODE" Caption="Childmatured" DataType="TinyInt" />
+            <OutputField Name="LEVELOFMATURITY" Caption="Levelofmaturity" />
+            <OutputField Name="HIGHESTCLASSLEVELCODEID_TRANSLATION" Caption="Highestclasslevel">
+                <LookupInfo>
+                    <CodeTable CodeTableName="USR_CHILDCLASSLEVEL_CODE" IncludeInactive="true" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="HIGHESTCLASSLEVELOTHER" Caption="Highestclasslevelother" />
+            <OutputField Name="COURSEOFSTUDY" Caption="Courseofstudy" />
+            <OutputField Name="SKILLS_BASICLITERACY" Caption="Skills basicliteracy" DataType="Boolean" />
+            <OutputField Name="SKILLS_BASICNUMERACY" Caption="Skills basicnumeracy" DataType="Boolean" />
+            <OutputField Name="SKILLS_THINKINGPROBLEMSOLVING" Caption="Skills thinkingproblemsolving" DataType="Boolean" />
+            <OutputField Name="SKILLS_SELFHELP" Caption="Skills selfhelp" DataType="Boolean" />
+            <OutputField Name="SKILLS_BUSINESS" Caption="Skills business" DataType="Boolean" />
+            <OutputField Name="SKILLS_LIFE" Caption="Skills life" DataType="Boolean" />
+            <OutputField Name="SKILLS_VOCATIONALTECHNICAL" Caption="Skills vocationaltechnical" DataType="Boolean" />
+            <OutputField Name="SKILLS_OTHER" Caption="Skills other" />
+            <OutputField Name="GENERALCOMMENTS" Caption="Generalcomments" />
+            <OutputField Name="ADDEDBY_APPLICATION" Caption="Added by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="ADDEDBY_USERNAME" Caption="Added by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_APPLICATION" Caption="Changed by application" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="CHANGEDBY_USERNAME" Caption="Changed by user name" Category="System Fields">
+                <LookupInfo>
+                    <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+                </LookupInfo>
+            </OutputField>
+            <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" DataType="Date" />
+            <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" DataType="Date" />
+            <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" DataType="Long" />
+			<OutputField Name="ISCURRENTDEPARTURE" Caption="Current Departure?" DataType="String" >
+				<LookupInfo>
+					<TranslationList>
+						<c:Options>
+							<c:TranslationListOption Value="Yes" />
+							<c:TranslationListOption Value="No" />
+						</c:Options>
+					</TranslationList>
+				</LookupInfo>
+			</OutputField>
+        </OutputFields>
+      <IdentifyingFields>
+        <IdentifyingField Name="ID"/>
+      </IdentifyingFields>
+    </Output>
+
+  <RelationshipOperations>
+    <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITY" ParentViewRelatedField="ID" Field="SPONSORSHIPOPPORTUNITYCHILDID" PathAlias="Child Departure"/>
+    <!--<AddToParentView ParentView="V_QUERY_CONSTITUENT" ParentViewRelatedField="ID" Field="CONSTITUENTID" PathAlias="Constituent"/>-->
+    <AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="CONSTITUENTID" PathAlias="Constituent" />
+  </RelationshipOperations>
+
+</QueryViewSpec>

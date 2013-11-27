@@ -1,0 +1,153 @@
+﻿<div id="#MAP#ChildDepartureReasonforDepartureTabEdit">
+<!--<label id="#MAP#DEPARTURETYPECODE_caption" for="#MAP#DEPARTURETYPECODE_value"></label>
+<input id="#MAP#DEPARTURETYPECODE_value" type="text" />-->
+<!-- Departure Information goes here: table of departure reason checkboxes -->
+<table title="Departure Information">
+<thead>
+<tr>
+<th colspan="3"><h3>Departure Reason</h3></th>
+</tr>
+</thead>
+<tr>
+<td colspan="3">Select all that apply for departures which occur based on circumstances outside of the project’s control. For example, child moves or the child’s family no longer needs assistance from the project. Each box marked requires a detailed explanation.
+</td>
+</tr>
+<tr>
+    <td><h1>Change in Participation</h1></td>
+    <td><h1>Change in Living Condition</h1></td>
+    <td><h1>Change in Health</h1></td>
+</tr>
+  <tr>
+    <td>
+        <input id="#MAP#DEPARTURE_LACKOFINTEREST_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_LACKOFINTEREST_value" ></label>
+    </td>
+    <td>
+        <input id="#MAP#DEPARTURE_FAMILYNOWPROVIDES_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_FAMILYNOWPROVIDES_value" ></label>
+      </td>
+    <td>
+        <input id="#MAP#DEPARTURE_DEATHOFCHILD_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_DEATHOFCHILD_value" ></label>
+      </td>
+  </tr>
+  <tr>
+    <td>
+        <input id="#MAP#DEPARTURE_FAILED_value" type="checkbox" style="width: auto;"  />
+        <label for="#MAP#DEPARTURE_FAILED_value" ></label>
+      </td>
+    <td>
+        <input id="#MAP#DEPARTURE_LIVESWITHRELATIVES_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_LIVESWITHRELATIVES_value" ></label>
+      </td>
+          <td>
+        <input id="#MAP#DEPARTURE_ILLNESS_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_ILLNESS_value" ></label>
+      </td>
+  </tr>
+  <tr>
+      <td>
+        <input id="#MAP#DEPARTURE_REMOVEDBYPARENTS_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_REMOVEDBYPARENTS_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_NEEDEDATHOME_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_NEEDEDATHOME_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_PREGNANCY_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_PREGNANCY_value" ></label>
+      </td>
+  </tr>
+  <tr>
+      <td>
+        <input id="#MAP#DEPARTURE_TRANSFERRED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_TRANSFERRED_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_EMPLOYED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_EMPLOYED_value" ></label>
+      </td>
+    <td></td>
+  </tr>
+  <tr>
+      <td>
+        <input id="#MAP#DEPARTURE_PROJECTTOOFAR_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_PROJECTTOOFAR_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_FAMILYMOVED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_FAMILYMOVED_value" ></label>
+      </td>
+    <td></td>
+  </tr>
+  <tr>
+      <td valign="top">
+        <label id="#MAP#DEPARTURE_OTHER_caption" for="#MAP#DEPARTURE_OTHER_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_MARRIED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_MARRIED_value" ></label>
+      </td>
+    <td></td>
+  </tr>
+  <tr>
+      <td colspan="2">
+        <textarea id="#MAP#DEPARTURE_OTHER_value" rows="2" cols="65" style="width: auto;" ></textarea>
+      </td>
+    <td></td>
+    <td></td>
+ </tr>
+ <tr>
+  <td valign="top" >
+        <label id="#MAP#DETAILEDEXPLANATION_caption" for="#MAP#DETAILEDEXPLANATION_value"></label>
+      </td>
+      <td colspan="3">
+        <textarea id="#MAP#DETAILEDEXPLANATION_value" rows="3" cols="65" style="width: auto;" ></textarea>
+      </td>
+    </tr>
+        <tr id="#MAP#DEPARTURENEWSITUATION_container">
+      <td valign="top">
+        <label id="#MAP#DEPARTURENEWSITUATION_caption" for="#MAP#DEPARTURENEWSITUATION_value"></label>
+      </td>
+      <td colspan="3">
+        <textarea id="#MAP#DEPARTURENEWSITUATION_value" rows="3" cols="65" style="width: auto;" ></textarea>
+      </td>
+    </tr>
+ </table>
+ <!-- Program completion information section -->
+ <table>
+ <thead>
+<tr>
+  <th><h3>Program Completion</h3></th>
+</tr>
+</thead>
+<tr>
+ <td>Select this box for departures which are known in advance. For example, a child graduation from school or becoming too old to participate in the project.</td>
+</tr>
+     <tr id="#MAP#ISPROGRAMCOMPLETION_container">
+      <td>
+        <input id="#MAP#ISPROGRAMCOMPLETION_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#ISPROGRAMCOMPLETION_value"></label>
+      </td>
+    </tr>
+ <tr>
+ </tr>
+    <tr id="#MAP#PROGRAMCOMPLETIONNEWSITUATION_container">
+      <td valign="top">
+        <label id="#MAP#PROGRAMCOMPLETIONNEWSITUATION_caption" for="#MAP#PROGRAMCOMPLETIONNEWSITUATION_value"></label>
+      </td>
+      </tr>
+      <tr>
+      <td>
+        <textarea id="#MAP#PROGRAMCOMPLETIONNEWSITUATION_value" rows="3" cols="150" style="width: auto;" ></textarea>
+      </td>
+    </tr>
+ </table>
+  <!-- To define fields in multiple columns on the form, simply add/move the fields to this div
+        <div class="bbui-forms-fieldset-column">
+            <table>
+            </table>
+        </div>
+        -->
+</div>

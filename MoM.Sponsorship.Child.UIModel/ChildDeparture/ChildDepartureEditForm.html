@@ -1,0 +1,449 @@
+﻿<style type="text/css">
+    .departure_underline
+    {
+        text-decoration:underline;
+    }    
+    .skills_underline
+    {
+        text-decoration:underline;
+    }    
+
+    ##MAP#NAME_value
+    {
+        font-weight:bold;
+        width:100px;
+    }
+</style>
+<div id="#MAP#ChildDepartureEditForm">
+  <h2 id="#MAP#FORMHEADER_value"></h2>
+
+  <!-- put the general fields at the top of the page here -->
+  <table>
+    <tr>
+      <td colspan="3">
+        <h3 id="#MAP#GENERAL_INFO_GROUP_value"></h3>
+      </td>
+    </tr>
+    <tr id="#MAP#NODEPARTUREFORM_container">
+            <td>
+              <label id="#MAP#RECEIVEDFAREWELLLETTERCODE_caption" for="#MAP#RECEIVEDFAREWELLLETTERCODE_value"></label>
+            </td>
+            <td>
+              <input id="#MAP#RECEIVEDFAREWELLLETTERCODE_value" type="text" />
+            </td>
+            <td></td>
+            <td>
+              <input id="#MAP#NODEPARTUREFORM_value" type="checkbox" style="width: auto;" />
+              <label for="#MAP#NODEPARTUREFORM_value"></label>
+            </td>
+          </tr>
+          
+          <tr id="#MAP#ADMINISTRATIVECODEID_container">
+            <td>
+              <label id="#MAP#ADMINISTRATIVECODEID_caption" for="#MAP#ADMINISTRATIVECODEID_value"></label>
+            </td>
+            <td>
+              <input id="#MAP#ADMINISTRATIVECODEID_value" type="text" />
+            </td>
+          </tr>
+          <tr id="#MAP#ADMINISTRATIVEEXPLANATION_container">
+            <td>
+              <label id="#MAP#ADMINISTRATIVEEXPLANATION_caption" for="#MAP#ADMINISTRATIVEEXPLANATION_value"></label>
+            </td>
+            <td>
+              <input id="#MAP#ADMINISTRATIVEEXPLANATION_value" type="text" />
+            </td>
+          </tr>  
+  </table>
+  <div class="bbui-forms-tabs-main">
+    <div id="#MAP#DEPARTURE_REASONS_TAB_caption">
+    <!-- Put the Reason for Departure tab fields here -->
+    <table>
+    <tr id="#MAP#DATEFORMCOMPLETED_container">
+            <td>
+              <label id="#MAP#DATEOFDEPARTURE_caption" for="#MAP#DATEOFDEPARTURE_value"></label>
+            </td>
+            <td>
+              <input id="#MAP#DATEOFDEPARTURE_value" type="text" />
+            </td>
+            <td>
+              <label id="#MAP#DATEFORMCOMPLETED_caption" for="#MAP#DATEFORMCOMPLETED_value"></label>
+            </td>
+            <td>
+              <input id="#MAP#DATEFORMCOMPLETED_value" type="text" />
+            </td>
+    </tr>
+  <tr>
+    <td></td>
+    <td></td>
+            <td>
+              <label id="#MAP#FORMCOMPLETEDBY_caption" for="#MAP#FORMCOMPLETEDBY_value"></label>
+            </td>
+            <td>
+              <input id="#MAP#FORMCOMPLETEDBY_value" type="text" />
+            </td>
+    </tr>
+<!--    <tr >
+          </tr>
+          <tr id="#MAP#FORMCOMPLETEDBY_container">
+          </tr>
+          <tr id="#MAP#DATEOFDEPARTURE_container">
+          </tr>
+-->    </table>
+
+<!-- Departure Information goes here: table of departure reason checkboxes -->
+<table title="Departure Information">
+<thead>
+<tr>
+<th colspan="3"><h3>Departure Reason</h3></th>
+</tr>
+</thead>
+<tr>
+<td colspan="3">Select all that apply for departures which occur based on circumstances outside of the project’s control. For example, child moves or the child’s family no longer needs assistance from the project. Each box marked requires a detailed explanation.
+</td>
+</tr>
+<tr>
+    <td><h1>Change in Participation</h1></td>
+    <td><h1>Change in Living Condition</h1></td>
+    <td><h1>Change in Health</h1></td>
+</tr>
+  <tr>
+    <td>
+        <input id="#MAP#DEPARTURE_LACKOFINTEREST_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_LACKOFINTEREST_value" ></label>
+    </td>
+    <td>
+        <input id="#MAP#DEPARTURE_FAMILYNOWPROVIDES_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_FAMILYNOWPROVIDES_value" ></label>
+      </td>
+    <td>
+        <input id="#MAP#DEPARTURE_DEATHOFCHILD_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_DEATHOFCHILD_value" ></label>
+      </td>
+  </tr>
+  <tr>
+    <td>
+        <input id="#MAP#DEPARTURE_FAILED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_FAILED_value" ></label>
+      </td>
+    <td>
+        <input id="#MAP#DEPARTURE_LIVESWITHRELATIVES_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_LIVESWITHRELATIVES_value" ></label>
+      </td>
+          <td>
+        <input id="#MAP#DEPARTURE_ILLNESS_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_ILLNESS_value" ></label>
+      </td>
+  </tr>
+  <tr>
+      <td>
+        <input id="#MAP#DEPARTURE_REMOVEDBYPARENTS_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_REMOVEDBYPARENTS_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_NEEDEDATHOME_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_NEEDEDATHOME_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_PREGNANCY_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_PREGNANCY_value" ></label>
+      </td>
+  </tr>
+  <tr>
+      <td>
+        <input id="#MAP#DEPARTURE_TRANSFERRED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_TRANSFERRED_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_EMPLOYED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_EMPLOYED_value" ></label>
+      </td>
+    <td></td>
+  </tr>
+  <tr>
+      <td>
+        <input id="#MAP#DEPARTURE_PROJECTTOOFAR_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_PROJECTTOOFAR_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_FAMILYMOVED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_FAMILYMOVED_value" ></label>
+      </td>
+    <td></td>
+  </tr>
+  <tr>
+      <td valign="top">
+        <label id="#MAP#DEPARTURE_OTHER_caption" for="#MAP#DEPARTURE_OTHER_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#DEPARTURE_MARRIED_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#DEPARTURE_MARRIED_value" ></label>
+      </td>
+    <td></td>
+  </tr>
+  <tr>
+      <td colspan="2">
+        <textarea id="#MAP#DEPARTURE_OTHER_value" rows="2" cols="65" style="width: auto;"></textarea>
+      </td>
+    <td></td>
+    <td></td>
+ </tr>
+ <tr>
+  <td valign="top" >
+        <label id="#MAP#DETAILEDEXPLANATION_caption" for="#MAP#DETAILEDEXPLANATION_value"></label>
+      </td>
+      <td colspan="3">
+        <textarea id="#MAP#DETAILEDEXPLANATION_value" rows="3" cols="65" style="width: auto;"></textarea>
+      </td>
+    </tr>
+        <tr id="#MAP#DEPARTURENEWSITUATION_container">
+      <td valign="top">
+        <label id="#MAP#DEPARTURENEWSITUATION_caption" for="#MAP#DEPARTURENEWSITUATION_value"></label>
+      </td>
+      <td colspan="3">
+        <textarea id="#MAP#DEPARTURENEWSITUATION_value" rows="3" cols="65" style="width: auto;"></textarea>
+      </td>
+    </tr>
+ </table>
+ <!-- Program completion information section -->
+ <table>
+     <tr id="#MAP#ISPROGRAMCOMPLETION_container">
+      <td>
+        <input id="#MAP#ISPROGRAMCOMPLETION_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#ISPROGRAMCOMPLETION_value"></label>
+      </td>
+    </tr>
+ <tr>
+ <td>Select this box for departures which are known in advance. For example, a child graduation from school or becoming too old to participate in the project.</td>
+ </tr>
+    <tr id="#MAP#PROGRAMCOMPLETIONNEWSITUATION_container">
+      <td valign="top">
+        <label id="#MAP#PROGRAMCOMPLETIONNEWSITUATION_caption" for="#MAP#PROGRAMCOMPLETIONNEWSITUATION_value"></label>
+      </td>
+      <td colspan="2">
+        <textarea id="#MAP#PROGRAMCOMPLETIONNEWSITUATION_value" rows="3" cols="65" style="width: auto;"></textarea>
+      </td>
+    </tr>
+ </table>
+ </div>
+    <div id="#MAP#SPIRITUAL_PHYSICAL_TAB_caption">
+    <!-- Put the spiritual/physical tab fields here -->
+    <h3>Spiritual Impact</h3>
+    <table>
+    <tr id="#MAP#ISCHILDCHRISTIANCODE_container">
+      <td>
+        <label id="#MAP#ISCHILDCHRISTIANCODE_caption" for="#MAP#ISCHILDCHRISTIANCODE_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#ISCHILDCHRISTIANCODE_value" type="text" />
+      </td>
+      <td>
+        <label id="#MAP#CHILDCHRISTIANCOMMENTS_caption" for="#MAP#CHILDCHRISTIANCOMMENTS_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#CHILDCHRISTIANCOMMENTS_value" type="text" />
+      </td>
+    </tr>
+    <tr id="#MAP#DIDBECOMECHRISTIANCODE_container">
+      <td>
+        <label id="#MAP#DIDBECOMECHRISTIANCODE_caption" for="#MAP#DIDBECOMECHRISTIANCODE_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#DIDBECOMECHRISTIANCODE_value" type="text" />
+      </td>
+    </tr>
+    </table>
+    <span>Select all that apply:</span>
+    <table>
+    <tr>
+      <td>
+        <input id="#MAP#SHOWSCHRISTIANKNOWLEDGE_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SHOWSCHRISTIANKNOWLEDGE_value"></label>
+      </td>  
+      <td>
+        <input id="#MAP#PARTICIPATESCHRISTIANACTIVITIES_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#PARTICIPATESCHRISTIANACTIVITIES_value"></label>
+      </td>
+   </tr>
+  <tr>
+    <td>
+        <input id="#MAP#SHOWSCHRISTIANEVIDENCE_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SHOWSCHRISTIANEVIDENCE_value"></label>
+      </td>
+   <td>
+        <input id="#MAP#OWNSBIBLEMATERIALS_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#OWNSBIBLEMATERIALS_value"></label>
+      </td>
+   </tr>
+   </table>
+   <table>
+   <tr id="#MAP#CHILDCHRISTIANEXPERIENCE_container">
+      <td valign="top">
+        <label id="#MAP#CHILDCHRISTIANEXPERIENCE_caption" for="#MAP#CHILDCHRISTIANEXPERIENCE_value"></label>
+      </td>
+      <td>
+        <textarea id="#MAP#CHILDCHRISTIANEXPERIENCE_value" rows="3" cols="100" style="width:auto;"></textarea>
+      </td>
+    </tr>
+    </table>
+    <table>
+    <tr>
+    <th><h3>Physical Impact</h3></th>
+    </tr>
+    <tr id="#MAP#HEALTHCONDITIONS_container">
+      <td>
+        <label id="#MAP#HEALTHCONDITIONS_caption" for="#MAP#HEALTHCONDITIONS_value"></label>
+      </td>
+      </tr>
+      <tr>
+      <td>
+        <!--<input id="#MAP#HEALTHCONDITIONS_value" type="text" style="width:auto;"/>-->
+        <textarea id="#MAP#HEALTHCONDITIONS_value" rows="3" cols="120" style="width: auto;"></textarea>
+      </td>
+    </tr>
+    </table>
+    </div>
+    <div id="#MAP#SOCIAL_COGNITIVE_TAB_caption">
+    <!-- Put the social cognitive tab fields here -->
+    <table>
+    <tr id="#MAP#CHILDMATUREDCODE_container">
+      <td>
+        <label id="#MAP#CHILDMATUREDCODE_caption" for="#MAP#CHILDMATUREDCODE_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#CHILDMATUREDCODE_value" type="text" />
+      </td>
+    </tr>
+    <tr id="#MAP#LEVELOFMATURITY_container">
+      <td>
+        <label id="#MAP#LEVELOFMATURITY_caption" for="#MAP#LEVELOFMATURITY_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#LEVELOFMATURITY_value" type="text" />
+      </td>
+    </tr>
+    </table>
+    <br />
+    <h3>Cognitive Impact</h3>
+    <table>
+    <tr>
+      <td>
+        <label id="#MAP#HIGHESTCLASSLEVELCODEID_caption" for="#MAP#HIGHESTCLASSLEVELCODEID_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#HIGHESTCLASSLEVELCODEID_value" type="text" />
+      </td>    
+      <td>
+        <label id="#MAP#HIGHESTCLASSLEVELOTHER_caption" for="#MAP#HIGHESTCLASSLEVELOTHER_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#HIGHESTCLASSLEVELOTHER_value" type="text" />
+      </td>
+   </tr>
+  <tr>
+    <td>Class Level:</td>
+    <td><select size="1" name="class_level"><option selected value="1">1</option> 
+        <option value="2">2</option> <option value="3">3</option> 
+      &lt;\SELECT&gt;</select></td>
+    <td></td></tr>
+  <tr>
+      <td>
+        <label id="#MAP#COURSEOFSTUDY_caption" for="#MAP#COURSEOFSTUDY_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#COURSEOFSTUDY_value" type="text" />
+      </td>
+    <td></td></tr>
+    </table>
+    <br />
+    <h1>Skills the child is trained in: (select each box that applies)</h1>
+    <table>
+    <tr>
+<td>
+        <input id="#MAP#SKILLS_BASICNUMERACY_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_BASICNUMERACY_value" ></label>
+      </td>    
+       <td>
+        <input id="#MAP#SKILLS_BASICLITERACY_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_BASICLITERACY_value" ></label>
+      </td>
+      <td>
+        <input id="#MAP#SKILLS_THINKINGPROBLEMSOLVING_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_THINKINGPROBLEMSOLVING_value" ></label>
+      </td>
+  </tr>
+  <tr>
+    <td>
+        <input id="#MAP#SKILLS_SELFHELP_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_SELFHELP_value" ></label>
+      </td>
+<td>
+        <input id="#MAP#SKILLS_BUSINESS_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_BUSINESS_value" ></label>
+      </td>    
+    <td>
+        <input id="#MAP#SKILLS_VOCATIONALTECHNICAL_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_VOCATIONALTECHNICAL_value" ></label>
+      </td>      
+      </tr>
+  <tr>
+    <td>
+        <input id="#MAP#SKILLS_LIFE_value" type="checkbox" style="width: auto;" />
+        <label for="#MAP#SKILLS_LIFE_value" ></label>
+      </td>
+      <td>
+        <label id="#MAP#SKILLS_OTHER_caption" for="#MAP#SKILLS_OTHER_value"></label>
+      </td>
+      <td>
+        <input id="#MAP#SKILLS_OTHER_value" type="text" />
+      </td>
+    <td></td>
+    </tr>
+    </table>      
+    </div>
+    <div id="#MAP#COMMENTS_TAB_caption">
+    <!-- Put the general comments tab fields here -->
+    <table>
+    <tr id="#MAP#GENERALCOMMENTS_container">
+      <td>
+        <label id="#MAP#GENERALCOMMENTS_caption" for="#MAP#GENERALCOMMENTS_value"></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <!--<input id="#MAP#GENERALCOMMENTS_value" type="text" />-->
+        <textarea id="#MAP#GENERALCOMMENTS_value" rows="3" cols="65" style="width: auto;"></textarea>
+      </td>
+    </tr>
+    </table>
+    </div>
+  </div>
+  <!--<table>
+
+    <tr>
+      <td colspan="2">
+        <table>
+          
+          <tr id="#MAP#ISDEPARTURE_container">
+            <td></td>
+            <td>
+              <input id="#MAP#ISDEPARTURE_value" type="checkbox" style="width: auto;" />
+              <label for="#MAP#ISDEPARTURE_value"></label>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    
+    
+    
+    
+    
+  </table>-->
+  <!-- To define fields in multiple columns on the form, simply add/move the fields to this div
+        <div class="bbui-forms-fieldset-column">
+            <table>
+            </table>
+        </div>
+        -->
+</div>

@@ -1,0 +1,130 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="457c8047-837d-42ae-8e16-14406b222853"
+	Name="USR_USP_GETCHILDINFOFORCONSTITUENTID"
+	Description="USR_USP_GETCHILDINFOFORCONSTITUENTID"
+	Author="Blackbaud Professional Services"
+	SPName="USR_USP_GETCHILDINFOFORCONSTITUENTID"
+    GrantServiceRolePermission="true"
+	>
+
+	<!-- 
+	Remarks:    Returns all pledges and recurring gifts, but only payments after @minDate
+
+	History:
+	Date            Modified By		Comments
+					Chris W.		Initial Version
+	28-Oct-2013		CMayeda			Modified this to 
+										Return APPLICATIONSWITHMAX, which includes all fund descriptions for the payment
+										Remove child id
+										Added maxChildrenInDesc and minDate
+	20-Nov-2013		CMayeda			Fixed to only summarize sponsored children instead of all applications.
+	26-Nov-2013		CMayeda			Optimized performance by using table vars.
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+
+create procedure dbo.USR_USP_GETCHILDINFOFORCONSTITUENTID
+(
+    @constituentID uniqueidentifier,
+    @maxChildrenInDesc as int,
+    @minDate as date
+)
+as
+begin
+
+	declare @payments table (
+		revenueID uniqueidentifier , 
+		revenueDate datetime,
+		amount money,
+		transactionTypeCode tinyint,
+		childName nvarchar (254),
+		designationName nvarchar (512),
+		designationUserID nvarchar (512)
+	)
+	 
+	declare @applications table (
+		revenueID uniqueidentifier primary key, 
+		revenueDate datetime,
+		amount money,
+		transactionTypeCode tinyint,
+		childCount integer
+	)
+
+	insert @payments
+	select 
+		r.[ID],
+		r.DATE,
+		r.AMOUNT,
+		r.TRANSACTIONTYPECODE,
+		so_child.NAME, 
+		payment_desig.NAME,
+		payment_desig.USERID 
+	from
+		dbo.REVENUE r
+	inner join	 
+		dbo.FINANCIALTRANSACTIONLINEITEM  payment_f_trans_item on payment_f_trans_item.FINANCIALTRANSACTIONID = R.ID
+	inner join 
+		dbo.REVENUESPLIT_EXT payment_r_split_ext on payment_r_split_ext.ID = payment_f_trans_item.ID
+	inner join 
+		dbo.DESIGNATION payment_desig on payment_r_split_ext.DESIGNATIONID = payment_desig.ID
+	left join 
+		dbo.RECURRINGGIFTACTIVITY rg_act on rg_act.PAYMENTREVENUEID = payment_f_trans_item.ID
+	left join 
+		dbo.FINANCIALTRANSACTION rg_f_trans on rg_f_trans.ID = rg_act.SOURCEREVENUEID
+	left join 
+		dbo.REVENUESPLIT rg_r_split on rg_r_split.REVENUEID = rg_f_trans.ID
+	left join  
+		--TRANSACTIONTYPECODE 0-Payment, 1-Pledge, 2-Recurring gift, 3-Matching gift claim, 
+		-- If the transaction type is a Payment, then find the sponsorship on the recurring gift that the payment applies to
+		-- If the transaction type is a recurring gift or pledge then find the sponsorship that the recurring gift / pledge is for				
+		-- Also assumption is that a sub child will have a start date the same as the end date
+		dbo.SPONSORSHIP s on ((r.TRANSACTIONTYPECODE in (0,3) and s.REVENUESPLITID = rg_r_split.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate())))				
+							  or (r.TRANSACTIONTYPECODE in (1,2)and s.REVENUESPLITID = payment_r_split_ext.ID and s.STARTDATE <= r.DATE and r.date < coalesce (s.ENDDATE,dateadd(d,1,getdate()))))
+	left join				 
+		dbo.SPONSORSHIPOPPORTUNITY so on so.ID = s.SPONSORSHIPOPPORTUNITYID
+	left join	
+		dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = s.SPONSORSHIPOPPORTUNITYID
+
+	where
+		R.[CONSTITUENTID] = @constituentID
+	and payment_f_trans_item.TRANSACTIONAMOUNT > 0
+	and (r.TRANSACTIONTYPECODE in (0,3) and r.DATE >= @minDate
+		 or r.TRANSACTIONTYPECODE in (1,2))
+
+	insert @applications
+	select revenueID, revenueDate, amount, transactionTypeCode, sum(case when childName is null then 0 else 1 end) from @payments group by revenueID, revenueDate, amount, transactionTypeCode
+
+	select 
+		revenueID as ID, 
+		revenueDate as DATE,
+		amount as AMOUNT,
+		transactionTypeCode as TRANSACTIONTYPECODE,
+		'' as DESIGNATIONS,
+		(select dbo.UDA_BUILDLIST(distinct (case when Rev.TRANSACTIONTYPECODE = 0 then (case RSplt.APPLICATIONCODE when 0 then RSplt.APPLICATION else case Rsplt.TYPECODE when 9 then Rsplt.TYPE + ' ' + lower(RSplt.APPLICATION) + ' ' + lower(Rev.TRANSACTIONTYPE) else RSplt.APPLICATION + ' ' + lower(Rev.TRANSACTIONTYPE) end end) else(case when Rev.TRANSACTIONTYPECODE = 2 and RSplt.TYPECODE = 9 then(RSplt.TYPE + ' ' + lower(Rev.TRANSACTIONTYPE))else Rev.TRANSACTIONTYPE end) end)) from dbo.REVENUE Rev inner join dbo.REVENUESPLIT RSplt on RSplt.REVENUEID = Rev.ID where(Rev.ID = applications.revenueID and RSplt.AMOUNT > 0)) as GIFTTYPE,
+		'' as APPLICATIONS,
+		(select 
+			case 
+				when applications.childCount > @maxChildrenInDesc then  
+					cast (applications.childCount as varchar(4)) + ' children; ' + dbo.UDA_BUILDLIST(distinct 
+							case when payments.childName is null  then ltrim (replace (payments.designationName, payments.designationUserID, '')) end)
+				else
+					(select dbo.UDA_BUILDLIST(case 
+												when payments.childName is null then ltrim (replace (payments.designationName, payments.designationUserID, ''))
+												else payments.childName
+											  end))
+			end
+		from @payments payments where payments.revenueID = applications.revenueID) as APPLICATIONSWITHMAX
+						
+	from 
+		@applications applications
+		
+	order by revenueDate desc
+	
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

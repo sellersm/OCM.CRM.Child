@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="582b7e2f-ae41-4f9d-9d33-25fc2f1348b5" 
+	Name="Child Reservation Fulfillment Status Code Table"
+	Description="Child Reservation Fulfillment Status Code Table"
+	Author="Trucmai Gupta"
+	DBTablename="USR_FULFILLMENTSTATUSCODE"
+	Category="Child Reservation"
+	SortMethod="Alpha"
+/>
