@@ -31,6 +31,7 @@
 	25-Jul-2013		CMayeda			Added EOMReportStatus.SmartField.xml
   13-Nov-2013   TGupta      Added Photo tab
   14-Nov-2013   TGupta      Added Fulfillment section into Reservation tab
+  05-Dec-2013   TGupta      Added SponsorshipOpportunity.Sponsorship.Query.xml
 -->
   
 	<c:DependencyList>
