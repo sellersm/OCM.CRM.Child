@@ -31,6 +31,7 @@
 	25-Jul-2013		CMayeda			Added EOMReportStatus.SmartField.xml
   13-Nov-2013   TGupta      Added Photo tab
   14-Nov-2013   TGupta      Added Fulfillment section into Reservation tab
+  05-Dec-2013   TGupta      Added SponsorshipOpportunity.Sponsorship.Query.xml
 -->
   
 	<c:DependencyList>
@@ -81,8 +82,9 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.ReservationKeys.Query.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Sponsors.Query.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildProjectDisbursement.Query.xml" />
+    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Sponsorship.Query.xml" />
 
-		<!-- Datalists -->
+    <!-- Datalists -->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Transfer Table.DataList.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.DataList.xml" />
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildReactivation.DataList.xml" />
