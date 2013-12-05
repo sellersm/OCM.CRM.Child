@@ -557,6 +557,8 @@
     <EmbeddedResource Include="Reservations\ChildReservationFulfillmentStatus.Edit.xml" />
     <EmbeddedResource Include="Reservations\ChildReservationFulfillmentStatus.View.xml" />
     <EmbeddedResource Include="Tables\Code Tables\ChildReservationFulfillmentStatus.CodeTable.xml" />
+    <EmbeddedResource Include="Query Views\SponsorshipOpportunity.Sponsorship.Query.xml" />
+    <EmbeddedResource Include="Smart Fields\Child.ChildsLengthOfSponsorship.SmartField.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

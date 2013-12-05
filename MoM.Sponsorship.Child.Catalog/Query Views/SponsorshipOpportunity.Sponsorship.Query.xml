@@ -1,0 +1,47 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="2ea53832-4a43-4996-821b-cd4c36fb4bde"
+	Name="Sponsorship Opportunity Extension Query"
+	Description="SponsorshipOpportunity Sponsorship Extension Query in the Child Extension"
+	Author="Trucmai Gupta"
+	IsRoot="true"
+	PrimaryKeyField="ID"
+	RecordType="Sponsorship Opportunity Child"
+	common:SecurityUIFolder="SponsorshipOpportunity\Child"
+	>
+
+    <!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	26-Nov-2013		  TGupta			    Initial Version
+	-->
+
+    <!-- define the view used to return data for the query -->
+    <ViewImplementation ViewName="USR_V_QUERY_SPONSORSHIPOPPORTUNITY_SPONSORSHIPEXTENSION">
+      <ViewSQL>
+        <![CDATA[
+	select	s.ID,
+			soc.CONSTITUENTID as SPONSORSHIPOPPORTUNITYID
+	  from  dbo.SPONSORSHIP s
+ left join  dbo.V_QUERY_SPONSORSHIPOPPORTUNITYCHILD soc on s.SPONSORSHIPOPPORTUNITYID = soc.CONSTITUENTID
+			]]>
+      </ViewSQL>
+    </ViewImplementation>
+
+    <!-- describe each field in the view output -->
+    <Output>
+      <OutputFields>
+        <OutputField Name="ID" Caption="Sponsorship ID" Category="System Fields" />
+        <OutputField Name="SPONSORSHIPOPPORTUNITYID" Caption="Sponsorship Opportunity" DataType="Guid" IsHidden="true"/>
+      </OutputFields>
+    </Output>
+    <RelationshipOperations>
+      <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITYCHILD" Field="SPONSORSHIPOPPORTUNITYID" ParentViewRelatedField="ID" PathAlias="Child Sponsorships" Cardinality="OneToMany" />
+      <AddRelatedView RelatedView="V_QUERY_SPONSORSHIP" RelatedField="ID" Field="ID" PathAlias="Sponsorship" Cardinality="OneToOne" />
+    </RelationshipOperations>
+  </QueryViewSpec>
+
+
