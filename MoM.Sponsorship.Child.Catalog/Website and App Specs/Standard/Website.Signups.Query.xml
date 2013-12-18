@@ -6,6 +6,7 @@
 	Description="Information on Website Signup batches"
 	Author="Cary Mayeda"
 	IsRoot="true"
+	PrimaryKeyField="LINKEDID"
 	RecordType="CONSTITUENT"
 	common:SecurityUIFolder="Website"
 	>
