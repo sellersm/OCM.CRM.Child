@@ -22,7 +22,20 @@
 	<ViewImplementation ViewName="USR_V_QUERY_WEBSITE_SIGNUPS">
 		<ViewSQL>
 			<![CDATA[
-select  
+with BBISEmailAddresses (ID, EmailType, EmailAddress)
+as
+(select
+	bbis.ID, 
+	p.i.value ('FIELD[1]', 'varchar(100)') as EmailType,
+    p.i.value ('NEWVALUE[1]', 'varchar(100)') as EmailAddress
+from     
+	dbo.BATCHBBNCSIGNUP bbis
+	cross apply PREFERREDADDRESS.nodes('/PREFERREDADDRESS/ITEM') as p(i)
+where 
+    p.i.value ('FIELD[1]', 'varchar(100)') like 'email%'
+)
+
+select	
     b.BATCHNUMBER, 
     bbis.SEQUENCE, 
 	C.ID as LINKEDID,
@@ -33,36 +46,34 @@ select
     spouse.LOOKUPID as SPOUSELOOKUPID,
     spouse.NAME as SPOUSENAME,
     (select count(*) from dbo.SPONSORSHIP where CONSTITUENTID = spouse.ID and STATUSCODE = 1) as SPOUSESPONSORSHIPCOUNT,	   
-    p.i.value ('FIELD[1]', 'varchar(100)') as EMAILTYPE,
-    p.i.value ('NEWVALUE[1]', 'varchar(100)') as EMAILADDRESS,
+    BBISEmailAddresses.EmailType as EMAILTYPE,
+    BBISEmailAddresses.EmailAddress as EMAILADDRESS,
     case 
-     when upper (primaryemail.emailaddress) = upper(p.i.value ('NEWVALUE[1]', 'varchar(100)'))  then 'MATCHES PRIMARY'
-     when exists (select 1 from emailaddress where CONSTITUENTID = c.ID and upper (emailaddress) = upper(p.i.value ('NEWVALUE[1]', 'varchar(100)')))  then 'MATCHES non primary'
+     when upper (primaryemail.emailaddress) = upper(BBISEmailAddresses.EmailAddress)  then 'MATCHES PRIMARY'
+     when exists (select 1 from emailaddress where CONSTITUENTID = c.ID and upper (emailaddress) = upper(BBISEmailAddresses.EmailAddress))  then 'MATCHES non primary'
      else 'no match'
     end as EMAILMATCH,
     primaryemail.EMAILADDRESS as PRIMARYEMAILADDRESS,
     case 
-     when upper (nonprimaryemail.emailaddress) = upper(p.i.value ('NEWVALUE[1]', 'varchar(100)'))  then 'matches this other'
+     when upper (nonprimaryemail.emailaddress) = upper(BBISEmailAddresses.EmailAddress)  then 'matches this other'
      else ''
     end as EMAILOTHERMATCH,
-    nonprimaryemail.EMAILADDRESS as OTHEREMAILADDRESS
-	     
+    nonprimaryemail.EMAILADDRESS as OTHEREMAILADDRESS,
+    cast (BBIS.PREFERREDADDRESS as nvarchar(max)) as PREFERREDADDRESSXML
+   	     
 from 
     dbo.BATCHBBNCSIGNUP bbis
 
     inner join dbo.BATCH b on bbis.BATCHID = b.ID
 
     left join dbo.CONSTITUENT c on bbis.LINKID = c.ID
+    left join BBISEmailAddresses on BBISEmailAddresses.ID = bbis.ID
     left join dbo.emailaddress primaryemail on c.ID = primaryemail.CONSTITUENTID and primaryemail.ISPRIMARY = 1
     left join dbo.emailaddress nonprimaryemail on c.ID = nonprimaryemail.CONSTITUENTID and nonprimaryemail.ISPRIMARY = 0
     left join dbo.RELATIONSHIP spouserel on spouserel.RELATIONSHIPCONSTITUENTID = c.ID and spouserel.ISSPOUSE = 1
     left join dbo.CONSTITUENT spouse on spouse.ID = spouserel.RECIPROCALCONSTITUENTID
 
-    cross apply PREFERREDADDRESS.nodes('/PREFERREDADDRESS/ITEM') as p(i)
 
-where 
-    p.i.value ('FIELD[1]', 'varchar(100)') like 'email%'
-		
 			]]>
 		</ViewSQL>
 	</ViewImplementation>
@@ -86,6 +97,7 @@ where
 			<OutputField Name="PRIMARYEMAILADDRESS" Caption="Primary Email Address" DataType="String" />
 			<OutputField Name="EMAILOTHERMATCH" Caption="Other Email Match" DataType="String" />
 			<OutputField Name="OTHEREMAILADDRESS" Caption="Other Email Address" DataType="String" />
+			<OutputField Name="PREFERREDADDRESSXML" Caption="Preferred Address XML" DataType="String" />
 		</OutputFields>
 	</Output>
 
