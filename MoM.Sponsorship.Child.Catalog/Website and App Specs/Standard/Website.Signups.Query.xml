@@ -1,0 +1,95 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="57234a1b-a9ee-4b3c-a409-c033d501b22e"
+	Name="Website Signups"
+	Description="Information on Website Signup batches"
+	Author="Cary Mayeda"
+	IsRoot="true"
+	RecordType="CONSTITUENT"
+	common:SecurityUIFolder="Website"
+	>
+	<!-- 
+	Remarks:   Used to assist with processing BBIS account signups.
+
+	History:
+	Date            Modified By     Comments
+	18-Dec-2013		CMayeda			Initial Version
+	-->
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_WEBSITE_SIGNUPS">
+		<ViewSQL>
+			<![CDATA[
+select  
+    b.BATCHNUMBER, 
+    bbis.SEQUENCE, 
+	C.ID as LINKEDID,
+    c.LOOKUPID as LINKEDLOOKUPID, 
+    c.NAME LINKEDNAME,
+    bbis.BBNCCONSTITNAME,
+    (select count(*) from dbo.SPONSORSHIP where CONSTITUENTID = c.ID and STATUSCODE = 1) as SPONSORSHIPCOUNT,
+    spouse.LOOKUPID as SPOUSELOOKUPID,
+    spouse.NAME as SPOUSENAME,
+    (select count(*) from dbo.SPONSORSHIP where CONSTITUENTID = spouse.ID and STATUSCODE = 1) as SPOUSESPONSORSHIPCOUNT,	   
+    p.i.value ('FIELD[1]', 'varchar(100)') as EMAILTYPE,
+    p.i.value ('NEWVALUE[1]', 'varchar(100)') as EMAILADDRESS,
+    case 
+     when upper (primaryemail.emailaddress) = upper(p.i.value ('NEWVALUE[1]', 'varchar(100)'))  then 'MATCHES PRIMARY'
+     when exists (select 1 from emailaddress where CONSTITUENTID = c.ID and upper (emailaddress) = upper(p.i.value ('NEWVALUE[1]', 'varchar(100)')))  then 'MATCHES non primary'
+     else 'no match'
+    end as EMAILMATCH,
+    primaryemail.EMAILADDRESS as PRIMARYEMAILADDRESS,
+    case 
+     when upper (nonprimaryemail.emailaddress) = upper(p.i.value ('NEWVALUE[1]', 'varchar(100)'))  then 'matches this other'
+     else ''
+    end as EMAILOTHERMATCH,
+    nonprimaryemail.EMAILADDRESS as OTHEREMAILADDRESS
+	     
+from 
+    dbo.BATCHBBNCSIGNUP bbis
+
+    inner join dbo.BATCH b on bbis.BATCHID = b.ID
+
+    left join dbo.CONSTITUENT c on bbis.LINKID = c.ID
+    left join dbo.emailaddress primaryemail on c.ID = primaryemail.CONSTITUENTID and primaryemail.ISPRIMARY = 1
+    left join dbo.emailaddress nonprimaryemail on c.ID = nonprimaryemail.CONSTITUENTID and nonprimaryemail.ISPRIMARY = 0
+    left join dbo.RELATIONSHIP spouserel on spouserel.RELATIONSHIPCONSTITUENTID = c.ID and spouserel.ISSPOUSE = 1
+    left join dbo.CONSTITUENT spouse on spouse.ID = spouserel.RECIPROCALCONSTITUENTID
+
+    cross apply PREFERREDADDRESS.nodes('/PREFERREDADDRESS/ITEM') as p(i)
+
+where 
+    p.i.value ('FIELD[1]', 'varchar(100)') like 'email%'
+		
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Name="LINKEDID" Caption="System record ID" Category="System Fields" />
+			<OutputField Name="BATCHNUMBER" Caption="Batch Number" DataType="String" />
+			<OutputField Name="SEQUENCE" Caption="Sequence" DataType="Integer" />
+			<OutputField Name="LINKEDLOOKUPID" Caption="Linked Constituent Lookup ID" DataType="String" />
+			<OutputField Name="LINKEDNAME" Caption="Linked Constituent Name" DataType="String" />
+			<OutputField Name="BBNCCONSTITNAME" Caption="BBIS Name" DataType="String" />
+			<OutputField Name="SPONSORSHIPCOUNT" Caption="Sponsorship Count" DataType="Integer" />
+			<OutputField Name="SPOUSELOOKUPID" Caption="Spouse Lookup ID" DataType="String" />
+			<OutputField Name="SPOUSENAME" Caption="Spouse Name" DataType="String" />
+			<OutputField Name="SPOUSESPONSORSHIPCOUNT" Caption="Spouse Sponsorship Count" DataType="String" />
+			<OutputField Name="EMAILTYPE" Caption="Email Type in Signup" DataType="String" />
+			<OutputField Name="EMAILADDRESS" Caption="Email Address in Signup" DataType="String" />
+			<OutputField Name="EMAILMATCH" Caption="Email Match" DataType="String" />
+			<OutputField Name="PRIMARYEMAILADDRESS" Caption="Primary Email Address" DataType="String" />
+			<OutputField Name="EMAILOTHERMATCH" Caption="Other Email Match" DataType="String" />
+			<OutputField Name="OTHEREMAILADDRESS" Caption="Other Email Address" DataType="String" />
+		</OutputFields>
+	</Output>
+
+	<RelationshipOperations>
+		<AddRelatedView RelatedView="V_QUERY_CONSTITUENT" RelatedField="ID" Field="LINKEDID" PathAlias="Linked Constituent"/>
+	</RelationshipOperations>
+</QueryViewSpec>
+
