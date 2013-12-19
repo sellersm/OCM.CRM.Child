@@ -16,6 +16,7 @@
 	History:
 	Date            Modified By     Comments
 	18-Dec-2013		CMayeda			Initial Version
+	19-Dec-2013		CMayeda			EMAILMATCH set to 'blank' if there is no email address in the PREFFERREDADDRESS column
 	-->
 
 	<!-- define the view used to return data for the query -->
@@ -49,9 +50,10 @@ select
     BBISEmailAddresses.EmailType as EMAILTYPE,
     BBISEmailAddresses.EmailAddress as EMAILADDRESS,
     case 
+     when BBISEmailAddresses.EmailAddress is null then 'blank'
      when upper (primaryemail.emailaddress) = upper(BBISEmailAddresses.EmailAddress)  then 'MATCHES PRIMARY'
      when exists (select 1 from emailaddress where CONSTITUENTID = c.ID and upper (emailaddress) = upper(BBISEmailAddresses.EmailAddress))  then 'MATCHES non primary'
-     else 'no match'
+	 else 'no match'
     end as EMAILMATCH,
     primaryemail.EMAILADDRESS as PRIMARYEMAILADDRESS,
     case 
