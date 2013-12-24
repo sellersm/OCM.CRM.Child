@@ -17,6 +17,7 @@
 	Date            Modified By     Comments
 	18-Dec-2013		CMayeda			Initial Version
 	19-Dec-2013		CMayeda			EMAILMATCH set to 'blank' if there is no email address in the PREFFERREDADDRESS column
+	24-Dec-2013		CMayeda			Added SIGNUPTRANSACTIONDATE
 	-->
 
 	<!-- define the view used to return data for the query -->
@@ -61,6 +62,7 @@ select
      else ''
     end as EMAILOTHERMATCH,
     nonprimaryemail.EMAILADDRESS as OTHEREMAILADDRESS,
+	bbis.SIGNUPTRANSACTIONDATE,
     cast (BBIS.PREFERREDADDRESS as nvarchar(max)) as PREFERREDADDRESSXML
    	     
 from 
@@ -99,6 +101,7 @@ from
 			<OutputField Name="PRIMARYEMAILADDRESS" Caption="Primary Email Address" DataType="String" />
 			<OutputField Name="EMAILOTHERMATCH" Caption="Other Email Match" DataType="String" />
 			<OutputField Name="OTHEREMAILADDRESS" Caption="Other Email Address" DataType="String" />
+			<OutputField Name="SIGNUPTRANSACTIONDATE" Caption="Signup Transaction Date" DataType="Date" />
 			<OutputField Name="PREFERREDADDRESSXML" Caption="Preferred Address XML" DataType="String" />
 		</OutputFields>
 	</Output>
