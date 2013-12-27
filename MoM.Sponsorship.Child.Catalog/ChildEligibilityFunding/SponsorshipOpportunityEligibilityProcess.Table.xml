@@ -1,0 +1,62 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="ed1ad1af-a23b-47c6-9567-078a5a037272"
+	Name="Sponsorship Opportunity Eligibility Process"
+	Description="Table to store business process parameters for the Sponsorship Opportunity Eligibility Process"
+	Author="Cary Mayeda"
+	Tablename="USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS"		   
+	>
+
+	<!-- 
+	Remarks:	Trigger is used to delete rows in system business process table - BUSINESSPROCESSINSTANCE
+				Currently QUERYVIEWID isn't being used.
+				
+	History:
+	Date			Modified By		Comments
+    18-Mar-2012		CMayeda			Initial Version
+	-->
+
+	<!-- define fields on the table -->
+	<Fields>
+		
+		<TextField Name="NAME" Length="100" Required="true" IsUnique="true" Description="The name of the parameter set"/>
+		<TextField Name="DESCRIPTION" Length="255" Description="Details describing this parameter set"/>
+		<ForeignKeyField Name="IDSETREGISTERID" ForeignTable="IDSETREGISTER" Cardinality="ManyToOne" Required="true" OnDelete="CascadeDelete"/>
+		<ForeignKeyField Name="QUERYVIEWID" Cardinality="ManyToOne" ForeignTable="QUERYVIEWCATALOG" Required="false"/>
+		
+	</Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!-- <CheckConstraints>
+
+	     </CheckConstraints> -->
+
+	<!-- define any indexes on the table -->
+	<!-- <Indexes>
+
+	     </Indexes> -->
+		
+	<!-- define any triggers on the table -->
+	<Triggers>
+		<Trigger Name="TR_USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETE_BUSINESSPROCESSINSTANCE"
+             Enabled="true"
+             Description="Used to delete the common business process records associated with this record.">
+			<CreateTriggerSQL>
+				<![CDATA[
+
+create trigger TR_USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS_DELETE_BUSINESSPROCESSINSTANCE 
+		on dbo.USR_SPONSORSHIPOPPORTUNITYELIGIBILITYPROCESS 
+		after delete not for replication
+as begin
+
+	delete from dbo.BUSINESSPROCESSINSTANCE
+	 where BUSINESSPROCESSPARAMETERSETID in (select ID from deleted) 
+ 	   and BUSINESSPROCESSCATALOGID = 'c0c3662a-2586-4104-a1db-638e9e9950b0';
+end 
+				]]>
+			</CreateTriggerSQL>
+		</Trigger>
+	</Triggers>
+
+</TableSpec>

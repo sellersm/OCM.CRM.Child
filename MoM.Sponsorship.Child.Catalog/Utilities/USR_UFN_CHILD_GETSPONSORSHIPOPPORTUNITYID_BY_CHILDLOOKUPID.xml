@@ -1,0 +1,31 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e0fdf425-3f0f-436e-9f6d-d1449586b9c6"
+	Name="USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID"
+	Description="Gets the sponsorshipopportunityid for a given lookupid"
+	Author="Memphis Sellers"
+	DBFunctionName="USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID" 
+	GrantServiceRolePermission="true"
+	>
+
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID(
+	@CHILDLOOKUPID nvarchar(100)
+)
+returns uniqueidentifier
+with execute as caller
+as begin
+	-- do work here and return a value
+	declare @ID uniqueidentifier;
+	select @ID = ID
+		from dbo.SPONSORSHIPOPPORTUNITY
+		where LOOKUPID = @CHILDLOOKUPID	
+	
+	return @ID;
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

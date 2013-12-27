@@ -1,0 +1,137 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="3bc58908-a279-4421-8031-be91a9de4b97"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED"
+	Description="Used to add/delete 'Need Bio Created' pending reasons."
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED" >
+	
+	<!-- 
+	Remarks:	The 'Need Bio Created' pending reason is added to the child/children if no Child Bio note exists.  
+	
+				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process. 				
+				
+	History:
+	Date			Modified By		Comments
+    26-Mar-2012		CMayeda			Initial Version	
+	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
+	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output					-- Output parm that specifies how many pending reasons were inserted
+)
+as begin
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+
+	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0  -- Child Mark Pending Eligibiltiy sponsorship reason enum 
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+	
+		
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
+		declare @ChildBioNoteTypeID uniqueidentifier
+		select @ChildBioNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Child Bio')
+		if @ChildBioNoteTypeID is null
+			RAISERROR 1000000 'Couldn''t find the "Child Bio" Note type code'
+    
+    	declare @ChildBioDraftNoteTypeID uniqueidentifier
+		select @ChildBioDraftNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Child Bio - Draft')
+		if @ChildBioDraftNoteTypeID is null
+			RAISERROR 1000000 'Couldn''t find the "Child Bio - Draft" Note type code'
+    
+		declare @NeedBioCreatedID uniqueidentifier
+		select @NeedBioCreatedID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower('Need bio created') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @NeedBioCreatedID is null
+			RAISERROR 1000000 'Couldn''t find the "Need bio created" Sponsorship Reason'		
+			
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	-- This needs to be set to off for the output parms to be set properly
+	SET NOCOUNT OFF
+	
+	-- Remove Need Bio Created pending reasons if a child bio exists for the child/children
+	
+	delete  dbo.SPONSORSHIPOPPORTUNITYREASON
+	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+			
+	 where  -- Find children who are specified to be reviewed and have the 'Need Bio Created' pending reason  			
+			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   and	so_reason.SPONSORSHIPREASONID = @NeedBioCreatedID
+
+		   -- Check if a child bio or child bio draft exists
+	   and exists (select SPONSORSHIPOPPORTUNITYID 
+				     from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+					where so_note.SPONSORSHIPOPPORTUNITYID = so_reason.SPONSORSHIPOPPORTUNITYID
+		  			  and so_note.SPROPPNOTETYPECODEID in (@ChildBioNoteTypeID, @ChildBioDraftNoteTypeID))
+					  
+	set @DELETEDROWS = @@ROWCOUNT
+	
+	
+	-- Insert Need Bio Created pending reasons if a child/children don't already have it and their child bio does not exist
+	insert dbo.SPONSORSHIPOPPORTUNITYREASON
+				(SPONSORSHIPOPPORTUNITYID,
+				 SPONSORSHIPREASONID,				
+				 ADDEDBYID, 
+				 CHANGEDBYID, 
+				 DATEADDED, 
+				 DATECHANGED)
+				 
+		select  ID,
+				@NeedBioCreatedID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CurrentDate, 
+				@CurrentDate
+				
+		  from	dbo.SPONSORSHIPOPPORTUNITY so
+		 
+		 where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so.ID )	           
+	      
+				-- Verify that the children do not already have a Need Bio Created pending reason
+   	       and	not exists (select so_reason.SPONSORSHIPOPPORTUNITYID 
+							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
+		                     where so_reason.SPONSORSHIPREASONID = @NeedBioCreatedID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
+   	                       
+				-- Verify that the child/children does not have a bio		  
+		   and	not exists (select SPONSORSHIPOPPORTUNITYID 
+						      from dbo.SPONSORSHIPOPPORTUNITYNOTE so_note
+						     where so_note.SPONSORSHIPOPPORTUNITYID = so.ID
+							   and so_note.SPROPPNOTETYPECODEID in (@ChildBioNoteTypeID, @ChildBioDraftNoteTypeID))
+	
+				-- Don't add to ineligible kids that are not quota waiting list
+		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
+		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
+				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
+						
+	
+	set @INSERTEDROWS = @@ROWCOUNT
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

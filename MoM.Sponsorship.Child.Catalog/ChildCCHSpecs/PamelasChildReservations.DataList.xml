@@ -1,0 +1,98 @@
+﻿<DataListSpec xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="bbd211b6-9593-4f30-bea2-7572e447b9ee" Name="Child reservation history list" Description="Data list created from an ad-hoc query." Author="BIDEV\PamelaGu21195" xmlns="bb_appfx_datalist">
+	<MetaTags xmlns="bb_appfx_commontypes">
+		<AdHocQuerySaveDataListRequest xmlns="">
+			&lt;?xml version="1.0" encoding="utf-16"?&gt;
+			&lt;AdHocQuerySaveDataListRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" DataListID="bbd211b6-9593-4f30-bea2-7572e447b9ee" AdHocQueryID="00000000-0000-0000-0000-000000000000" QueryViewID="fe4fe1e3-e283-4028-a8d4-e1fc983d1cb2" DataListName="Child reservation history list" ContextRecordType="Sponsorship Opportunity" SuppressDuplicateRows="true"&gt;
+			&lt;ClientAppInfo REDatabaseToUse="MissionOfMercy_Config" ClientAppName="Blackbaud CRM" SessionKey="178a0d96-a83c-4b36-88d3-f4fde6bdfdf0" TimeOutSeconds="120" RunAsUserID="00000000-0000-0000-0000-000000000000" xmlns="Blackbaud.AppFx.WebService.API.1" /&gt;
+			&lt;SelectFields xmlns="Blackbaud.AppFx.WebService.API.1"&gt;
+			&lt;f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITY" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="CONSTITUENTNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="Solicitor" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="STARTDATE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="Start Date" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="ENDDATE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="End Date" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="COMMENT" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="Comment" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="CONSTITUENTID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" /&gt;
+			&lt;f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITY" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY" /&gt;
+			&lt;/SelectFields&gt;
+			&lt;FilterFields xmlns="Blackbaud.AppFx.WebService.API.1"&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="CONSTITUENTNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" DisplayPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" FilterOperator="IsNotBlank"&gt;
+			&lt;DateFilterTypes /&gt;
+			&lt;FuzzyDateFilterTypes /&gt;
+			&lt;MonthDayFilterTypes /&gt;
+			&lt;Values /&gt;
+			&lt;TranslatedValues /&gt;
+			&lt;DataType&gt;String&lt;/DataType&gt;
+			&lt;/f&gt;
+			&lt;/FilterFields&gt;
+			&lt;SortFields xmlns="Blackbaud.AppFx.WebService.API.1" /&gt;
+			&lt;GroupFilterFields xmlns="Blackbaud.AppFx.WebService.API.1" /&gt;
+			&lt;DataListOutputFields xmlns="Blackbaud.AppFx.WebService.API.1"&gt;
+			&lt;f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITY" ColumnName="NAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY" IsHidden="true" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="CONSTITUENTNAME" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="Solicitor" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="STARTDATE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="Start Date" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="ENDDATE" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="End Date" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="COMMENT" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" AliasName="Comment" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="CONSTITUENTID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" IsHidden="true" /&gt;
+			&lt;f ObjectName="V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute" IsHidden="true" /&gt;
+			&lt;f ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITY" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY" IsHidden="true" /&gt;
+			&lt;/DataListOutputFields&gt;
+			&lt;DataListParameters xmlns="Blackbaud.AppFx.WebService.API.1" /&gt;
+			&lt;ContextRecordIDField ObjectName="V_QUERY_SPONSORSHIPOPPORTUNITY" ColumnName="ID" ParentPath="V_QUERY_SPONSORSHIPOPPORTUNITY" xmlns="Blackbaud.AppFx.WebService.API.1" /&gt;
+			&lt;/AdHocQuerySaveDataListRequest&gt;
+		</AdHocQuerySaveDataListRequest>
+	</MetaTags>
+	<SPDataList SPName="USP_DATALIST_ADHOCQUERY_BBD211B6_9593_4F30_BEA2_7572E447B9EE">
+		<CreateProcedureSQL xmlns="bb_appfx_commontypes">
+			create procedure [dbo].[USP_DATALIST_ADHOCQUERY_BBD211B6_9593_4F30_BEA2_7572E447B9EE](
+			@CONTEXTRECORDID uniqueidentifier,
+			@CURRENTAPPUSERID uniqueidentifier,
+			@SECURITYFEATUREID uniqueidentifier,
+			@SECURITYFEATURETYPE tinyint,
+			@MAXROWS int = 100000) as
+			set nocount on;
+			with
+			[ROOT_CTE] as (
+			select  distinct 	[V_QUERY_SPONSORSHIPOPPORTUNITY].[NAME] as [Name],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[CONSTITUENTNAME] as [Solicitor],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[STARTDATE] as [Start Date],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[ENDDATE] as [End Date],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[COMMENT] as [Comment],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[CONSTITUENTID] as [Child\Reservation Key Attribute\Constituent system ID],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[ID] as [Child\Reservation Key Attribute\System record ID],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY].[ID] as [System record ID],
+			[V_QUERY_SPONSORSHIPOPPORTUNITY].[ID] as [QUERYRECID]
+			from [V_QUERY_SPONSORSHIPOPPORTUNITY] as [V_QUERY_SPONSORSHIPOPPORTUNITY]
+			left outer join [V_QUERY_SPONSORSHIPOPPORTUNITYCHILD] as [V_QUERY_SPONSORSHIPOPPORTUNITY\Child] on [V_QUERY_SPONSORSHIPOPPORTUNITY].[ID] = [V_QUERY_SPONSORSHIPOPPORTUNITY\Child].[ID]
+			left outer join [V_QUERY_ATTRIBUTE7CE70B025A9747B380E94D8D033EA292] as [V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute] on [V_QUERY_SPONSORSHIPOPPORTUNITY\Child].[ID] = [V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[PARENTID]
+			where ([V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[CONSTITUENTNAME] is not null and [V_QUERY_SPONSORSHIPOPPORTUNITY\Child\Reservation Key Attribute].[CONSTITUENTNAME] &lt;&gt; '')
+			)
+
+
+			select top(@MAXROWS) [Name],
+			[Solicitor],
+			[Start Date],
+			[End Date],
+			[Comment],
+			[Child\Reservation Key Attribute\Constituent system ID],
+			[Child\Reservation Key Attribute\System record ID],
+			[System record ID]
+			from [ROOT_CTE] as QUERYRESULTS
+			where QUERYRESULTS.[System record ID] = @CONTEXTRECORDID
+
+		</CreateProcedureSQL>
+	</SPDataList>
+	<Context ContextRecordType="Sponsorship Opportunity" RecordIDParameter="CONTEXTRECORDID" />
+	<SiteSecurity TableName="SITE" ColumnName="ID" />
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="Name" Caption="Name" IsHidden="true" DataType="String" />
+			<OutputField FieldID="Solicitor" Caption="Solicitor" DataType="String" />
+			<OutputField FieldID="Start Date" Caption="Start Date" DataType="Date" />
+			<OutputField FieldID="End Date" Caption="End Date" DataType="Date" />
+			<OutputField FieldID="Comment" Caption="Comment" DataType="String" />
+			<OutputField FieldID="Child\Reservation Key Attribute\Constituent system ID" Caption="Child\Reservation Key Attribute\Constituent system ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="Child\Reservation Key Attribute\System record ID" Caption="Child\Reservation Key Attribute\System record ID" IsHidden="true" DataType="Guid" />
+			<OutputField FieldID="System record ID" Caption="System record ID" IsHidden="true" DataType="Guid" />
+		</OutputFields>
+	</Output>
+</DataListSpec>

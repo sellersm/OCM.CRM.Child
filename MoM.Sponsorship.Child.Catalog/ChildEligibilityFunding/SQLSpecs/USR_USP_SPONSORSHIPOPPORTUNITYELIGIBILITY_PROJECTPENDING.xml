@@ -1,0 +1,133 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="cdb0a71f-c94d-4467-a5e7-5eaaadef0f56"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING"
+	Description="Used to add/delete 'Project on pending status' pending reasons"
+	Author="Cary Mayeda"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING" >
+
+	<!-- 
+	Remarks:	The 'Project on pending status' pending reason is added if the child's/children's project is set to Inactive, Pending - Under Investigation
+				Also, the child needs to not be sponsored.
+	
+				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
+				and with the Sponsorship Opportunity Eligibility Business Process.  
+				
+	History:
+	Date			Modified By		Comments
+    27-Mar-2012		CMayeda			Initial Version
+	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
+	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
+	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
+	-->
+	
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING (
+	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
+	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
+	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
+	@insertedRows int = 0 output					-- Output parm that specifies how many pending reasons were inserted
+)
+as begin
+
+	-- Eligibility code value constants
+	declare @eligibilityCode_Pending tinyint = 0
+	declare @eligibilityCode_Eligible tinyint = 1
+	declare @eligibilityCode_Ineligible tinyint = 2
+	
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @CHANGEAGENTID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+    -- Used for setting date fields to today's date
+	declare @CurrentDate datetime = null  
+	set @CurrentDate = getdate()	
+	
+		
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found
+		
+		-- This is the pending reason id on the child
+		declare @ProjectPendingID uniqueidentifier  
+		select @ProjectPendingID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Project on pending status')
+		if @ProjectPendingID is null
+			RAISERROR 1000000 'Couldn''t find the "Project on pending status" Sponsorship Reason'		
+		
+		-- This is the location pending reason id
+		declare @LocationPendingID uniqueidentifier
+		select @LocationPendingID = ID from dbo.SPONSORSHIPREASON where upper (REASON) = 'PENDING - UNDER INVESTIGATION' and upper (REASONTYPE) = 'LOCATION - MARK INACTIVE'
+		if @LocationPendingID is null
+			RAISERROR 1000000 'Couldn''t find the "Pending - Under Investigation" reason code of type "Location - Mark Inactive"'
+		
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+	
+	-- This needs to be set to off for the output parms to be set properly
+	SET NOCOUNT OFF
+	
+	-- Remove 'Project on Pending Status' pending reasons if the child's location is no longer Inactive with a reason of 'Pending - Under Investigation'
+	delete  SPONSORSHIPOPPORTUNITYREASON
+	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
+	 where  -- Find children who are specified to be reviewed and have the 'Pending - Under Investigation' pending reason 
+			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+			
+	   and	so_reason.SPONSORSHIPREASONID = @ProjectPendingID	   
+	   
+	   and	not exists (select so.ID from dbo.SPONSORSHIPOPPORTUNITY so					      
+						 inner join dbo.SPONSORSHIPLOCATION slocation ON slocation.ID = so.SPONSORSHIPLOCATIONID					      
+						where so_reason.SPONSORSHIPOPPORTUNITYID = so.ID
+			              and slocation.SPONSORSHIPREASONID = @LocationPendingID)
+       
+									         				
+	set @DELETEDROWS = @@ROWCOUNT
+	
+	-- Insert 'Project on Pending Status' pending reasons if the child's location is Inactive with a reason of 'Pending - Under Investigation'
+	insert dbo.SPONSORSHIPOPPORTUNITYREASON
+				(SPONSORSHIPOPPORTUNITYID,
+				 SPONSORSHIPREASONID,				
+				 ADDEDBYID, 
+				 CHANGEDBYID, 
+				 DATEADDED, 
+				 DATECHANGED)
+				 
+		select  ID,
+				@ProjectPendingID, 
+				@CHANGEAGENTID, 
+				@CHANGEAGENTID, 
+				@CurrentDate, 
+				@CurrentDate
+	      from	dbo.SPONSORSHIPOPPORTUNITYCHILD	so_child
+		
+         where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_child.ID )
+		
+				-- Verify that the child/children do not already have a 'Project on Pending Status' pending reason
+   	       and	not exists (Select SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
+			                 where so_reason.SPONSORSHIPREASONID = @ProjectPendingID and so_reason.SPONSORSHIPOPPORTUNITYID = so_child.ID)
+
+				-- Find children whose project is on Pending Status
+		   and	exists (select so.ID from dbo.SPONSORSHIPOPPORTUNITY so				      
+						 inner join dbo.SPONSORSHIPLOCATION slocation ON slocation.ID = so.SPONSORSHIPLOCATIONID					      
+						 where so_child.ID = so.ID
+			               and slocation.SPONSORSHIPREASONID = @LocationPendingID)
+
+				-- Don't add to ineligible kids that are not quota waiting list
+		   and	not exists (select ID from SPONSORSHIPOPPORTUNITY so 
+							 where so.ID = so_child.ID
+							   and so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
+							   and not exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID))
+
+
+	set @INSERTEDROWS = @@ROWCOUNT
+	
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

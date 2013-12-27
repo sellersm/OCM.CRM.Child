@@ -1,0 +1,77 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="711fe201-7df3-4482-a88b-a65c397938ec"
+	Name="ChildProjectDisbursementOld Query"
+	Description="This is used to get the sponsored / unsponsored registered children counts"
+	Author="Cary Mayeda"
+	IsRoot="true"
+	PrimaryKeyField="FIELDOFFICEID"
+	RecordType="Child Project Extension"
+	common:SecurityUIFolder="REPLACE_WITH_SECURITY_UI_FOLDER"
+	>
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_CHILDPROJECTDISBURSEMENTSOLD">
+		<ViewSQL>
+			<![CDATA[
+
+with RegisteredChildren (FIELDOFFICEID, PROJECTLOOKUPID, SPONSORSHIPOPPORTUNITYID, CURRENTSPONSORSHIPSTATUS)
+as
+(	select 	FIELDOFFICEID,
+			dbo.USR_UFN_CHILDPROJECT_GETLOOKUPID (FIELDOFFICEID) as PROJECTLOOKUPID, 
+			so.ID SPONSORSHIPOPPORTUNITYID,
+			--case 
+			--	when dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so.ID) > 0 then 'Sponsored'
+			--	when AVAILABILITYCODE = 1 then 'Unsponsored - Reserved'
+			--	else 'Unsponsored'
+			--end as SPONSORSHIPSTATUS,
+			--coalesce (dbo.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION (so.ID),'') as CURRENTSPONSORSHIPSTATUS1,
+			coalesce(ct.[DESCRIPTION],'') as CURRENTSPONSORSHIPSTATUS
+        
+	  from	dbo.SPONSORSHIPOPPORTUNITY so 					
+inner join	dbo.SPONSORSHIPLOCATION slocation on
+				slocation.ID = so.SPONSORSHIPLOCATIONID
+inner join  dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on 
+				so.ID = so_child.ID
+left join dbo.USR_CHILDEXTENSION ch_ext on
+				so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
+left join dbo.usr_sponsorshipextension se on se.SPONSORSHIPOPPORTUNITYID = so.ID and se.ISCURRENT = 1
+left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = se.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
+
+	where (ch_ext.Funded=1
+	       or 
+	       (slocation.STATUSCODE = 1 -- Inactive
+	        and slocation.SPONSORSHIPREASONID = '3EC2BD25-FEC7-41B9-8C4F-DDA63C063DEC') -- phasing out 
+	      )
+	       
+	   and	so.ELIGIBILITYCODE in (0,1) -- @eligibilityCodePending, @eligibilityCodeEligible)
+)	
+select FIELDOFFICEID,
+	   PROJECTLOOKUPID, 
+	   convert (varchar(10), GETDATE(), 1) as DATADATE,
+	   sum(case when CURRENTSPONSORSHIPSTATUS='Sponsored' then 1 else 0 end) as SPONSOREDCOUNT, 
+	   sum(case when CURRENTSPONSORSHIPSTATUS='Sponsored' then 0 else 1 end) as UNSPONSOREDCOUNT, 
+	   count(*) as TOTALCHILDCOUNT
+ from RegisteredChildren
+group by FIELDOFFICEID, PROJECTLOOKUPID
+
+
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="System record ID" Category="System Fields" Name="FIELDOFFICEID" />
+			<OutputField Name="PROJECTLOOKUPID" Caption="Project Lookup ID" DataType="String" />
+			<OutputField Name="DATADATE" Caption="Data Date" DataType="Date" />
+			<OutputField Name="SPONSOREDCOUNT" Caption="Sponsored Count" DataType="Integer" />
+			<OutputField Name="UNSPONSOREDCOUNT" Caption="Unsponsored Count" DataType="Integer" />
+			<OutputField Name="TOTALCHILDCOUNT" Caption="Total Child Count" DataType="Integer" />
+		</OutputFields>
+	</Output>
+
+</QueryViewSpec>
+

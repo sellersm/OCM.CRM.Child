@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="94fa68cf-f059-42da-857c-7599a21c4cfe" 
+	Name="Child Photo Title Code Table"
+	Description="Child Photo Title Code Values"
+	Author="Trucmai Gupta"
+	DBTablename="USR_CHILDPHOTOTITLECODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

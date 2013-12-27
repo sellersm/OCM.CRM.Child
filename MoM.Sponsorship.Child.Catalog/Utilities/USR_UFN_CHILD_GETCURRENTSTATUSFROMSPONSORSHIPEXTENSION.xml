@@ -1,0 +1,42 @@
+﻿<SQLFunctionSpec
+	xmlns="bb_appfx_sqlfunction"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="670c4a06-8c8f-4b6c-9614-ec8e4403a017"
+	Name="USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION"
+	Description="Get current status of sponsorship (prospect, former, etc.) for a given Opportunity."
+	Author="Memphis Sellers"
+	DBFunctionName="USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION"
+	>
+	
+	<!-- 
+	Remarks:    Retrieves the 'current' row from sponsorship extension table for the given opportunity.
+
+	History:
+	Date            Modified By     Comments
+	29-Sep-2012		Memphis			It lives!!
+	-->
+
+	
+	<CreateFunctionSQL>
+		<![CDATA[
+create function dbo.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION(
+	@OPPORTUNITYID uniqueidentifier
+)
+returns nvarchar(100)
+with execute as caller
+as begin
+	-- do work here and return a value
+	declare @currentStatus nvarchar(100);
+	
+	select @currentStatus = ct.[DESCRIPTION]
+	from dbo.usr_sponsorshipextension se 
+	join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = se.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
+	where se.SPONSORSHIPOPPORTUNITYID = @OPPORTUNITYID
+	and se.ISCURRENT = 1
+
+	return @currentStatus
+end
+		]]>
+	</CreateFunctionSQL>
+
+</SQLFunctionSpec>

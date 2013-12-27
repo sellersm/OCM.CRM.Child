@@ -1,0 +1,57 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="d0d93f79-3877-4bd5-b3e3-469b07531da8"
+	Name="Childs Length Of Sponsorship Smart Field"
+	Description="Used to determine the length of the child's sponsorship"
+	Author="Trucmai Gupta"
+	SPName="USR_USP_SMARTFIELD_CHILDSLENGTHOFSPONSORSHIP"
+	DataType="String" 
+	RecordType="Sponsorship opportunity child" 
+	DisplayName="Childs Length Of Sponsorship" 
+	SmartFieldFolder="Sponsorship opportunity child"
+	>
+
+  <!-- 
+      /* *******************************************************************************************
+      Name: SmartField for Length of time child was sponsored 
+      Description: This query is to find the length of time that a child was sponsored
+
+      Original Use is to expand ICM - Departures 2009-2012 query created by Laura Easterly.
+      Uses first 3 views to filter valid sponsorships and a 4th view that filters sponsorship
+      based on if the child corresponded to the sponsor, thus knew they were sponsored.
+      ******************************************************************************************* */
+
+      Remarks:      This is used to determine the length of each sponsorship for a child
+      History:
+      Date            Modified By        Comments
+      03-Oct-2013     RZarling                 Initial Version
+  -->
+
+  
+  <!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+
+create procedure  dbo.USR_USP_SMARTFIELD_CHILDSLENGTHOFSPONSORSHIP ( 
+       @ASOF datetime         
+) 
+as 
+
+begin  
+
+  select 
+    SponsorshipGuid,
+    Convert(nvarchar(20), (cast((datediff(dd,v.SponsorStartDate,v.SponsorEndDate))as decimal))/365)  as LenOfSponInYrs      -- length of time child was sponsored in years as deciaml
+  from
+    USR_V_CHILDVALIDSPONSORSHIP_BASEDONCHILDCORRESPONDENCE v
+  group by 
+    SponsorshipGuid,
+    v.SponsorStartDate,
+    v.SponsorEndDate
+
+end    
+
+		]]>
+	</CreateProcedureSQL>
+</SmartFieldSpec>
