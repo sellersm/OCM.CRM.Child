@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildPhoto.View.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildPhotoViewDataFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildPhotoViewDataForm.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

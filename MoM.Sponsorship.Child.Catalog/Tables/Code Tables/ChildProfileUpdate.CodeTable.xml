@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="101eb86b-3d4b-4c8e-9d8b-6b7bec7f0658" 
+	Name="Child Profile Update Codes"
+	Description="Values for Child Profile Update Codes"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CHILDPROFILEUPDATECODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

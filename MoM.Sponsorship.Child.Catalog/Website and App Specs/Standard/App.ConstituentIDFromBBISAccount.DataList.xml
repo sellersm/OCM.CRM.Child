@@ -1,0 +1,56 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="b85106bd-b23e-4a46-be2a-f3ae98815240" 
+	Name="Constituent ID From BBIS Account Data List"
+	Description="Constituent ID From BBIS Account Data List" 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Mobile App">
+
+    <!-- 
+	Remarks:    This is used by the mobile app to find the Constituent ID associated with a specific BBIS account
+
+	History:
+	Date            Modified By     Comments
+	05-Apr-2013		CMayeda			Initial Version
+    -->
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_APP_GETUSERCONSTITUENTID">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_APP_GETUSERCONSTITUENTID(@CONTEXTID uniqueidentifier, @USERNAME nvarchar(100))
+as begin
+
+	set nocount on;
+
+    select  CONSTITUENTID,
+            USERNAME            
+      from  dbo.NETCOMMUNITYCLIENTUSER 
+     where  upper (USERNAME) = upper (@USERNAME)
+end 
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="CONSTITUENT" RecordIDParameter="CONTEXTID" />
+
+	<!-- describe any parameters (other than the context ID) defined on the SP -->
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="USERNAME" Caption="User Name" DataType="String"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="CONSTITUENTID" Caption="ConstituentID" DataType="Guid" IsHidden="false" />
+			<OutputField FieldID="USERNAME" Caption="UserName" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

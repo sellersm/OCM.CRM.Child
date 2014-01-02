@@ -1,0 +1,50 @@
+<PackageSpec 
+    xmlns="bb_appfx_package"
+    xmlns:common="bb_appfx_commontypes"
+    ID="1ad77303-5730-4ebd-b052-8b3d0a4143e4"
+    Name="CCH Only Batch Package"
+    Description="Customized CCH Only batch: only cch data for existing child."
+    Author="Memphis Sellers"
+    >
+
+	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
+	a table that hasn't been loaded, etc.  In general, the following order is recommended:
+	
+	Once the Batch Type Spec is complete, we can use LoadSpec to load the dependent specs into the database. Make sure the following specs are loaded prior to loading the BatchTypeSpec. 
+	•Batch Add
+	•Batch Edit
+	•Batch Delete
+	•Batch Commit Add
+
+	CCHOnly Batch is only the Child's CCH information.  It is used to hold only the CCH data, it does NOT add a new child.
+
+	History:
+	Date            Modified By     Comments
+	17-Oct-2012		Memphis			Initial version: FogBugz Case 858
+  01-Mar-2013   JFoster     Added Package Versions spec	
+	-->
+	
+	<common:DependencyList>
+		<!-- Batch Table -->
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnly.Batch.Table.xml" />
+
+		<!-- Batch Add -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnlyBatch.AddRow.Add.xml" />
+
+		<!-- Batch Edit -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnlyBatch.EditRow.Edit.xml" />
+
+		<!-- Batch Delete -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnlyBatch.DeleteRow.Delete.xml" />
+
+		<!-- Batch Commit Add -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnly.AddBatch.Commit.xml" />
+
+		<!-- Batch Type -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnly.BatchType.xml"/>
+
+    <!-- Package Versions -->
+    <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.CCHOnlyBatch.PackageVersion.DataList.xml" />
+  </common:DependencyList>
+
+</PackageSpec>

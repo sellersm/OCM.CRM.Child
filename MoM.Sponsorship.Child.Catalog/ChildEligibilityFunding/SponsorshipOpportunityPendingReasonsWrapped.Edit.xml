@@ -1,0 +1,185 @@
+<EditDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="971ef429-4aa4-4f5b-b11a-5ee19ea50d01"
+    Name="Sponsorship Opportunity Pending Reasons Edit Form (Wrapped)"
+    Description="Edit form for opportunity pending reasons (Wrapped)"
+    Author="Cary Mayeda"
+    RecordType="Sponsorship Opportunity"
+    DataFormInstanceID="4e9919d6-9c3f-42a6-a487-b243b1c47b0a"
+    c:SecurityUIFolder="Sponsorship\Opportunity"
+    OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+    FormHeader="Edit pending reasons"
+    FormHeaderResourceKey="$$edit_pending_reasons"
+    xmlns="bb_appfx_editdataformtemplate" >
+	
+	<!-- 
+	Remarks:    This wraps the OOB Blackbaud form ID="9f3a1bf1-12d3-4c5f-af8f-c6362251cd80" Name="Sponsorship Opportunity Pending Reasons Edit Form" 
+				A check was added after the oob Save event to set FUNDED = 0 when the user added the "Need Information Verified - New Child" sponsorship reason
+
+	History:
+	Date            Modified By     Comments
+	20-Aug-2012		CMayeda			Initial Version
+
+	-->
+	
+    <c:ImpliedSecurityList>
+        <c:ImpliedSecurity Type="RecordOperation" ID="692588f4-3498-4bb0-996b-14969e44820d" />
+        <c:ImpliedSecurity Type="RecordOperation" ID="0eee0709-2a41-45c5-bda2-4a22cd867606" />
+    </c:ImpliedSecurityList>
+    <c:InstalledProductList>
+        <c:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+    </c:InstalledProductList>
+    <ResourceFile AssemblyName="Blackbaud.AppFx.Sponsorship.Catalog.dll" ClassName="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityReason.Edit" />
+    <SPDataForm>
+        <LoadImplementation SPName="USP_DATAFORMTEMPLATE_EDITLOAD_OPPORTUNITYREASONS_WRAPPED">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDITLOAD_OPPORTUNITYREASONS_WRAPPED 
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @REASONLIST xml = null output,
+    @REASONTYPE tinyint = null output
+)
+
+
+as
+
+set nocount on;
+
+/* Handle any custom "pre-load" logic here */
+
+declare @r int
+exec @r = dbo.USP_DATAFORMTEMPLATE_EDITLOAD_OPPORTUNITYREASONS 
+  @ID = @ID, 
+  @DATALOADED = @DATALOADED output, 
+  @TSLONG = @TSLONG output, 
+  @REASONLIST = @REASONLIST output, 
+  @REASONTYPE = @REASONTYPE output
+
+/* Handle any custom "after-load" logic here */
+
+if @@error <> 0 
+	begin
+		if @r <> 0 return @r
+		return 1;
+	end
+
+return @r;
+
+
+]]>
+</c:CreateProcedureSQL>
+        </LoadImplementation>
+        <SaveImplementation SPName="USP_DATAFORMTEMPLATE_EDIT_OPPORTUNITYREASONS_WRAPPED">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_OPPORTUNITYREASONS_WRAPPED 
+(
+    @ID uniqueidentifier,
+    @REASONLIST xml,
+    @CHANGEAGENTID uniqueidentifier
+)
+
+
+as begin
+
+	set nocount on;
+
+	/*
+	begin try
+		-- Handle any custom "before-save" logic here 
+		insert USR_TEMP_TEST
+		select @ID
+	
+	
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR;
+		return 1;
+	end catch
+	*/
+
+	/* invoke the default implementation */
+	declare @r int
+	exec @r = dbo.USP_DATAFORMTEMPLATE_EDIT_OPPORTUNITYREASONS 
+		@ID = @ID, 
+		@REASONLIST = @REASONLIST, 
+		@CHANGEAGENTID = @CHANGEAGENTID
+
+	if @@error <> 0 
+		begin
+			if @r <> 0 return @r
+			return 1;
+		end
+
+	
+	begin try
+		-- Handle any custom "after-save" logic here
+		/*declare @sponsorshipReasonID_NeedInformationVerified uniqueidentifier
+		select @sponsorshipReasonID_NeedInformationVerified  = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Need Information Verified - New Child')
+		if @sponsorshipReasonID_NeedInformationVerified is null
+			RAISERROR 1000000 'Couldn''t find the "Need Information Verified - New Child" Sponsorship Reason'		
+
+		if exists (select ID from dbo.SPONSORSHIPOPPORTUNITYREASON where SPONSORSHIPOPPORTUNITYID = @ID AND SPONSORSHIPREASONID = @sponsorshipReasonID_NeedInformationVerified )
+			 update	dbo.USR_CHILDEXTENSION
+				set FUNDED = 0,
+			  where SPONSORSHIPOPPORTUNITYCHILDID = @ID
+			    and FUNDED = 1
+		*/
+		
+		declare @childIDList dbo.USR_UDT_CHILDIDLIST 
+		insert @childIDList 
+		select @ID
+		exec dbo.USR_USP_CHILDREN_SETFUNDING 
+				@childIDList = @childIDList,
+				@changeAgentID = @CHANGEAGENTID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR;
+		return 1;
+	end catch
+	 
+ 
+	return @r;
+
+end
+
+]]>
+</c:CreateProcedureSQL>
+            <c:ExpectedDBExceptions>
+                <c:Constraints>
+                    <c:Constraint Name="UIX_SPONSORSHIPOPPORTUNITYREASON_SPONSORSHIPOPPORTUNITYID_SPONSORSHIPREASONID" Field="REASONLIST" Type="Unique" />
+                </c:Constraints>
+            </c:ExpectedDBExceptions>
+        </SaveImplementation>
+    </SPDataForm>
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="REASONLIST" DataType="XML" Caption="Reason" CaptionResourceKey="$$reason">
+                <c:Collection>
+                    <c:Fields>
+                        <c:FormField FieldID="SPONSORSHIPREASONID" DataType="Guid" Required="true" Caption="Reason" CaptionResourceKey="$$reason">
+                            <c:SimpleDataList SimpleDataListID="c8d3128e-a2eb-4413-b0b4-1585ad5bf001">
+                                <c:Params>
+                                    <c:Param ID="TYPE">
+                                        <c:Value>PARENT.Fields!REASONTYPE</c:Value>
+                                    </c:Param>
+                                </c:Params>
+                            </c:SimpleDataList>
+                        </c:FormField>
+                        <c:FormField FieldID="ID" DataType="Guid" Hidden="true" Caption="Opportunity reason ID" />
+                    </c:Fields>
+                </c:Collection>
+            </c:FormField>
+            <c:FormField FieldID="REASONTYPE" DataType="TinyInt" ReadOnly="true" Hidden="true" Caption="REASONTYPE" />
+        </c:FormFields>
+        <c:WebUIComponent>
+            <c:UIModel AssemblyName="Blackbaud.AppFx.Sponsorship.UIModel.dll" ClassName="Blackbaud.AppFx.Sponsorship.UIModel.SponsorshipOpportunityPendingReasonsEditFormUIModel" />
+            <c:WebUI>
+                <c:ExternalResource Url="browser/htmlforms/sponsorship/SponsorshipOpportunityPendingReasonsEditForm.html" />
+            </c:WebUI>
+        </c:WebUIComponent>
+    </c:FormMetaData>
+</EditDataFormTemplateSpec>

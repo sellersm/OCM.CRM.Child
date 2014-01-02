@@ -1,0 +1,71 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="59a80a9e-ee6b-4ed6-ae66-3915707adf08" 
+	Name="Child Photo Data List Form"
+	Description="Child Photo Data List Form." 
+	Author="Trucmai Gupta"
+	common:SecurityUIFolder="REPLACE_WITH_SECURITYUIFOLDER">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_CHILDPHOTO">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_CHILDPHOTO
+(
+  @SPONSORSHIPOPPORTUNITYID uniqueidentifier = null
+)
+as
+	set nocount on;
+  
+	select
+    SPONSORSHIPOPPORTUNITYATTACHMENT.ID,
+    SPONSORSHIPOPPORTUNITYATTACHMENT.DATEENTERED,
+    SPROPPATTACHMENTTYPECODE.DESCRIPTION as [TYPE],
+    SPONSORSHIPOPPORTUNITYATTACHMENT.TITLE,
+    '2f09c59b-3a6f-430a-b358-18226b7bfcbb' as [VIEWFORMID],
+    SPONSORSHIPOPPORTUNITYATTACHMENT.FILENAME,
+    'FILE'
+  from
+    dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+    inner join
+    dbo.SPROPPATTACHMENTTYPECODE
+    on
+    SPROPPATTACHMENTTYPECODE.ID = SPONSORSHIPOPPORTUNITYATTACHMENT.SPROPPATTACHMENTTYPECODEID
+  where
+    FILENAME LIKE '%.JPG' AND
+    SPONSORSHIPOPPORTUNITYATTACHMENT.SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYID --and
+    --(@TITLE = '' or SPONSORSHIPOPPORTUNITYATTACHMENT.TITLE like @TITLE + '%') and
+    --(@ISSYSADMIN = 1 or dbo.UFN_SECURITY_APPUSER_GRANTED_CODETABLEENTRY(@CURRENTAPPUSERID,SPROPPATTACHMENTTYPECODE.ID) = 1)
+  order by
+    DATEENTERED desc;
+			]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+  <Context ContextRecordType="Sponsorship Opportunity" RecordIDParameter="SPONSORSHIPOPPORTUNITYID" />
+
+	<!-- describe any parameters (other than the context ID) defined on the SP
+	<Parameters>
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="PARAMETER1" Caption="Paramter1" DataType="REPLACE_WITH_DATATYPE"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>-->
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="ID" DataType="Guid" IsHidden="true"  />
+      <OutputField FieldID="DATE" Caption="Date" DataType="Date" />
+      <OutputField FieldID="TYPE" Caption="Type" DataType="String" />
+      <OutputField FieldID="TITLE" Caption="Title" DataType="String" />
+      <OutputField FieldID="ViewFormID" Caption="ViewFormID" IsHidden="true" DataType="Guid" />
+      <OutputField FieldID="File Name" Caption="File Name" IsHidden="true" DataType="String" />
+      <OutputField FieldID="File Field ID" Caption="File Field ID" IsHidden="true" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

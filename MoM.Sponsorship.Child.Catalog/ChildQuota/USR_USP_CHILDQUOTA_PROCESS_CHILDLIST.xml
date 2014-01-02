@@ -1,0 +1,213 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="4f2f1a96-ab58-47fd-95ec-54752f26a21e"
+	Name="USR_USP_CHILDQUOTA_PROCESS_CHILDLIST"
+	Description="This is used to in the business process to check the children passed in @childList"
+	Author="Cary Mayeda"
+	SPName="USR_USP_CHILDQUOTA_PROCESS_CHILDLIST" >
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	02-Jul-2012		CMayeda			Initial Version
+	29-Jul-2012		CMayeda			Added a check on the @changeAgentUserName, because sometimes the @changeAgentID is not null, but also not valid.
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_CHILDQUOTA_PROCESS_CHILDLIST (
+	@childList dbo.USR_UDT_QUOTAPROCESSCHILDREN readonly,	-- Used to specify the children to process
+	@changeAgentID uniqueidentifier,						-- Used to specify change agent for ChangedByID and AddedByID fields
+	@successTableName nvarchar(128) = '',					-- Table Name to insert children successfuly registered, pass empty string if no table needs to be populated
+	@exceptionTableName nvarchar(128) = '',					-- Table Name to insert exceptions, pass empty string if no table needs to be populated
+	@successCount int = 0 output,							-- Number of children successfully registered
+	@exceptionCount int = 0 output							-- Number of exceptions - this isn't always the number children, because only one row is entered for a lock failure
+)
+
+as
+begin
+	-- Constants
+	declare @quotaTypeCode_Project as tinyint = 0			-- Code value for Project Quota 
+	declare @quotaTypeCode_Country as tinyint = 1			-- Code value for Country Quota 
+
+	declare @lockMaxAttempts tinyint = 5					-- How many times to retry attempting acquiring a lock
+	declare @lockDelaySeconds tinyint = 2					-- How long to wait in between lock attempts.  Delay uses a string formatted as time - hh:mm:ss
+
+
+	-- Get ChangeAgent if none was passed into the sproc
+  	if @changeAgentID is null  
+	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+
+	declare @changeAgentUserName nvarchar(128) = null
+
+	begin try
+		-- Get the User Name
+		select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
+		
+		-- Added this check because sometimes the @changeAgentID is not null, but also not valid.
+		if @changeAgentUserName is null
+		begin
+			exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @changeAgentID output
+  			select @changeAgentUserName = USERNAME from dbo.CHANGEAGENT where ID = @changeAgentID
+			if @changeAgentUserName is null
+			  raiserror ('Unable to determine USERNAME value.', 13, 1)
+		end
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+
+	-- Store current date/time
+	declare @currentDateTime datetime							
+	set @currentDateTime  = getdate()
+
+	
+	-- ** Had to use temp tables instead of just referencing the table vars because of permission issues when called from the business process
+	-- ** The EXECUTE permission was denied on the object 'USR_UDT_CHILDIDLIST'
+
+	-- Used to insert children successfully registered into the Success Table for project quotas
+	declare @insertSuccessSQL nvarchar(max) = ''
+	if @successTableName <> ''
+		set @insertSuccessSQL  = 'insert ' + @successTableName + ' select @projectID, @countryID, SPONSORSHIPOPPORTUNITYCHILDID from #registeredChildren' -- @childList'
+	declare @insertSuccessSQLParms nvarchar(255) = '@projectID uniqueidentifier, @countryID uniqueidentifier'--, @childList dbo.USR_UDT_CHILDIDLIST readonly'
+
+	-- Used to insert exceptions into the Exception Table
+	declare @insertExceptionsSQL nvarchar(max) = ''
+	if @exceptionTableName <> '' 
+		set	@insertExceptionsSQL = 'insert ' + @exceptionTableName + ' select @projectID, @countryID, SPONSORSHIPOPPORTUNITYCHILDID, SPONSORSHIPREASONID from #ineligibleChildren'--@childList'
+	declare @insertExceptionsSQLParm nvarchar(255) = '@projectID uniqueidentifier, @countryID uniqueidentifier'--, @childList dbo.USR_UDT_CHILDIDLISTWITHREASON readonly'
+		
+	-- Used to get the count of successfully registered children
+	declare @countSuccessSQL nvarchar(max) = 'select @successCount=count(*) from ' + @successTableName 
+	declare @countSuccessSQLParms nvarchar(255) = '@successCount int output'
+	
+	-- Used to get the count of exceptions
+	declare @countExceptionSQL nvarchar(max) = 'select @exceptionCount=count(*) from ' + @exceptionTableName 
+	declare @countExceptionSQLParms nvarchar(255) = '@exceptionCount int output'
+	
+	-- Used to insert a single exception into the Exception Table
+	declare @insertSingleExceptionSQL nvarchar(max) = 'insert ' + @exceptionTableName + ' select @projectID, @countryID, @childID, @exceptionReason'
+		
+	declare @insertSingleExceptionSQLParm nvarchar(255) = '@projectID uniqueidentifier, @countryID uniqueidentifier, @childID uniqueidentifier, @exceptionReason nvarchar(255)'	
+
+	
+
+	declare @childProjectID uniqueidentifier					-- Used to store the child project being processed 
+	declare @countryID uniqueidentifier							-- Used to store the country being processed if it is country quota
+	
+	declare @objectLocked bit
+	
+ 	declare @lockFailed dbo.USR_UDT_LOCKFAILURE   --**table (quotaTypeCode tinyint,  -- 0 = project, 1 = country
+												--**objectID uniqueidentifier)
+
+
+	declare @projectQuotaChildList dbo.USR_UDT_QUOTAPROCESSCHILDREN
+	declare @countryQuotaChildList dbo.USR_UDT_QUOTAPROCESSCHILDREN
+	
+	insert @projectQuotaChildList
+	select * from @childList where QUOTATYPECODE = @quotaTypeCode_Project 
+	
+	insert @countryQuotaChildList
+	select * from @childList where QUOTATYPECODE = @quotaTypeCode_Country 
+
+	
+	-- Process Countries first
+	declare countryChildListCursor cursor for
+	select distinct COUNTRYID from @countryQuotaChildList
+
+	open countryChildListCursor 
+	fetch next from countryChildListCursor 
+		into @countryID
+		
+	-- Process each country on the child list
+	while @@FETCH_STATUS = 0
+	begin
+
+		exec dbo.USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS @countryID, @changeAgentUserName, @lockMaxAttempts, @lockDelaySeconds, @objectLocked output
+	
+		if @objectLocked = 0
+		begin
+			insert @lockFailed
+			select @quotaTypeCode_Country, @countryID  
+				
+			if @exceptionTableName <> ''	-- If an exception table was specific, insert a row for the lock failure
+				exec sp_executesql @insertSingleExceptionSQL, @insertSingleExceptionSQLParm, @projectID=NULL,@countryID=@countryID,@childID=NULL, @exceptionReason='Country could not be locked' 
+		end 
+		else
+		begin
+			exec dbo.USR_USP_CHILDQUOTA_PROCESS_COUNTRY @countryID, @childList, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm  
+
+			-- Unlock project / country
+			exec dbo.USR_USP_DELETEBATCHLOCK @countryID, @changeAgentUserName			
+		end
+		
+		fetch next from countryChildListCursor 
+		into @countryID
+
+	end
+	
+	close countryChildListCursor
+	deallocate countryChildListCursor
+
+	-- Cursor of projects included in the child list
+	declare projectChildListCursor cursor for
+	select distinct childProjectID from @projectQuotaChildList
+
+	open projectChildListCursor 
+	fetch next from projectChildListCursor 
+		into @childProjectID
+		
+	-- Process each project on the child list
+	while @@FETCH_STATUS = 0
+	begin
+
+		exec dbo.USR_USP_BATCHLOCKINSERT_MULTIPLEATTEMPTS @childProjectID, @changeAgentID, @lockMaxAttempts, @lockDelaySeconds, @objectLocked output
+	
+		if @objectLocked = 0
+		begin
+			-- Child Project could not be locked, so we need to log this in the output parm @lockFailed and the business process exception table
+			insert @lockFailed
+			select @quotaTypeCode_Project, @childProjectID 
+			
+			if @exceptionTableName <> ''	-- If an exception table was specific, insert a row for the lock failure
+				exec sp_executesql @insertSingleExceptionSQL, @insertSingleExceptionSQLParm, @projectID=@childProjectID,@countryID=NULL,@childID=NULL, @exceptionReason='Child Project could not be locked'
+		end
+		else
+		begin
+			exec dbo.USR_USP_CHILDQUOTA_PROCESS_PROJECT @childProjectID, @childList, @changeAgentID, @insertSuccessSQL, @insertSuccessSQLParms, @insertExceptionsSQL, @insertExceptionsSQLParm
+
+			-- Unlock project 
+			exec dbo.USR_USP_DELETEBATCHLOCK @childProjectID, @changeAgentUserName
+			
+		end
+		
+		fetch next from projectChildListCursor 
+		into @childProjectID
+
+	end
+	
+
+	close projectChildListCursor
+	deallocate projectChildListCursor
+
+
+	if @successTableName <> ''
+		exec sp_executesql @countSuccessSQL, @countSuccessSQLParms, @successCount=@successCount output
+	
+	if @exceptionTableName <> ''
+		exec sp_executesql @countExceptionSQL, @countExceptionSQLParms, @exceptionCount=@exceptionCount output
+
+	select QUOTATYPECODE, OBJECTID from @lockFailed 					   
+
+	return 0
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+	
+</SQLStoredProcedureSpec>

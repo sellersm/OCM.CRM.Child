@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="168404a0-1d4d-4fae-a2f6-32607000ca52" 
+	Name="Caregiver Reason Code Values"
+	Description="Caregiver Reason Code Values"
+	Author="memphis-PC\Administrator"
+	DBTablename="USR_CAREGIVERREASONCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

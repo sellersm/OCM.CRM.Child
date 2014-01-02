@@ -1,0 +1,148 @@
+﻿<ViewDataFormTemplateSpec
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns="bb_appfx_viewdataformtemplate" 
+	ID="78761675-52fc-4d64-adc4-9419d6c22746"
+	Name="Sponsorship Opportunity Departure Ineligible Preprocess View Form" 
+	Description="Returns values needed by the sponsorship opportunity mark ineligible forms." 
+	Author="Cary Mayeda"
+	DataFormInstanceID="673874f5-6860-48a8-bb91-5ee08ffa9525"
+	RecordType="Sponsorship opportunity" 
+	SecurityUIDisplayFeature="false" 
+	OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+	>
+
+	<!-- 
+	Remarks:    Used to load the departure reason in the Departure preprocessor form for the Mark Inelible business process
+				Modified Blackbaud OOB ID="e378efb1-8155-4f57-b4e3-6964f8a07653" Name="Sponsorship Opportunity Ineligible Preprocess View Form"
+
+History:
+	Date            Modified By     Comments
+	31-Aug-2012		CMayeda			Initial Version
+	-->
+
+	
+	<InstalledProductList xmlns="bb_appfx_commontypes">
+			<InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+		</InstalledProductList>
+		<SPDataForm SPName="USP_DATAFORMTEMPLATE_VIEW_SPONSORSHIPOPPORTUNITYDEPARTUREINELIGIBLE">
+			<CreateProcedureSQL xmlns="bb_appfx_commontypes">
+				<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_VIEW_SPONSORSHIPOPPORTUNITYDEPARTUREINELIGIBLE (
+	@ID uniqueidentifier,
+	@DATALOADED bit = 0 output,
+	@ACTIVESPONSORSHIPS smallint = null output,
+	@SPONSORSHIPOPPORTUNITYGROUPID uniqueidentifier = null output,
+	@ISSOLESPONSORSHIP bit = null output,
+	@ELIGIBILITYCODE smallint = null output,
+	@SPONSORSHIPOPPORTUNITYTYPECODE smallint = null output,
+	@SPONSORSHIPREASONID uniqueidentifier = null output
+	)
+as begin
+	set nocount on;
+
+		declare @reasonTypeCode_ChildMarkIneligibe tinyint = 1
+	
+	declare @departureTypeCode_Departure tinyint = 0
+	declare @departureTypeCode_Completion tinyint = 1
+	declare @departureTypeCode_Administrative tinyint = 2
+	
+	declare @sponsorshipReasonDesc_Departure nvarchar(100) = 'Departure'
+	declare @sponsorshipReasonDesc_DeparatureAdmin nvarchar(100) = 'Departure - Admin'
+	declare @sponsorshipReasonDesc_ProgramCompletion nvarchar(100) = 'Program Completion'
+	declare @sponsorshipReasonDesc_DepartureDeath nvarchar(100) = 'Death of Child'
+	declare @sponsorshipReasonDesc_DepartureOther nvarchar(100) = 'Departure - Other'
+	
+	declare @departureTypeCode tinyint = null
+	declare @departureSponsorshipReasonID uniqueidentifier = null
+	
+	declare @departureDeath bit = 0
+	declare @departureOther bit = 0
+	
+	begin try
+	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found	
+
+		select	@departureTypeCode = DEPARTURETYPECODE,
+				@departureDeath = DEPARTURE_DEATHOFCHILD,
+				@departureOther = case 
+									when isnull (DEPARTURE_OTHER, '') = '' then 0
+								    else 1
+								  end															
+		  from	dbo.USR_CHILDDEPARTURE
+		 where	ISCURRENTDEPARTURECODE = 1
+		   and	SPONSORSHIPOPPORTUNITYCHILDID = @id
+		  
+		  
+		if @departureTypeCode is null 
+			raiserror 10000 'Could not find the departure type code from the departure form'
+		
+		select	@departureSponsorshipReasonID = ID 
+		  from	dbo.SPONSORSHIPREASON 
+		 where	REASONTYPECODE = @reasonTypeCode_ChildMarkIneligibe
+		   and	lower (REASON) = case 
+									when @departureTypeCode = @departureTypeCode_Administrative then lower (@sponsorshipReasonDesc_DeparatureAdmin)
+									when @departureTypeCode = @departureTypeCode_Completion then lower (@sponsorshipReasonDesc_ProgramCompletion)
+									when @departureTypeCode = @departureTypeCode_Departure  then
+										case
+											when @departureDeath = 1 then lower (@sponsorshipReasonDesc_DepartureDeath)
+											when @departureOther = 1 then lower (@sponsorshipReasonDesc_DepartureOther)
+											else lower (@sponsorshipReasonDesc_Departure)
+										end
+									else ''
+								end
+										 
+		if @departureSponsorshipReasonID is null
+			RAISERROR 1000000 'Could not find the departure sponsorship reason id'			
+	end try
+	begin catch
+	    exec dbo.USP_RAISE_ERROR
+		return 1	
+	end catch
+
+		  
+	-- be sure to set this, in case the select returns no rows
+	set @DATALOADED = 0;
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.
+	select	@DATALOADED = 1,
+			@ELIGIBILITYCODE = 0,
+			@ACTIVESPONSORSHIPS = ( select	count(*)
+									  from	dbo.SPONSORSHIP
+								      left  outer join 
+											dbo.SPONSORSHIPTRANSACTION INITIATETRANSFERTRANSACTION on 
+												INITIATETRANSFERTRANSACTION.CONTEXTSPONSORSHIPID = SPONSORSHIP.ID and INITIATETRANSFERTRANSACTION.ACTIONCODE = 6
+								      left  outer join 
+											dbo.SPONSORSHIP PENDINGSPONSORSHIP on 
+												PENDINGSPONSORSHIP.ID = INITIATETRANSFERTRANSACTION.TARGETSPONSORSHIPID and PENDINGSPONSORSHIP.STATUSCODE = 0
+									 where	SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = SPONSORSHIPOPPORTUNITY.ID
+									   and	SPONSORSHIP.STATUSCODE in(0,1)
+									   and	PENDINGSPONSORSHIP.ID is null),
+			@SPONSORSHIPOPPORTUNITYGROUPID = SPONSORSHIPOPPORTUNITYGROUPID,
+			@ISSOLESPONSORSHIP = (select count(*) from dbo.SPONSORSHIP where SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = SPONSORSHIPOPPORTUNITY.ID and SPONSORSHIP.ISSOLESPONSORSHIP = 1 and SPONSORSHIP.STATUSCODE = 1),
+			@SPONSORSHIPREASONID = SPONSORSHIPREASONID, --@departureSponsorshipReasonID,
+			@SPONSORSHIPOPPORTUNITYTYPECODE = SG.SPONSORSHIPOPPORTUNITYTYPECODE
+			
+	  from	dbo.SPONSORSHIPOPPORTUNITY
+	  inner join 
+			dbo.SPONSORSHIPOPPORTUNITYGROUP SG on 
+				SG.ID = SPONSORSHIPOPPORTUNITY.SPONSORSHIPOPPORTUNITYGROUPID
+	 where	SPONSORSHIPOPPORTUNITY.ID = @ID;
+
+	return 0;
+end
+				]]>
+			</CreateProcedureSQL>
+		</SPDataForm>
+		<FormMetaData xmlns="bb_appfx_commontypes" FixedDialog="true">
+			<FormFields>
+				<FormField FieldID="ACTIVESPONSORSHIPS" DataType="Integer" Caption="ACTIVESPONSORSHIPS" />
+				<FormField FieldID="SPONSORSHIPOPPORTUNITYGROUPID" DataType="Guid" Caption="SPONSORSHIPOPPORTUNITYGROUPID" />
+				<FormField FieldID="ISSOLESPONSORSHIP" DataType="Boolean" Caption="ISSOLESPONSORSHIP" />
+				<FormField FieldID="ELIGIBILITYCODE" DataType="Integer" Caption="ELIGIBILITYCODE" />
+				<FormField FieldID="SPONSORSHIPOPPORTUNITYTYPECODE" DataType="Integer" Caption="SPONSORSHIPOPPORTUNITYTYPECODE" />
+				<FormField FieldID="SPONSORSHIPREASONID" DataType="Guid" Caption="SPONSORSHIPREASONID" />
+			</FormFields>
+		</FormMetaData>
+	</ViewDataFormTemplateSpec>

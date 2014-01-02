@@ -1,0 +1,11 @@
+﻿<CodeTableSpec 
+	xmlns="bb_appfx_codetable" 
+	xmlns:common="bb_appfx_commontypes"
+	ID="c6636f84-3691-4f31-b701-9babad10308f" 
+	Name="Child Photo Year Code Table"
+	Description="Used to keep the years of the child's photos"
+	Author="Trucmai Gupta"
+	DBTablename="USR_CHILDPHOTOYEARCODE"
+	Category="Child Extension"
+	SortMethod="Alpha"
+/>

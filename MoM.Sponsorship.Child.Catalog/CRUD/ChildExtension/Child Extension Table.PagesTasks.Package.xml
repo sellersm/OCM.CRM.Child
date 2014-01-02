@@ -1,0 +1,35 @@
+﻿<PackageSpec 
+	xmlns="bb_appfx_package"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="d739e3dd-abcb-4de4-aa2c-369e3c9ce473" 
+	Name="Child Customizations Package - Pages and Tasks"
+	Description="Package containing specs for all of the Child Customizations."
+	Author="Cary Mayeda"
+	>
+	<!-- 
+	Remarks:    Moved these into a seperate package, since these were not loading correctly
+
+	History:
+	Date            Modified By     Comments
+	19-Jul-2012		CMayeda			Initial Version
+	15-Aug-2012		Cmayeda			Put SponsorshipOpportunity.Page back
+	14-Oct-2012		Memphis			Added AlterChildPage.Page.xml FogBugz Case 793.
+	-->
+	
+	<common:DependencyList>
+		<!-- Pages -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildCCH.Page.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildDeparture.Page.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.SponsorshipOpportunity.Page.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AlterChildPage.Page.xml" />
+
+		<!-- Tasks -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.AddChild.Task.xml" />
+
+		
+		<!-- Package Versions -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.PagesTasksPackageVersion.DataList.xml" />
+	
+	</common:DependencyList>
+
+</PackageSpec>

@@ -1,0 +1,240 @@
+﻿<EditDataFormTemplateSpec
+    xmlns="bb_appfx_editdataformtemplate"
+    xmlns:common="bb_appfx_commontypes"
+    ID="e2b682c1-c92d-4983-ba8d-e352bac2cab2"
+    Name="Child Photo Attachment Edit Data Form"
+    Description="Child Photo Attachment Edit Data Form"
+    Author="Trucmai Gupta"
+    DataFormInstanceID="a35efe3a-ddff-4d4a-91d2-8fe36e64e3b3"
+    RecordType="Child Extension"
+    common:SecurityUIFolder="Child Extension"
+    >
+
+  <SPDataForm>
+
+    <!-- define the edit load SP, which is used to load the data for the form -->
+    <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDPHOTOATTACHMENT">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+        create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDPHOTOATTACHMENT(
+					@ID uniqueidentifier,
+					@DATALOADED bit = 0 output,
+					@DATEENTERED datetime = null output, 
+					@TITLE nvarchar(50) = null output,
+					@AUTHORID uniqueidentifier = null output,
+					@ATTACHMENTTYPECODEID uniqueidentifier = null output,
+					@FILE varbinary(max) = null output,
+					@FILENAME nvarchar(255) = null output,
+					@DISPLAYEDFILENAME nvarchar(255) = null output,
+					@FILECHANGED bit = null output,
+					@TSLONG bigint = 0 output
+				)
+				as
+					set nocount on;
+          set @DATALOADED = 0;
+					set @TSLONG = 0;
+
+					select 
+						@DATALOADED = 1,
+						@DATEENTERED = [DATEENTERED],
+						@TITLE = [TITLE],
+						@AUTHORID = [AUTHORID],
+						@ATTACHMENTTYPECODEID = [SPROPPATTACHMENTTYPECODEID],
+						@FILE = null,    /* DO NOT LOAD THE FILE HERE, IT WILL BE DOWNLOADED ON DEMAND */
+						@FILENAME = [FILENAME],
+						@DISPLAYEDFILENAME = [FILENAME],
+						@TSLONG = [TSLONG]
+					from
+						dbo.[SPONSORSHIPOPPORTUNITYATTACHMENT]
+					where
+						[ID] = @ID;
+											
+					return 0;
+				]]>
+      </common:CreateProcedureSQL>
+    </LoadImplementation>
+
+    <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOTATTACHMENT">
+      <common:CreateProcedureSQL>
+        <![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOTATTACHMENT (
+					@ID uniqueidentifier,
+					@CHANGEAGENTID uniqueidentifier = null,
+					@DATEENTERED datetime, 
+					@TITLE nvarchar(50),
+					@AUTHORID uniqueidentifier,
+					@ATTACHMENTTYPECODEID uniqueidentifier,
+					@FILE varbinary(max),
+					@FILENAME nvarchar(255),
+					@DISPLAYEDFILENAME nvarchar(255),
+					@FILECHANGED bit
+				)
+				as
+					set nocount on;
+				declare @CURRENTDATE datetime;
+        declare @ERRORMESSAGE nvarchar(max)
+				declare @FOUND nvarchar(max)
+        declare @SAMPLETITLE nvarchar(50)
+        
+          /*
+           -- test that this stored procedure is actually executed when the form's saved:
+           -- put in a raiserror (look in other code for examples) & see if it's executed when saving
+           -- if it works, then:
+           --    1. validate that the selected ATTACHMENTTYPECODEID DESCRIPTION field actually contains the text "photo"
+           --    2. validate that the Title value matches a DESCRIPTION Column in the USR_CHILDPHOTOTITLECODE table
+           ---  if either fails, raise an error, informing user of problem & don't save.
+           */
+          
+					begin try
+						if @CHANGEAGENTID is null  
+							exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+							
+						set @CURRENTDATE = getdate();
+						
+            --Begin validating the Title and Type
+            set @SAMPLETITLE = (SELECT TOP 1 DESCRIPTION FROM USR_CHILDPHOTOTITLECODE)
+
+            if @CHANGEAGENTID is null
+            exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+
+            set @CURRENTDATE = getdate();
+   
+            --Validating Type selection
+            SET @FOUND = (SELECT DESCRIPTION FROM DBO.SPROPPATTACHMENTTYPECODE WHERE ID = @ATTACHMENTTYPECODEID AND DESCRIPTION LIKE '%photo%')
+            IF @FOUND IS NULL
+            BEGIN
+              SET @ERRORMESSAGE = 'Please select a type that is related to photo'
+			        RAISERROR 100000 @ERRORMESSAGE
+            END 
+            
+            --Validating Title
+            IF @TITLE = '' 
+            BEGIN
+              SET @ERRORMESSAGE = 'TITLE is required - Please enter a valid TITLE'
+			        RAISERROR 100000 @ERRORMESSAGE
+            END
+            ELSE
+            BEGIN
+              --set @FOUND = (SELECT DESCRIPTION FROM USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
+              --IF @FOUND IS NULL
+              --BEGIN
+                --SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
+			          --RAISERROR 100000 @ERRORMESSAGE
+              --END
+              set @FOUND = (SELECT DESCRIPTION 
+                            FROM DBO.SPROPPATTACHMENTTYPECODE 
+                            WHERE 
+                            ID = @ATTACHMENTTYPECODEID) 
+                            --AND ([DESCRIPTION] LIKE 'CHILD PHOTO - FULL BODY%' OR [DESCRIPTION] LIKE 'CHILD PHOTO - HEADSHOT%'))
+              IF @FOUND = 'Child Photo - Full Body' OR @FOUND = 'Child Photo - Full Body - New' OR @FOUND = 'Child Photo - Full Body - Current'
+                  OR @FOUND = 'Child Photo - Headshot' OR @FOUND = 'Child Photo - Headshot - New' OR @FOUND = 'Child Photo - Headshot - Current'
+              BEGIN
+                SET @FOUND = (SELECT DESCRIPTION FROM DBO.USR_CHILDPHOTOTITLECODE WHERE DESCRIPTION = @TITLE)
+                IF @FOUND IS NULL
+                BEGIN
+                  SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
+			            RAISERROR 100000 @ERRORMESSAGE
+                END
+              END
+            END
+        
+            
+            -- End validating the Title and Type
+            
+						if @FILECHANGED = 1
+							update
+								dbo.[SPONSORSHIPOPPORTUNITYATTACHMENT]
+							set
+								[DATEENTERED] = @DATEENTERED,
+								[TITLE] = @TITLE,
+								[AUTHORID] = @AUTHORID,
+								[SPROPPATTACHMENTTYPECODEID] = @ATTACHMENTTYPECODEID,
+								[FILE] = @FILE,
+								[FILENAME] = @DISPLAYEDFILENAME,
+								[CHANGEDBYID] = @CHANGEAGENTID,
+								[DATECHANGED] = @CURRENTDATE
+							where
+								[ID] = @ID;
+						else
+							update
+								dbo.[SPONSORSHIPOPPORTUNITYATTACHMENT]
+							set
+								[DATEENTERED] = @DATEENTERED,
+								[TITLE] = @TITLE,
+								[AUTHORID] = @AUTHORID,
+								[SPROPPATTACHMENTTYPECODEID] = @ATTACHMENTTYPECODEID,
+								[CHANGEDBYID] = @CHANGEAGENTID,
+								[DATECHANGED] = @CURRENTDATE
+							where
+								[ID] = @ID;
+					end try
+				
+					begin catch
+						exec dbo.USP_RAISE_ERROR;
+						return 1;
+					end catch
+					
+					return 0;
+				]]>
+      </common:CreateProcedureSQL>
+      <common:ExpectedDBExceptions>
+        <common:Constraints>
+          <common:Constraint Name="FK_SPONSORSHIPOPPORTUNITYATTACHMENT_SPROPPATTACHMENTTYPECODEID" Field="ATTACHMENTTYPECODEID" Type="ForeignKey" />
+          <common:Constraint Name="SPONSORSHIPOPPORTUNITYATTACHMENT.DATEENTERED" Field="DATEENTERED" Type="Required" />
+          <common:Constraint Name="SPONSORSHIPOPPORTUNITYATTACHMENT.SPROPPATTACHMENTTYPECODEID" Field="ATTACHMENTTYPECODEID" Type="Required" />
+          <common:Constraint Name="FK_SPONSORSHIPOPPORTUNITYATTACHMENT_AUTHORID" Field="AUTHORID" Type="ForeignKey" />
+          <common:Constraint Name="CK_SPONSORSHIPOPPORTUNITYATTACHMENT_FILENAME" Field="FILENAME" Type="Required" />
+        </common:Constraints>
+      </common:ExpectedDBExceptions>
+    </SaveImplementation>
+
+  </SPDataForm>
+
+
+  <!-- describe fields on the form, which correspond to parameters on the SP.  Note that system paramters 
+	like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
+  <common:FormMetaData FixedDialog="true">
+    <common:FormFields>
+      <common:FormField FieldID="TITLE" MaxLength="50" Caption="Title" Description="The title of this attachment" Required="true" />
+        <!--<common:CodeTable CodeTableName="USR_CHILDPHOTOCODE"/>
+      </common:FormField>-->
+      <common:FormField FieldID="DATEENTERED" DataType="Date" Required="true" Caption="Date" Description="The date this attachment was entered"  />
+      <common:FormField FieldID="AUTHORID" DataType="Guid" Caption="Author" Description="The author of this attachment" >
+        <common:SearchList SearchListID="23c5c603-d7d8-4106-aecc-65392b563887" EnableQuickFind="true" />
+      </common:FormField>
+      <common:FormField FieldID="ATTACHMENTTYPECODEID" DataType="Guid" Required="true" Caption="Type" Description="The user-defined type of this attachment" >
+        <common:CodeTable CodeTableName="SPROPPATTACHMENTTYPECODE" />
+      </common:FormField>
+      <common:FormField FieldID="FILE" DataType="Binary" Caption="File" CaptionResourceKey="$$file">
+        <common:File FileNameFieldID="FILENAME" FileChangedFieldID="FILECHANGED">
+          <common:FNFileDownload FNName="UFN_DOWNLOAD_SPONSORSHIPOPPORTUNITYATTACHMENT_FILE">
+            <common:CreateFunctionSQL>
+              create function dbo.UFN_DOWNLOAD_SPONSORSHIPOPPORTUNITYATTACHMENT_FILE
+              (
+              @ID uniqueidentifier
+              ) returns table
+              as return
+              select
+              [FILE]
+              from
+              dbo.[SPONSORSHIPOPPORTUNITYATTACHMENT]
+              where
+              [ID] = @ID;
+            </common:CreateFunctionSQL>
+          </common:FNFileDownload>
+        </common:File>
+      </common:FormField>
+      <common:FormField FieldID="FILENAME" Required="true" Hidden="true" MaxLength="255" Caption="File" />
+      <common:FormField FieldID="DISPLAYEDFILENAME" Required="true" MaxLength="255" Caption="File" CaptionResourceKey="$$file" />
+      <common:FormField FieldID="FILECHANGED" DataType="Boolean" Caption="File changed?" CaptionResourceKey="$$file_changed?" />
+    </common:FormFields>
+
+    <common:WebUIComponent>
+      <common:UIModel AssemblyName="Blackbaud.AppFx.Documentation.UIModel.dll" ClassName="Blackbaud.AppFx.Documentation.UIModel.GenericAttachmentAddEditFormUIModel" />
+      <common:WebUI>
+        <common:DefaultWebUI />
+      </common:WebUI>
+    </common:WebUIComponent>
+  </common:FormMetaData>
+
+</EditDataFormTemplateSpec>

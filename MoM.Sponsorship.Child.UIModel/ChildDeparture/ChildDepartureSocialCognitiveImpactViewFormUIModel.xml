@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildDeparture.SocialImpact.View.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildDepartureSocialCognitiveImpactViewFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildDepartureSocialCognitiveImpactViewForm.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

@@ -1,0 +1,73 @@
+<PackageSpec 
+    xmlns="bb_appfx_package"
+    xmlns:common="bb_appfx_commontypes"
+    ID="8bc02425-3981-45af-8c01-d3e24aee192c"
+    Name="Child Utilities Package"
+    Description="Utility sprocs/funcions for a specific child"
+    Author="Cary Mayeda" >
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	12-Jul-2012		CMayeda			Initial Version
+	25-Sep-2012		CMayeda			Added USR_UFN_CHILD_GETCHILDNAME
+	-->
+
+	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
+	a table that hasn't been loaded, etc.  In general, the following order is recommended:
+	
+		(functions and procedures first)
+		SQLFunctionSpec
+		SQLStoredProcedureSpec
+		TranslationFunctionSpec
+
+		(tables next)
+		CodeTableSpec
+		TableSpec
+
+		(features next)
+		SimpleDataListSpec		
+		SearchListSpec
+		RecordOperationSpec
+		DataListSpec
+		
+		(forms next)
+		AddDataFormTemplateSpec
+		EditDataFormTemplateSpec
+		ViewDataFormTemplateSpec		
+
+		(more feature types)
+		BatchTypeSpec
+		BusinessProcessSpec
+		FlashDashSpec
+		IDMapperSpec
+		KpiSpec
+		MergeConfiguration
+		MergeTaskSpec
+		QueryViewSpec
+		ReportSpec
+		SmartFieldSpec
+		SmartQuerySpec
+
+		(functional areas, pages, and tasks last)
+		PageDefinitionSpec
+		FunctionalAreaSpec
+		TaskSpec	
+	-->
+	
+	<common:DependencyList>
+		
+		<!-- SQL sprocs and functions -->
+        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETCOUNTRYID.xml" />
+        <common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETPROJECTID.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETCHILDLOOKUPID.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETCHILDNAME.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_UFN_CHILD_GETSPONSORSHIPOPPORTUNITYID_BY_CHILDLOOKUPID.xml" />
+
+		<!-- Package Versions -->
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildUtilitiesPackageVersion.DataList.xml"/>
+	</common:DependencyList>
+
+</PackageSpec>

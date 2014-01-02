@@ -1,0 +1,64 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="6501b350-a05a-4c90-bdc7-4dbffe6104b5"
+	Name="Covert Note Type Child Bio to type Child Bio Old"
+	Description="Covert Note Type Child Bio to type Child Bio Old"
+	Author="Bill Elfstrom"
+	SPName="USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD"
+	>
+
+	<CreateProcedureSQL>
+		<![CDATA[
+       
+create procedure [dbo].[USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD] (
+	@ID uniqueidentifier				-- Sponsorship Opportunity Child ID
+)
+
+as
+begin
+  
+begin try		
+
+begin tran
+
+
+	/* get the IDs for the type codes */
+    declare @ChildBioCodeID uniqueidentifier
+    
+    select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
+    if @ChildBioCodeID is null
+        RAISERROR 1000000 'Couldn''t find the "Child Bio" sponsorship opportunity note code'        
+
+    declare @ChildBioOldCodeID uniqueidentifier
+    
+    select @ChildBioOldCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - old'
+    if @ChildBioOldCodeID is null
+        RAISERROR 1000000 'Couldn''t find the "Child Bio - Old" sponsorship opportunity note code'        
+
+
+	update dbo.SPONSORSHIPOPPORTUNITYNOTE
+	set SPROPPNOTETYPECODEID = @ChildBioOldCodeID
+	where SPONSORSHIPOPPORTUNITYID = @ID
+	and SPROPPNOTETYPECODEID = @ChildBioCodeID
+
+commit tran
+end try
+
+begin catch
+IF @@TRANCOUNT > 0
+	rollback
+
+  -- Raise an error with the details of the exception
+  declare @ErrMsg nvarchar(4000), @ErrSeverity int
+  select @ErrMsg = ERROR_MESSAGE(),
+         @ErrSeverity = ERROR_SEVERITY()
+  raiserror(@ErrMsg, @ErrSeverity, 1)
+
+end catch
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+</SQLStoredProcedureSpec>

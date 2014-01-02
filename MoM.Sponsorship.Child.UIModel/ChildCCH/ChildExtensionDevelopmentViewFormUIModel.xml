@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>ChildExtension.Development.View.xml</SpecFileName>
+  <Namespace></Namespace>
+  <ClassName>ChildExtensionDevelopmentViewFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>ChildExtensionDevelopmentViewForm.html</HtmlFile>
+    <HtmlFolder></HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

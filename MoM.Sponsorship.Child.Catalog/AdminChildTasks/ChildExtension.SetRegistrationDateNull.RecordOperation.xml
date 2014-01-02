@@ -1,0 +1,53 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a1ae9878-6227-4436-9965-fe73b0bc4463"
+	Name="Set Child Registration Date to Blank Record Operation"
+	Description="Record operation to clear the registration date on a child"
+	Author="Cary Mayeda"
+	OperationType="Update"
+	RecordType="Sponsorship opportunity child"
+	common:SecurityUIFolder="Sponsorship\Opportunity\Child">
+
+	<!-- 
+	Remarks:    Made into a production record operation
+
+	History:
+	Date            Modified By     Comments
+	25-Aug-2012		CMayeda			Initial Version
+	-->
+	
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_CHILDEXTENSION_SETREGISTRATIONDATENULL_UPDATE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_CHILDEXTENSION_SETREGISTRATIONDATENULL_UPDATE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+	update	dbo.USR_CHILDEXTENSION 
+	   set	REGISTRATIONDATE = null,
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+	   where SPONSORSHIPOPPORTUNITYCHILDID = @ID;
+
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to clear the Registration Date?" />
+	</Prompt>
+
+</RecordOperationSpec>
