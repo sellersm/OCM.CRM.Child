@@ -19,6 +19,7 @@
 	28-Aug-2012		CMayeda			Added NEWCHILDVERIFICATION and REQUESTINGINFO and Funding check	
 	30-May-2013		CMayeda			Added USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD
 	10-Dec-2013		CMayeda			Removed NEEDPHOTOSTORE and NEEDPHOTOUPDATED pending reasons due to the new photo tab / process
+	31-Dec-2013		CMayeda			Added NEEDPHOTOSTORE back per Pamela 
 	-->
 	
 	<CreateProcedureSQL>
@@ -39,8 +40,8 @@ begin
 		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED @childIDList, @changeAgentID
 		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD @childIDList, @changeAgentID
 		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED @childIDList, @changeAgentID
-		-- Removed for new photo process 12-9-13 
-		-- exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED @childIDList, @changeAgentID 
+		-- Removed for new photo process 12-9-13 / Added back per Pamela on 12/31/13
+		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED @childIDList, @changeAgentID 
 		exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDCURRENTPHOTOINCRM @childIDList, @changeAgentID
 		-- Removed for new photo process 12-9-13 
 		-- exec dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED @childIDList, @changeAgentID
