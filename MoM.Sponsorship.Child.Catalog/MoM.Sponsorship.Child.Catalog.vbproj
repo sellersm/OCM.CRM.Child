@@ -561,6 +561,7 @@
     <EmbeddedResource Include="Smart Fields\Child.ChildsLengthOfSponsorship.SmartField.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.Signups.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.Donations.Query.xml" />
+    <EmbeddedResource Include="ChildPhoto\ChildPhoto.SwitchCurrentPhoto.RecordOperation.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
