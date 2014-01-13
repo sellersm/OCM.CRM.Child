@@ -22,9 +22,9 @@
 	13-Oct-2012		CMayeda			Fixed references to old child bio data forms
 	28-Nov-2012		Memphis			Added the 'Check Lock Status' Action
 	30-May-2013		CMayeda			Added Admin tab
-  13-Nov-2013   TGupta      Added Photo tab
-  14-Nov-2013   TGupta      Added an additional Fulfillmentstatus section into the Reservation tab
-
+	13-Nov-2013		TGupta			Added Photo tab
+	14-Nov-2013		TGupta			Added an additional Fulfillmentstatus section into the Reservation tab
+	09-Jan-2014		Memphis			Added the Task "Switch Current Photo" on the Current Photo information section of Photo Tab
 	-->
 
 	<InstalledProductList xmlns="bb_appfx_commontypes">
@@ -333,6 +333,16 @@
                 </PostActionEvent>
               </ShowDataForm>
             </Action>
+			<Action ID="bfffe3ed-e2e5-40c0-94b9-8e4f892e0260" Caption="Switch Current Photo" ImageKey="RES:recordoperationspec">
+				<ExecuteRecordOperation RecordOperationID="7de59c8d-27a9-4bda-b6a4-3df24afd7941" xmlns="bb_appfx_commontypes">
+					<ActionContext>
+						<PageContextID />
+					</ActionContext>
+					<PostActionEvent>
+						<RefreshPage />
+					</PostActionEvent>
+				</ExecuteRecordOperation>
+			</Action>			  
           </Actions>
         </Section>
         <Section ID="6fb40743-dd4e-4474-9455-17f6ef9c9e21" Caption="Photo">

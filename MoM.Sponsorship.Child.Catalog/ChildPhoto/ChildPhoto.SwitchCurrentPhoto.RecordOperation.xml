@@ -1,0 +1,165 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="7de59c8d-27a9-4bda-b6a4-3df24afd7941" 
+	Name="Switch Child Photo Record Operation" 
+	Description="Switches the current photo for the given child, based on Photo Year value."
+	Author="Memphis Sellers"
+	OperationType="Update"
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Child Extension"
+	>
+
+	<!-- 
+	Remarks:    
+		TK-01177
+		Create a task on the child photo tab in the action tasks for the attachments.  
+		It will look at the "profile photo year" and find the old photo title that begins with the year. 
+		It will change the photo type to "current".
+		 - Look for the photo attachment with the title that starts with "profile photo year", change the headshot & full body to "-Current" as the photo type,
+		 - Change the existing headshot & full body that is now "-Current" to not current.
+
+	History:
+	Date            Modified By     Comments
+	08-Jan-2014		Memphis			Initial Version
+	-->	
+	
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_SWITCH_CURRENT_CHILDPHOTO_RECORDOPERATION">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_SWITCH_CURRENT_CHILDPHOTO_RECORDOPERATION
+(
+	@ID uniqueidentifier,   -- this will be the SPONSORSHIPOPPORTUNITYID of the child
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	declare @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier = @ID;  -- this will be passed in from the record op context or the form or task or something
+	declare @photoYear dbo.UDT_YEAR = NULL;  -- this is looked up from the ChildExtension record with the sql below
+
+	-- get the profile photo year value for the given child:
+	select @photoYear = PROFILEPHOTOYEAR
+	from dbo.USR_CHILDEXTENSION
+	where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID;
+
+	if @photoYear is null
+	  RAISERROR 100000 'Unable to get the Profile Photo Year value, unable to continue.'
+
+	-- declare and populate the variables we need:
+	declare @fullBodyCurrentPhotoRecordId uniqueidentifier;
+	declare @headshotCurrentPhotoRecordId uniqueidentifier;
+
+	declare @fullBodyPhotoRecordId uniqueidentifier;
+	declare @headshotPhotoRecordId uniqueidentifier;
+
+	declare @headshotCurrentAttachmentTypeCodeID uniqueidentifier;
+	declare @fullBodyCurrentAttachmentTypeCodeID uniqueidentifier;
+	declare @headshotNotCurrentAttachmentTypeCodeID uniqueidentifier;
+	declare @fullBodyNotCurrentAttachmentTypeCodeID uniqueidentifier;
+
+	begin try
+		-- get the attachment type code id values we need:
+		select @headshotCurrentAttachmentTypeCodeID = ID 
+		from dbo.SPROPPATTACHMENTTYPECODE 
+		where lower (DESCRIPTION) = lower ('Child Photo - Headshot - Current');
+
+		if @headshotCurrentAttachmentTypeCodeID is null
+			RAISERROR 100000 'Could not find "Child Photo - Headshot - Current" photo type code'
+
+		select @fullBodyCurrentAttachmentTypeCodeID = ID 
+		from dbo.SPROPPATTACHMENTTYPECODE 
+		where lower (DESCRIPTION) = lower ('Child Photo - Full Body - Current');
+
+		if @fullBodyCurrentAttachmentTypeCodeID is null
+			RAISERROR 100000 'Could not find "Child Photo - Full Body - Current" photo type code'
+
+		select @headshotNotCurrentAttachmentTypeCodeID = ID
+		from dbo.SPROPPATTACHMENTTYPECODE
+		where lower ([DESCRIPTION]) = lower ('Child Photo - Headshot');
+
+		if @headshotNotCurrentAttachmentTypeCodeID is null
+			RAISERROR 100000 'Could not find "Child Photo - Headshot" photo type code'
+
+		select @fullBodyNotCurrentAttachmentTypeCodeID = ID
+		from dbo.SPROPPATTACHMENTTYPECODE
+		where lower ([DESCRIPTION]) = lower ('Child Photo - Full Body');
+
+		if @fullBodyNotCurrentAttachmentTypeCodeID is null
+			RAISERROR 100000 'Could not find "Child Photo - Full Body" photo type code'
+
+		-- get the record id values for where the photo that matches the given photo year value:
+		select @fullBodyPhotoRecordId = dbo.SPONSORSHIPOPPORTUNITYATTACHMENT.ID
+		from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		where left(TITLE, 4) = CAST(@photoYear as nvarchar(4))
+		and SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
+		and SPROPPATTACHMENTTYPECODEID = @fullBodyNotCurrentAttachmentTypeCodeID;
+
+		select @headshotPhotoRecordId = dbo.SPONSORSHIPOPPORTUNITYATTACHMENT.ID
+		from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		where left(TITLE, 4) = CAST(@photoYear as nvarchar(4))
+		and SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
+		and SPROPPATTACHMENTTYPECODEID = @headshotNotCurrentAttachmentTypeCodeID;
+
+
+		-- now get the two "current" photos for the given child and change them to not be "current"
+		--   find the Current full body & headshot photo(s) for this child, if they exist:
+		select @fullBodyCurrentPhotoRecordId = ID 
+		from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		where SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
+		and SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID;
+
+		select @headshotCurrentPhotoRecordId = ID 
+		from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		where SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
+		and SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID;
+
+		-- Perform the UPDATEs here inside of a transaction to preserve the data integrity
+		begin transaction tranPhotoUpdates
+
+		-- update the attachment type to not current if we found any records for this child:
+		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		set SPROPPATTACHMENTTYPECODEID = @headshotNotCurrentAttachmentTypeCodeID
+		where ID = @headshotCurrentPhotoRecordId;
+
+		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		set SPROPPATTACHMENTTYPECODEID = @fullBodyNotCurrentAttachmentTypeCodeID
+		where ID = @fullBodyCurrentPhotoRecordId;
+
+
+		-- Now update the photos that match the photo year value and set them to Current:
+		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		set SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
+		where ID = @headshotPhotoRecordId;
+
+		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+		set SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID
+		where ID = @fullBodyPhotoRecordId;
+
+		--rollback transaction tranPhotoUpdates;
+		commit transaction tranPhotoUpdates
+
+	end try
+
+
+    begin catch
+		IF @@TRANCOUNT > 0
+			rollback transaction tranPhotoUpdates;
+        
+		exec.dbo.USP_RAISE_ERROR;
+        return 1;
+    end catch
+	
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to change the current photo for this child?" />
+	</Prompt>
+
+</RecordOperationSpec>
