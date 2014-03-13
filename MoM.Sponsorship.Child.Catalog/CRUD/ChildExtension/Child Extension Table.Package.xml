@@ -29,9 +29,10 @@
 	31-Dec-2012		CMayeda			Added ChildProjectDisbursement.Query.xml
 	30-May-2013		CMayeda			Added ChildExtension.Admin.View.xml and ChildExtension.Admin.Edit.xml
 	25-Jul-2013		CMayeda			Added EOMReportStatus.SmartField.xml
-  13-Nov-2013   TGupta      Added Photo tab
-  14-Nov-2013   TGupta      Added Fulfillment section into Reservation tab
-  05-Dec-2013   TGupta      Added SponsorshipOpportunity.Sponsorship.Query.xml
+	13-Nov-2013		TGupta			Added Photo tab
+	14-Nov-2013		TGupta			Added Fulfillment section into Reservation tab
+	05-Dec-2013		TGupta			Added SponsorshipOpportunity.Sponsorship.Query.xml
+	12-Mar-2014		Memphis			Added ChildPhoto.SwitchCurrentPhoto.RecordOperation.xml
 -->
   
 	<c:DependencyList>
@@ -100,8 +101,9 @@
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetFundedYes.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.SetRegistrationDateNull.RecordOperation.xml" />
 	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.InitialCleanup.SetChildCCHVerified.RecordOperation.xml" />
-  <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildPhoto.RecordOperation.xml" />
-		
+    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildPhoto.RecordOperation.xml" />
+	<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildPhoto.SwitchCurrentPhoto.RecordOperation.xml" />
+
 		<!-- CCH Forms -->
     <!--<c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Child Extension Table.Add.xml" />-->
     <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.ChildExtension.AboutMe.Edit.xml" />
