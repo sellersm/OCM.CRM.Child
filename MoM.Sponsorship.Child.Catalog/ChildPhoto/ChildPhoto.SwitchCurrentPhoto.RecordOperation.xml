@@ -22,6 +22,11 @@
 	History:
 	Date            Modified By     Comments
 	08-Jan-2014		Memphis			Initial Version
+	17-Mar-2014		Memphis			Fixing bugs discovered by Pamela:
+										- If the profile photo year is the same as the year in the title field, do nothing.  
+										-   If possible, display a message saying the current photo matches the profile photo year.
+										- If the profile photo year does not match any of the years in the title field, do nothing.  
+										-   If possible, display a message saying there are no photo attachments that belong to the same years as the profile photo year.
 	-->	
 	
 	<SPRecord>
@@ -56,7 +61,11 @@ as begin
 	declare @fullBodyCurrentAttachmentTypeCodeID uniqueidentifier;
 	declare @headshotNotCurrentAttachmentTypeCodeID uniqueidentifier;
 	declare @fullBodyNotCurrentAttachmentTypeCodeID uniqueidentifier;
-
+	
+	declare @HeadshotCurrentYear nvarchar(4);
+	declare @BodyCurrentYear nvarchar(4);
+	declare @performOperation bit = 1;   -- set this flag to True and set to false based on tests below
+	
 	begin try
 		-- get the attachment type code id values we need:
 		select @headshotCurrentAttachmentTypeCodeID = ID 
@@ -103,47 +112,74 @@ as begin
 
 		-- now get the two "current" photos for the given child and change them to not be "current"
 		--   find the Current full body & headshot photo(s) for this child, if they exist:
-		select @fullBodyCurrentPhotoRecordId = ID 
+		select @fullBodyCurrentPhotoRecordId = ID,
+			   @BodyCurrentYear = left(TITLE, 4) 
 		from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
 		where SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
 		and SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID;
 
-		select @headshotCurrentPhotoRecordId = ID 
+		select @headshotCurrentPhotoRecordId = ID,
+			   @HeadshotCurrentYear = left(TITLE, 4)
 		from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
 		where SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
 		and SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID;
 
-		-- Perform the UPDATEs here inside of a transaction to preserve the data integrity
-		begin transaction tranPhotoUpdates
+		-- if the current photo type record also has the Profile Photo year in the Title, then don't do anything:
+		if (@BodyCurrentYear = CAST(@photoYear as nvarchar(4))) or (@HeadshotCurrentYear = CAST(@photoYear as nvarchar(4)))
+			begin
+				set @performOperation = 0;
+				RAISERROR 100000 'Current Photo Year matches the Current Photo! Nothing to update.'
+			end
+		
+		-- if there are no records where Title year matches profile photo year, do nothing:		
+		if NOT exists (select 1
+						from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+						where SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
+						and left(TITLE,4) = @photoYear)
+			begin
+				set @performOperation = 0;
+				RAISERROR 100000 'No Photo records match the Photo Year! Nothing to update.'
+			end
 
-		-- update the attachment type to not current if we found any records for this child:
-		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
-		set SPROPPATTACHMENTTYPECODEID = @headshotNotCurrentAttachmentTypeCodeID
-		where ID = @headshotCurrentPhotoRecordId;
 
-		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
-		set SPROPPATTACHMENTTYPECODEID = @fullBodyNotCurrentAttachmentTypeCodeID
-		where ID = @fullBodyCurrentPhotoRecordId;
+		-- only perform the update if it passed the above tests:
+		if @performOperation = 1
+			begin
+				-- Perform the UPDATEs here inside of a transaction to preserve the data integrity
+				begin transaction tranPhotoUpdates
+
+					-- update the attachment type to not current if we found any records for this child:
+					update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+					set SPROPPATTACHMENTTYPECODEID = @headshotNotCurrentAttachmentTypeCodeID
+					where ID = @headshotCurrentPhotoRecordId;
+
+					update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+					set SPROPPATTACHMENTTYPECODEID = @fullBodyNotCurrentAttachmentTypeCodeID
+					where ID = @fullBodyCurrentPhotoRecordId;
 
 
-		-- Now update the photos that match the photo year value and set them to Current:
-		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
-		set SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
-		where ID = @headshotPhotoRecordId;
+					-- Now update the photos that match the photo year value and set them to Current:
+					update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+					set SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
+					where ID = @headshotPhotoRecordId;
 
-		update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
-		set SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID
-		where ID = @fullBodyPhotoRecordId;
+					update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+					set SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID
+					where ID = @fullBodyPhotoRecordId;
 
-		--rollback transaction tranPhotoUpdates;
-		commit transaction tranPhotoUpdates
+				--rollback transaction tranPhotoUpdates;
+				commit transaction tranPhotoUpdates
+			end
 
 	end try
 
 
     begin catch
-		IF @@TRANCOUNT > 0
-			rollback transaction tranPhotoUpdates;
+		IF (XACT_STATE()) = -1
+		--IF @@TRANCOUNT > 0
+			begin
+				rollback transaction tranPhotoUpdates;
+			end
         
 		exec.dbo.USP_RAISE_ERROR;
         return 1;
