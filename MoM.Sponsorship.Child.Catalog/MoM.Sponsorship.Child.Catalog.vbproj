@@ -570,6 +570,7 @@
     <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchExceptionData.Query.xml" />
     <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchExceptions.Table.xml" />
     <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchType.Batch.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusProfilePhotoYearBatch.Package.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
