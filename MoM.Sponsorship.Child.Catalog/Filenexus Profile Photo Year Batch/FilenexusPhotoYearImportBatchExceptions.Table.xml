@@ -1,0 +1,44 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="18b8ce9b-af62-448c-b9d3-83f98623e201"
+	Name="Filenexus Photo Year Import Batch Exceptions"
+	Description="Holds Photo Year Import Batch exceptions"
+	Author="Memphis Sellers"
+	Tablename="USR_FILENEXUS_PHOTOYEARIMPORTBATCH_EXCEPTIONS"		   
+	>
+	
+	<!--  
+	Remarks:	Holds records where the Profile photo year coming in from Filenexus is 
+				LESS than the current value in the Child Extension table for the given child.
+	
+	History:
+	Date            Modified By     Comments
+	19-Mar-2014		Memphis			Initial Version	
+	-->
+
+	<!-- define fields on the table -->
+	<Fields>
+		<GuidField Name="SPONSORSHIPOPPORTUNITYCHILDID" Description="Sponsorshipopportunity Child Id" Required="true"/>
+		<YearField Name="CURRENTPROFILEPHOTOYEAR" Description="Current Profile Photo Year" Required="true"/>
+		<YearField Name="FILENEXUSPROFILEPHOTOYEAR" Description="Profile year from FileNexus" Required="true"/>
+		<DateField Name="BATCHIMPORTDATE" Description="Date of batch import" Required="true"/>
+		<TextField Name="CHILDLOOKUPID" Description="Child Id" Length="10" Required="true"/>
+	</Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!--<CheckConstraints>
+
+	</CheckConstraints>-->
+
+	<!-- define any indexes on the table -->
+	<!--<Indexes>
+
+	</Indexes>-->
+		
+	<!-- define any triggers on the table -->
+	<!--<Triggers>
+
+	</Triggers>-->
+
+</TableSpec>

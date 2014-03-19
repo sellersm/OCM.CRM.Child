@@ -1,0 +1,120 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="95355d48-fa62-41b0-97ed-2b21de1dcdb3" 
+	Name="Filenexus Photo Year Import Batch Add Row"
+	Description="Batch add row for Filenexus photo year" 
+	Author="Memphis Sellers"
+	DataFormInstanceID="d0c7df81-8dc6-491e-aed9-b902388e8fb2" 
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Child"	
+	>
+
+	<SPDataForm>
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_FILENEXUSPHOTOYEARIMPORTBATCH_ADDROW">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_FILENEXUSPHOTOYEARIMPORTBATCH_ADDROW
+(
+    @ID uniqueidentifier = null output,
+	@BATCHID uniqueidentifier,
+    @CHANGEAGENTID uniqueidentifier = null,
+	@SEQUENCE int,
+	@CHILDLOOKUPID nvarchar(10) = '',
+	--@SPONSORSHIPOPPORTUNITYID uniqueidentifier = '',
+	@PROFILEYEAR UDT_YEAR = null
+	--@BATCHDATE date = null
+)
+as
+
+set nocount on;
+
+declare @SPONSORSHIPOPPORTUNITYID uniqueidentifier;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+--if @BATCHDATE is null
+--	set @BATCHDATE = getdate()
+
+-- Get the batch number of this batch & update the row:
+declare @BATCHNUMBER_ nvarchar(100) 
+select @BATCHNUMBER_ =  BATCHNUMBER from BATCH
+where ID = @BATCHID;
+
+-- get the  value from ChildLookupID value:
+select @SPONSORSHIPOPPORTUNITYID = ID 
+from dbo.SPONSORSHIPOPPORTUNITY 
+where LOOKUPID = @CHILDLOOKUPID;
+
+begin try
+	-- handle inserting the data
+	INSERT INTO dbo.USR_FILENEXUSPHOTOYEAR_IMPORTBATCH(
+		ID
+		,BATCHID
+		,[SEQUENCE]
+		,CHILDLOOKUPID
+		,SPONSORSHIPOPPORTUNITYID
+		,BATCHNUMBER
+		,PROFILEYEAR
+		,BATCHDATE
+		,ADDEDBYID
+		,CHANGEDBYID
+		,DATEADDED
+		,DATECHANGED
+	) VALUES (
+		@ID							-- ID - uniqueidentifier
+		,@BATCHID					-- BATCHID - uniqueidentifier
+		,@SEQUENCE					-- SEQUENCE - int
+		,@CHILDLOOKUPID				-- CHILDLOOKUPID - nvarchar(10)
+		,@SPONSORSHIPOPPORTUNITYID	-- SPONSORSHIPOPPORTUNITYID - uniqueidentifier
+		,@BATCHNUMBER_				-- BATCHNUMBER - nvarchar(100)
+		,@PROFILEYEAR				-- PROFILEYEAR - dbo.UDT_YEAR
+		,@CURRENTDATE				-- BATCHDATE - date
+		,@CHANGEAGENTID				-- ADDEDBYID - uniqueidentifier
+		,@CHANGEAGENTID				-- CHANGEDBYID - uniqueidentifier
+		,@CURRENTDATE				-- DATEADDED - datetime
+		,@CURRENTDATE				-- DATECHANGED - datetime
+	)    
+	
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Batch" RecordIDParameter="BATCHID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="SEQUENCE" Required="true" Hidden="true" Caption="Sequence" />
+			<common:FormField FieldID="CHILDLOOKUPID" Caption="Child Lookup ID" DataType="String" MaxLength="10" />
+			<!--<common:FormField FieldID="SPONSORSHIPOPPORTUNITYID" Caption="Sponsorship Opportunity ID" DataType="Guid" />-->
+			<common:FormField FieldID="PROFILEYEAR" Caption="Profile Year" DataType="Year" />
+			<!--<common:FormField FieldID="BATCHDATE" Caption="Batch Date" DataType="Date" />-->
+		</common:FormFields>
+
+		<!-- indicate the client-side component for the user interface -->
+		<!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+		</common:FormUIComponent>-->
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

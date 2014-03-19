@@ -1,0 +1,37 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="5338c077-43e0-4393-810d-b4687d0ef803"
+	Name="Filenexus Photo Year Import Batch"
+	Description="Holds photo year data per each child from Filenexus"
+	Author="Memphis Sellers"
+	Tablename="USR_FILENEXUSPHOTOYEAR_IMPORTBATCH"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+		<ForeignKeyField Name="BATCHID" ForeignTable="BATCH" Description="The primary ID from the batch table." OnDelete="CascadeDelete" Required="true"/>
+		<SequenceField Name="SEQUENCE" Description="The incremental sequence number to identify each record in a batch."/>
+		<TextField Name="CHILDLOOKUPID" Description="Child Lookup Id" Length="10" Required="true"/>
+		<ForeignKeyField Name="SPONSORSHIPOPPORTUNITYID" Required="true" ForeignTable="SPONSORSHIPOPPORTUNITY" />
+		<TextField Name="BATCHNUMBER" Description="Batch Number" Length="100" Required="true"/>
+		<YearField Name="PROFILEYEAR" Description="Profile Year" Required="true"/>
+		<DateField Name="BATCHDATE" Description="Batch Date" IncludeTime="false" Required="true"/>
+	</Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<!--<CheckConstraints>
+
+	</CheckConstraints>-->
+
+	<!-- define any indexes on the table -->
+	<!--<Indexes>
+
+	</Indexes>-->
+		
+	<!-- define any triggers on the table -->
+	<!--<Triggers>
+
+	</Triggers>-->
+
+</TableSpec>

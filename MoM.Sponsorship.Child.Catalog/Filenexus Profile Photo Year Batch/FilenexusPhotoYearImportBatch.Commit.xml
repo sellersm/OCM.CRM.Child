@@ -1,0 +1,125 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="a8e7c9f2-ef6f-436b-863d-7c3bd50ad03f" 
+	Name="Filenexus Photo Year Import Batch Commit"
+	Description="Commits the filenexus photo year import batch records" 
+	Author="Memphis Sellers"
+	DataFormInstanceID="d9bcb711-60a5-4df3-9535-cb80a17b6ae9" 
+	RecordType="Child Extension"
+	common:SecurityUIFolder="Child"
+	>
+
+	<SPDataForm>		
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_COMMIT">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_COMMIT
+(
+    @ID uniqueidentifier = null output,
+	@VALIDATEONLY bit = 0,
+	@BATCHROWID uniqueidentifier,
+	@CURRENTAPPUSERID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+	@CHILDLOOKUPID nvarchar(10) = '',
+	--@SPONSORSHIPOPPORTUNITYID uniqueidentifier = '',
+	@PROFILEYEAR UDT_YEAR = null
+	--@BATCHDATE date = null
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime;
+set @CURRENTDATE = getdate();
+
+declare @currentProfilePhotoYear UDT_YEAR;
+declare @childId uniqueidentifier;
+
+begin try
+	-- get the child's sponsorship opportunity id value
+	select @childId = ID 
+	from dbo.SPONSORSHIPOPPORTUNITY 
+	where LOOKUPID = @CHILDLOOKUPID;
+	
+	-- get the existing profile photo year value for the child
+	select @currentProfilePhotoYear = PROFILEPHOTOYEAR
+	from dbo.USR_CHILDEXTENSION
+	where SPONSORSHIPOPPORTUNITYCHILDID = @childId -- (select ID from dbo.SPONSORSHIPOPPORTUNITY where LOOKUPID = @CHILDLOOKUPID)
+
+	-- check if the incoming phrofile year is less than the existing profile photo year value 
+	if (@currentProfilePhotoYear > 0 and @PROFILEYEAR < @currentProfilePhotoYear)
+		begin
+			-- if it is, then insert a row into the Exception table so the user can run the query to view it
+			insert into dbo.USR_FILENEXUS_PHOTOYEARIMPORTBATCH_EXCEPTIONS(
+			   ID
+			  ,SPONSORSHIPOPPORTUNITYCHILDID
+			  ,CURRENTPROFILEPHOTOYEAR
+			  ,FILENEXUSPROFILEPHOTOYEAR
+			  ,BATCHIMPORTDATE
+			  ,CHILDLOOKUPID
+			  ,ADDEDBYID
+			  ,CHANGEDBYID
+			  ,DATEADDED
+			  ,DATECHANGED
+			) values (
+			   newid()					-- ID - uniqueidentifier
+			  ,@childId					-- SPONSORSHIPOPPORTUNITYCHILDID - uniqueidentifier
+			  ,@currentProfilePhotoYear	-- CURRENTPROFILEPHOTOYEAR - dbo.UDT_YEAR
+			  ,@PROFILEYEAR				-- FILENEXUSPROFILEPHOTOYEAR - dbo.UDT_YEAR
+			  ,@CURRENTDATE				-- BATCHIMPORTDATE - datetime
+			  ,@CHILDLOOKUPID			-- CHILDLOOKUPID - nvarchar(10)
+			  ,@CHANGEAGENTID			-- ADDEDBYID - uniqueidentifier
+			  ,@CHANGEAGENTID			-- CHANGEDBYID - uniqueidentifier
+			  ,@CURRENTDATE				-- DATEADDED - datetime
+			  ,@CURRENTDATE				-- DATECHANGED - datetime
+			)
+		end
+	
+	-- handle inserting the data
+	UPDATE dbo.USR_CHILDEXTENSION
+	SET
+	  PROFILEPHOTOYEAR = @PROFILEYEAR
+	WHERE SPONSORSHIPOPPORTUNITYCHILDID = @childId  -- (select ID from dbo.SPONSORSHIPOPPORTUNITY where LOOKUPID = @CHILDLOOKUPID)
+
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+				]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Batch" RecordIDParameter="BATCHROWID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="VALIDATEONLY" DataType="Boolean" Caption="Validate only" />
+			<common:FormField FieldID="CHILDLOOKUPID" Caption="Child Lookup ID" DataType="String" MaxLength="10" />
+			<!--<common:FormField FieldID="SPONSORSHIPOPPORTUNITYID" Caption="Sponsorship Opportunity ID" DataType="Guid" />-->
+			<common:FormField FieldID="PROFILEYEAR" Caption="Profile Year" DataType="Year" />
+			<!--<common:FormField FieldID="BATCHDATE" Caption="Batch Date" DataType="Date" />-->
+		</common:FormFields>
+
+		<!-- indicate the client-side component for the user interface -->
+		<!--<common:FormUIComponent FormUIComponentType="CustomComponent">
+			<common:CustomComponentID AssemblyName="REPLACE_WITH_ASSEMBLYNAME" ClassName="REPLACE_WITH_FULLCLASSNAME" />
+		</common:FormUIComponent>-->
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

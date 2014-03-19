@@ -1,0 +1,42 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes"
+	ID="77860a93-8ac5-44b5-9d32-2f1b548011b4"
+	Name="Filenexus Photo Year Import Batch Exception Data Query"
+	Description="View the exception data from the FileNexus profile photo year import batch."
+	Author="Memphis Sellers"
+	IsRoot="true"
+	PrimaryKeyField="ID"
+	RecordType="Sponsorship Opportunity"
+	common:SecurityUIFolder="Child"
+	>
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_FILENEXUS_PHOTOIMPORTBATCH_EXCEPTIONS">
+		<ViewSQL>
+			<![CDATA[
+	select 
+		SPONSORSHIPOPPORTUNITYCHILDID as ID, 
+		CHILDLOOKUPID,
+		CURRENTPROFILEPHOTOYEAR, 
+		FILENEXUSPROFILEPHOTOYEAR, 
+		BATCHIMPORTDATE 
+	from dbo.USR_FILENEXUS_PHOTOYEARIMPORTBATCH_EXCEPTIONS
+			
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="System record ID" Category="System Fields" Name="ID" />
+			<OutputField Name="CHILDLOOKUPID" Caption="Child ID" DataType="String" />
+			<OutputField Name="CURRENTPROFILEPHOTOYEAR" Caption="Current Profile Photo Year" DataType="Year" />
+			<OutputField Name="FILENEXUSPROFILEPHOTOYEAR" Caption="Filenexus Profile Photo Year" DataType="Year" />
+			<OutputField Name="BATCHIMPORTDATE" Caption="Batch Date" DataType="Date" />
+		</OutputFields>
+	</Output>
+
+</QueryViewSpec>
+

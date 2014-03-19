@@ -562,6 +562,14 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.Signups.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.Donations.Query.xml" />
     <EmbeddedResource Include="ChildPhoto\ChildPhoto.SwitchCurrentPhoto.RecordOperation.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatch.AddRow.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatch.Commit.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatch.DeleteRow.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatch.EditRow.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatch.Table.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchExceptionData.Query.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchExceptions.Table.xml" />
+    <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchType.Batch.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
