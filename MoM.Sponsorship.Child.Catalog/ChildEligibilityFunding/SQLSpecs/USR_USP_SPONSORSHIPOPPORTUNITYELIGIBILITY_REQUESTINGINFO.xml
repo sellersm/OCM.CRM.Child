@@ -20,6 +20,7 @@
 									Changed so it won't insert if 'Need information verified - new child' pending reason already exists - FogBugz Case 896
 	20-Oct-2012		CMayeda			Modified logic to ignore Child Photo Update and Medical Information Request subcategories
 									and to only include Unusable 2012 Health Photo subcategory if it is 90 days or older - FogBugz Case 918
+	20-Mar-2014		CMayeda			B-01425 Added check for 60 day past due 'Annual Photo Update' and 'Annual Child Letter' subcategories of interactions with category = 'Child Annual Update'
 	-->
 	
 	<CreateProcedureSQL>
@@ -37,17 +38,26 @@ as begin
 	declare @eligibilityCode_Ineligible tinyint = 2
 
 	declare @maxDaysHealthPhotoPastDue smallint = 90
+	declare @maxDaysAnnualPhotoPastDue smallint = 60
+	declare @maxDaysAnnualLetterPastDue smallint = 60
 
 	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0
 
 	declare @interactionStatusCode_Pending tinyint = 1
 
 	declare @categoryName_ChildFieldMemo nvarchar(100) = 'Child Field Memo'
+	declare @categoryName_ChildAnnualUpdate nvarchar(100) = 'Child Annual Update'
 
+	-- Child Field Memo subcategories
 	declare @subcategoryName_ChildPhotoUpdate nvarchar(100) = 'Child Photo Update'
 	declare @subcategoryName_MedicalInformationRequest nvarchar(100) = 'Medical Information Request'
 	declare @subcategoryName_Unusable2012HealthPhoto nvarchar(100) = 'Unusable 2012 Health Photo'
-	
+	declare @subcategoryName_UnusableAnnualUpdatePhoto nvarchar(100) = 'Unusable Annual Update Photo'
+
+	-- Child Annual Update subcategories
+	declare @subcategoryName_ChildAnnualPhotoUpdate nvarchar(100) = 'Annual Photo Update'
+	declare @subcategoryName_ChildAnnualLetter nvarchar(100) = 'Annual Child Letter'
+
 
 	declare @sponsorshipReason_FieldMemoRequestingInfo nvarchar(100) = 'Field memo - requesting information'
 	declare @errorMessageFieldMemoRequestingInfo nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_FieldMemoRequestingInfo + '" Sponsorship Reason'	
@@ -67,6 +77,8 @@ as begin
 		
 	begin try
 	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found	
+		
+		-- Child Field Memo subcategories
 		declare @fieldMemoRequestingInfoID uniqueidentifier
 		select @fieldMemoRequestingInfoID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_FieldMemoRequestingInfo) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @fieldMemoRequestingInfoID is null
@@ -77,7 +89,6 @@ as begin
 		if @fieldMemoRequestingInfoNewChildID is null
 			RAISERROR 1000000 @errorMessageFieldMemoRequestingInfoNewChild					
 
-		
 		declare @fieldMemoCategoryID uniqueidentifier = null
 		exec dbo.USR_USP_INTERACTION_GETCATEGORYID
 			@categoryID = @fieldMemoCategoryID output,
@@ -105,6 +116,33 @@ as begin
 			@subcategoryName = @subcategoryName_Unusable2012HealthPhoto,
 			@raiseErrorIfNotFound = 1
 
+		declare @subcategoryID_UnusableAnnualUpdatePhoto uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETSUBCATEGORYID 
+			@subcategoryID =  @subcategoryID_UnusableAnnualUpdatePhoto output,
+			@categoryName = @categoryName_ChildFieldMemo,
+			@subcategoryName = @subcategoryName_UnusableAnnualUpdatePhoto,
+			@raiseErrorIfNotFound = 1
+
+
+		-- Child Annual Update subcategories
+		declare @subcategoryID_ChildAnnualPhotoUpdate uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETSUBCATEGORYID 
+			@subcategoryID =  @subcategoryID_ChildAnnualPhotoUpdate output,
+			@categoryName = @categoryName_ChildAnnualUpdate,
+			@subcategoryName = @subcategoryName_ChildAnnualPhotoUpdate,
+			@raiseErrorIfNotFound = 1
+
+		declare @subcategoryID_ChildAnnualLetter uniqueidentifier = null
+		exec dbo.USR_USP_INTERACTION_GETSUBCATEGORYID 
+			@subcategoryID =  @subcategoryID_ChildAnnualLetter output,
+			@categoryName = @categoryName_ChildAnnualUpdate,
+			@subcategoryName = @subcategoryName_ChildAnnualLetter,
+			@raiseErrorIfNotFound = 1
+
+
+
+
+
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR
@@ -131,11 +169,21 @@ as begin
 									so_child.ID = so_reason.SPONSORSHIPOPPORTUNITYID
 						 where	so_child.CONSTITUENTID = inter.CONSTITUENTID
 						   and	inter.STATUSCODE = @interactionStatusCode_Pending
-						   and	(sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID
-								  and (sub.ID not in (@subcategoryID_ChildPhotoUpdate, @subcategoryID_MedicalInformationRequest, @subcategoryID_Unusable2012HealthPhoto))
-								       or
-									  (sub.ID = @subcategoryID_Unusable2012HealthPhoto and cast (dateadd (d, @maxDaysHealthPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date)))
-				   )
+						   and	(	((sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID)
+								  		and 
+								 	 (sub.ID not in (@subcategoryID_ChildPhotoUpdate, @subcategoryID_MedicalInformationRequest, @subcategoryID_Unusable2012HealthPhoto, @subcategoryID_UnusableAnnualUpdatePhoto))
+									)
+
+								 or
+								 	(sub.ID = @subcategoryID_Unusable2012HealthPhoto and cast(dateadd (d, @maxDaysHealthPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+								 or 
+								 	(sub.ID = @subcategoryID_ChildAnnualPhotoUpdate	 and cast(dateadd (d, @maxDaysAnnualPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+								 or 
+									(sub.ID = @subcategoryID_ChildAnnualLetter		 and cast(dateadd (d, @maxDaysAnnualLetterPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+									
+								)
+					  )
+						   
 	   
 					  
 	set @DELETEDROWS = @@ROWCOUNT
@@ -176,12 +224,21 @@ as begin
 									so_child.ID = so.ID
 						 where	so_child.CONSTITUENTID = inter.CONSTITUENTID
 						   and	inter.STATUSCODE = @interactionStatusCode_Pending
-						   and	(sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID
-								  and (sub.ID not in (@subcategoryID_ChildPhotoUpdate, @subcategoryID_MedicalInformationRequest, @subcategoryID_Unusable2012HealthPhoto))
-								       or
-									  (sub.ID = @subcategoryID_Unusable2012HealthPhoto and cast (dateadd (d, @maxDaysHealthPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date)))
-				  )
-				  
+						   and	(	((sub.INTERACTIONCATEGORYID = @fieldMemoCategoryID)
+							  			and 
+							 	 	 (sub.ID not in (@subcategoryID_ChildPhotoUpdate, @subcategoryID_MedicalInformationRequest, @subcategoryID_Unusable2012HealthPhoto, @subcategoryID_UnusableAnnualUpdatePhoto))
+									)
+
+								 or
+								 	(sub.ID = @subcategoryID_Unusable2012HealthPhoto and cast(dateadd (d, @maxDaysHealthPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+								 or 
+								 	(sub.ID = @subcategoryID_ChildAnnualPhotoUpdate	 and cast(dateadd (d, @maxDaysAnnualPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+								 or 
+									(sub.ID = @subcategoryID_ChildAnnualLetter		 and cast(dateadd (d, @maxDaysAnnualLetterPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+								
+								)	
+					   )
+
 				-- Don't add to ineligible kids 'Need information verified - new child' is used when on waiting list
 		   and so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
 						
