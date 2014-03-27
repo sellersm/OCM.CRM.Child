@@ -27,6 +27,8 @@
 										-   If possible, display a message saying the current photo matches the profile photo year.
 										- If the profile photo year does not match any of the years in the title field, do nothing.  
 										-   If possible, display a message saying there are no photo attachments that belong to the same years as the profile photo year.
+	26-Mar-2014		CMayeda			D-01109 - Added cast to fix implicit casting see comment ** ADDED CAST **
+									Also see note: ** THIS WON'T WORK IF OTHER TYPES OF ATTACHMENTS (NON CHLID PHOTO) START WITH A YEAR **
 	-->	
 	
 	<SPRecord>
@@ -135,7 +137,8 @@ as begin
 		if NOT exists (select 1
 						from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
 						where SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYCHILDID
-						and left(TITLE,4) = @photoYear)
+						and left(TITLE,4) = CAST(@photoYear as nvarchar(4)))  -- ** ADDED CAST **
+						-- ** THIS WON'T WORK IF OTHER TYPES OF ATTACHMENTS (NON CHLID PHOTO) START WITH A YEAR **
 			begin
 				set @performOperation = 0;
 				RAISERROR 100000 'No Photo records match the Photo Year! Nothing to update.'
