@@ -18,6 +18,8 @@
 									USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_REQUESTINGINFONEWCHILD.xml
 									Fixed spelling on USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE.xml
 	30-May-2013		CMayeda			Added USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_TERMINATEHOLD.xml
+	30-Mar-2013		CMayeda			Added USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPROFILEPHOTOUPDATED.xml, USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROFILEPHOTOYEARISBLANK.xml
+									USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHHEADSHOT.xml, USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHFULLBODY.xml							
 	-->
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
@@ -78,12 +80,18 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_BANGLADESHCONTACTABLECHILD.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHILDAGE.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_COMPLETIONDATE.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHANGECURRENTPHOTOATTACHMENT.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHFULLBODY.xml"/>
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHHEADSHOT.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOCREATED.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOPROOFREAD.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDBIOUPDATED.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOSTORED.xml" />		
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDCURRENTPHOTOINCRM.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPROFILEPHOTOUPDATED.xml" />
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROFILEPHOTOYEARISBLANK.xml" />
+		
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTCLOSED.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPENDING.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROJECTPHASINGOUT.xml" />

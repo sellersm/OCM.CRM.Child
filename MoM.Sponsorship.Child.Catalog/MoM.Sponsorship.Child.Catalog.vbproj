@@ -571,6 +571,11 @@
     <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchExceptions.Table.xml" />
     <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusPhotoYearImportBatchType.Batch.xml" />
     <EmbeddedResource Include="Filenexus Profile Photo Year Batch\FilenexusProfilePhotoYearBatch.Package.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPROFILEPHOTOUPDATED.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROFILEPHOTOYEARISBLANK.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHHEADSHOT.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHFULLBODY.xml" />
+    <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CHANGECURRENTPHOTOATTACHMENT.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

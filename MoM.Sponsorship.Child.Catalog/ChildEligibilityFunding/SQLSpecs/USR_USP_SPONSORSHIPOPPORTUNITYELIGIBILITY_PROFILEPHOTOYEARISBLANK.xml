@@ -1,14 +1,16 @@
 ﻿<SQLStoredProcedureSpec
 	xmlns="bb_appfx_sqlstoredprocedure"
 	xmlns:common="bb_appfx_commontypes" 
-	ID="ad6a2bcf-2407-4164-a7f8-b8b1d5cebd6c"
-	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED"
-	Description="Used to add/delete 'Need photo updated' pending reasons."
+	ID="ed1f5539-c64c-41fc-b908-444ca6e0a946"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROFILEPHOTOYEARISBLANK"
+	Description="Used to add/delete 'Profile photo year is blank' pending reasons."
 	Author="Cary Mayeda"
-	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED" >
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROFILEPHOTOYEARISBLANK"
+	>
 
 	<!-- 
-	Remarks:	The 'Need photo updated' pending reason is added to the child/children if a child photo exists and is too old.
+	Remarks:	The 'Profile photo year is blank' pending reason is added to the child/children if their Profile Photo Year is null 
+				and the child registration date is less than 2 months from today.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
 				and with the Sponsorship Opportunity Eligibility Business Process.  As such it needs to be able to handle a single Sponsorship Opportunity Child and
@@ -20,13 +22,12 @@
 				
 	History:
 	Date			Modified By		Comments
-    30-Sep-2012		CMayeda			Initial Version	
-	30-Mar-2013		CMayeda			Updated remarks	
+	30-Mar-2013		CMayeda			Initial Version for TK-01174
 	-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
-create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDPHOTOUPDATED(
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_PROFILEPHOTOYEARISBLANK(
 	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
 	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
 	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
@@ -38,14 +39,16 @@ as begin
 	declare @eligibilityCode_Eligible tinyint = 1
 	declare @eligibilityCode_Ineligible tinyint = 2
 
-	-- How old a photo can be and still be valid in months
-	declare @photoValidAge int  
-	set @photoValidAge = 30
+	-- How newly registered of a child is excluded from this pending reason in months
+	-- This is added to alleviate the pressure of updateing the PROFILEPHOTOYEAR from FileNexus.  
+	-- The initial default is to allow 2 months before this pending reason will appear.
+	declare @registrationDateBuffer int  
+	set @registrationDateBuffer = 2
 
 	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0
 
-	declare @sponsorshipReason_NeedPhotoUpdated nvarchar(100) = 'Need photo updated'
-	declare @errorMessageNeedPhotoupdatedNotfound nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_NeedPhotoUpdated + '" Sponsorship Reason'	
+	declare @sponsorshipReason_ProfilePhotoYearIsBlank nvarchar(100) = 'Profile photo year is blank'
+	declare @errorMessageProfilePhotoYearIsBlankNotfound nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_ProfilePhotoYearIsBlank + '" Sponsorship Reason'	
 
 	-- Get ChangeAgent if none was passed into the sproc
   	if @CHANGEAGENTID is null  
@@ -58,10 +61,10 @@ as begin
 		
 	begin try
 	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found	
-		declare @needPhotoUpdatedID uniqueidentifier
-		select @needPhotoUpdatedID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_NeedPhotoUpdated) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
-		if @needPhotoUpdatedID is null
-			RAISERROR 1000000 @errorMessageNeedPhotoUpdatedNotfound					
+		declare @ProfilePhotoYearIsBlankID uniqueidentifier
+		select @ProfilePhotoYearIsBlankID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_ProfilePhotoYearIsBlank) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @ProfilePhotoYearIsBlankID is null
+			RAISERROR 1000000 @errorMessageProfilePhotoYearIsBlankNotfound					
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR
@@ -71,27 +74,26 @@ as begin
 	-- This needs to be set to off for the output parms to be set properly
 	set nocount off
 	
-	-- Remove 'Need Photo Updated' pending reasons if CURRENTPHOTODATE is current 
+	-- Remove 'Profile photo year is blank' pending reasons if PROFILEPHOTOYEAR is blank (only for kids who have been registered for more than 2 months) 
 	
 	delete  dbo.SPONSORSHIPOPPORTUNITYREASON
 	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
 			
-	 where  -- Find children who are specified to be reviewed and have the 'Need Photo Updated' pending reason  			
+	 where  -- Find children who are specified to be reviewed and have the 'Profile photo year is blank' pending reason  			
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
-	   and	so_reason.SPONSORSHIPREASONID = @needPhotoUpdatedID
-/*
-		   -- Check if CURRENTPHOTODATE is valid (Photo is recent)
-	   and exists (	select	ID
-					  from	dbo.USR_CHILDEXTENSION 
-					 where	CURRENTPHOTODATE is not null 
-					   and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
-					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   and	so_reason.SPONSORSHIPREASONID = @ProfilePhotoYearIsBlankID
+			-- Check if PROFILEPHOTOYEAR is not null nor 0 or registration date is not prior to 2 months ago
+	   and	not exists (select ID 
+					  	     from dbo.USR_CHILDEXTENSION 
+						    where coalesce (PROFILEPHOTOYEAR,0) = 0
+					          and REGISTRATIONDATE < dateadd (mm, (@registrationDateBuffer * -1), getdate())					 
+							  and SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   
-	*/				  
+					  
 	set @DELETEDROWS = @@ROWCOUNT
 	
-	/*
-	-- Insert 'Need Photo Updated' pending reason if CURRENTPHOTODATE is null (Photo has not been Updated)
+	
+	-- Insert 'Profile photo year is blank' pending reasons if PROFILEPHOTOYEAR is blank (only for kids who have been registered for more than 2 months) 
 	insert dbo.SPONSORSHIPOPPORTUNITYREASON
 				(SPONSORSHIPOPPORTUNITYID,
 				 SPONSORSHIPREASONID,				
@@ -101,7 +103,7 @@ as begin
 				 DATECHANGED)
 				 
 		select  ID,
-				@needPhotoUpdatedID, 
+				@ProfilePhotoYearIsBlankID, 
 				@CHANGEAGENTID, 
 				@CHANGEAGENTID, 
 				@CurrentDate, 
@@ -111,17 +113,17 @@ as begin
 		 
 		 where	exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so.ID )	           
 	      
-				-- Verify that the children do not already have a 'Need Photo Updated' pending reason
+				-- Verify that the children do not already have a 'Profile photo year is blank' pending reason
    	       and	not exists (select so_reason.SPONSORSHIPOPPORTUNITYID 
 							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
-		                     where so_reason.SPONSORSHIPREASONID = @needPhotoUpdatedID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
+		                     where so_reason.SPONSORSHIPREASONID = @ProfilePhotoYearIsBlankID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
 
-				-- Check if CURRENTPHOTODATE is too old 
-		   and	not exists (select	ID
-					   	      from	dbo.USR_CHILDEXTENSION 
-						     where	CURRENTPHOTODATE is not null 
-					           and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
-							   and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
+				-- Check if PROFILEPHOTOYEAR is null or 0 and registration date is prior to 2 months ago
+		   and	exists (select	ID 
+					   	  from	dbo.USR_CHILDEXTENSION 
+						 where	coalesce (PROFILEPHOTOYEAR,0) = 0
+					       and	REGISTRATIONDATE < dateadd (mm, (@registrationDateBuffer * -1), getdate())					 
+						   and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
 	
 	
 				-- Don't add to ineligible kids that are not quota waiting list
@@ -129,7 +131,7 @@ as begin
 		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
 				    and exists (select sponsorshipReasonID from dbo.USR_UFN_CHILDQUOTA_GETWAITINGLISTREASONS() wl_reasons where so.SPONSORSHIPREASONID = wl_reasons.sponsorshipReasonID)))
 						
-	*/
+	
 	set @INSERTEDROWS = @@ROWCOUNT
 
 end
