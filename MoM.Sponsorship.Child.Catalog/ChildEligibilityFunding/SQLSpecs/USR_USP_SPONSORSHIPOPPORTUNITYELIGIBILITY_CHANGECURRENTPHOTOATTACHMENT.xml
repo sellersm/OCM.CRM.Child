@@ -76,11 +76,15 @@ as begin
 	 where  -- Find children who are specified to be reviewed and have the 'Change current photo attachment' pending reason  			
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   and	so_reason.SPONSORSHIPREASONID = @ChangeCurrentPhotoAttachmentID
-			-- Check if child is either sponsored or the Profile Photo Year = Current Photo Year
+			-- Check if child is either sponsored or the Profile Photo Year or Current Photo Year is null or 0 or the Profile Photo Year = Current Photo Year
 	   and	exists (select ID 
 					 from dbo.USR_CHILDEXTENSION 
 					where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID
-					  and ((coalesce (PROFILEPHOTOYEAR,0) = coalesce (PHOTOYEAR,0))
+					  and ((coalesce (PROFILEPHOTOYEAR,0) = 0)
+					         or
+						   (coalesce (PHOTOYEAR,0) = 0)
+						     or
+						   (coalesce (PROFILEPHOTOYEAR,0) = coalesce (PHOTOYEAR,0))
 					         or
 						   (exists (select ID from dbo.SPONSORSHIP s where s.STATUSCODE = 1 and s.SPONSORSHIPOPPORTUNITYID = so_reason.SPONSORSHIPOPPORTUNITYID))  -- Sponsored
 					      )
@@ -114,12 +118,13 @@ as begin
 							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
 		                     where so_reason.SPONSORSHIPREASONID = @ChangeCurrentPhotoAttachmentID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
 
-				-- Check if the child is unsponsored and the Profile Photo Year is not null or 0 and is not equal to the Current Photo Year
+				-- Check if the child is unsponsored and the Profile Photo Year and Current Photo Year are not null or 0 and Profile Photo Year is not equal to the Current Photo Year
 		   and	exists (select	ID 
 					   	  from	dbo.USR_CHILDEXTENSION 
 						 where SPONSORSHIPOPPORTUNITYCHILDID = so.ID
 						   and not exists (select ID from dbo.SPONSORSHIP s where s.STATUSCODE = 1 and s.SPONSORSHIPOPPORTUNITYID = so.ID)  -- Sponsored
 						   and coalesce (PROFILEPHOTOYEAR,0) <> 0
+						   and coalesce (PHOTOYEAR,0) <> 0
 						   and coalesce (PROFILEPHOTOYEAR,0) <> coalesce (PHOTOYEAR,0)
 					   )	
 	

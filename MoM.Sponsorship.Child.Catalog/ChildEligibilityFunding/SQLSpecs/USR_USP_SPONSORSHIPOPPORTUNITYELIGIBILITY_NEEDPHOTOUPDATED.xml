@@ -83,7 +83,7 @@ as begin
 		   -- Check if CURRENTPHOTODATE is valid (Photo is recent)
 	   and exists (	select	ID
 					  from	dbo.USR_CHILDEXTENSION 
-					 where	CURRENTPHOTODATE is not null 
+					 where	coalesce (CURRENTPHOTODATE, 0) = 0
 					   and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
 					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   
@@ -119,7 +119,7 @@ as begin
 				-- Check if CURRENTPHOTODATE is too old 
 		   and	not exists (select	ID
 					   	      from	dbo.USR_CHILDEXTENSION 
-						     where	CURRENTPHOTODATE is not null 
+						     where	coalesce (CURRENTPHOTODATE, 0) = 0
 					           and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
 							   and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
 	
