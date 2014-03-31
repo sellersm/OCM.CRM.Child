@@ -1,15 +1,16 @@
 ﻿<SQLStoredProcedureSpec
 	xmlns="bb_appfx_sqlstoredprocedure"
 	xmlns:common="bb_appfx_commontypes" 
-	ID="e13f68a3-23da-41a2-8fe1-9d2bec5e3abb"
-	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHHEADSHOT"
-	Description="Used to add/delete 'Current photo year does not match headshot attachment' pending reasons."
+	ID="6d357f07-87eb-4552-b075-8f2a567bf7f3"
+	Name="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOATTACHMENTSDIFFERENTYEARS"
+	Description="Used to add/delete 'Current attachments have different title years' pending reasons."
 	Author="Cary Mayeda"
-	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHHEADSHOT"
+	SPName="USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOATTACHMENTSDIFFERENTYEARS"
 	>
-
+	
 	<!-- 
-	Remarks:	The 'Current photo year does not match headshot attachment' pending reason is added to the child/children if their Current photo year does not match the year 
+	Remarks:	The 'Current attachments have different title years' pending reason is added to the child/children if the year in the title of the Current Headshot photo attachement
+				does not match the year in the title of the Current Fullbody photo attachment
 				title prefix on the current headshot attachment.
 	
 				This is called from USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK, which is used by both the Sponsorship Opportunity Eligibility Check record operation 	
@@ -25,9 +26,9 @@
 	30-Mar-2013		CMayeda			Initial Version for TK-01174
 	-->
 
-	<CreateProcedureSQL>
-		<![CDATA[
-create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOYEARDOESNOTMATCHHEADSHOT(
+		<CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOATTACHMENTSDIFFERENTYEARS(
 	@childIDList dbo.USR_UDT_CHILDIDLIST readonly,	-- The children to be made eligible or pending
 	@changeAgentID uniqueidentifier,				-- Used to specify change agent for CHANGEDBYID and ADDEDBYID fields
 	@deletedRows int = 0 output,					-- Output parm that specifies how many pending reasons were deleted
@@ -48,12 +49,16 @@ as begin
 
 	declare @reasonTypeCode_ChildMarkPendingEligibility tinyint = 0
 
-	declare @sponsorshipReason_CurrentPhotoYearDoesNotMatchHeadshot nvarchar(100) = 'Current photo year does not match headshot attachment'
-	declare @errorMessageCurrentPhotoYearDoesNotMatchHeadshotNotfound nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_CurrentPhotoYearDoesNotMatchHeadshot + '" Sponsorship Reason'	
+	declare @sponsorshipReason_CurrentAttachmentsHaveDifferentYears nvarchar(100) = 'Current attachments have different title years'
+	declare @errorMessageCurrentAttachmentsHaveDifferentYearsNotfound nvarchar(500) = 'Couldn''t find the "' + @sponsorshipReason_CurrentAttachmentsHaveDifferentYears + '" Sponsorship Reason'	
 
 	declare @sproppAttachmentType_ChildPhotoHeadshotCurrent nvarchar(100) = 'Child Photo - Headshot - Current'
 	declare @errorMessageChildPhotoHeadshotCurrentNotfound nvarchar(500) = 'Couldn''t find the "' + @sproppAttachmentType_ChildPhotoHeadshotCurrent + '" Attachment Type'	
 	
+	declare @sproppAttachmentType_ChildPhotoFullBodyCurrent nvarchar(100) = 'Child Photo - Full Body - Current'
+	declare @errorMessageChildPhotoFullBodyCurrentNotfound nvarchar(500) = 'Couldn''t find the "' + @sproppAttachmentType_ChildPhotoFullBodyCurrent + '" Attachment Type'	
+	
+
 	-- Get ChangeAgent if none was passed into the sproc
   	if @CHANGEAGENTID is null  
 	    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
@@ -65,10 +70,10 @@ as begin
 		
 	begin try
 	    -- These are required for the sproc to work correctly, so we need to throw an exception if the IDs aren't found	
-		declare @CurrentPhotoYearDoesNotMatchHeadshotID uniqueidentifier
-		select @CurrentPhotoYearDoesNotMatchHeadshotID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_CurrentPhotoYearDoesNotMatchHeadshot) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
-		if @CurrentPhotoYearDoesNotMatchHeadshotID is null
-			RAISERROR 1000000 @errorMessageCurrentPhotoYearDoesNotMatchHeadshotNotfound					
+		declare @CurrentAttachmentsHaveDifferentYearsID uniqueidentifier
+		select @CurrentAttachmentsHaveDifferentYearsID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_CurrentAttachmentsHaveDifferentYears) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
+		if @CurrentAttachmentsHaveDifferentYearsID is null
+			RAISERROR 1000000 @errorMessageCurrentAttachmentsHaveDifferentYearsNotfound					
 			
 		-- get the attachment type code id values we need:
 		declare @headshotCurrentAttachmentTypeCodeID uniqueidentifier;
@@ -76,6 +81,11 @@ as begin
 		if @headshotCurrentAttachmentTypeCodeID is null
 			RAISERROR 1000000 @errorMessageChildPhotoHeadshotCurrentNotfound					
 
+		declare @fullBodyCurrentAttachmentTypeCodeID uniqueidentifier;
+		select @fullBodyCurrentAttachmentTypeCodeID = ID from dbo.SPROPPATTACHMENTTYPECODE where lower (DESCRIPTION) = lower (@sproppAttachmentType_ChildPhotoFullBodyCurrent)
+		if @fullBodyCurrentAttachmentTypeCodeID is null
+			RAISERROR 1000000 @errorMessageChildPhotoFullBodyCurrentNotfound	
+			
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR
@@ -85,35 +95,31 @@ as begin
 	-- This needs to be set to off for the output parms to be set properly
 	set nocount off
 	
-	-- Remove 'Current photo year does not match headshot attachment' pending reasons if Current Year = The "Current Photo" headshot year in the title
+	-- Remove 'Current attachments have different title years' pending reasons if the "Current Photo" headshot year in the title matches the "Current Photo" full body year in the title
 	
 	delete  dbo.SPONSORSHIPOPPORTUNITYREASON
 	  from  dbo.SPONSORSHIPOPPORTUNITYREASON so_reason
 			
 	 where  -- Find children who are specified to be reviewed and have the 'Profile photo year is blank' pending reason  			
 			exists (select SPONSORSHIPOPPORTUNITYCHILDID from @childIDList where SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
-	   and	so_reason.SPONSORSHIPREASONID = @CurrentPhotoYearDoesNotMatchHeadshotID
+	   and	so_reason.SPONSORSHIPREASONID = @CurrentAttachmentsHaveDifferentYearsID
 
 			-- Check if PHOTOYEAR is null or 0 or and a headshot attachment exists that matches the photo year
-	   and	exists (select ID 
-			  	      from dbo.USR_CHILDEXTENSION ch_ext
-				     where ch_ext.SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID
-					   and (coalesce (ch_ext.PHOTOYEAR,0) = 0  -- 0 seems to be the default value
-							or 
-							exists (select ID 
-					  			         from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT so_att
-					                    where so_att.SPONSORSHIPOPPORTUNITYID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
-									      and so_att.SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
-									      and cast (coalesce (ch_ext.PHOTOYEAR,9999) as varchar(4)) = left (so_att.TITLE,4)
-								   )
-							)		  
-					)
+	   and not exists (select so_att_h.ID 
+	  			         from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT so_att_h,
+						      dbo.SPONSORSHIPOPPORTUNITYATTACHMENT so_att_f 
+	                    where so_att_h.SPONSORSHIPOPPORTUNITYID = so_reason.SPONSORSHIPOPPORTUNITYID
+					      and so_att_h.SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
+						  and so_att_f.SPONSORSHIPOPPORTUNITYID = so_reason.SPONSORSHIPOPPORTUNITYID
+					      and so_att_f.SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID
+					      and left (so_att_h.TITLE,4) <> left (so_att_f.TITLE,4)
+					   )
 	   
 					  
 	set @DELETEDROWS = @@ROWCOUNT
 	
 	
-	-- Insert 'Current photo year does not match headshot attachment' pending reasons if Current Year <> The "Current Photo" headshot year in the title
+	-- Insert 'Current attachments have different title years' if the "Current Photo" headshot year in the title matches the "Current Photo" full body year in the title
 	insert dbo.SPONSORSHIPOPPORTUNITYREASON
 				(SPONSORSHIPOPPORTUNITYID,
 				 SPONSORSHIPREASONID,				
@@ -123,7 +129,7 @@ as begin
 				 DATECHANGED)
 				 
 		select  ID,
-				@CurrentPhotoYearDoesNotMatchHeadshotID, 
+				@CurrentAttachmentsHaveDifferentYearsID, 
 				@CHANGEAGENTID, 
 				@CHANGEAGENTID, 
 				@CurrentDate, 
@@ -136,23 +142,19 @@ as begin
 				-- Verify that the children do not already have a 'Current photo year does not match headshot attachment' pending reason
    	       and	not exists (select so_reason.SPONSORSHIPOPPORTUNITYID 
 							  from dbo.SPONSORSHIPOPPORTUNITYREASON so_reason 
-		                     where so_reason.SPONSORSHIPREASONID = @CurrentPhotoYearDoesNotMatchHeadshotID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
+		                     where so_reason.SPONSORSHIPREASONID = @CurrentAttachmentsHaveDifferentYearsID and so_reason.SPONSORSHIPOPPORTUNITYID = so.ID)
 
-				-- Check if PHOTOYEAR is not null or 0 and there are no headshot attachments that match the photo year
-		   and	not exists (select ID 
-					  	     from dbo.USR_CHILDEXTENSION ch_ext
-						    where ch_ext.SPONSORSHIPOPPORTUNITYCHILDID = so.ID
-							  and (coalesce (ch_ext.PHOTOYEAR,0) = 0  -- 0 seems to be the default value
-									or 
-								   exists (select ID 
-							  			     from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT so_att
-							                where so_att.SPONSORSHIPOPPORTUNITYID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
-										 	  and so_att.SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
-									 		  and cast (coalesce (ch_ext.PHOTOYEAR,9999) as varchar(4)) = left (so_att.TITLE,4)
-										  )
-								  )		
-						   )
-	
+				-- if the "Current Photo" headshot year in the title matches the "Current Photo" full body year in the title
+		   and	exists (select so_att_h.ID 
+	  			          from dbo.SPONSORSHIPOPPORTUNITYATTACHMENT so_att_h,
+						       dbo.SPONSORSHIPOPPORTUNITYATTACHMENT so_att_f 
+	                     where so_att_h.SPONSORSHIPOPPORTUNITYID = so.ID
+					       and so_att_h.SPROPPATTACHMENTTYPECODEID = @headshotCurrentAttachmentTypeCodeID
+						   and so_att_f.SPONSORSHIPOPPORTUNITYID = so.ID
+					       and so_att_f.SPROPPATTACHMENTTYPECODEID = @fullBodyCurrentAttachmentTypeCodeID
+					       and left (so_att_h.TITLE,4) <> left (so_att_f.TITLE,4)
+					   )
+
 				-- Don't add to ineligible kids that are not quota waiting list
 		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
 		        or (so.ELIGIBILITYCODE = @eligibilityCode_Ineligible
@@ -164,6 +166,6 @@ as begin
 end
 
 		]]>
-	</CreateProcedureSQL>
+		</CreateProcedureSQL>
 
-</SQLStoredProcedureSpec>
+	</SQLStoredProcedureSpec>

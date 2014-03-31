@@ -76,10 +76,6 @@ as begin
 		if @FullBodyCurrentAttachmentTypeCodeID is null
 			RAISERROR 1000000 @errorMessageChildPhotoFullBodyCurrentNotfound					
 
-		select @FullBodyCurrentAttachmentTypeCodeID = ID 
-		from dbo.SPROPPATTACHMENTTYPECODE 
-		where lower (DESCRIPTION) = lower ('Child Photo - FullBody - Current');
-
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR
