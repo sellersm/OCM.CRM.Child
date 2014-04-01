@@ -85,7 +85,8 @@ as begin
 			-- Check if PROFILEPHOTOYEAR is not null nor 0 or registration date is not prior to 2 months ago
 	   and	not exists (select ID 
 					  	     from dbo.USR_CHILDEXTENSION 
-						    where coalesce (PROFILEPHOTOYEAR,0) = 0
+						    where coalesce (PHOTOYEAR,0) <> 0
+							  and coalesce (PROFILEPHOTOYEAR,0) = 0
 					          and REGISTRATIONDATE < dateadd (mm, (@registrationDateBuffer * -1), getdate())					 
 							  and SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
 	   
@@ -121,7 +122,8 @@ as begin
 				-- Check if PROFILEPHOTOYEAR is null or 0 and registration date is prior to 2 months ago
 		   and	exists (select	ID 
 					   	  from	dbo.USR_CHILDEXTENSION 
-						 where	coalesce (PROFILEPHOTOYEAR,0) = 0
+						 where	coalesce (PHOTOYEAR,0) <> 0
+						   and	coalesce (PROFILEPHOTOYEAR,0) = 0
 					       and	REGISTRATIONDATE < dateadd (mm, (@registrationDateBuffer * -1), getdate())					 
 						   and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
 	

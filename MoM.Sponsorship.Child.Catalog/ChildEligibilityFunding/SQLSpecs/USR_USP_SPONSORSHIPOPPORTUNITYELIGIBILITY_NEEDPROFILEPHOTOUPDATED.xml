@@ -84,7 +84,9 @@ as begin
 	   and exists (	select	ID
 					  from	dbo.USR_CHILDEXTENSION 
 					 where	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID 
-					   and  ((coalesce (PROFILEPHOTOYEAR, 0) = 0)
+					   and  ((coalesce (PHOTOYEAR, 0) = 0)
+					            or  
+							 (coalesce (PROFILEPHOTOYEAR, 0) = 0)
 					            or  
 							 (coalesce (PROFILEPHOTOYEAR, 0) <> 0 and PROFILEPHOTOYEAR > year (dateadd (mm, (@photoValidAge * -1), getdate())))
 							)
@@ -122,7 +124,9 @@ as begin
 		   and	not exists (select	ID
 							  from	dbo.USR_CHILDEXTENSION 
 							 where	SPONSORSHIPOPPORTUNITYCHILDID = so.ID
-							   and  ((coalesce (PROFILEPHOTOYEAR, 0) = 0)
+							   and  ((coalesce (PHOTOYEAR, 0) = 0)
+									    or  
+									 (coalesce (PROFILEPHOTOYEAR, 0) = 0)
 										or  
 									 (coalesce (PROFILEPHOTOYEAR, 0) <> 0 and PROFILEPHOTOYEAR > year (dateadd (mm, (@photoValidAge * -1), getdate())))
 						            )
