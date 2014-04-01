@@ -83,9 +83,10 @@ as begin
 		   -- Check if CURRENTPHOTODATE is valid (Photo is recent)
 	   and exists (	select	ID
 					  from	dbo.USR_CHILDEXTENSION 
-					 where	coalesce (CURRENTPHOTODATE, 0) = 0
+					 where	CURRENTPHOTODATE is not null 
 					   and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
 					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
+	   
 	   
 	*/				  
 	set @DELETEDROWS = @@ROWCOUNT
@@ -119,10 +120,11 @@ as begin
 				-- Check if CURRENTPHOTODATE is too old 
 		   and	not exists (select	ID
 					   	      from	dbo.USR_CHILDEXTENSION 
-						     where	coalesce (CURRENTPHOTODATE, 0) = 0
+						     where	CURRENTPHOTODATE is not null 
 					           and	CURRENTPHOTODATE >= dateadd (mm, (@photoValidAge * -1), getdate())					 
 							   and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
 	
+
 	
 				-- Don't add to ineligible kids that are not quota waiting list
 		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)

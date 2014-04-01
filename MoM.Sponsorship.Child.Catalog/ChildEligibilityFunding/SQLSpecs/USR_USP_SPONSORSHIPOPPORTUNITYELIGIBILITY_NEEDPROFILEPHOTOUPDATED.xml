@@ -83,10 +83,12 @@ as begin
 		   -- Check if PROFILEPHOTOYEAR is valid (Photo is recent)
 	   and exists (	select	ID
 					  from	dbo.USR_CHILDEXTENSION 
-					 where	PROFILEPHOTOYEAR is not null 
-					   and	PROFILEPHOTOYEAR > year (dateadd (mm, (@photoValidAge * -1), getdate()))
-					   and	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID )
-	   
+					 where	SPONSORSHIPOPPORTUNITYCHILDID = so_reason.SPONSORSHIPOPPORTUNITYID 
+					   and  ((coalesce (PROFILEPHOTOYEAR, 0) = 0)
+					            or  
+							 (coalesce (PROFILEPHOTOYEAR, 0) <> 0 and PROFILEPHOTOYEAR > year (dateadd (mm, (@photoValidAge * -1), getdate())))
+							)
+			      )
 					  
 	set @DELETEDROWS = @@ROWCOUNT
 	
@@ -118,11 +120,13 @@ as begin
 
 				-- Check if PROFILEPHOTOYEAR is too old 
 		   and	not exists (select	ID
-					   	      from	dbo.USR_CHILDEXTENSION 
-						     where	PROFILEPHOTOYEAR is not null 
-							   and	PROFILEPHOTOYEAR > year (dateadd (mm, (@photoValidAge * -1), getdate()))
-							   and	SPONSORSHIPOPPORTUNITYCHILDID = so.ID )
-	
+							  from	dbo.USR_CHILDEXTENSION 
+							 where	SPONSORSHIPOPPORTUNITYCHILDID = so.ID
+							   and  ((coalesce (PROFILEPHOTOYEAR, 0) = 0)
+										or  
+									 (coalesce (PROFILEPHOTOYEAR, 0) <> 0 and PROFILEPHOTOYEAR > year (dateadd (mm, (@photoValidAge * -1), getdate())))
+						            )
+					       )
 	
 				-- Don't add to ineligible kids that are not quota waiting list
 		   and (so.ELIGIBILITYCODE in (@eligibilityCode_Pending, @eligibilityCode_Eligible)
