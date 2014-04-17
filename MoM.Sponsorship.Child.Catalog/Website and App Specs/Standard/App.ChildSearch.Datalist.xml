@@ -14,6 +14,7 @@
 	17-Oct-2012		CMayeda			Initial Version
 	02-Oct-2013		CMayeda			Removed order by
 	09-Oct-2013		CMayeda			Added temporary use of reservation keys
+	17-Apr-2014		CMayeda			Added child bio
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
@@ -42,12 +43,12 @@ as
 			AVAILABILITY,
 			sf.VALUE as GREATESTNEED,
 			so_child.PICTURE,
-			HTMLNOTE
+			note.TEXTNOTE
 	   FROM	dbo.SPONSORSHIPOPPORTUNITY so
  INNER JOIN dbo.SPONSORSHIPLOCATION sloc on sloc.ID = so.SPONSORSHIPLOCATIONID
  INNER JOIN dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = so.ID
- INNER JOIN SPONSORSHIPOPPORTUNITYNOTE n ON n.SPONSORSHIPOPPORTUNITYID = so.ID 
- INNER JOIN SPROPPNOTETYPECODE t ON n.SPROPPNOTETYPECODEID = t.ID
+ INNER JOIN SPONSORSHIPOPPORTUNITYNOTE note ON note.SPONSORSHIPOPPORTUNITYID = so.ID 
+ INNER JOIN SPROPPNOTETYPECODE notetype ON note.SPROPPNOTETYPECODEID = notetype.ID
  INNER JOIN dbo.CONSTITUENT childconst on childconst.ID = so_child.CONSTITUENTID    -- This is the constituent record that has the note of type "Child Bio"
  INNER JOIN dbo.SMARTFIELD0CEE2E20081D42CA9A9E87847970093F sf on sf.ID = so.ID 
  LEFT OUTER JOIN dbo.USR_CHILDPROJECTEXTENSION projectext on sloc.FIELDOFFICEID = projectext.ID
@@ -58,7 +59,7 @@ as
 	  WHERE RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))	  
         and ELIGIBILITY = 'Eligible'
 	    and AVAILABILITY = 'Reserved'
-		and t.DESCRIPTION = 'Child Bio'
+		and notetype.DESCRIPTION = 'Child Bio'
 
 order by CHILDNO
 
@@ -98,7 +99,7 @@ order by CHILDNO
 				<OutputField FieldID="AVAILABILITY" Caption="Availability" DataType="String"/>
 				<OutputField FieldID="GREATESTNEED" Caption="Greatest Need" DataType="Integer" />
 				<OutputField FieldID="PICTURE" Caption="Child Image" DataType="Binary" />
-				<OutputField FieldID="HTMLNOTE" Caption="Child Bio" DataType="String"/>
+				<OutputField FieldID="NOTE" Caption="Child Bio" DataType="String"/>
 
 		</OutputFields>
 	</Output>

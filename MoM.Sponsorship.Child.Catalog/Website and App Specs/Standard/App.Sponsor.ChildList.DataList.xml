@@ -13,6 +13,7 @@
 	History:
 	Date            Modified By     Comments
 	17-Oct-2012		CMayeda			Initial Version
+	17-Apr-2014		CMayeda			Added child bio
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
@@ -41,12 +42,15 @@ as begin
 			childprojectconst.KEYNAME as PROJECTNAME,
 			childprojectconst.ID AS PROJECTID,
 			so.LOOKUPID as CHILDNO,
-			so_child.PICTURE
+			so_child.PICTURE,
+			note.TEXTNOTE
 	   FROM	dbo.SPONSORSHIPOPPORTUNITY so
  INNER JOIN dbo.SPONSORSHIP on SPONSORSHIP.SPONSORSHIPOPPORTUNITYID = so.ID and SPONSORSHIP.STATUSCODE = 1 -- active
  INNER JOIN dbo.CONSTITUENT sponsor on SPONSORSHIP.CONSTITUENTID = sponsor.ID
  INNER JOIN dbo.SPONSORSHIPLOCATION sloc on sloc.ID = so.SPONSORSHIPLOCATIONID
  INNER JOIN dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = so.ID
+ INNER JOIN SPONSORSHIPOPPORTUNITYNOTE note ON note.SPONSORSHIPOPPORTUNITYID = so.ID 
+ INNER JOIN SPROPPNOTETYPECODE notetype ON note.SPROPPNOTETYPECODEID = notetype.ID
  INNER JOIN dbo.CONSTITUENT childconst on childconst.ID = so_child.CONSTITUENTID    -- This is the constituent record that has the note of type "Child Bio"
  LEFT OUTER JOIN dbo.USR_CHILDPROJECTEXTENSION projectext on sloc.FIELDOFFICEID = projectext.ID
  LEFT OUTER JOIN dbo.CONSTITUENT childprojectconst on childprojectconst.ID = projectext.ID       -- This is the constituent record that has note of type "Project Bio"
@@ -54,6 +58,7 @@ as begin
  LEFT OUTER JOIN dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID         -- This is the constituent record that has the note of type "Country Bio"
  
 	  WHERE sponsor.ID = @CONTEXTID
+	    and notetype.DESCRIPTION = 'Child Bio'
 end 
 
 	]]>
@@ -91,7 +96,8 @@ end
 			<OutputField FieldID="PROJECTID" Caption="Project ID" DataType="Guid" />
 			<OutputField FieldID="CHILDNO" Caption="Child Number" DataType="String" />
 			<OutputField FieldID="PICTURE" Caption="Child Image" DataType="Binary" />
-			
+			<OutputField FieldID="NOTE" Caption="Child Bio" DataType="String"/>
+
 		</OutputFields>
 	</Output>
 
