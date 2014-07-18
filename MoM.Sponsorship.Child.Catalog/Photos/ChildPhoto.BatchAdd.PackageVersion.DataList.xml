@@ -13,6 +13,7 @@
 	History:
 	Date            Modified By     Comments
 	20-Oct-2012		CMayeda			Initial Version
+	17-Jul-2014		CMayeda			Removed V1 from version number
 	-->
 
 	<!-- define the SP that returns the data for the datalist -->
@@ -23,7 +24,7 @@
 create procedure dbo.USR_USP_DATALIST_CHILDPHOTOBATCHADDPACKAGEVERSION
 as
 begin
-	select 'Version #VersionNumber#V1' as version
+	select 'Version #VersionNumber#' as version
 end 
 
 ]]>
