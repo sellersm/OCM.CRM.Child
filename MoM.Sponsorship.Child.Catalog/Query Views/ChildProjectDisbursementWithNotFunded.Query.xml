@@ -1,0 +1,196 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="32C8801C-79AD-43A8-9952-AEE476F7CCDE"
+	Name="Child Project Disbursement With Not Funded Query"
+	Description="This is used to get the sponsored / unsponsored registered children counts and counts for children unfunded due to Child Annual Update interactions"
+	Author="Cary Mayeda"
+	IsRoot="true"
+	PrimaryKeyField="FIELDOFFICEID"
+	RecordType="Child Project Extension"
+	common:SecurityUIFolder="Sponsorship\Opportunity"
+	>
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	22-Aug-2014		CMayeda			Copied from Child Project Disbursement Query and added totals for those not funded due to a Child Annual Update interactions
+	
+	-->
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_CHILDPROJECTDISBURSEMENTS_WITHUNFUNDED">
+		<ViewSQL>
+			<![CDATA[
+
+
+with RegisteredChildren (FIELDOFFICEID, PROJECTLOOKUPID, SPONSORSHIPOPPORTUNITYID, CURRENTSPONSORSHIPSTATUS)
+as
+(	select 	FIELDOFFICEID,
+			dbo.USR_UFN_CHILDPROJECT_GETLOOKUPID (FIELDOFFICEID) as PROJECTLOOKUPID, 
+			so.ID SPONSORSHIPOPPORTUNITYID,
+			--case 
+			--	when dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so.ID) > 0 then 'Sponsored'
+			--	when AVAILABILITYCODE = 1 then 'Unsponsored - Reserved'
+			--	else 'Unsponsored'
+			--end as SPONSORSHIPSTATUS,
+			--coalesce (dbo.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION (so.ID),'') as CURRENTSPONSORSHIPSTATUS1,
+			coalesce(ct.[DESCRIPTION],'') as CURRENTSPONSORSHIPSTATUS
+        
+	  from	dbo.SPONSORSHIPOPPORTUNITY so 					
+inner join	dbo.SPONSORSHIPLOCATION slocation on
+				slocation.ID = so.SPONSORSHIPLOCATIONID
+inner join  dbo.USR_CHILDPROJECTEXTENSION cp_ext on cp_ext.ID = slocation.FIELDOFFICEID
+inner join  dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on 
+				so.ID = so_child.ID
+left join dbo.USR_CHILDEXTENSION ch_ext on
+				so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
+left join dbo.usr_sponsorshipextension s_ext on s_ext.SPONSORSHIPOPPORTUNITYID = so.ID and s_ext.ISCURRENT = 1
+left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
+
+	where (cp_ext.UNSPONSOREDFUND = 0
+	        or 
+	      (cp_ext.UNSPONSOREDFUND = 1 and s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID is not null)
+	      )
+/*	       or 
+	       (slocation.STATUSCODE = 1 -- Inactive
+	        and slocation.SPONSORSHIPREASONID = '3EC2BD25-FEC7-41B9-8C4F-DDA63C063DEC') -- phasing out 
+	      )
+*/	   
+	   and ch_ext.Funded=1    
+	   and	so.ELIGIBILITYCODE in (0,1) -- @eligibilityCodePending, @eligibilityCodeEligible)
+),
+
+
+NotFundedRegisteredChildren (FIELDOFFICEID, PROJECTLOOKUPID, SPONSORSHIPOPPORTUNITYID, CURRENTSPONSORSHIPSTATUS)
+as
+(	select 	FIELDOFFICEID,
+			dbo.USR_UFN_CHILDPROJECT_GETLOOKUPID (FIELDOFFICEID) as PROJECTLOOKUPID, 
+			so.ID SPONSORSHIPOPPORTUNITYID,
+			--case 
+			--	when dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS(so.ID) > 0 then 'Sponsored'
+			--	when AVAILABILITYCODE = 1 then 'Unsponsored - Reserved'
+			--	else 'Unsponsored'
+			--end as SPONSORSHIPSTATUS,
+			--coalesce (dbo.USR_UFN_CHILD_GETCURRENTSTATUSFROMSPONSORSHIPEXTENSION (so.ID),'') as CURRENTSPONSORSHIPSTATUS1,
+			coalesce(ct.[DESCRIPTION],'') as CURRENTSPONSORSHIPSTATUS
+        
+	  from	dbo.SPONSORSHIPOPPORTUNITY so 					
+inner join	dbo.SPONSORSHIPLOCATION slocation on
+				slocation.ID = so.SPONSORSHIPLOCATIONID
+inner join  dbo.USR_CHILDPROJECTEXTENSION cp_ext on cp_ext.ID = slocation.FIELDOFFICEID
+inner join  dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on 
+				so.ID = so_child.ID
+left join dbo.USR_CHILDEXTENSION ch_ext on
+				so.ID = ch_ext.SPONSORSHIPOPPORTUNITYCHILDID
+left join dbo.usr_sponsorshipextension s_ext on s_ext.SPONSORSHIPOPPORTUNITYID = so.ID and s_ext.ISCURRENT = 1
+left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE ct on ct.ID = s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
+
+	where (cp_ext.UNSPONSOREDFUND = 0
+	        or 
+	      (cp_ext.UNSPONSOREDFUND = 1 and s_ext.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID is not null)
+	      )
+/*	       or 
+	       (slocation.STATUSCODE = 1 -- Inactive
+	        and slocation.SPONSORSHIPREASONID = '3EC2BD25-FEC7-41B9-8C4F-DDA63C063DEC') -- phasing out 
+	      )
+*/	   
+	   and ch_ext.Funded=0   
+	   and so.ELIGIBILITYCODE in (0,1) -- @eligibilityCodePending, @eligibilityCodeEligible)
+	   
+	   and (exists (select	
+	   					inter.ID 
+					from	
+						dbo.INTERACTION inter
+						join dbo.INTERACTIONSUBCATEGORY sub on inter.INTERACTIONSUBCATEGORYID = sub.ID
+					where	
+						so_child.CONSTITUENTID = inter.CONSTITUENTID
+					and	inter.STATUSCODE = 	1 -- Pending
+					and (  sub.ID =	(select	
+										subcat.ID	
+									from	
+										dbo.INTERACTIONSUBCATEGORY subcat
+										inner join	dbo.INTERACTIONCATEGORY cat on subcat.INTERACTIONCATEGORYID = cat.ID
+									where 
+										lower (subcat.NAME) = lower ('Annual Photo Update')
+									and	lower (cat.NAME) = lower ('Child Annual Update'))
+						or
+						
+						   sub.ID =	(select	
+										subcat.ID	
+									from	
+										dbo.INTERACTIONSUBCATEGORY subcat
+										inner join	dbo.INTERACTIONCATEGORY cat on subcat.INTERACTIONCATEGORYID = cat.ID
+									where 
+										lower (subcat.NAME) = lower ('Annual Child Letter')
+									and	lower (cat.NAME) = lower ('Child Annual Update'))
+						)
+					and cast(dateadd (d, 60, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date)
+					)
+			)
+),
+
+RegisteredChildrenTotals (FIELDOFFICEID, PROJECTLOOKUPID, SPONSOREDCOUNT, UNSPONSOREDCOUNT, TOTALCHILDCOUNT)
+as
+(
+select 
+	FIELDOFFICEID,
+	PROJECTLOOKUPID, 
+	sum(case when CURRENTSPONSORSHIPSTATUS='Sponsored' then 1 else 0 end) as SPONSOREDCOUNT, 
+	sum(case when CURRENTSPONSORSHIPSTATUS<>'Sponsored' and CURRENTSPONSORSHIPSTATUS is not null then 1 else 0 end) as UNSPONSOREDCOUNT, 
+	count(*) as TOTALCHILDCOUNT
+from 
+	RegisteredChildren 
+group by FIELDOFFICEID, PROJECTLOOKUPID
+),
+
+NotFundedRegisteredChildrenTotals (FIELDOFFICEID, PROJECTLOOKUPID, SPONSOREDCOUNT, UNSPONSOREDCOUNT, TOTALCHILDCOUNT)
+as
+(
+select 
+	FIELDOFFICEID,
+	PROJECTLOOKUPID, 
+	sum(case when CURRENTSPONSORSHIPSTATUS='Sponsored' then 1 else 0 end) as SPONSOREDCOUNT, 
+	sum(case when CURRENTSPONSORSHIPSTATUS<>'Sponsored' and CURRENTSPONSORSHIPSTATUS is not null then 1 else 0 end) as UNSPONSOREDCOUNT, 
+	count(*) as TOTALCHILDCOUNT
+from 
+	NotFundedRegisteredChildren 
+group by FIELDOFFICEID, PROJECTLOOKUPID
+)
+select 
+	coalesce (rct.FIELDOFFICEID, nft.FIELDOFFICEID) as FIELDOFFICEID,
+	coalesce (rct.PROJECTLOOKUPID, nft.PROJECTLOOKUPID) as PROJECTLOOKUPID,
+	convert (varchar(10), GETDATE(), 1) as DATADATE,
+	coalesce (rct.SPONSOREDCOUNT, 0) as SPONSOREDCOUNT,
+	coalesce (rct.UNSPONSOREDCOUNT, 0) as UNSPONSOREDCOUNT,
+	coalesce (rct.TOTALCHILDCOUNT, 0) as TOTALCHILDCOUNT, 
+	coalesce (nft.SPONSOREDCOUNT, 0) as UNFUNDEDSPONSOREDCOUNT,
+	coalesce (nft.UNSPONSOREDCOUNT, 0) as UNFUNDEDUNSPONSOREDCOUNT,
+	coalesce (nft.TOTALCHILDCOUNT, 0) as UNFUNDEDTOTALCHILDCOUNT
+from 	
+	RegisteredChildrenTotals rct
+	full outer join NotFundedRegisteredChildrenTotals nft on rct.FIELDOFFICEID = nft.FIELDOFFICEID
+		
+	
+
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="System record ID" Category="System Fields" Name="FIELDOFFICEID" />
+			<OutputField Name="PROJECTLOOKUPID" Caption="Project Lookup ID" DataType="String" />
+			<OutputField Name="DATADATE" Caption="Data Date" DataType="Date" />
+			<OutputField Name="SPONSOREDCOUNT" Caption="Sponsored Count" DataType="Integer" />
+			<OutputField Name="UNSPONSOREDCOUNT" Caption="Unsponsored Count" DataType="Integer" />
+			<OutputField Name="TOTALCHILDCOUNT" Caption="Total Funded Child Count" DataType="Integer" />
+			<OutputField Name="UNFUNDEDSPONSOREDCOUNT" Caption="Unfunded Sponsored Count" DataType="Integer" />
+			<OutputField Name="UNFUNDEDUNSPONSOREDCOUNT" Caption="Unfunded Unsponsored Count" DataType="Integer" />
+			<OutputField Name="UNFUNDEDTOTALCHILDCOUNT" Caption="Total Unfunded Child Count" DataType="Integer" />
+		</OutputFields>
+	</Output>
+
+</QueryViewSpec>
+
