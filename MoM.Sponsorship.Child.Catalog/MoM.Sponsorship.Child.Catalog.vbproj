@@ -580,6 +580,9 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_MULTIPLECURRENTHEADSHOTATTACHMENTS.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOATTACHMENTSDIFFERENTYEARS.xml" />
     <EmbeddedResource Include="Query Views\ChildProjectDisbursementWithNotFunded.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildSearch.Partner.Datalist.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
