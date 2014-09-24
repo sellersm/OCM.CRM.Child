@@ -583,7 +583,7 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildSearch.Partner.Datalist.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Website and App Specs\Standard\Website.ChildInfo.View.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildInfo.View.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
