@@ -20,6 +20,7 @@
 	31-Jul-2013		CMayeda			Added Reservation Keys 'Website H', 'Website I', 'Website J'
 	10-Dec-2014		CMayeda			Added Reservation Key  'Website A'
 	01-Jun-2015		CMayeda			Added Reservation Keys like 'Add-A-Child Campaign\Younger%' or 'Add-A-Child Campaign\Older%'
+	09-Jun-2015		CMayeda			Added Pending Eligibility for 'Add-A-Child Campaign\Older%' reservation kesys
 	-->
 
     
@@ -53,15 +54,21 @@
  LEFT OUTER JOIN dbo.CONSTITUENT childprojectconst on childprojectconst.ID = projectext.ID       -- This is the constituent record that has note of type "Project Bio"
  LEFT OUTER JOIN dbo.USR_COUNTRYEXTENSION countryext on projectext.COUNTRYEXTENSIONID = countryext.ID
  LEFT OUTER JOIN dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID         -- This is the constituent record that has the note of type "Country Bio"
-	  WHERE (RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website A', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))
+	  WHERE AVAILABILITY = 'Reserved'
+	    and (
+				(
+					(RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website A', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))
+						or
+					 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Add-A-Child Campaign\Younger%')
+					 )
+				 and ELIGIBILITY = 'Eligible'
+				)
 			 or
-			 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Add-A-Child Campaign\Younger%')
-			 or
-			 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Add-A-Child Campaign\Older%')
+				(    RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Add-A-Child Campaign\Older%')
+				 and ELIGIBILITY in ('Eligible', 'Pending')
+				)
 			)
-        and ELIGIBILITY = 'Eligible'
-	    and AVAILABILITY = 'Reserved'
-
+			
    order by newid()
 
 
