@@ -1,9 +1,9 @@
 <PackageSpec 
     xmlns="bb_appfx_package"
     xmlns:common="bb_appfx_commontypes"
-    ID="150e76c8-958f-4c11-b056-ac6af5b41045"
-    Name="Website And App Package"
-    Description="Specs for the Website and for the App"
+    ID="5BFFAFFA-7204-458D-B1BD-F4439EF6DDD2"
+    Name="Website Partner and Event Package"
+    Description="Specs for the Website related to Partner and Event child searches"
     Author="Cary Mayeda"
     >
 
