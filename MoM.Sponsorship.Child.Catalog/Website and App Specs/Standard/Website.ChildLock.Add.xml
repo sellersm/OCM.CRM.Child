@@ -1,0 +1,149 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="5df21848-a7fe-4929-9d8d-ee0e9e2e3346" 
+	Name="Website Child Lock Add Data Form"
+	Description="Used to lock a child on the website" 
+	Author="Cary Mayeda"
+	DataFormInstanceID="b46fe5b4-0fbf-4dfc-8f9b-e6b19f281720" 
+	RecordType="Website Child Lock"
+	common:SecurityUIFolder="Website"
+	>
+	<!-- 
+	Remarks:    Returns 0 if the child can be locked and the child is Eligible and Reserved
+				Otherwise an error is raised
+				
+				Note: There is no preference to extending a lock if a person's lock expired and then they 
+					  try to lock again.  The expired lock is released and the first person to obtain the 
+					  lock wins.
+
+	History:
+	Date            Modified By     Comments
+	29-Jun-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataForm>
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_WEBSITECHILDLOCK">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+				
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_WEBSITECHILDLOCK
+(
+    @ID uniqueidentifier = null output,
+	@CONTEXTID uniqueidentifier,				-- SPONSORSHIPOPPORTUNITYCHILDID
+	@SESSIONID nvarchar(80) = '',
+    @CHANGEAGENTID uniqueidentifier = null
+)
+as
+
+begin
+	set nocount on;
+
+	declare @lockTimeout int 
+	set @lockTimeout = -10
+	
+	declare @errorLockPrefix nvarchar(100)
+	set @errorLockPrefix = 'Could not lock child. '
+	
+	declare @errorLockUnsuccessful nvarchar(100)
+	set @errorLockUnsuccessful = @errorLockPrefix + 'Child is locked by another user.'
+
+	declare @errorChildNotEligible nvarchar(100)
+	set @errorChildNotEligible = @errorLockPrefix + 'Child is not eligible.'
+
+	declare @errorChildNotReserved nvarchar(100)
+	set @errorChildNotReserved = @errorLockPrefix + 'Child is not reserved.'
+
+	if @ID is null
+		set @ID = newid()
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+	declare @currentDateTime datetime
+	set @currentDateTime  = getdate()
+	
+
+	begin try
+	-- Determine if the child is reserved and eligible
+	
+		declare @sponsorshipOpportunityAvailabilityCode int
+		declare @sponsorshipOpportunityEligibilityCode int
+
+		select 
+			@sponsorshipOpportunityAvailabilityCode  = AVAILABILITYCODE,
+			@sponsorshipOpportunityEligibilityCode = ELIGIBILITYCODE
+		from
+			dbo.SPONSORSHIPOPPORTUNITY
+		where
+			ID = @CONTEXTID
+	
+		if coalesce (@sponsorshipOpportunityAvailabilityCode, -1) <> 1
+		begin
+			raiserror (@errorChildNotReserved, 14, 1)
+			return 1
+		end	
+
+		if coalesce (@sponsorshipOpportunityEligibilityCode, -1) <> 1
+		begin
+			raiserror (@errorChildNotEligible, 14, 1)
+			return 1
+		end	
+	
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+	begin try
+		-- remove old locks for the same child (including this session 
+		delete dbo.USR_WEBSITE_CHILDLOCK 
+		 where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+		   and DATEADDED < dateadd(minute, @lockTimeout, @currentDateTime)
+		
+		if not exists (select ID from dbo.USR_WEBSITE_CHILDLOCK where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID and SESSIONID = @SESSIONID)
+		begin
+			-- If the insert is successful, 
+			insert dbo.USR_WEBSITE_CHILDLOCK
+			(id, SPONSORSHIPOPPORTUNITYCHILDID, SESSIONID, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+			values
+			(@ID, @CONTEXTID, @SESSIONID, @CHANGEAGENTID, @CHANGEAGENTID, @currentDateTime, @currentDateTime )
+		end
+	end try
+
+	begin catch
+		if ERROR_NUMBER() = 2627
+		begin
+			raiserror (@errorLockUnsuccessful, 14, 1)
+			return 1
+		end
+		else
+		begin
+			exec dbo.USP_RAISE_ERROR
+			return 1
+		end
+	end catch
+
+	return 0				
+
+end
+
+]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Website Child Lock" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String" MaxLength="80" />
+		</common:FormFields>
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

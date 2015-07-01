@@ -1,0 +1,85 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="2CF356C0-2B0B-4BC5-B495-F5377D16ADEE"
+	Name="USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL"
+	Description="Returns children reserved for the Hills Alive general website search"
+	Author="Cary Mayeda"
+	SPName="USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL"
+	>
+
+	<!-- 
+	Remarks:	Called by USR_USP_DATALIST_WEBSITE_GETAVAILABLECHILDRENFORPARTNER (Website Church Partner Child Search Data List)
+ 
+	History:
+	Date            Modified By     Comments
+	29-Jun-2015		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL (
+	@GENDER nvarchar(25),
+    @AGEMIN nvarchar(10),
+	@AGEMAX nvarchar(10),
+	@COUNTRY nvarchar(25)
+)
+as
+begin
+	set @GENDER = nullif(@GENDER, '');
+	-- ** NEED TO CONVERT TO INTEGER	
+    set @AGEMIN = nullif(@AGEMIN, '');	
+    set @AGEMAX = nullif(@AGEMAX, '');
+    set @COUNTRY = nullif(@COUNTRY, '');
+
+	;with ChildList as
+	(
+	select top 500 
+		so.ID,
+		so_child.FIRSTNAME,
+		so_child.LASTNAME,
+		so_child.FIRSTNAME + ' ' + so_child.LASTNAME AS FULLNAME,
+		countryconst.KEYNAME as COUNTRYNAME,
+		countryconst.ID as COUNTRYID,
+		so_child.AGE,
+		SUBSTRING(so_child.BIRTHDATE,5,2) + '/' + SUBSTRING(so_child.BIRTHDATE,7,2) + '/' + SUBSTRING(so_child.BIRTHDATE,1,4)  as BIRTHDATE,
+		CASE so_child.GENDER
+			WHEN 'Female' THEN 'Girl'
+			WHEN 'Male' THEN 'Boy'
+		END AS GENDER,
+		so_child.GENDERCODE,
+		childprojectconst.KEYNAME as PROJECTNAME,
+		childprojectconst.ID AS PROJECTID,
+		so.LOOKUPID as CHILDNO,
+		ELIGIBILITY,
+		AVAILABILITY
+	from	
+		dbo.SPONSORSHIPOPPORTUNITY so
+		inner join dbo.SPONSORSHIPLOCATION sloc on sloc.ID = so.SPONSORSHIPLOCATIONID
+		inner join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = so.ID
+		--inner join dbo.SMARTFIELD0CEE2E20081D42CA9A9E87847970093F sf on sf.ID = so.ID   				-- Greatest Need Smart Field
+		left outer join dbo.USR_CHILDPROJECTEXTENSION projectext on sloc.FIELDOFFICEID = projectext.ID
+		left outer join dbo.CONSTITUENT childprojectconst on childprojectconst.ID = projectext.ID       -- This is the constituent record that has note of type "Project Bio"
+		left outer join dbo.USR_COUNTRYEXTENSION countryext on projectext.COUNTRYEXTENSIONID = countryext.ID
+		left outer join dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID        			-- This is the constituent record that has the note of type "Country Bio"
+		 
+	where 
+		RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Website\Hills Alive%')
+	and ELIGIBILITY = 'Eligible'
+	and AVAILABILITY = 'Reserved'
+	)
+			
+	select * 
+	from 
+		ChildList
+	where
+		((@GENDER is null) or (GENDER = @GENDER))
+	and ((@COUNTRY is null) or (upper(COUNTRYNAME) = upper(@COUNTRY)))
+	and ((@AGEMIN is null) or (@AGEMAX is null) or (AGE >= @AGEMIN and AGE <= @AGEMAX))
+	order by CHILDNO			
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

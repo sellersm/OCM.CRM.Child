@@ -1,0 +1,32 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="dab8aecb-252f-46c6-a88b-9c136fa3e14a"
+	Name="Website Child Lock"
+	Description="Used to track locks on available children on the website"
+	Author="Cary Mayeda"
+	Tablename="USR_WEBSITE_CHILDLOCK"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+		<ForeignKeyField Description="FK Field to SponsorshipOpportunity" Name="SPONSORSHIPOPPORTUNITYCHILDID" Required="true" ForeignTable="SPONSORSHIPOPPORTUNITYCHILD" OnDelete="CascadeDelete" Cardinality="OneToOne" />
+		<TextField Description="Session ID" Name="SESSIONID" Required="true" Length="80"/>
+	</Fields>
+
+	<!-- define any additional check constraints on the table 
+	<CheckConstraints>
+
+	</CheckConstraints>
+
+	<!- define any indexes on the table 
+	<Indexes>
+
+	</Indexes>
+		
+	<!- define any triggers on the table 
+	<Triggers>
+
+	</Triggers>
+-->
+</TableSpec>

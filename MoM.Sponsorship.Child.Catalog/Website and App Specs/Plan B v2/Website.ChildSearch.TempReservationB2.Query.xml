@@ -21,6 +21,7 @@
 	10-Dec-2014		CMayeda			Added Reservation Key  'Website A'
 	01-Jun-2015		CMayeda			Added Reservation Keys like 'Add-A-Child Campaign\Younger%' or 'Add-A-Child Campaign\Older%'
 	09-Jun-2015		CMayeda			Added Pending Eligibility for 'Add-A-Child Campaign\Older%' reservation kesys
+	30-Jun-2015		CMayeda			Added Reservation Keys for Hills Alive and i5 church
 	-->
 
     
@@ -60,6 +61,10 @@
 					(RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website A', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))
 						or
 					 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Add-A-Child Campaign\Younger%')
+					    or 
+					 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Website\Hills Alive%')  -- works for both the general search and Website\Hills Alive cards
+					    or
+					 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Partner Web\i5%')
 					 )
 				 and ELIGIBILITY = 'Eligible'
 				)
