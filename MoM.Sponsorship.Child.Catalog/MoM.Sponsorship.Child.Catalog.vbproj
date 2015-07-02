@@ -595,6 +595,7 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Datalist.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.DemoModeTest.Table.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

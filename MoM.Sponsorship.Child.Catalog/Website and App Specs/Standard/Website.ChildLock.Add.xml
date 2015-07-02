@@ -42,7 +42,7 @@ begin
 
 	declare @lockTimeout int 
 	set @lockTimeout = -10
-	
+
 	declare @errorLockPrefix nvarchar(100)
 	set @errorLockPrefix = 'Could not lock child. '
 	
@@ -54,6 +54,9 @@ begin
 
 	declare @errorChildNotReserved nvarchar(100)
 	set @errorChildNotReserved = @errorLockPrefix + 'Child is not reserved.'
+
+	declare @sessionIDBlank nvarchar(100)
+	set @sessionIDBlank = @errorLockPrefix + 'Session Cookies must be enabled for this site.'
 
 	if @ID is null
 		set @ID = newid()
@@ -98,18 +101,40 @@ begin
 	end catch
 
 	begin try
-		-- remove old locks for the same child (including this session 
-		delete dbo.USR_WEBSITE_CHILDLOCK 
-		 where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
-		   and DATEADDED < dateadd(minute, @lockTimeout, @currentDateTime)
-		
-		if not exists (select ID from dbo.USR_WEBSITE_CHILDLOCK where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID and SESSIONID = @SESSIONID)
+		-- This check is completed after checking availablity / eligibility
+		if coalesce (@SESSIONID, '') = ''
 		begin
-			-- If the insert is successful, 
-			insert dbo.USR_WEBSITE_CHILDLOCK
-			(id, SPONSORSHIPOPPORTUNITYCHILDID, SESSIONID, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
-			values
-			(@ID, @CONTEXTID, @SESSIONID, @CHANGEAGENTID, @CHANGEAGENTID, @currentDateTime, @currentDateTime )
+			raiserror (@sessionIDBlank, 14, 1)
+			return 1
+		end
+		
+		set NOCOUNT ON;
+		declare @rowsUpdated integer
+		
+		-- Extend the lock if the sessionid already has a lock on the child.  This is especially useful at the end of the checkout process.
+		update dbo.USR_WEBSITE_CHILDLOCK
+		set	
+			DATEADDED = @currentDateTime
+		where
+			 SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID and SESSIONID = @SESSIONID
+		
+		set @rowsUpdated = @@ROWCOUNT
+		
+		if @rowsUpdated = 0 
+		begin
+			-- remove old locks for the same child (including this session 
+			delete dbo.USR_WEBSITE_CHILDLOCK 
+			 where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID
+			   and DATEADDED < dateadd(minute, @lockTimeout, @currentDateTime)
+		
+			if not exists (select ID from dbo.USR_WEBSITE_CHILDLOCK where SPONSORSHIPOPPORTUNITYCHILDID = @CONTEXTID and SESSIONID = @SESSIONID)
+			begin
+				-- If the insert is successful, then the lock was acquired
+				insert dbo.USR_WEBSITE_CHILDLOCK
+				(id, SPONSORSHIPOPPORTUNITYCHILDID, SESSIONID, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+				values
+				(@ID, @CONTEXTID, @SESSIONID, @CHANGEAGENTID, @CHANGEAGENTID, @currentDateTime, @currentDateTime )
+			end
 		end
 	end try
 
