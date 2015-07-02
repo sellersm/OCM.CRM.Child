@@ -53,10 +53,14 @@
 		<!-- SQL Stored Procedures -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_OLDER.xml" />
 
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_GENERAL.xml" />
+		
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_OLDER.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_YOUNGER.xml" />
-		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_GENERAL.xml" />
+		
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL.xml" />
+
+		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_FATHERSHOUSE.xml" />
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_I5CHURCH.xml" />
 
 		<!-- Datalists -->

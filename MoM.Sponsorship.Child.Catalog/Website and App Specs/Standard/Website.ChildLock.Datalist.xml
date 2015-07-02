@@ -1,0 +1,134 @@
+﻿<DataListSpec
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes"
+	ID="BB814254-7FF4-45DB-AFB6-7DA3E4DD503B"
+	Name="Website Child Lock Data List"
+	Description="Used to determine if a child is locked on the website"
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Website">
+    <!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Jun-2015		CMayeda			Modified this to call a sproc for each partner / event
+	-->
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_WEBSITE_CHILDLOCK">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_WEBSITE_CHILDLOCK( 
+	@SPONSORSHIPOPPORTUNITYID uniqueidentifier,  
+	@SESSIONID nvarchar(25)
+)
+as
+begin
+
+	declare @lockTimeout int 
+	set @lockTimeout = -10
+	
+	declare @errorLockPrefix nvarchar(100)
+	set @errorLockPrefix = 'Could not lock child. '
+	
+	declare @errorLockUnsuccessful nvarchar(100)
+	set @errorLockUnsuccessful = @errorLockPrefix + 'Child is locked by another user.'
+
+	declare @errorChildNotEligible nvarchar(100)
+	set @errorChildNotEligible = @errorLockPrefix + 'Child is not eligible.'
+
+	declare @errorChildNotReserved nvarchar(100)
+	set @errorChildNotReserved = @errorLockPrefix + 'Child is not reserved.'
+
+    if @SESSIONID is null
+	begin
+		raiserror ('SESSION ID cannot be null.', 14, 1)
+		return 1
+	end
+
+	declare @currentDateTime datetime
+	set @currentDateTime  = getdate()
+	
+
+	begin try
+	-- Determine if the child is reserved and eligible
+	
+		declare @sponsorshipOpportunityAvailabilityCode int
+		declare @sponsorshipOpportunityEligibilityCode int
+
+		select 
+			@sponsorshipOpportunityAvailabilityCode  = AVAILABILITYCODE,
+			@sponsorshipOpportunityEligibilityCode = ELIGIBILITYCODE
+		from
+			dbo.SPONSORSHIPOPPORTUNITY
+		where
+			ID = @SPONSORSHIPOPPORTUNITYID
+	
+		if coalesce (@sponsorshipOpportunityAvailabilityCode, -1) <> 1
+		begin
+			raiserror (@errorChildNotReserved, 14, 1)
+			return 1
+		end	
+
+		if coalesce (@sponsorshipOpportunityEligibilityCode, -1) <> 1
+		begin
+			raiserror (@errorChildNotEligible, 14, 1)
+			return 1
+		end	
+	
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+	-- remove old locks for the same child (including this session 
+	delete dbo.USR_WEBSITE_CHILDLOCK 
+		where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYID
+		and DATEADDED < dateadd(minute, @lockTimeout, @currentDateTime)
+		
+	select 
+		ID, 
+		SPONSORSHIPOPPORTUNITYCHILDID, 
+		SESSIONID,
+		DATEADDED,
+		DATEADDED as TIMEADDED
+	from 
+		dbo.USR_WEBSITE_CHILDLOCK 
+	where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYID 
+		and SESSIONID <> @SESSIONID
+		  
+	
+	return 0				
+
+end
+
+	]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Sponsorship Opportunity Child" RecordIDParameter="SPONSORSHIPOPPORTUNITYID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP -->
+	<Parameters>
+
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+				<OutputField FieldID="ID" Caption="System record ID" DataType ="Guid"/>
+				<OutputField FieldID="SPONSORSHIPOPPORTUNITYID" Caption="Sponsorship Opportunity ID" DataType="Guid" />
+				<OutputField FieldID="SESSIONID" Caption="Session ID" DataType="String" />
+				<OutputField FieldID="DATEADDED" Caption="Date Added: Date" DataType="Date" />
+				<OutputField FieldID="TIMEADDED" Caption="Date Added: Time" DataType="Time" />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

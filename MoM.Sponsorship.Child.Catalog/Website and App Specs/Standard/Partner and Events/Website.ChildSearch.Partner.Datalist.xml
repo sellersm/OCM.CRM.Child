@@ -24,7 +24,7 @@
 		<common:CreateProcedureSQL>
 			<![CDATA[
 create procedure dbo.USR_USP_DATALIST_WEBSITE_GETAVAILABLECHILDRENFORPARTNER( 
-	@PARTNERLOOKUPID nvarchar(25),  -- Partner Constituent Lookup ID
+	@PARTNERLOOKUPID nvarchar(25),  -- Alpha numeric key (not constituent lookup id)
 	@GENDER nvarchar(25),
     @AGEMIN nvarchar(10),
 	@AGEMAX nvarchar(10),
@@ -64,9 +64,15 @@ begin
 				end
 				else
 				begin
-					if lower(@PARTNERLOOKUPID) = 'hillsalivegeneral'
+					if  lower(@PARTNERLOOKUPID) = 'fathershouse'
 					begin
-						exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+						exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_FATHERSHOUSE @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+					end
+					else
+						if lower(@PARTNERLOOKUPID) = 'hillsalivegeneral'
+						begin
+							exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+						end
 					end
 				end
 			end
