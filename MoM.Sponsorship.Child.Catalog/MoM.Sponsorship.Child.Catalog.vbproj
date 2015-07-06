@@ -595,6 +595,10 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Datalist.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Monitor.DataList.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Edit.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Monitor.Page.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Delete.RecordOperation.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

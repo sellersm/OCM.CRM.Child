@@ -1,0 +1,40 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="90c200bb-9c53-437d-b5d9-0f43da854d41" 
+	Name="Website Child Lock Delete Record Operation" 
+	Description="Used to delete a single child lock"
+	Author="Cary Mayeda"
+	OperationType="Delete"
+	RecordType="Website Child Lock"
+	common:SecurityUIFolder="Website"
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_WEBSITE_CHILDLOCK_DELETE">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_WEBSITE_CHILDLOCK_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_USR_WEBSITE_CHILDLOCK_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+				]]>
+			</common:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+
+</RecordOperationSpec>

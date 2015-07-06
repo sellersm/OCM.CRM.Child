@@ -1,0 +1,56 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="013a8424-e528-437b-a9b2-c1690145bbec" 
+	Name="Website Child Lock Monitor" 
+	Description="Used to monitor child locks for the website" 
+	Author="Cary Mayeda"
+	ExpressionDataFormID="00000000-0000-0000-0000-000000000000" 
+	ContextRecordType="Website Child Lock" 
+	>
+	
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	06-Jul-2015		CMayeda			Initial Version
+	-->
+
+	<PageHeader Caption="Website Child Lock Monitor" />
+		<Tabs>
+			<Tab Caption="Child Lock Monitor" ID="fbfc5d56-8509-4f44-9bde-05354fcafcd2">
+				<Sections>
+					<Section ID="19619a3e-6e0d-4536-a89f-5d742dd2d3c2" Caption="Website Child Locks">
+						<DataList ID="b54699dc-035f-4305-a786-745d93b254a6">
+							<RenderStyle>
+								<StandardView />
+							</RenderStyle>
+						</DataList>
+						<Actions>
+							<Action ID="ec77e22d-aed4-41dc-9bb3-cbddabc04db0" Caption="Edit lock">
+								<ShowDataForm DataFormID="a11a3037-4949-450c-9bd2-21bce80d6254" xmlns="bb_appfx_commontypes">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+									<PostActionEvent>
+										<RefreshSection />
+									</PostActionEvent>
+								</ShowDataForm>
+							</Action>
+							<Action ID="50dd346d-7f5c-40f2-a218-8eab24a9e560" Caption="Delete lock">
+								<ExecuteRecordOperation RecordOperationID="90c200bb-9c53-437d-b5d9-0f43da854d41" xmlns="bb_appfx_commontypes">
+									<ActionContext>
+										<SectionField>ID</SectionField>
+									</ActionContext>
+									<PostActionEvent>
+										<RefreshSection />
+									</PostActionEvent>
+								</ExecuteRecordOperation>
+							</Action>
+						</Actions>
+					</Section>
+				</Sections>
+			</Tab>
+		</Tabs>
+	</PageDefinitionSpec>
