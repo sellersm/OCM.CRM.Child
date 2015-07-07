@@ -1,0 +1,80 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="BDA6D045-3F20-44C0-BFBE-EE1963893F1E" 
+	Name="Website Session Page Activity Add Data Form"
+	Description="Used to add an instance of a page load for a particular session" 
+	Author="Cary Mayeda"
+	DataFormInstanceID="BFE2C12E-B6C9-4D1A-8102-FCD6F18B8B17" 
+	RecordType="Website Session Page Activity"
+	common:SecurityUIFolder="Website"
+	>
+	<!-- 
+	Remarks:  This is called from the custom BBIS part - SessionPageActivityDisplay
+
+	History:
+	Date            Modified By     Comments
+	07-Jul-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataForm>
+		<!-- describe the save SP -->
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_WEBSITE_SESSIONPAGEACTIVITY">
+			<common:CreateProcedureSQL>
+				<![CDATA[
+				
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_WEBSITE_SESSIONPAGEACTIVITY
+(
+    @ID uniqueidentifier = null output,
+	@CONTEXTID int,							
+	@SESSIONID nvarchar(80) = '',
+	@PAGEID int = 0,
+	@PAGEURL nvarchar(1000) = '',
+	@PAGENAME nvarchar(255) = '',
+	@ACTUALURL nvarchar(1000) = '',
+    @CHANGEAGENTID uniqueidentifier = null
+)
+as
+
+begin
+	set nocount on;
+
+	if @ID is null
+		set @ID = newid()
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+	declare @currentDateTime datetime
+	set @currentDateTime  = getdate()
+	
+	insert dbo.USR_WEBSITE_SESSIONPAGEACTIVITY
+	(ID, SESSIONID, PAGEID, PAGEURL, PAGENAME, ACTUALURL, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+	values
+	(@ID, @SESSIONID, @PAGEID, @PAGEURL, @PAGENAME, @ACTUALURL, @CHANGEAGENTID, @CHANGEAGENTID, @currentDateTime, @currentDateTime )
+	
+	return 0				
+
+end
+
+]]>
+			</common:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<!-- describe the context ID for this form (if applicable), which corresponds to a parameter in the SP. -->
+	<Context ContextRecordType="Web Page" RecordIDParameter="CONTEXTID"/>
+
+	<!-- describe fields on the form, which correspond to parameters on the SP.  Note that system parameters 
+	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
+	<common:FormMetaData FixedDialog="true">
+		<common:FormFields>
+			<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String" MaxLength="80" />
+			<common:FormField FieldID="PAGEID" Caption="Page ID" DataType="Integer" />
+			<common:FormField FieldID="PAGEURL" Caption="Page URL" DataType="String" MaxLength="1000" />
+			<common:FormField FieldID="PAGENAME" Caption="Page Name" DataType="String" MaxLength="255" />
+			<common:FormField FieldID="ACTUALURL" Caption="Actual URL" DataType="String" MaxLength="1000" />
+		</common:FormFields>
+	</common:FormMetaData>
+
+</AddDataFormTemplateSpec>

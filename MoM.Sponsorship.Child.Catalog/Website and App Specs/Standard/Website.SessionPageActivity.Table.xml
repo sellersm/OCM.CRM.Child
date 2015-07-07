@@ -1,0 +1,42 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1740B406-8079-44F4-8BC0-5F8BC96E092C"
+	Name="Website Session Page Activity"
+	Description="Used to track session activity"
+	Author="Cary Mayeda"
+	Tablename="USR_WEBSITE_SESSIONPAGEACTIVITY"		   
+	>
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	07-Jul-2015		CMayeda			Initial Version
+	-->
+
+	<!-- define fields on the table -->
+	<Fields>
+		<TextField Name="SESSIONID" Description="Session ID" Required="true" Length="80"/>
+		<NumberField Name="PAGEID" Description="Page ID" Type="int" />
+		<TextField Name="PAGEURL" Description="Page URL" Required="false" Length="1000" />
+		<TextField Name="PAGENAME" Description="Page Name" Required="false" Length="255" />
+		<TextField Name="ACTUALURL" Description="Actual URL" Required="false" Length="1000" />
+	</Fields>
+
+	<!-- define any additional check constraints on the table 
+	<CheckConstraints>
+
+	</CheckConstraints>
+
+	<!- define any indexes on the table 
+	<Indexes>
+
+	</Indexes>
+		
+	<!- define any triggers on the table 
+	<Triggers>
+
+	</Triggers>
+-->
+</TableSpec>

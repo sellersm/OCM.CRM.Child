@@ -1,0 +1,54 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e93ce79e-9fdf-42cf-be08-f714f5b433c9"
+	Name="Website Session Page Activity Query"
+	Description="Used to review specific pages hits during a particula session."
+	Author="Cary Mayeda"
+	IsRoot="true"
+	PrimaryKeyField="ID"
+	RecordType="Website Session Page Activity"
+	common:SecurityUIFolder="Website"
+	>
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	07-Jul-2015		CMayeda			Initial Version
+	-->
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_WEBSITE_SESSIONPAGEACTIVITY">
+		<ViewSQL>
+			<![CDATA[
+select
+	ID,
+	SESSIONID,
+	PAGEID,
+	PAGEURL,
+	PAGENAME, 
+	ACTUALURL,
+	convert(varchar, DATEADDED, 120) as DATEADDED
+    
+from 
+	dbo.USR_WEBSITE_SESSIONPAGEACTIVITY				
+			]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+			<OutputField Caption="System record ID" Category="System Fields" Name="ID" />
+			<OutputField Name="SESSIONID" Caption="Session ID" DataType="String" />
+			<OutputField Name="PAGEID" Caption="Page ID" DataType="Integer" />
+			<OutputField Name="PAGEURL" Caption="Page URL" DataType="String" />
+			<OutputField Name="PAGENAME" Caption="Page Name" DataType="String" />
+			<OutputField Name="ACTUALURL" Caption="Actual URL" DataType="String" />
+			<OutputField Name="DATEADDED" Caption="Date Added" DataType="String" />
+		</OutputFields>
+	</Output>
+
+</QueryViewSpec>
+

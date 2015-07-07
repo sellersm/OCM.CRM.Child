@@ -591,6 +591,8 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Add.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_FATHERSHOUSE.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Table.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Add.xml" />
     <Content Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.PackageVersion.DataList.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Datalist.xml">
       <SubType>Designer</SubType>
@@ -599,6 +601,7 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Edit.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Monitor.Page.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Delete.RecordOperation.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Query.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
