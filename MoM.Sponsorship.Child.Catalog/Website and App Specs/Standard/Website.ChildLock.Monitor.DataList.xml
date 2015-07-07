@@ -35,12 +35,10 @@ begin
 		dbo.USR_WEBSITE_CHILDLOCK cl
 		left join dbo.SPONSORSHIPOPPORTUNITY so on so.ID = cl.SPONSORSHIPOPPORTUNITYCHILDID
 		left join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so.ID = so_child.ID
-		left join dbo.CONSTITUENT c on c.ID = so_child.CONSTITUENTID
 		-- CHANGE THIS BEFORE DEPLOYING
-		left join dbo.ATTRIBUTEEAE195F1DF2A4753B831965F4E2D0A94 haid on haid.CONSTITUENTID = c.ID
-		--temp table since prod attribute table doesn't exist		left join dbo.ATTRIBUTE146E8E1749F14FB9A528946D09E609F5 haid on haid.CONSTITUENTID = c.ID
+		left join dbo.ATTRIBUTEEAE195F1DF2A4753B831965F4E2D0A94 haid on haid.ID = so.ID
+		--temp table since prod attribute table doesn't exist		left join dbo.ATTRIBUTE7BF2131653594EC3BA18779215983CC7 haid on haid.ID = so.ID
 	
-
 end
 	
 			]]>
