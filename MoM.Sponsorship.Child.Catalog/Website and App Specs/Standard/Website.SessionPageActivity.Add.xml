@@ -69,7 +69,7 @@ end
 	like the context @ID, @CONTEXTID, and @CURRENTAPPUSERID need not be listed. -->
 	<common:FormMetaData FixedDialog="true">
 		<common:FormFields>
-			<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String" MaxLength="80" />
+			<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String" MaxLength="80"  />
 			<common:FormField FieldID="PAGEID" Caption="Page ID" DataType="Integer" />
 			<common:FormField FieldID="PAGEURL" Caption="Page URL" DataType="String" MaxLength="1000" />
 			<common:FormField FieldID="PAGENAME" Caption="Page Name" DataType="String" MaxLength="255" />

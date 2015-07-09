@@ -197,10 +197,10 @@ begin
 						   			 and	
 									 	(convert (date, dateadd (d, @maxDaysPastDue, inter.EXPECTEDDATE)) <= convert (date, GETDATE()))
 									)
-								 or 
-									(sub.ID = @subcategoryID_ChildAnnualPhotoUpdate	 and cast(dateadd (d, @maxDaysAnnualPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
-								 or 
-									(sub.ID = @subcategoryID_ChildAnnualLetter		 and cast(dateadd (d, @maxDaysAnnualLetterPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+--								 or 
+--									(sub.ID = @subcategoryID_ChildAnnualPhotoUpdate	 and cast(dateadd (d, @maxDaysAnnualPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+--								 or 
+--									(sub.ID = @subcategoryID_ChildAnnualLetter		 and cast(dateadd (d, @maxDaysAnnualLetterPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
 								)
 									
 						)
@@ -248,10 +248,10 @@ begin
 						   			 and	
 									 	(convert (date, dateadd (d, @maxDaysPastDue, inter.EXPECTEDDATE)) <= convert (date, GETDATE()))
 									)
-								 or 
-									(sub.ID = @subcategoryID_ChildAnnualPhotoUpdate	 and cast(dateadd (d, @maxDaysAnnualPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
-								 or 
-									(sub.ID = @subcategoryID_ChildAnnualLetter		 and cast(dateadd (d, @maxDaysAnnualLetterPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+--								 or 
+--									(sub.ID = @subcategoryID_ChildAnnualPhotoUpdate	 and cast(dateadd (d, @maxDaysAnnualPhotoPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
+--								 or 
+--									(sub.ID = @subcategoryID_ChildAnnualLetter		 and cast(dateadd (d, @maxDaysAnnualLetterPastDue, inter.EXPECTEDDATE) as DATE) <= cast (getdate() as date))
 								)
 						)
 						   

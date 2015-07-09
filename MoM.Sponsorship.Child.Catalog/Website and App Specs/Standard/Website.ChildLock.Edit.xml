@@ -76,10 +76,10 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_WEBSITE_CHILDLOCK (
 	@CHANGEAGENTID uniqueidentifier = null,
 
 	@SESSIONID nvarchar(80),
-	@CHILDID uniqueidentifier,
-	@CHILDLOOKUPID nvarchar(100),
-	@HILLSALIVEID nvarchar(100),
-	@CHILDNAME nvarchar (255),
+--	@CHILDID uniqueidentifier,
+--	@CHILDLOOKUPID nvarchar(100),
+--	@HILLSALIVEID nvarchar(100),
+--	@CHILDNAME nvarchar (255),
 	@DATEADDED_DATE date,
 	@DATEADDED_TIME time(1)
 )
@@ -117,11 +117,11 @@ return 0;
 	like the record ID, DATALOADED, TSLONG, and CURRENTAPPUSERID need not be listed. -->
 	<common:FormMetaData FixedDialog="true">
 		<common:FormFields>
-			<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String" MaxLength="80" />
-			<common:FormField FieldID="CHILDID" Caption="Child ID" DataType="Guid" />
-			<common:FormField FieldID="CHILDLOOKUPID" Caption="Child Lookup ID" DataType="String" MaxLength="100" />
-			<common:FormField FieldID="HILLSALIVEID" Caption="Hills Alive ID" DataType="String" MaxLength="100" />
-			<common:FormField FieldID="CHILDNAME" Caption="Child Name" DataType="String" MaxLength="255" />
+			<common:FormField FieldID="SESSIONID" Caption="Session ID" DataType="String" MaxLength="80"  />
+			<common:FormField FieldID="CHILDID" Caption="Child ID" DataType="Guid" ReadOnly="true"/>
+			<common:FormField FieldID="CHILDLOOKUPID" Caption="Child Lookup ID" DataType="String" MaxLength="100" ReadOnly="true"/>
+			<common:FormField FieldID="HILLSALIVEID" Caption="Hills Alive ID" DataType="String" MaxLength="100" ReadOnly="true"/>
+			<common:FormField FieldID="CHILDNAME" Caption="Child Name" DataType="String" MaxLength="255" ReadOnly="true"/>
 			<common:FormField FieldID="DATEADDED_DATE" Caption="Date Added - Date" DataType="Date" />
 			<common:FormField FieldID="DATEADDED_TIME" Caption="Date Added - Time" DataType="Time" TimePrecision="1"/>
 		</common:FormFields>
