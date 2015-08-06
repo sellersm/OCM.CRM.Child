@@ -64,7 +64,7 @@ begin
 		left outer join dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID        			-- This is the constituent record that has the note of type "Country Bio"
 		 
 	where 
-	(RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Partner Web\i5%')
+	(RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Website\i5 Church%')
 			or (RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))
 				and childprojectconst.LOOKUPID in ('HN-025', 'IN-251', 'KE-032', 'PH-002')
 			)
