@@ -65,6 +65,9 @@ begin
 		 
 	where 
 		(RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Website\i5 Church%')
+			or
+		 RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME like 'Website Partner\HN-025%')
+
 			or (RESERVATIONKEYID in (select ID from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where NAME in ('Website', 'Website B', 'Website C', 'Website D', 'Website E', 'Website F', 'Website G', 'Website H', 'Website I', 'Website J'))
 				and childprojectconst.LOOKUPID in ('HN-025', 'IN-251', 'KE-032', 'PH-002')
 			)
