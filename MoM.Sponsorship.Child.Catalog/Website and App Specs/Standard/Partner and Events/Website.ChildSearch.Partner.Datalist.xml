@@ -74,6 +74,13 @@ begin
 						begin
 							exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
 						end
+						else
+						begin
+							if lower(@PARTNERLOOKUPID) = 'elevate'
+							begin
+								exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ELEVATE @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+							end
+						end
 					end
 				end
 			end

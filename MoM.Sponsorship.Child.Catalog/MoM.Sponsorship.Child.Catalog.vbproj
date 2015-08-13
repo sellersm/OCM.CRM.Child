@@ -586,13 +586,16 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_YOUNGER.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_GENERAL.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_OLDER.xml" />
-    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_I5CHURCH.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_I5CHURCH.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Add.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_FATHERSHOUSE.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Table.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Add.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ELEVATE.xml" />
     <Content Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.PackageVersion.DataList.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Datalist.xml">
       <SubType>Designer</SubType>
