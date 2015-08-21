@@ -1,0 +1,17 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="8d76be42-627b-440a-a2b7-d4ba8ec0ca5d"
+	Name="Website Child Search Catalog"
+	Description="Used to track partners and events that have a specific child searches"
+	Author="Cary Mayeda"
+	Tablename="USR_WEBSITE_CHILDSEARCHCATALOG"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+		<TextField Name="CATALOGKEY" Description="Used to pass into sproc to return list of children" Length="100" IsUnique="true" Required="true"/>
+		<TextField Name="DESCRIPTION" Description="Description of the catalog item" Length="255" Required="true"/>
+	</Fields>
+
+</TableSpec>
