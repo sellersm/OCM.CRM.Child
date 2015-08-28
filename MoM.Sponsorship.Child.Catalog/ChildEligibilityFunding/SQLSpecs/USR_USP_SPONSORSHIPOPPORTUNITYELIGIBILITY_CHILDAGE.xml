@@ -24,7 +24,8 @@
 	25-Aug-2012		CMayeda			Standardized camel case of variables
 	11-Sep-2012		CMayeda			Removed the Not Sponsored criteria FogBugz Case 814
 	13-Oct-2012		CMayeda			Changed pending reason to Child is 16.5 years or older - FogBugz Case 898
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -63,7 +64,8 @@ begin
     	declare @childAgeID uniqueidentifier
 		select @childAgeID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Child is 16.5 years or older') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @childAgeID is null
-			RAISERROR 1000000 'Couldn''t find the "Child is 16.5 years or older" Sponsorship Reason'		
+			raiserror('Couldn''t find the "Child is 16.5 years or older" Sponsorship Reason',16,1);
+			
 
 	end try
 	begin catch

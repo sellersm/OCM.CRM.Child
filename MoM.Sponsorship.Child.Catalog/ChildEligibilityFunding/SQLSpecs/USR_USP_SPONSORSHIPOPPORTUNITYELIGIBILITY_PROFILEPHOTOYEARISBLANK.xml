@@ -23,7 +23,8 @@
 	History:
 	Date			Modified By		Comments
 	30-Mar-2013		CMayeda			Initial Version for TK-01174
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -64,7 +65,8 @@ as begin
 		declare @ProfilePhotoYearIsBlankID uniqueidentifier
 		select @ProfilePhotoYearIsBlankID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_ProfilePhotoYearIsBlank) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @ProfilePhotoYearIsBlankID is null
-			RAISERROR 1000000 @errorMessageProfilePhotoYearIsBlankNotfound					
+			raiserror(@errorMessageProfilePhotoYearIsBlankNotfound,16,1);
+			
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR

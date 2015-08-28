@@ -18,6 +18,7 @@
 	26-Oct-2012		CMayeda			Fixed raiserror numbers to be 100000 instead of 10000
 	21-Jan-2012		CMayeda			Removed setting recurring gift to held.  This will be changed back later.
 									Fixed Interaction Summary for program completion.
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);									
 	-->
 
 	<CreateProcedureSQL>
@@ -105,7 +106,8 @@ as begin
 	begin try
 		set @financialSponsorID = dbo.USR_UFN_SPONSORSHIP_GETFINANCIALSPONSOR_BYSPONSORSHIPOPP (@sponsorshipOpportunityChildID)
 		if @financialSponsorID is null
-			raiserror 100000 'Could not find Financial Sponsor. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			raiserror('Could not find Financial Sponsor. No interactions were created, and the recurring gift was not processed (held if EFT).',16,1);
+			
 
 		-- Get Departure info for Interaction
 		declare @departureExists bit = 0
@@ -138,14 +140,16 @@ as begin
 
 
 		if @departureExists = 0
-			raiserror 100000 'Could not find departure form. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			raiserror('Could not find departure form. No interactions were created, and the recurring gift was not processed (held if EFT).',16,1);
+			
 
 		
 		declare @sponsorshipID uniqueidentifier = null
 		set @sponsorshipID  = dbo.USR_UFN_SPONSORSHIP_GETSPONSORSHIPID (@sponsorshipOpportunityChildID)
 		
 		if @sponsorshipID  is null
-			raiserror 100000 'Could not find an active sponsorship for the child. No interactions were created, and the recurring gift was not processed (held if EFT).'
+			raiserror('Could not find an active sponsorship for the child. No interactions were created, and the recurring gift was not processed (held if EFT).',16,1);
+			
 			
 		/* 
 		******************************

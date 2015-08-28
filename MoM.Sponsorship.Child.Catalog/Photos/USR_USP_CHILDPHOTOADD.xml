@@ -16,7 +16,8 @@
 	23-Sep-2012		CMayeda			Initial Version - Modified from Blackbaud prototype
 	17-Oct-2012		CMayeda			Added @attachmentTypeID_ChildPhotoHeadshotCurrent
 	19-Nov-2013		Memphis			Added 2 new fields: ARCHIVEDPHOTO, PHOTOYEAR	
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 
 	<CreateProcedureSQL>
     <![CDATA[
@@ -66,7 +67,7 @@ as begin
 				set @ERRORMSG = @ERRORMSG + 'and The Unusable Photo bit is 1!';
 			end
 
-		RAISERROR (@ERRORMSG, 13, 1);
+		RAISERROR (@ERRORMSG, 16, 1);
 		*/
 
         if @VALIDATEONLY = 1
@@ -74,22 +75,22 @@ as begin
 				if @SPONSORSHIPOPPORTUNITYLOOKUPID is null
 				begin
 					set @ERRORMSG = 'The constituent is not selected'
-					RAISERROR (@ERRORMSG, 13, 1)
+					RAISERROR (@ERRORMSG, 16, 1)
 				end
 				if @ATTACHMENTTYPECODEID is null
 				begin
 					set @ERRORMSG = 'The attachment type is not selected'
-					RAISERROR (@ERRORMSG, 13, 1)
+					RAISERROR (@ERRORMSG, 16, 1)
 				end
 				if @FILENAME is null
 				begin
 					set @ERRORMSG = 'The file name is not selected'
-					RAISERROR (@ERRORMSG, 13, 1)
+					RAISERROR (@ERRORMSG, 16, 1)
 				end
 				if @PICTURETITLE is null
 				begin
 					set @ERRORMSG = 'The picture title is not selected'
-					RAISERROR (@ERRORMSG, 13, 1)
+					RAISERROR (@ERRORMSG, 16, 1)
 				end
 			end		
 		else
@@ -97,7 +98,7 @@ as begin
 				if @SPONSORSHIPOPPORTUNITYLOOKUPID is null
 				begin
 					set @ERRORMSG = 'Sponsorship opportunity lookup id is not selected'
-					RAISERROR (@ERRORMSG, 13, 1)
+					RAISERROR (@ERRORMSG, 16, 1)
 				end
 			
 				select @SPONSORSHIPOPPORTUNITYID = ID 
@@ -107,7 +108,7 @@ as begin
 				if @SPONSORSHIPOPPORTUNITYID is null
 				begin
 					set @ERRORMSG = 'Could not find child with Lookup ID - ' + @SPONSORSHIPOPPORTUNITYLOOKUPID
-					RAISERROR (@ERRORMSG, 13, 1)
+					RAISERROR (@ERRORMSG, 16, 1)
 				end
 
 				-- get the photo attachment type ID values needed:
@@ -118,7 +119,8 @@ as begin
 				where lower (DESCRIPTION) = lower ('Child Photo - Headshot - Current');
 			
 				if @attachmentTypeID_ChildPhotoHeadshotCurrent is null
-					RAISERROR 100000 'Could not find "Child Photo - Headshot - Current" photo type code'
+					raiserror('Could not find "Child Photo - Headshot - Current" photo type code',16,1);
+					
 
 				declare @attachmentTypeID_ChildPhotoFullBodyCurrent uniqueidentifier = null
 			
@@ -127,7 +129,8 @@ as begin
 				where lower (DESCRIPTION) = lower ('Child Photo - Full Body - Current');
 			
 				if @attachmentTypeID_ChildPhotoFullBodyCurrent is null
-					RAISERROR 100000 'Could not find "Child Photo - Full Body - Current" photo type code'
+					raiserror('Could not find "Child Photo - Full Body - Current" photo type code',16,1);
+					
 
 				-- get the photo type of this photo in the batch, and use it for later processes:
 				declare @photoAttachmentType nvarchar(100) = null;
@@ -137,7 +140,8 @@ as begin
 				where ID = @ATTACHMENTTYPECODEID;
 
 				if @photoAttachmentType is null
-					RAISERROR 100000 'Unable to determine the Photo Type of this Photo in the Batch!';
+					raiserror('Unable to determine the Photo Type of this Photo in the Batch!',16,1);
+					
 
 				-- need to validate the @ATTACHMENTTYPECODEID value based on the @ARCHIVEDPHOTO parameter: 
 				--   if these are archive photos, then don't use the "Current" Photo type!
@@ -146,7 +150,8 @@ as begin
 					begin
 						-- validate the photo type of this photo in the batch
 						if @photoAttachmentType like '%Current%'
-							RAISERROR 100000 'Cannot have an Archive batch with a photo type of "Current". The wrong photo type is selected.';
+							raiserror('Cannot have an Archive batch with a photo type of "Current". The wrong photo type is selected.',16,1);
+							
 					end
 				else
 					begin
@@ -182,14 +187,16 @@ as begin
 								where lower ([DESCRIPTION]) = lower ('Child Photo - Headshot');
 								
 								if @headshotNotCurrentAttachmentTypeCodeID is null
-									RAISERROR 100000 'Could not find "Child Photo - Headshot" photo type code';
+									raiserror('Could not find "Child Photo - Headshot" photo type code',16,1);
+									
 
 								select @fullBodyNotCurrentAttachmentTypeCodeID = ID
 								from dbo.SPROPPATTACHMENTTYPECODE
 								where lower ([DESCRIPTION]) = lower ('Child Photo - Full Body');
 
 								if @fullBodyNotCurrentAttachmentTypeCodeID is null
-									RAISERROR 100000 'Could not find "Child Photo - Headshot" photo type code';
+									raiserror('Could not find "Child Photo - Headshot" photo type code',16,1);
+									
 								
 								-- find the current photo, if present, and replace it with NOT current photo type:
 								declare @currentPhotoID uniqueidentifier = null;
@@ -200,7 +207,8 @@ as begin
 								and SPROPPATTACHMENTTYPECODEID = @currentPhotoTypeID;
 								
 								if @currentPhotoID is null
-									RAISERROR 100000 'Could not find the Current photo for this child...';
+									raiserror('Could not find the Current photo for this child...',16,1);
+									
 									
 								-- update this photo record for the child:
 								update dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
@@ -257,7 +265,7 @@ as begin
 						if @CONSTITUENTID is null
 							begin
 								set @ERRORMSG = 'Could not find child''s constituent record'
-								RAISERROR (@ERRORMSG, 13, 1)
+								RAISERROR (@ERRORMSG, 16, 1)
 							end
 				
 						update dbo.CONSTITUENT

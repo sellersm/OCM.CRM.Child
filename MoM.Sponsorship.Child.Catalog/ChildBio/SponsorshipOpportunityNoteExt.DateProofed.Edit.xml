@@ -89,16 +89,19 @@ as
 	
     select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
     if @ChildBioCodeID is null
-      RAISERROR 1000000 'Couldn''t find the "Child Bio" sponsorship opportunity note code' 
+		raiserror('Couldn''t find the "Child Bio" sponsorship opportunity note code' ,16,1);
+      
         
     select @ChildBioDraftCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - draft'
     if @ChildBioDraftCodeID is null
-      RAISERROR 1000000 'Couldn''t find the "Child Bio Draft" sponsorship opportunity note code'    
+		raiserror('Couldn''t find the "Child Bio Draft" sponsorship opportunity note code' ,16,1);
+      
 
 	  /* get the Child ID */
 	  SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
 	  if @ChildID is null
-		  RAISERROR 1000000 'Couldn''t find the "Child ID'    
+		  raiserror('Couldn''t find the "Child ID".' ,16,1);
+		  
 
   	if exists (select ID from dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION where ID = @ID)    
 		  -- Delete

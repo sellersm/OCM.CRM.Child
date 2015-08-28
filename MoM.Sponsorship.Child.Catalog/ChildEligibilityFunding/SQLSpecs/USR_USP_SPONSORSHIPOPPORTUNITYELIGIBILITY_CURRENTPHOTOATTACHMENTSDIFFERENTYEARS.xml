@@ -24,7 +24,8 @@
 	History:
 	Date			Modified By		Comments
 	30-Mar-2013		CMayeda			Initial Version for TK-01174
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 
 		<CreateProcedureSQL>
 			<![CDATA[
@@ -73,18 +74,21 @@ as begin
 		declare @CurrentAttachmentsHaveDifferentYearsID uniqueidentifier
 		select @CurrentAttachmentsHaveDifferentYearsID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_CurrentAttachmentsHaveDifferentYears) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @CurrentAttachmentsHaveDifferentYearsID is null
-			RAISERROR 1000000 @errorMessageCurrentAttachmentsHaveDifferentYearsNotfound					
+			raiserror(@errorMessageCurrentAttachmentsHaveDifferentYearsNotfound,16,1);
+			
 			
 		-- get the attachment type code id values we need:
 		declare @headshotCurrentAttachmentTypeCodeID uniqueidentifier;
 		select @headshotCurrentAttachmentTypeCodeID = ID from dbo.SPROPPATTACHMENTTYPECODE where lower (DESCRIPTION) = lower (@sproppAttachmentType_ChildPhotoHeadshotCurrent)
 		if @headshotCurrentAttachmentTypeCodeID is null
-			RAISERROR 1000000 @errorMessageChildPhotoHeadshotCurrentNotfound					
+			raiserror(@errorMessageChildPhotoHeadshotCurrentNotfound,16,1);
+			
 
 		declare @fullBodyCurrentAttachmentTypeCodeID uniqueidentifier;
 		select @fullBodyCurrentAttachmentTypeCodeID = ID from dbo.SPROPPATTACHMENTTYPECODE where lower (DESCRIPTION) = lower (@sproppAttachmentType_ChildPhotoFullBodyCurrent)
 		if @fullBodyCurrentAttachmentTypeCodeID is null
-			RAISERROR 1000000 @errorMessageChildPhotoFullBodyCurrentNotfound	
+			raiserror(@errorMessageChildPhotoFullBodyCurrentNotfound,16,1);
+			
 			
 	end try
 	begin catch

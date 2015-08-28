@@ -20,7 +20,8 @@
 	19-Jul-2013		CMayeda			Initial Version - TK-01004 for B-01027
 	30-Aug-2013		CMayeda			V1:D-01090 - Removed Availability criteria from Field Memo Delinquency and BD Contactable based on change to Requirments (google doc)
 	18-Sep-2013		CMayeda			V1:D-01092 - Added Terminate hold
-	-->	
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->	
 	
 	<!-- describe the SP used to calculate the smart field values -->
 	<CreateProcedureSQL>
@@ -81,63 +82,63 @@ begin
         if @sponsorshipReasonID_ChildAge is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ChildAge + '" Sponsorship Reason'
-        	raiserror 100000 @errorMessage
+			raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_FieldMemoRequestingInfo = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_FieldMemoRequestingInfo and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_FieldMemoRequestingInfo is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_FieldMemoRequestingInfo + '" Sponsorship Reason'		
-        	raiserror 100000 @errorMessage
+        	raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_ProjectPending = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ProjectPending and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_ProjectPending is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ProjectPending + '" Sponsorship Reason'		
-            raiserror 100000 @errorMessage
+            raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_ProjectPhasingOut = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ProjectPhasingOut and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_ProjectPhasingOut is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ProjectPhasingOut + '" Sponsorship Reason'		
-            raiserror 100000 @errorMessage
+            raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_ProgramCompletion = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_ProgramCompletion and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_ProgramCompletion is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_ProgramCompletion + '" Sponsorship Reason'		
-        	raiserror 100000 @errorMessage
+        	raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_NewChildVerification = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_NewChildVerification and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_NewChildVerification is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_NewChildVerification + '" Sponsorship Reason'		
-        	raiserror 100000 @errorMessage
+        	raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_DepartureInProcess = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_DepartureInProcess and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_DepartureInProcess is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_DepartureInProcess + '" Sponsorship Reason'		
-        	raiserror 100000 @errorMessage
+        	raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_BangladeshContactable = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_BangladeshContactable and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_BangladeshContactable is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_BangladeshContactable + '" Sponsorship Reason'		
-        	raiserror 100000 @errorMessage
+        	raiserror(@errorMessage,16,1);
         end
 
         select @sponsorshipReasonID_TerminateHold = ID from dbo.SPONSORSHIPREASON where REASON = @sponsorshipReasonDesc_TerminateHold and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
         if @sponsorshipReasonID_TerminateHold is null
         begin
             set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonDesc_TerminateHold + '" Sponsorship Reason'		
-        	raiserror 100000 @errorMessage
+        	raiserror(@errorMessage,16,1);
         end
 		
 		
@@ -145,35 +146,35 @@ begin
     	if @projectStatusID_Active is null
     	begin
     		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_Active + '" Project Status '
-    		raiserror 100000 @errorMessage
+    		raiserror(@errorMessage,16,1);
     	end
 
     	select @projectStatusID_ActiveReserved = ID from USR_CHILDPROJECTSTATUSCODE where DESCRIPTION = @projectStatusDesc_ActiveReserved		
     	if @projectStatusID_ActiveReserved is null
     	begin
     		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_ActiveReserved + '" Project Status '
-    		raiserror 100000 @errorMessage
+    		raiserror(@errorMessage,16,1);
     	end
 
     	select @projectStatusID_Pending = ID from USR_CHILDPROJECTSTATUSCODE where DESCRIPTION = @projectStatusDesc_Pending		
     	if @projectStatusID_Pending is null
     	begin
     		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_Pending + '" Project Status '
-    		raiserror 100000 @errorMessage
+    		raiserror(@errorMessage,16,1);
     	end
 
     	select @projectStatusID_PhasingOut = ID from USR_CHILDPROJECTSTATUSCODE where lower (DESCRIPTION) = @projectStatusDesc_PhasingOut		
     	if @projectStatusID_PhasingOut is null
     	begin
     		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_PhasingOut + '" Project Status '
-    		raiserror 100000 @errorMessage
+    		raiserror(@errorMessage,16,1);
     	end
 
     	select @projectStatusID_Closed = ID from USR_CHILDPROJECTSTATUSCODE where lower (DESCRIPTION) = @projectStatusDesc_Closed		
     	if @projectStatusID_Closed is null
     	begin
     		set @errorMessage = 'Couldn''t find the "'+ @projectStatusDesc_Closed + '" Project Status '
-    		raiserror 100000 @errorMessage
+    		raiserror(@errorMessage,16,1);
     	end
     end try
     begin catch

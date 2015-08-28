@@ -23,7 +23,8 @@
 	History:
 	Date			Modified By		Comments
 	30-Mar-2013		CMayeda			Initial Version for TK-01174
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -58,7 +59,8 @@ as begin
 		declare @ChangeCurrentPhotoAttachmentID uniqueidentifier
 		select @ChangeCurrentPhotoAttachmentID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_ChangeCurrentPhotoAttachment) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @ChangeCurrentPhotoAttachmentID is null
-			RAISERROR 1000000 @errorMessageChangeCurrentPhotoAttachmentNotfound					
+			raiserror(@errorMessageChangeCurrentPhotoAttachmentNotfound,16,1);
+			
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR

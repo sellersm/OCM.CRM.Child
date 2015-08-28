@@ -17,7 +17,8 @@
     27-Aug-2012		CMayeda			Initial Version	
 	13-Oct-2012		CMayeda			Added comment
 	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 	
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -52,7 +53,8 @@ as begin
 		declare @newChildVerificationID uniqueidentifier
 		select @newChildVerificationID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_NewChildVerification) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @newChildVerificationID is null
-			RAISERROR 1000000 @errorMessageNewChildVerificationNotfound					
+			raiserror(@errorMessageNewChildVerificationNotfound,16,1);
+			
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR

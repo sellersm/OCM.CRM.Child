@@ -16,7 +16,8 @@
 	History:
 	Date			Modified By		Comments
 	13-Oct-2012		CMayeda			Initial Version
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 	
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -48,13 +49,15 @@ as begin
 		declare @bangladeshContactableNoteTypeID uniqueidentifier
 		select @bangladeshContactableNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Bangladesh contactable child')
 		if @bangladeshContactableNoteTypeID is null
-			RAISERROR 1000000 'Couldn''t find the "Bangladesh contactable child" Note type code'
+			raiserror('Couldn''t find the "Bangladesh contactable child" Note type code',16,1);
+			
     
   
 		declare @bangladeshContactableReasonID uniqueidentifier
 		select @bangladeshContactableReasonID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower('Bangladesh contactable child') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @bangladeshContactableReasonID is null
-			RAISERROR 1000000 'Couldn''t find the "Bangladesh contactable child" Sponsorship Reason'		
+			raiserror('Couldn''t find the "Bangladesh contactable child" Sponsorship Reason',16,1);
+			
 			
 	end try
 	begin catch

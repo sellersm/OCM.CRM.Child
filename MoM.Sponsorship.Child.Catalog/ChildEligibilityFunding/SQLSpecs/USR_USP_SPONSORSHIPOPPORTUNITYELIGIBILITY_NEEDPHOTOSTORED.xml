@@ -16,7 +16,8 @@
 	History:
 	Date			Modified By		Comments
     27-Aug-2012		CMayeda			Initial Version	
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 	
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -51,7 +52,8 @@ as begin
 		declare @needPhotoStoredID uniqueidentifier
 		select @needPhotoStoredID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_NeedPhotoStored) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @needPhotoStoredID is null
-			RAISERROR 1000000 @errorMessageNeedPhotoStoredNotfound					
+			raiserror(@errorMessageNeedPhotoStoredNotfound,16,1);
+								
 	end try
 	begin catch
 	    exec dbo.USP_RAISE_ERROR

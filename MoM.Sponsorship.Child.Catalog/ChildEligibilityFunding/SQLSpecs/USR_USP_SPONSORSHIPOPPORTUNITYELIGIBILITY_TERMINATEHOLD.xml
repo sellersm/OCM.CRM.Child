@@ -18,7 +18,8 @@
 	History:
 	Date			Modified By		Comments
     30-May-2012		CMayeda			Initial Version
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -55,7 +56,8 @@ as begin
     	declare @terminateHoldID uniqueidentifier
 		select @terminateHoldID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Terminate hold') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @terminateHoldID is null
-			RAISERROR 1000000 'Couldn''t find the "Terminate hold" Sponsorship Reason'		
+			raiserror('Couldn''t find the "Terminate hold" Sponsorship Reason',16,1);
+			
 			
 	end try
 	begin catch

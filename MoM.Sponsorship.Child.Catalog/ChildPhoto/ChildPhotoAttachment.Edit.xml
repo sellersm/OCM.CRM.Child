@@ -104,14 +104,14 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOTATTACHMENT (
             IF @FOUND IS NULL
             BEGIN
               SET @ERRORMESSAGE = 'Please select a type that is related to photo'
-			        RAISERROR 100000 @ERRORMESSAGE
+			  raiserror(@ERRORMESSAGE,16,1)
             END 
             
             --Validating Title
             IF @TITLE = '' 
             BEGIN
               SET @ERRORMESSAGE = 'TITLE is required - Please enter a valid TITLE'
-			        RAISERROR 100000 @ERRORMESSAGE
+			  raiserror(@ERRORMESSAGE,16,1)
             END
             ELSE
             BEGIN
@@ -133,7 +133,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_CHILDPHOTOTATTACHMENT (
                 IF @FOUND IS NULL
                 BEGIN
                   SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
-			            RAISERROR 100000 @ERRORMESSAGE
+				  raiserror(@ERRORMESSAGE,16,1)
                 END
               END
             END

@@ -76,15 +76,15 @@
           IF @FOUND IS NULL
           BEGIN
             SET @ERRORMESSAGE = 'Please select a type that is related to photo'
-			      RAISERROR 100000 @ERRORMESSAGE
+			raiserror(@ERRORMESSAGE,16,1)
           END 
           
           --Validate the Title
           IF @TITLE = '' 
-          BEGIN
-            SET @ERRORMESSAGE = 'TITLE is required - Please enter a valid TITLE'
-			      RAISERROR 100000 @ERRORMESSAGE
-          END
+			  BEGIN
+				SET @ERRORMESSAGE = 'TITLE is required - Please enter a valid TITLE'
+				raiserror(@ERRORMESSAGE,16,1)
+			  END
           ELSE
           BEGIN
             set @FOUND = (SELECT DESCRIPTION 
@@ -99,7 +99,7 @@
               IF @FOUND IS NULL
               BEGIN
                 SET @ERRORMESSAGE = 'The "Title" you entered is NOT FOUND.  Please enter a valid "Title" (ex: "' + @SAMPLETITLE + '")'
-			          RAISERROR 100000 @ERRORMESSAGE
+				raiserror(@ERRORMESSAGE,16,1)
               END
             END
           END

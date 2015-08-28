@@ -15,7 +15,8 @@
 	History:
 	Date            Modified By     Comments
 	12-Jul-2012		CMayeda			Initial Version
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -58,7 +59,8 @@ begin
 			if @sponsorshipReasonID is null
 			begin
 				set @errorMessage = 'Couldn''t find the "' + @sponsorshipReasonText + '" pending sponsorship reason'
-				RAISERROR 1000000 @errorMessage 
+				raiserror(@errorMessage,16,1);
+				
 			end
 		end
 		else
@@ -66,7 +68,8 @@ begin
 			if not exists (select ID from dbo.SPONSORSHIPREASON where ID = @sponsorshipReasonID and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility)
 			begin
 				set @errorMessage = 'Couldn''t find a valid pending sponsorship reason with id = ' + cast (@sponsorshipReasonID as nvarchar(50)) 
-				RAISERROR 1000000 @errorMessage 
+				raiserror(@errorMessage,16,1);
+				
 			end				
 	end try
 	begin catch

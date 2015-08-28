@@ -14,7 +14,7 @@
   History:
     Date            Modified By     Comments
     21-June-2012     BElfstrom       Modified - Renamed and removed transaction processing.
-    
+    28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
 -->
   
 	<SPRecord>
@@ -39,16 +39,19 @@ begin try
 	
     select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
     if @ChildBioCodeID is null
-      RAISERROR 1000000 'Couldn''t find the "Child Bio" sponsorship opportunity note code' 
+		raiserror('Couldn''t find the "Child Bio" sponsorship opportunity note code' ,16,1);
+      
         
     select @ChildBioDraftCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - draft'
     if @ChildBioDraftCodeID is null
-      RAISERROR 1000000 'Couldn''t find the "Child Bio Draft" sponsorship opportunity note code'    
+		raiserror('Couldn''t find the "Child Bio Draft" sponsorship opportunity note code',16,1);
+      
 
 	  /* get the Child ID to convert the child bios to old  */
 	  SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
 	  if @ChildID is null
-		  RAISERROR 1000000 'Couldn''t find the "Child ID'    
+		raiserror('Couldn''t find the "Child ID',16,1);
+		  
 
 	  /* Convert the Child Bio notes to Child Bio Old first  */
 	  exec dbo.USR_USP_CONVERTCHILDBIOTOCHILDBIOOLD @ChildID
@@ -56,7 +59,8 @@ begin try
 	  /* Check to make sure the record exists and it's a Child Bio Draft  */
 	  if (SELECT [ID] from dbo.SPONSORSHIPOPPORTUNITYNOTE 
 	  where ([ID] = @ID) and (SPROPPNOTETYPECODEID = @ChildBioDraftCodeID)) is null 
-	    RAISERROR 1000000 'Couldn''t find the "Child Bio Draft" sponsorship opportunity note code'        
+		raiserror('Couldn''t find the "Child Bio Draft" sponsorship opportunity note code',16,1);
+	    
             
 	  /* Update Child Bio note type */
 	  update dbo.SPONSORSHIPOPPORTUNITYNOTE
@@ -76,7 +80,8 @@ begin try
 	  VALUES (@ID, GETDATE(),@CHANGEAGENTID, @CHANGEAGENTID,GETDATE(),GETDATE())
     end
     else
-      RAISERROR 1000000 'The note is already proofed'   
+		raiserror('The note is already proofed',16,1);
+        
    
 	  /* Eligibility check */	
 	  exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK 

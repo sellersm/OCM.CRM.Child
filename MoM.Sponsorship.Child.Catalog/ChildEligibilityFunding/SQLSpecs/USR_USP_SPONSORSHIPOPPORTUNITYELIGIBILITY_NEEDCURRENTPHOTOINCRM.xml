@@ -18,7 +18,8 @@
 	Date			Modified By		Comments
     30-Sep-2012		CMayeda			Initial Version	
 	13-Oct-2012		CMayeda			Changed pending reason to 'Need current photo in CRM'
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 	<CreateProcedureSQL>
 		<![CDATA[
 create procedure dbo.USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_NEEDCURRENTPHOTOINCRM (
@@ -53,17 +54,20 @@ as begin
 		declare @needCurrentPhotoInCRMID uniqueidentifier
 		select @needCurrentPhotoInCRMID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_NeedCurrentPhotoInCRM) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @needCurrentPhotoInCRMID is null
-			RAISERROR 1000000 @errorMessageNeedCurrentPhotoInCRMNotfound					
+			raiserror(@errorMessageNeedCurrentPhotoInCRMNotfound,16,1);
+			
 
 		declare @childPhotoFullBodyCurrentAttachmentTypeID uniqueidentifier
 		select @childPhotoFullBodyCurrentAttachmentTypeID = ID from dbo.SPROPPATTACHMENTTYPECODE where lower (DESCRIPTION) = lower ('Child Photo - Full Body - Current')
 		if @childPhotoFullBodyCurrentAttachmentTypeID is null
-			RAISERROR 1000000 'Couldn''t find the "Child Photo - Full Body - Current" sponsorship attachement type code'
+			raiserror('Couldn''t find the "Child Photo - Full Body - Current" sponsorship attachement type code',16,1);
+			
 
 		declare @childPhotoHeadshotCurrentAttachmentTypeID uniqueidentifier
 		select @childPhotoHeadshotCurrentAttachmentTypeID = ID from dbo.SPROPPATTACHMENTTYPECODE where lower (DESCRIPTION) = lower ('Child Photo - Headshot - Current')
 		if @childPhotoHeadshotCurrentAttachmentTypeID is null
-			RAISERROR 1000000 'Couldn''t find the "Child Photo - Headshot - Current" sponsorship attachement type code'
+			raiserror('Couldn''t find the "Child Photo - Headshot - Current" sponsorship attachement type code',16,1);
+			
     
 
 	end try

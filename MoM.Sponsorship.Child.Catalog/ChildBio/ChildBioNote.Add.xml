@@ -16,7 +16,8 @@
 	History:
 	Date            Modified By     Comments
 	13-Oct-2012		  CMayeda			    Changed name to be standard
-  17-Oct-2012     BElfstrom       Prohibit adding bio record if Child Bio type already exists.  Fogbugz 917.
+	17-Oct-2012     BElfstrom       Prohibit adding bio record if Child Bio type already exists.  Fogbugz 917.
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
 	-->
 
 	<common:DependencyList>
@@ -29,7 +30,7 @@
 	<SPDataForm>
 		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_CHILDBIO_ADD">
 			<common:CreateProcedureSQL>
-
+<![CDATA[
         create procedure dbo.USR_USP_DATAFORMTEMPLATE_CHILDBIO_ADD
         (
         @ID uniqueidentifier = null output,
@@ -58,7 +59,8 @@
             if EXISTS(select ID FROM dbo.SPONSORSHIPOPPORTUNITYNOTE
             where SPONSORSHIPOPPORTUNITYID =  @SPONSORSHIPOPPORTUNITYID
             and SPROPPNOTETYPECODEID = @ChildBioCodeID)
-                RAISERROR 1000000 'Only one Child Bio note type is allowed.'
+				raiserror('Only one Child Bio note type is allowed.',16,1);
+                
 
         if @ID is null
         set @ID = newid();
@@ -103,20 +105,22 @@
 
         SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
         if @ChildID is null
-        RAISERROR 1000000 'Couldn''t find the "Child ID'
+			raiserror('Couldn''t find the "Child ID',16,1);
+			
 
         /* Eligibility check */
         exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK
         @ChildID, @CHANGEAGENTID
 
         end try
+		
         begin catch
-        exec dbo.USP_RAISE_ERROR;
-        return 1;
+			exec dbo.USP_RAISE_ERROR;
+			return 1;
         end catch
 
         return 0;
-
+]]>
 
       </common:CreateProcedureSQL>
 			<common:ExpectedDBExceptions>

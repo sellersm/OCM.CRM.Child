@@ -20,7 +20,8 @@
 	Date            Modified By     Comments
 	10-Jul-2012		CMayeda			Initial Version
 	13-Aug-2012		CMayeda			Added call to USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK - Fogbugz Case 755
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);	
+-->
 
 		<CreateProcedureSQL>
 		<![CDATA[
@@ -52,7 +53,8 @@ begin
 		declare @waitingListMaximumQuotaReachedID uniqueidentifier
 		select @waitingListMaximumQuotaReachedID = ID from SPONSORSHIPREASON where lower (REASON) = 'waiting list - maximum quota reached'
 		if @waitingListMaximumQuotaReachedID is null
-			RAISERROR 1000000 'Couldn''t find the "Waiting List - maximum quota reached" Sponsorship Reason'		
+			raiserror('Couldn''t find the "Waiting List - maximum quota reached" Sponsorship Reason',16,1);
+			
 	end try
 	begin catch
 		exec dbo.USP_RAISE_ERROR

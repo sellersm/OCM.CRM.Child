@@ -22,7 +22,8 @@
 	10-Oct-2012		CMayeda			Changed @BioValidAge to 22 per Susan Staats
 	13-Oct-2012		CMayeda			Added Child Bio Draft to this rule - FogBugz Case 895
 	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard	
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -59,18 +60,21 @@ as begin
 		declare @ChildBioNoteTypeID uniqueidentifier
 		select @ChildBioNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Child Bio')
 		if @ChildBioNoteTypeID is null
-			RAISERROR 1000000 'Couldn''t find the "Child Bio" Note type code'
+			raiserror('Couldn''t find the "Child Bio" Note type code',16,1);
+			
 
 		declare @ChildBioDraftNoteTypeID uniqueidentifier
 		select @ChildBioDraftNoteTypeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = lower ('Child Bio - Draft')
 		if @ChildBioDraftNoteTypeID is null
-			RAISERROR 1000000 'Couldn''t find the "Child Bio - Draft" Note type code'
+			raiserror('Couldn''t find the "Child Bio - Draft" Note type code',16,1);
+			
     
     
     	declare @NeedBioUpdatedID uniqueidentifier
 		select @NeedBioUpdatedID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Need bio updated') and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @NeedBioUpdatedID is null
-			RAISERROR 1000000 'Couldn''t find the "Need bio updated" Sponsorship Reason'		
+			raiserror('Couldn''t find the "Need bio updated" Sponsorship Reason',16,1);
+			
 			
 	end try
 	begin catch

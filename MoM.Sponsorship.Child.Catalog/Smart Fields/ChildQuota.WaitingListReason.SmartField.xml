@@ -41,28 +41,28 @@ create procedure dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILDWAITINGLISTREA
 		if @waitingListProjectQuotaID is null
 		begin
 			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectQuotaDesc + '" Sponsorship Reason'
-			raiserror 100000 @errorMessage
+			raiserror(@errorMessage,16,1);
 		end
 
 		select @waitingListProjectNoChildrenID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectNoChildrenDesc
 		if @waitingListProjectQuotaID is null
 		begin
 			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectNoChildrenDesc + '" Sponsorship Reason'
-			raiserror 100000 @errorMessage
+			raiserror(@errorMessage,16,1);
 		end
 
 		select @waitingListProjectStatusID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectStatusDesc
 		if @waitingListProjectStatusID is null
 		begin
 			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectStatusDesc + '" Sponsorship Reason'
-			raiserror 100000 @errorMessage
+			raiserror(@errorMessage,16,1);
 		end
 
 		select @waitingListProjectPerformanceID = ID from SPONSORSHIPREASON where lower (REASON) = @waitingListProjectPerformanceDesc
 		if @waitingListProjectPerformanceID is null
 		begin
 			set @errorMessage = 'Couldn''t find the "'+ @waitingListProjectPerformanceDesc + '" Sponsorship Reason'
-			raiserror 100000 @errorMessage
+			raiserror(@errorMessage,16,1);
 		end
 	end try
 	begin catch

@@ -36,7 +36,8 @@ as begin
 
     SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
     if @ChildID is null
-    RAISERROR 1000000 'Couldn''t find the "Child ID'
+		raiserror('Couldn''t find the "Child ID',16,1);
+    
 
 	-- CMayeda ** Commented this out, because the type of child extension this is automatically cascades the delete **
     --if exists (select ID from dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION where ID = @ID) 

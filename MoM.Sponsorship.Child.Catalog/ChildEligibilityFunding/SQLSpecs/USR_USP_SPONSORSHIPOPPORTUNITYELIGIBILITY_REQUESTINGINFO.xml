@@ -21,7 +21,8 @@
 	20-Oct-2012		CMayeda			Modified logic to ignore Child Photo Update and Medical Information Request subcategories
 									and to only include Unusable 2012 Health Photo subcategory if it is 90 days or older - FogBugz Case 918
 	20-Mar-2014		CMayeda			B-01425 Added check for 60 day past due 'Annual Photo Update' and 'Annual Child Letter' subcategories of interactions with category = 'Child Annual Update'
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 	
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -82,12 +83,14 @@ as begin
 		declare @fieldMemoRequestingInfoID uniqueidentifier
 		select @fieldMemoRequestingInfoID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_FieldMemoRequestingInfo) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @fieldMemoRequestingInfoID is null
-			RAISERROR 1000000 @errorMessageFieldMemoRequestingInfo					
+			raiserror(@errorMessageFieldMemoRequestingInfo,16,1);
+			
 
 		declare @fieldMemoRequestingInfoNewChildID uniqueidentifier
 		select @fieldMemoRequestingInfoNewChildID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_FieldMemoRequestingInfoNewChild) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @fieldMemoRequestingInfoNewChildID is null
-			RAISERROR 1000000 @errorMessageFieldMemoRequestingInfoNewChild					
+			raiserror(@errorMessageFieldMemoRequestingInfoNewChild,16,1);
+			
 
 		declare @fieldMemoCategoryID uniqueidentifier = null
 		exec dbo.USR_USP_INTERACTION_GETCATEGORYID

@@ -23,7 +23,8 @@
 	History:
 	Date			Modified By		Comments
 	30-Mar-2013		CMayeda			Initial Version for TK-01174
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -68,13 +69,15 @@ as begin
 		declare @CurrentPhotoYearDoesNotMatchFullBodyID uniqueidentifier
 		select @CurrentPhotoYearDoesNotMatchFullBodyID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower (@sponsorshipReason_CurrentPhotoYearDoesNotMatchFullBody) and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
 		if @CurrentPhotoYearDoesNotMatchFullBodyID is null
-			RAISERROR 1000000 @errorMessageCurrentPhotoYearDoesNotMatchFullBodyNotfound					
+			raiserror(@errorMessageCurrentPhotoYearDoesNotMatchFullBodyNotfound,16,1);
+			
 			
 		-- get the attachment type code id values we need:
 		declare @FullBodyCurrentAttachmentTypeCodeID uniqueidentifier;
 		select @FullBodyCurrentAttachmentTypeCodeID = ID from dbo.SPROPPATTACHMENTTYPECODE where lower (DESCRIPTION) = lower (@sproppAttachmentType_ChildPhotoFullBodyCurrent)
 		if @FullBodyCurrentAttachmentTypeCodeID is null
-			RAISERROR 1000000 @errorMessageChildPhotoFullBodyCurrentNotfound					
+			raiserror(@errorMessageChildPhotoFullBodyCurrentNotfound,16,1);
+			
 
 	end try
 	begin catch

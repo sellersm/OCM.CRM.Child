@@ -19,8 +19,9 @@
     01-May-2012     BElfstrom       FogBugz case 740 - Added check to make the Date Proofed is removed 
                                     if the note type is something other than 
                                     "Child Bio - Old" or "Child Bio".
-	  13-Oct-2012		CMayeda			Changed name to be standard
+	13-Oct-2012		CMayeda			Changed name to be standard
     17-Oct-2012   BElfstrom   Added check for more than 1 Child Bio record.  FogBugz 917.
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
   -->
 
   <common:DependencyList>
@@ -33,131 +34,133 @@
   <SPDataForm>
     <LoadImplementation SPName="USR_USP_EDITLOAD_CHILDBIONOTE">
       <common:CreateProcedureSQL>
+		  <![CDATA[
+		  create procedure dbo.USR_USP_EDITLOAD_CHILDBIONOTE
+		  (
+		  @ID uniqueidentifier,
+		  @DATALOADED bit = 0 output,
+		  @DATEENTERED datetime = null output,
+		  @TITLE nvarchar(50) = null output,
+		  @AUTHORID uniqueidentifier = null output,
+		  @TEXTNOTE nvarchar(max) = null output,
+		  @NOTETYPECODEID uniqueidentifier = null output,
+		  @TSLONG bigint = 0 output,
+		  @HTMLNOTE nvarchar(max) = null output,
+		  @SPONSORSHIPOPPORTUNITYID uniqueidentifier = null output
+		  )
+		  as
 
-        create procedure dbo.USR_USP_EDITLOAD_CHILDBIONOTE
-        (
-        @ID uniqueidentifier,
-        @DATALOADED bit = 0 output,
-        @DATEENTERED datetime = null output,
-        @TITLE nvarchar(50) = null output,
-        @AUTHORID uniqueidentifier = null output,
-        @TEXTNOTE nvarchar(max) = null output,
-        @NOTETYPECODEID uniqueidentifier = null output,
-        @TSLONG bigint = 0 output,
-        @HTMLNOTE nvarchar(max) = null output,
-        @SPONSORSHIPOPPORTUNITYID uniqueidentifier = null output
-        )
-        as
+		  set nocount on;
+		  set @DATALOADED = 0;
+		  set @TSLONG = 0;
 
-        set nocount on;
-        set @DATALOADED = 0;
-        set @TSLONG = 0;
+		  select
+		  @DATALOADED = 1,
+		  @DATEENTERED=[DATEENTERED],
+		  @TITLE=[TITLE],
+		  @AUTHORID=[AUTHORID],
+		  @TEXTNOTE=[TEXTNOTE],
+		  @NOTETYPECODEID=[SPROPPNOTETYPECODEID],
+		  @HTMLNOTE = [HTMLNOTE],
+		  @TSLONG=[TSLONG],
+		  @SPONSORSHIPOPPORTUNITYID=[SPONSORSHIPOPPORTUNITYID]
+		  from
+		  dbo.[SPONSORSHIPOPPORTUNITYNOTE]
+		  where
+		  [ID] = @ID;
 
-        select
-        @DATALOADED = 1,
-        @DATEENTERED=[DATEENTERED],
-        @TITLE=[TITLE],
-        @AUTHORID=[AUTHORID],
-        @TEXTNOTE=[TEXTNOTE],
-        @NOTETYPECODEID=[SPROPPNOTETYPECODEID],
-        @HTMLNOTE = [HTMLNOTE],
-        @TSLONG=[TSLONG],
-        @SPONSORSHIPOPPORTUNITYID=[SPONSORSHIPOPPORTUNITYID]
-        from
-        dbo.[SPONSORSHIPOPPORTUNITYNOTE]
-        where
-        [ID] = @ID;
-
-        return 0;
-
+		  return 0;
+		  ]]>
       </common:CreateProcedureSQL>
     </LoadImplementation>
     <SaveImplementation SPName="USR_USP_EDIT_CHILDBIONOTE">
       <common:CreateProcedureSQL>
+		  <![CDATA[
+		  create procedure dbo.USR_USP_EDIT_CHILDBIONOTE
+		  (
+		  @ID uniqueidentifier,
+		  @CHANGEAGENTID uniqueidentifier = null,
+		  @DATEENTERED datetime,
+		  @TITLE nvarchar(50),
+		  @AUTHORID uniqueidentifier,
+		  @TEXTNOTE nvarchar(max),
+		  @NOTETYPECODEID uniqueidentifier,
+		  @HTMLNOTE nvarchar(max),
+		  @SPONSORSHIPOPPORTUNITYID uniqueidentifier
+		  )
+		  as
 
-        create procedure dbo.USR_USP_EDIT_CHILDBIONOTE
-        (
-        @ID uniqueidentifier,
-        @CHANGEAGENTID uniqueidentifier = null,
-        @DATEENTERED datetime,
-        @TITLE nvarchar(50),
-        @AUTHORID uniqueidentifier,
-        @TEXTNOTE nvarchar(max),
-        @NOTETYPECODEID uniqueidentifier,
-        @HTMLNOTE nvarchar(max),
-        @SPONSORSHIPOPPORTUNITYID uniqueidentifier
-        )
-        as
-
-        set nocount on;
-        declare @CURRENTDATE datetime;
-
-
-        begin try
+		  set nocount on;
+		  declare @CURRENTDATE datetime;
 
 
-        /* The only note type to have a Date Proofed are Child Bio and Child Bio - Old*/
-        declare @ChildBioCodeID uniqueidentifier;
-        declare @ChildBioOldID uniqueidentifier;
-
-        select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
-        select @ChildBioOldID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - old'
-
-        if (@ChildBioCodeID != @NOTETYPECODEID) and (@ChildBioOldID != @NOTETYPECODEID)
-        begin
-        -- Don't leave orphaned records.
-        -- delete the Date Proofed extension record.
-        delete dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
-        where  ID = @ID
-        end
+		  begin try
 
 
-        /* If the user has changed the note type to Child Bio, make sure no other Child Bio records exist */
-        if @NOTETYPECODEID = @ChildBioCodeID
-          if EXISTS(select ID FROM dbo.SPONSORSHIPOPPORTUNITYNOTE
-            where SPONSORSHIPOPPORTUNITYID =  @SPONSORSHIPOPPORTUNITYID
-            and SPROPPNOTETYPECODEID = @ChildBioCodeID
-            and ID != @ID)
-              RAISERROR 1000000 'Only one Child Bio note type is allowed.'
+		  /* The only note type to have a Date Proofed are Child Bio and Child Bio - Old*/
+		  declare @ChildBioCodeID uniqueidentifier;
+		  declare @ChildBioOldID uniqueidentifier;
+
+		  select @ChildBioCodeID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio'
+		  select @ChildBioOldID = ID from dbo.SPROPPNOTETYPECODE where lower (DESCRIPTION) = 'child bio - old'
+
+		  if (@ChildBioCodeID != @NOTETYPECODEID) and (@ChildBioOldID != @NOTETYPECODEID)
+		  begin
+		  -- Don't leave orphaned records.
+		  -- delete the Date Proofed extension record.
+		  delete dbo.USR_SPONSORSHIPOPPORTUNITYNOTEEXTENSION
+		  where  ID = @ID
+		  end
 
 
-        if @CHANGEAGENTID is null
-        exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+		  /* If the user has changed the note type to Child Bio, make sure no other Child Bio records exist */
+		  if @NOTETYPECODEID = @ChildBioCodeID
+		  if EXISTS(select ID FROM dbo.SPONSORSHIPOPPORTUNITYNOTE
+		  where SPONSORSHIPOPPORTUNITYID =  @SPONSORSHIPOPPORTUNITYID
+		  and SPROPPNOTETYPECODEID = @ChildBioCodeID
+		  and ID != @ID)
+			raiserror('Only one Child Bio note type is allowed.',16,1);
+		  
 
-        set @CURRENTDATE = getdate();
 
-        update
-        dbo.[SPONSORSHIPOPPORTUNITYNOTE]
-        set [DATEENTERED] = @DATEENTERED,
-        [TITLE] = @TITLE,
-        [AUTHORID] = @AUTHORID,
-        [TEXTNOTE] = @TEXTNOTE,
-        [SPROPPNOTETYPECODEID] = @NOTETYPECODEID,
-        [HTMLNOTE] = @HTMLNOTE,
-        [CHANGEDBYID] = @CHANGEAGENTID,
-        [DATECHANGED] = @CURRENTDATE
-        where
-        [ID] = @ID;
-        end try
+		  if @CHANGEAGENTID is null
+		  exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
 
-        begin catch
-        exec dbo.USP_RAISE_ERROR;
-        return 1;
-        end catch
+		  set @CURRENTDATE = getdate();
 
-        /* get the Child ID */
-        declare @ChildID as uniqueidentifier
+		  update
+		  dbo.[SPONSORSHIPOPPORTUNITYNOTE]
+		  set [DATEENTERED] = @DATEENTERED,
+		  [TITLE] = @TITLE,
+		  [AUTHORID] = @AUTHORID,
+		  [TEXTNOTE] = @TEXTNOTE,
+		  [SPROPPNOTETYPECODEID] = @NOTETYPECODEID,
+		  [HTMLNOTE] = @HTMLNOTE,
+		  [CHANGEDBYID] = @CHANGEAGENTID,
+		  [DATECHANGED] = @CURRENTDATE
+		  where
+		  [ID] = @ID;
+		  end try
 
-        SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
-        if @ChildID is null
-        RAISERROR 1000000 'Couldn''t find the "Child ID'
+		  begin catch
+		  exec dbo.USP_RAISE_ERROR;
+		  return 1;
+		  end catch
 
-        /* Eligibility check */
-        exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK
-        @ChildID, @CHANGEAGENTID
+		  /* get the Child ID */
+		  declare @ChildID as uniqueidentifier
 
-        return 0;
+		  SELECT @ChildID = SPONSORSHIPOPPORTUNITYID from dbo.SPONSORSHIPOPPORTUNITYNOTE where [ID] = @ID
+		  if @ChildID is null
+			raiserror('Couldn''t find the "Child ID',16,1);
+		  
 
+		  /* Eligibility check */
+		  exec USR_USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK
+		  @ChildID, @CHANGEAGENTID
+
+		  return 0;
+		  ]]>
       </common:CreateProcedureSQL>
       <common:ExpectedDBExceptions>
         <common:Constraints>

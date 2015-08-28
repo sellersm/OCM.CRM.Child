@@ -19,9 +19,11 @@ as
 begin
 	begin try
 		if @SPONSORSHIPOPPORTUNITYID is null
-			RAISERROR 1000000 '@SPONSORSHIPOPPORTUNITYID cannot be null'
+			raiserror('@SPONSORSHIPOPPORTUNITYID cannot be null',16,1);	
+			
     if @REVENUEDEVELOPMENTFUNCTIONDESCRIPTION is null
-      RAISERROR 1000000 '@REVENUEDEVELOPMENTFUNCTIONDESCRIPTION cannot be null'
+		raiserror('@REVENUEDEVELOPMENTFUNCTIONDESCRIPTION cannot be null',16,1);	
+      
       
 	-- do work
   declare @REVENUEDEVELOPMENTFUNCTIONCODEID uniqueidentifier
@@ -33,7 +35,8 @@ begin
   
   -- if we don't have a revenue development function code, we can not continue:
   if @REVENUEDEVELOPMENTFUNCTIONCODEID is null
-    RAISERROR 1000000 'Unable to find a REVENUEDEVELOPMENTFUNCTIONCODEID for the given Description!'
+	raiserror('Unable to find a REVENUEDEVELOPMENTFUNCTIONCODEID for the given Description!',16,1);	
+    
 
   declare @statusCodePending tinyint = 0
   declare @statusCodeActive tinyint = 1 

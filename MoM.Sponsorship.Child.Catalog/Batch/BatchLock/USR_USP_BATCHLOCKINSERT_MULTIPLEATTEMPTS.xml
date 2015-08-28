@@ -13,6 +13,7 @@
 	History:
 	Date            Modified By     Comments
 	30-Jul-2012		CMayeda			Initial Version
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
 	-->
 
 	<CreateProcedureSQL>
@@ -34,10 +35,12 @@ begin
 	
 	begin try
 	    if @lockObjectID is null
-			RAISERROR 1000000 '@lockObjectId cannot be null'
+			raiserror('@lockObjectId cannot be null',16,1);
+			
 
 		if @lockDelaySeconds < 0 or @lockDelaySeconds > 59
-			RAISERROR 1000000 '@lockDelaySeconds must be between 0 - 59'		
+			raiserror('@lockDelaySeconds must be between 0 - 59',16,1);
+			
 		
 		-- Convert seconds into a delay string to be used with delay.  Must be formatted as time - hh:mm:ss
 		set @lockDelayString = '00:00:' + right ('0' + cast (@lockDelaySeconds as varchar(2)), 2)  

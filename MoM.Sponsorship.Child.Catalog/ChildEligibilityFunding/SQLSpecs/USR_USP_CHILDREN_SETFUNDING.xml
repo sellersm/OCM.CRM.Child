@@ -19,7 +19,8 @@
 	00-Mar-2014		CMayeda			Fixed parenthesis issue?? 
 										sr.SPONSORSHIPREASONID = @pendingReasonID_ProjectOnPhasingOutStatus and dbo.UFN_SPONSORSHIPOPPORTUNITY_ACTIVESPONSORSHIPS (so.ID) = 0)
 									B-01425 Added check for 60 day past due 'Annual Photo Update' and 'Annual Child Letter' subcategories of interactions with category = 'Child Annual Update'
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
+-->
 	
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -132,7 +133,8 @@ begin
 								  )
 
 		if ((select COUNT(*) from @pendingReasonsNotFunded) <> @numberofPendingReasons)
-			RAISERROR 1000000 'Did not find the correct number of pending reasons'
+			raiserror('Did not find the correct number of pending reasons',16,1);
+			
 	
         declare @pendingReasonID_ProjectOnPhasingOutStatus uniqueidentifier = null
         select @pendingReasonID_ProjectOnPhasingOutStatus = ID from dbo.SPONSORSHIPREASON where REASON = @pendingReason_ProjectOnPhasingOutStatus and REASONTYPECODE = @reasonTypeCode_ChildMarkPendingEligibility
@@ -140,7 +142,8 @@ begin
         begin
 			declare @errorMessage nvarchar(max)
             set @errorMessage = 'Couldn''t find the "' + @pendingReason_ProjectOnPhasingOutStatus + '" Sponsorship Reason'
-        	raiserror 100000 @errorMessage
+			raiserror(@errorMessage,16,1);
+        	
         end
 	end try
 	begin catch

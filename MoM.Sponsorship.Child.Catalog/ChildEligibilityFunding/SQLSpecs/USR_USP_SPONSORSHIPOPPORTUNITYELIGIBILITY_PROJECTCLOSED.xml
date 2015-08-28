@@ -19,7 +19,8 @@
 	31-Jul-2012		CMayeda			Changed this to take a table instead of the ID or @IDSETREGISTER ID
 	14-Aug-2012		CMayeda			Added code to remove Ineligible kids from the insert (except Waiting List kids)
 	13-Oct-2012		CMayeda			Updated Pending reason to the all lower case except first letter standard
-	-->
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->
 
 	<CreateProcedureSQL>
 		<![CDATA[
@@ -55,7 +56,8 @@ as begin
 		declare @ProjectClosedID uniqueidentifier  
 		select @ProjectClosedID = ID from dbo.SPONSORSHIPREASON where lower (REASON) = lower ('Project is closed')
 		if @ProjectClosedID is null
-			RAISERROR 1000000 'Couldn''t find the "Project is closed" Sponsorship Reason'		
+			raiserror('Couldn''t find the "Project is closed" Sponsorship Reason',16,1);
+			
 				
 	end try
 	begin catch

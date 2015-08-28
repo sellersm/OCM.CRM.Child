@@ -14,6 +14,7 @@
 	Date            Modified By     Comments
     21-Mar-2012		CMayeda			Initial Version
 	09-Jul-2012		CMayeda			Modified this to call USR_USP_CHILDREN_SETINELIGIBLE instead of handling the same logic in this sproc
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
 	-->
 
 
@@ -36,7 +37,8 @@ begin
 	
 	begin try	
 		if @childID is null 
-			RAISERROR 1000000 '@childID cannot be null'		
+			raiserror('@childID cannot be null',16,1);
+			
 
 		insert @childList
 		select @childID 

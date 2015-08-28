@@ -13,7 +13,7 @@
 	History:
 	Date            Modified By     Comments
 	02-Jul-2012		CMayeda			Initial Version
-
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);
 	-->
 
 	<CreateProcedureSQL>
@@ -29,7 +29,7 @@ begin
 
 	begin try
 		if @sponsorshipOpportunityChildID is null
-			RAISERROR 1000000 '@childID cannot be null'		
+			raiserror('@childID cannot be null',16,1);			
 
 		insert @childIDList 
 		select @sponsorshipOpportunityChildID

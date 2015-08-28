@@ -29,7 +29,8 @@
 										-   If possible, display a message saying there are no photo attachments that belong to the same years as the profile photo year.
 	26-Mar-2014		CMayeda			D-01109 - Added cast to fix implicit casting see comment ** ADDED CAST **
 									Also see note: ** THIS WON'T WORK IF OTHER TYPES OF ATTACHMENTS (NON CHLID PHOTO) START WITH A YEAR **
-	-->	
+	28-Aug-2015		Memphis			Updated raiserror call: raiserror(@errorMessageMultipleCurrentHeadshotAttachmentsNotfound,16,1);
+-->	
 	
 	<SPRecord>
 		<SPOperationImplementation SPName="USR_USP_SWITCH_CURRENT_CHILDPHOTO_RECORDOPERATION">
@@ -50,7 +51,8 @@ as begin
 	where SPONSORSHIPOPPORTUNITYCHILDID = @SPONSORSHIPOPPORTUNITYCHILDID;
 
 	if @photoYear is null
-	  RAISERROR 100000 'Unable to get the Profile Photo Year value, unable to continue.'
+		raiserror('Unable to get the Profile Photo Year value, unable to continue.',16,1);
+	  
 
 	-- declare and populate the variables we need:
 	declare @fullBodyCurrentPhotoRecordId uniqueidentifier;
@@ -75,28 +77,32 @@ as begin
 		where lower (DESCRIPTION) = lower ('Child Photo - Headshot - Current');
 
 		if @headshotCurrentAttachmentTypeCodeID is null
-			RAISERROR 100000 'Could not find "Child Photo - Headshot - Current" photo type code'
+			raiserror('Could not find "Child Photo - Headshot - Current" photo type code',16,1);
+			
 
 		select @fullBodyCurrentAttachmentTypeCodeID = ID 
 		from dbo.SPROPPATTACHMENTTYPECODE 
 		where lower (DESCRIPTION) = lower ('Child Photo - Full Body - Current');
 
 		if @fullBodyCurrentAttachmentTypeCodeID is null
-			RAISERROR 100000 'Could not find "Child Photo - Full Body - Current" photo type code'
+			raiserror('Could not find "Child Photo - Full Body - Current" photo type code',16,1);
+			
 
 		select @headshotNotCurrentAttachmentTypeCodeID = ID
 		from dbo.SPROPPATTACHMENTTYPECODE
 		where lower ([DESCRIPTION]) = lower ('Child Photo - Headshot');
 
 		if @headshotNotCurrentAttachmentTypeCodeID is null
-			RAISERROR 100000 'Could not find "Child Photo - Headshot" photo type code'
+			raiserror('Could not find "Child Photo - Headshot" photo type code',16,1);
+			
 
 		select @fullBodyNotCurrentAttachmentTypeCodeID = ID
 		from dbo.SPROPPATTACHMENTTYPECODE
 		where lower ([DESCRIPTION]) = lower ('Child Photo - Full Body');
 
 		if @fullBodyNotCurrentAttachmentTypeCodeID is null
-			RAISERROR 100000 'Could not find "Child Photo - Full Body" photo type code'
+			raiserror('Could not find "Child Photo - Full Body" photo type code',16,1);
+			
 
 		-- get the record id values for where the photo that matches the given photo year value:
 		select @fullBodyPhotoRecordId = dbo.SPONSORSHIPOPPORTUNITYATTACHMENT.ID
@@ -130,7 +136,7 @@ as begin
 		if (@BodyCurrentYear = CAST(@photoYear as nvarchar(4))) or (@HeadshotCurrentYear = CAST(@photoYear as nvarchar(4)))
 			begin
 				set @performOperation = 0;
-				RAISERROR 100000 'Current Photo Year matches the Current Photo! Nothing to update.'
+				raiserror('Current Photo Year matches the Current Photo! Nothing to update.',16,1);				
 			end
 		
 		-- if there are no records where Title year matches profile photo year, do nothing:		
@@ -141,7 +147,8 @@ as begin
 						-- ** THIS WON'T WORK IF OTHER TYPES OF ATTACHMENTS (NON CHLID PHOTO) START WITH A YEAR **
 			begin
 				set @performOperation = 0;
-				RAISERROR 100000 'No Photo records match the Photo Year! Nothing to update.'
+				raiserror('No Photo records match the Photo Year! Nothing to update.',16,1);
+				
 			end
 
 
