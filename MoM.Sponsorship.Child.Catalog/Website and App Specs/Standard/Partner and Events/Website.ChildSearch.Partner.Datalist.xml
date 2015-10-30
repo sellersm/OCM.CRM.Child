@@ -86,6 +86,13 @@ begin
 								begin
 									exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_OLIVET @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
 								end
+								else
+								begin
+									if lower(@PARTNERLOOKUPID) = 'hope'
+									begin
+										exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HOPE @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+									end
+								end								
 							end
 						end
 					end
