@@ -630,6 +630,8 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Query.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Add.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Delete.RecordOperation.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.PackageVersion.DataList.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

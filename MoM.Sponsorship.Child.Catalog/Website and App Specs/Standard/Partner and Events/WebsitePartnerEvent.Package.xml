@@ -6,6 +6,16 @@
     Description="Specs for the Website related to Partner and Event child searches"
     Author="Cary Mayeda"
     >
+	<!-- 
+	Remarks:    
+		This is the old version of separate	sprocs per partner
+		Once all are transitioned to the new one this can be removed 
+		The new specs are in Website.ChildSearch.Partner.Package.xml
+
+	History:
+	Date            Modified By     Comments
+	-->
+
 
 	<!-- Note:  the order of the items listed here is important.  For example, you won't be able to load a data form that references 
 	a table that hasn't been loaded, etc.  In general, the following order is recommended:
@@ -64,9 +74,11 @@
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_I5CHURCH.xml" />
 
 		<!-- Datalists -->
+		<!-- This was copied to the new package - Website.ChildSearch.Partner.Package.xml -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Website.ChildSearch.Partner.Datalist.xml"/>
 
 		<!-- Package Versions -->
+		<!-- This was copied to the new package - Website.ChildSearch.Partner.Package.xml -->
 		<common:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.WebsiteAndApp.PackageVersion.DataList.xml" />
   </common:DependencyList>
 
