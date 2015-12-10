@@ -5,7 +5,8 @@
     Name="Website Partner Page"
     Description="Partner Page"
     Author="Cary Mayeda"
-    ContextRecordType="Website Partner"	
+	ExpressionDataFormID="3545b051-d936-426e-9827-d28a13cb0f3b" 
+    ContextRecordType="Website Child Search Partner"	
 	>
 	<!-- 
 	Remarks:    
@@ -14,8 +15,8 @@
 	Date            Modified By     Comments
 	29-Nov-2015		CMayeda			Initial Version
 	-->
-
-	<PageHeader Caption="Website Partner" />
+	
+	<PageHeader Caption="= &quot;Website Partner: &quot; + Page.Fields!PARTNERID" />
 	<SummarySection ID="87cdbbb0-f986-4134-be91-c4e8ce97e70f">
 		<DataForm ID="3545b051-d936-426e-9827-d28a13cb0f3b" />
 	</SummarySection>
@@ -29,15 +30,78 @@
 						</RenderStyle>
 					</DataList>
 					<SectionContext>
-						<common:PageContextID/>
+						<PageContextID xmlns="bb_appfx_commontypes" />
+					</SectionContext>
+					<Actions>
+						<Action ID="b61ea6a3-da4e-4ced-9959-e3e81dae193e" Caption="Add">
+							<ShowAddDataForm DataFormID="ca1cbf6c-ae20-49be-94b4-8bc80ed27f9b" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<PageContextID />
+								</ActionContext>
+								<PostActionEvent>
+									<RefreshPage />
+								</PostActionEvent>
+							</ShowAddDataForm>
+						</Action>
+						<Action ID="a2c3109f-5d25-45c5-a215-1e4505c46984" Caption="Edit" ImageKey="res:edit">
+							<ShowDataForm DataFormID="c095167a-3964-4a25-8ffb-bc53029bac68" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+								<PostActionEvent>
+									<RefreshPage />
+								</PostActionEvent>
+							</ShowDataForm>
+						</Action>
+						<Action ID="1d0cfbf6-d76d-40d8-9c5d-290622dabc3f" Caption="Delete" ImageKey="res:delete">
+							<ExecuteRecordOperation RecordOperationID="6a32906f-1dfd-469a-b3d8-ae184bec89b2" xmlns="bb_appfx_commontypes">
+								<ActionContext>
+									<SectionField>ID</SectionField>
+								</ActionContext>
+								<PostActionEvent>
+									<RefreshPage />
+								</PostActionEvent>
+								<AllowsMultiSelect>
+									<Prompt>Are you sure you want to delete the selected Website Child Search Partner Reservation Key(s)?</Prompt>
+								</AllowsMultiSelect>
+							</ExecuteRecordOperation>
+						</Action>
+					</Actions>
+				</Section>
+				<Section ID="b6d3171c-fd61-4a35-86b8-9c3964fee9f4" Caption="Reserved Children">
+					<DataList ID="bd9037ab-5248-44d7-b799-59d57cbb73f2" AutoDisplayFilters="true">
+						<RenderStyle>
+							<GroupedView>
+								<Groups>
+									<Group ColumnName="COUNTRYNAME" />
+									<Group ColumnName="PROJECTLOOKUPID" />
+									<Group ColumnName="PROJECTNAME" />
+									<Group ColumnName="GENDER" />
+								</Groups>
+							</GroupedView>
+						</RenderStyle>
+					</DataList>
+					<SectionContext>
+						<Expression xmlns="bb_appfx_commontypes">= Page.Fields!PARTNERID</Expression>
 					</SectionContext>
 				</Section>
 			</Sections>
 		</Tab>
 	</Tabs>
-
 	<PageActionGroups>
-			<PageActionGroup ID="08a35492-0f33-4bb2-b94c-00312d16e5d7" Caption="Tasks" ImageKey="RES:Tasks" />
-		</PageActionGroups>
-	</PageDefinitionSpec>
-	
+		<PageActionGroup ID="08a35492-0f33-4bb2-b94c-00312d16e5d7" Caption="Tasks" ImageKey="RES:Tasks">
+			<Actions>
+				<Action ID="4af18ea1-e61a-4449-9df4-a7e2611a4c6c" Caption="Edit partner">
+					<ShowDataForm DataFormID="5d4db8ec-877c-4e4d-8c57-d84e891ec8a2" xmlns="bb_appfx_commontypes">
+						<ActionContext>
+							<PageContextID />
+						</ActionContext>
+						<PostActionEvent>
+							<RefreshPage />
+						</PostActionEvent>
+					</ShowDataForm>
+				</Action>
+			</Actions>
+		</PageActionGroup>
+	</PageActionGroups>
+</PageDefinitionSpec>

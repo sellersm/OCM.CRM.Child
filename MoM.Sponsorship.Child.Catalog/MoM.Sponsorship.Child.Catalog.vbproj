@@ -614,7 +614,9 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Edit.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Table.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.DataList.xml" />
-    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.PartnerList.Page.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.PartnerList.Page.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Page.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.View.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Table.xml">
