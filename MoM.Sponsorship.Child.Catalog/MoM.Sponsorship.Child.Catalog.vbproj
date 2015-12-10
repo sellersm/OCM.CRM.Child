@@ -578,7 +578,7 @@
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_MULTIPLECURRENTHEADSHOTATTACHMENTS.xml" />
     <EmbeddedResource Include="ChildEligibilityFunding\SQLSpecs\USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITY_CURRENTPHOTOATTACHMENTSDIFFERENTYEARS.xml" />
     <EmbeddedResource Include="Query Views\ChildProjectDisbursementWithNotFunded.Query.xml" />
-    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Datalist.xml">
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.GetAvailableChildren.Datalist.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildInfo.View.xml" />
@@ -590,7 +590,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL.xml" />
-    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Add.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -601,11 +600,26 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_OLIVET.xml" />
     <EmbeddedResource Include="Record Operations\SponsorshipOpportunity.SetToAvailable.RecordOperation.xml.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HOPE.xml" />
-    <Content Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Catalog.Table.xml" />
-    <Content Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.ReservationKeys.Table.xml">
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.DataList.xml">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.PackageVersion.DataList.xml" />
+    </EmbeddedResource>
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Add.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Edit.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservedChildren.DataList.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Package.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Delete.RecordOperation.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Edit.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Table.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.DataList.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.PartnerList.Page.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Page.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.View.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Table.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Datalist.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -614,6 +628,8 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Monitor.Page.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.ChildLock.Delete.RecordOperation.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Website.SessionPageActivity.Query.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.ReservationKey.Add.xml" />
+    <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Delete.RecordOperation.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

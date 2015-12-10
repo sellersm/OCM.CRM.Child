@@ -1,0 +1,24 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="8d76be42-627b-440a-a2b7-d4ba8ec0ca5d"
+	Name="Website Child Search Partner"
+	Description="The  partners / events that have a unique child search on the website"
+	Author="Cary Mayeda"
+	Tablename="USR_WEBSITE_CHILDSEARCH_PARTNER"		   
+	>
+	<!-- 
+	Remarks:   
+		
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<!-- define fields on the table -->
+	<Fields>
+		<TextField Name="PARTNERID" Description="Used in the BBIS part to specify the partner/event" Length="100" IsUnique="true" Required="true"/>
+		<TextField Name="DESCRIPTION" Description="Description of the partner/event" Length="255" Required="true"/>
+	</Fields>
+
+</TableSpec>

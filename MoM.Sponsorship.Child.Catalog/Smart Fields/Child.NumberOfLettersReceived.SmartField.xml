@@ -1,0 +1,62 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="4beb2fec-8d3c-47fd-af6a-3e1f87d9a04c"
+	Name="Child - Number of Letters Received"
+    Description="Used to get a count of the letters sent to the child from sponsors"
+    Author="RoseZ Zarling"
+    SPName="USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILD_NUMBEROFLETTERSRECEIVED"
+	DataType="Integer"
+    RecordType="Sponsorship opportunity child"
+	DisplayName="Number of Letters Received" 
+	SmartFieldFolder="REPLACE_WITH_SMARTFIELDFOLDER"
+	
+	>
+
+	<!-- 
+		   Remarks:      This is used to count the number of letters that were written by sponsors to a child.
+
+		   History:
+		   Date            Modified By     Comments
+		   10-Jul-2013     RZarling       Initial Version
+	-->
+
+	<!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+
+create procedure dbo.USR_USP_SMARTFIELD_SPONSORSHIPOPPOTUNITYCHILD_NUMBEROFLETTERSRECEIVED ( 
+       @ASOF datetime
+) as begin -- of proc
+
+
+/* Query to find the number of letters written to the children from the sponsor 
+Original intent/request: Andrew Vanderput, ICM Departures 2009-2012
+*/
+
+select 
+ch.id as ChildId -- sponsorship opportunity which is the child
+,count(sub.id) as NumberOfLettersSentToChild -- total count of letters sent to the child from the sponsor
+
+from  
+dbo.INTERACTION i 
+join dbo.USR_INTERACTIONEXTENSIONCHILDREN ixch on i.ID = ixch.INTERACTIONID   
+join dbo.SPONSORSHIPOPPORTUNITYCHILD ch on ch.id = ixch.SPONSORSHIPOPPORTUNITYCHILDID
+join dbo.INTERACTIONSUBCATEGORY sub on i.INTERACTIONSUBCATEGORYID = sub.ID -- has child info
+join dbo.INTERACTIONCATEGORY cat on sub.INTERACTIONCATEGORYID = cat.ID  -- some are child 
+
+where 
+ cat.NAME = 'Child Correspondence'  -- category of Child correspondence
+and sub.name = 'Sponsor Letter'          -- sub category of sponsor letter
+
+group by
+ch.id -- sponsorship opportunity which is the child
+
+end         -- of proc
+
+
+		]]>
+	</CreateProcedureSQL>
+
+
+</SmartFieldSpec>

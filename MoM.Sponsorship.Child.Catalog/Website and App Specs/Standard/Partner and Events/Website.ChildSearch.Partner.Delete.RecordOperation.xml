@@ -1,0 +1,43 @@
+<RecordOperationSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="96015055-547d-4788-b7cd-8f75b6362473"
+    Name="Website Child Search Partner Delete"
+    Description="Used to delete the given Website Child Search Partner"
+    Author="Cary Mmayeda"
+    RecordType="Website Child Search Partner"
+    OperationType="Delete"
+    c:SecurityUIFolder="Website"
+    xmlns="bb_appfx_recordoperation"
+    >
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+	<SPRecord>
+        <SPOperationImplementation SPName="USR_USP_WEBSITE_CHILDSEARCH_PARTNER_DELETE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_WEBSITE_CHILDSEARCH_PARTNER_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_USR_WEBSITE_CHILDSEARCH_PARTNER_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+]]>
+</c:CreateProcedureSQL>
+        </SPOperationImplementation>
+    </SPRecord>
+    <Prompt>
+        <StandardPrompt Text="Are you sure you want to delete this Website Child Search Partner?" />
+    </Prompt>
+</RecordOperationSpec>

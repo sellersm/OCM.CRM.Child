@@ -1,0 +1,51 @@
+<DataListSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="4d4b1401-59cb-44da-968d-ad77b634140b"
+    Name="Website Child Search Partner Reservation Key List"
+    Description="All Website Child Search Partner Reservation Key records."
+    Author="Cary Mayeda"
+    c:SecurityUIFolder="Website"
+    xmlns="bb_appfx_datalist"
+    >
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataList SPName="USR_USP_DATALIST_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY">
+        <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATALIST_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY
+(
+	@ID uniqueidentifier
+)
+as
+	set nocount on;
+
+	select 
+        ID,
+        PARTNEREVENTID,
+        KEYTYPE,
+        RESERVATIONKEYPREFIX,
+        GENERALWEBSITEPROJECT
+	from 
+        dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY
+	where 
+		PARTNEREVENTID = @ID
+]]>
+</c:CreateProcedureSQL>
+    </SPDataList>
+	<Context ContextRecordType="Website Partner" RecordIDParameter="ID"/>
+    <Output>
+        <OutputFields>
+            <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+            <OutputField FieldID="PARTNEREVENTID" Caption="Partner/Event ID" DataType="Guid"  IsHidden="true"/>
+            <OutputField FieldID="KEYTYPE" Caption="Key type" DataType="String" />
+            <OutputField FieldID="RESERVATIONKEYPREFIX" Caption="Reservation key prefix" DataType="String" />
+            <OutputField FieldID="GENERALWEBSITEPROJECT" Caption="General website project" DataType="String" />
+        </OutputFields>
+    </Output>
+</DataListSpec>

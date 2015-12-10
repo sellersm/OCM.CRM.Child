@@ -1,0 +1,98 @@
+<AddDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="3a1a4e04-0850-4c8c-bc49-9c10c2913aff"
+    Name="Website Child Search Partner Reservation Key Add Form"
+    Description="Used for adding a new Website Child Search Reservation Key for a Partner/Event"
+    Author="Cary Mayeda"
+    RecordType="Website Child Search Partner Reservation Key"
+    DataFormInstanceID="ca1cbf6c-ae20-49be-94b4-8bc80ed27f9b"
+    c:SecurityUIFolder="Website"
+    xmlns="bb_appfx_adddataformtemplate"
+    >
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataForm>
+        <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY
+(
+    @ID uniqueidentifier = null output,
+    @CHANGEAGENTID uniqueidentifier = null,
+    @PARTNEREVENTID uniqueidentifier,
+    @KEYTYPECODE tinyint = 0,
+    @RESERVATIONKEYPREFIX nvarchar(100) = '',
+    @GENERALWEBSITEPROJECT nvarchar(6) = ''
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY
+		(ID, PARTNEREVENTID, KEYTYPECODE, RESERVATIONKEYPREFIX, GENERALWEBSITEPROJECT, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @PARTNEREVENTID, @KEYTYPECODE, @RESERVATIONKEYPREFIX, @GENERALWEBSITEPROJECT, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+
+]]>
+</c:CreateProcedureSQL>
+
+		</SaveImplementation>
+    </SPDataForm>
+	
+	<Context ContextRecordType="Website Child Search Partner" RecordIDParameter="PARTNEREVENTID"/>
+    
+	<c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="KEYTYPECODE" DataType="TinyInt" Caption="Key type" DefaultValueText="0">
+                <c:ValueList>
+                    <c:Items>
+                        <c:Item>
+                            <c:Value>0</c:Value>
+                            <c:Label>Exclusive</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>1</c:Value>
+                            <c:Label>Partner Share</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>2</c:Value>
+                            <c:Label>Shared with General Website</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>3</c:Value>
+                            <c:Label>General Website</c:Label>
+                        </c:Item>
+                    </c:Items>
+                </c:ValueList>
+            </c:FormField>
+            <c:FormField FieldID="RESERVATIONKEYPREFIX" MaxLength="100" Caption="Reservation key prefix" />
+            <c:FormField FieldID="GENERALWEBSITEPROJECT" MaxLength="6" Caption="General website project" />
+        </c:FormFields>
+        <c:FormUIComponent />
+    </c:FormMetaData>
+</AddDataFormTemplateSpec>

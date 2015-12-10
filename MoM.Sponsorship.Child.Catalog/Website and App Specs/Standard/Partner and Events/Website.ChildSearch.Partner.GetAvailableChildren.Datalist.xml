@@ -1,0 +1,152 @@
+﻿<DataListSpec
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes"
+	ID="5ECB50D7-01C2-4487-8B34-1ECCF6E4FF5B"
+	Name="Website Church Partner Child Search Data List"
+	Description="This is the data list used by the website to get available children for a specific church partner or event"
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Website">
+    <!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	22-Sep-2014		CMayeda			Initial Version - Copied from App Child Search Data List (App.ChildSearch.Datalist.xml) and removed not needed results
+	01-Jun-2015		CMayeda			Added Add a Child Campaign
+	05-Jun-2015		CMayeda			Changed addolder to include 'Pending' children.
+									Added general check, so if you do not specify a valid partner id, it returns 0 rows.
+	29-Jun-2015		CMayeda			Modified this to call a sproc for each partner / event
+									This will allow the separate sprocs to be optimized and for more readable code in this sproc
+	29-Nov-2015		CMayeda			Added call to new partner search - USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER
+-->
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_WEBSITE_GETAVAILABLECHILDRENFORPARTNER">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_WEBSITE_GETAVAILABLECHILDRENFORPARTNER( 
+	@PARTNERLOOKUPID nvarchar(100),  -- Alpha numeric key (not constituent lookup id)
+	@GENDER nvarchar(25),
+    @AGEMIN nvarchar(10),
+	@AGEMAX nvarchar(10),
+	@COUNTRY nvarchar(25)
+
+)
+as
+begin
+
+    set @GENDER = nullif(@GENDER, '');
+-- ** NEED TO CONVERT TO INTEGER	
+    set @AGEMIN = nullif(@AGEMIN, '');	
+    set @AGEMAX = nullif(@AGEMAX, '');
+    set @COUNTRY = nullif(@COUNTRY, '');
+
+	if lower(@PARTNERLOOKUPID) = 'general'
+	begin
+		exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_GENERAL @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+	end
+	else
+	begin
+		if lower(@PARTNERLOOKUPID) = 'addyounger'
+		begin
+			exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_YOUNGER @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+		end
+		else
+		begin
+			if lower(@PARTNERLOOKUPID) = 'addolder'
+			begin
+				exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ADDACHILD_OLDER @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+			end
+			else
+			begin
+				if lower(@PARTNERLOOKUPID) = 'i5 church'
+				begin
+					exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_I5CHURCH @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+				end
+				else
+				begin
+					if  lower(@PARTNERLOOKUPID) = 'fathershouse'
+					begin
+						exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_FATHERSHOUSE @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+					end
+					else
+					begin
+						if lower(@PARTNERLOOKUPID) = 'hillsalivegeneral'
+						begin
+							exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HILLSALIVE_GENERAL @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+						end
+						else
+						begin
+							if lower(@PARTNERLOOKUPID) = 'elevate'
+							begin
+								exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_ELEVATE @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+							end
+							else
+							begin
+								if lower(@PARTNERLOOKUPID) = 'olivet'
+								begin
+									exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_OLIVET @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+								end
+								else
+								begin
+									if lower(@PARTNERLOOKUPID) = 'hope'
+									begin
+										exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER_HOPE @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+									end
+									else
+									begin
+										exec USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER @PARTNERLOOKUPID, @GENDER, @AGEMIN, @AGEMAX, @COUNTRY 
+									end
+								end								
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+	]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Church Partner" RecordIDParameter="PARTNERLOOKUPID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP -->
+	<Parameters>
+
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="GENDER" Caption="Gender" DataType="String"/>
+				<common:FormField FieldID="AGEMIN" Caption="Minimum Age" DataType="String"/>
+				<common:FormField FieldID="AGEMAX" Caption="Maximum Age" DataType="String"/>
+				<common:FormField FieldID="COUNTRY" Caption="Country" DataType="String"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+				<OutputField FieldID="ID" Caption="System record ID" DataType ="Guid"/>
+				<OutputField FieldID="FIRSTNAME" Caption="First Name" DataType="String" />
+				<OutputField FieldID="LASTNAME" Caption="Last Name" DataType="String" />
+				<OutputField FieldID="FULLNAME" Caption="Full Name" DataType="String" />
+				<OutputField FieldID="COUNTRYNAME" Caption="Country Name" DataType="String" />
+				<OutputField FieldID="COUNTRYID" Caption="Country ID" DataType="Guid"/>
+				<OutputField FieldID="AGE" Caption="Age" DataType="TinyInt"/>
+				<OutputField FieldID="BIRTHDATE" Caption="Birthdate" DataType="String"/>
+				<OutputField FieldID="GENDER" Caption="Gender" DataType="String"  />
+				<OutputField FieldID="GENDERCODE" Caption="Gender Code" DataType="TinyInt" />
+				<OutputField FieldID="PROJECTNAME" Caption="Project Name"  DataType="String"/>
+				<OutputField FieldID="PROJECTID" Caption="Project ID" DataType="Guid" />
+				<OutputField FieldID="CHILDNO" Caption="Child Number" DataType="String" />
+				<OutputField FieldID="ELIGIBILITY" Caption="Eligibility" DataType="String"/>
+				<OutputField FieldID="AVAILABILITY" Caption="Availability" DataType="String"/>
+
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

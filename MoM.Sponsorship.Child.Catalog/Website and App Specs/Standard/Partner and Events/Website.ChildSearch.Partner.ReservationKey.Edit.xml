@@ -1,0 +1,129 @@
+<EditDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="f5d43f68-dc22-4017-8eca-d94b6b921919"
+    Name="Website Child Search Partner Reservation Key Edit Form"
+    Description="Used for editing the given Website Child Search Partner Reservation Key"
+    Author="Cary Mayeda"
+    RecordType="Website Child Search Partner Reservation Key"
+    DataFormInstanceID="c095167a-3964-4a25-8ffb-bc53029bac68"
+    c:SecurityUIFolder="Website"
+    OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+    xmlns="bb_appfx_editdataformtemplate"
+    >
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	09-Dec-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataForm>
+        <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_WEBSITE_CHILDSEARCH_PARTNER_RESERVATION_KEY">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_WEBSITE_CHILDSEARCH_PARTNER_RESERVATION_KEY
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @KEYTYPECODE tinyint = null output,
+    @RESERVATIONKEYPREFIX nvarchar(100) = null output,
+    @GENERALWEBSITEPROJECT nvarchar(6) = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+        @KEYTYPECODE = KEYTYPECODE, 
+        @RESERVATIONKEYPREFIX = RESERVATIONKEYPREFIX, 
+        @GENERALWEBSITEPROJECT = GENERALWEBSITEPROJECT
+	from dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY
+	where ID = @ID
+
+	return 0;
+]]>
+</c:CreateProcedureSQL>
+        </LoadImplementation>
+        <SaveImplementation SPName="USP_DATAFORMTEMPLATE_EDIT_WEBSITE_CHILDSEARCH_PARTNER_RESERVATION_KEY">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USP_DATAFORMTEMPLATE_EDIT_WEBSITE_CHILDSEARCH_PARTNER_RESERVATION_KEY
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+    @KEYTYPECODE tinyint,
+    @RESERVATIONKEYPREFIX nvarchar(100),
+    @GENERALWEBSITEPROJECT nvarchar(6)
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+						
+	begin try
+		-- handle updating the data
+		update dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY
+		set
+            KEYTYPECODE = @KEYTYPECODE,
+            RESERVATIONKEYPREFIX = @RESERVATIONKEYPREFIX,
+            GENERALWEBSITEPROJECT = @GENERALWEBSITEPROJECT,
+
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+		where ID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+]]>
+</c:CreateProcedureSQL>
+
+		</SaveImplementation>
+    </SPDataForm>
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="KEYTYPECODE" DataType="TinyInt" Caption="Key type" DefaultValueText="0">
+                <c:ValueList>
+                    <c:Items>
+                        <c:Item>
+                            <c:Value>0</c:Value>
+                            <c:Label>Exclusive</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>1</c:Value>
+                            <c:Label>PartnerShare</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>2</c:Value>
+                            <c:Label>SharedWithGeneralWebsite</c:Label>
+                        </c:Item>
+                        <c:Item>
+                            <c:Value>3</c:Value>
+                            <c:Label>GeneralWebsite</c:Label>
+                        </c:Item>
+                    </c:Items>
+                </c:ValueList>
+            </c:FormField>
+            <c:FormField FieldID="RESERVATIONKEYPREFIX" MaxLength="100" Caption="Reservation key prefix" />
+            <c:FormField FieldID="GENERALWEBSITEPROJECT" MaxLength="6" Caption="General website project" />
+        </c:FormFields>
+        <c:FormUIComponent />
+    </c:FormMetaData>
+</EditDataFormTemplateSpec>

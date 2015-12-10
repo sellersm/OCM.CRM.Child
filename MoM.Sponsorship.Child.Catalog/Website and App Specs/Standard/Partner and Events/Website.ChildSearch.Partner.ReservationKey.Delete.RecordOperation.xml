@@ -1,0 +1,36 @@
+<RecordOperationSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="6a32906f-1dfd-469a-b3d8-ae184bec89b2"
+    Name="Website Child Search Partner Reservation Key Delete"
+    Description="Used to delete the given Website Child Search Partner Reservation Key"
+    Author="Cary Mayeda"
+	RecordType="Website Child Search Partner Reservation Key"
+    OperationType="Delete"
+	c:SecurityUIFolder="Website"
+    xmlns="bb_appfx_recordoperation"
+    >
+	<SPRecord>
+        <SPOperationImplementation SPName="USR_USP_WEBSITE_CHILDSEARCH_RESERVATIONKEY_DELETE">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_WEBSITE_CHILDSEARCH_RESERVATIONKEY_DELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec USP_USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+]]>
+</c:CreateProcedureSQL>
+        </SPOperationImplementation>
+    </SPRecord>
+    <Prompt>
+        <StandardPrompt Text="Are you sure you want to delete this Website Child Search Partner Reservation Key?" />
+    </Prompt>
+</RecordOperationSpec>

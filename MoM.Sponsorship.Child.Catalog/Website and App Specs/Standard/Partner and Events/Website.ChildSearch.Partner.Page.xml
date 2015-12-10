@@ -1,0 +1,43 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:common="bb_appfx_commontypes"
+    ID="E1E922B7-8673-4039-B9D4-1FDC8B4EF65B"
+    Name="Website Partner Page"
+    Description="Partner Page"
+    Author="Cary Mayeda"
+    ContextRecordType="Website Partner"	
+	>
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<PageHeader Caption="Website Partner" />
+	<SummarySection ID="87cdbbb0-f986-4134-be91-c4e8ce97e70f">
+		<DataForm ID="3545b051-d936-426e-9827-d28a13cb0f3b" />
+	</SummarySection>
+	<Tabs>
+		<Tab Caption="Reservation Keys" ID="270a6fee-efe1-40a7-baaa-e936a21738b7">
+			<Sections>
+				<Section ID="be93f7b1-fa3d-4d89-bb52-b2fdf912ae07">
+					<DataList ID="4d4b1401-59cb-44da-968d-ad77b634140b">
+						<RenderStyle>
+							<StandardView />
+						</RenderStyle>
+					</DataList>
+					<SectionContext>
+						<common:PageContextID/>
+					</SectionContext>
+				</Section>
+			</Sections>
+		</Tab>
+	</Tabs>
+
+	<PageActionGroups>
+			<PageActionGroup ID="08a35492-0f33-4bb2-b94c-00312d16e5d7" Caption="Tasks" ImageKey="RES:Tasks" />
+		</PageActionGroups>
+	</PageDefinitionSpec>
+	

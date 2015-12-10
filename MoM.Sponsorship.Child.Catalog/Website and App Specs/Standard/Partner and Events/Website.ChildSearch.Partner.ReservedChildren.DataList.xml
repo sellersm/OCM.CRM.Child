@@ -1,0 +1,117 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="bd9037ab-5248-44d7-b799-59d57cbb73f2" 
+	Name="Website Child Search Partner Reserved Children Data List"
+	Description="Display the children that are reserved for a particular partner." 
+	Author="Cary Mayeda"
+	common:SecurityUIFolder="Website">
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_WEBSITE_CHILDSEARCH_PARTNER_RESERVEDCHILDREN">
+		<common:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_WEBSITE_CHILDSEARCH_PARTNER_RESERVEDCHILDREN
+(
+	@PARTNERLOOKUPID nvarchar(100),
+	@GENDER nvarchar(25) = null,
+    @AGEMIN nvarchar(10) = null,
+	@AGEMAX nvarchar(10) = null,
+	@COUNTRY nvarchar(25) = null
+)
+as
+begin
+	declare @ReservedChildren as table
+	(
+		ID uniqueidentifier,
+		FIRSTNAME nvarchar(255),
+		LASTNAME nvarchar(255),
+		FULLNAME nvarchar(255),
+		COUNTRYNAME nvarchar(255),
+		COUNTRYID uniqueidentifier,
+		AGE tinyint,
+		BIRTHDATE nvarchar(255),
+		GENDER nvarchar(255),
+		GENDERCODE tinyint,
+		PROJECTNAME nvarchar(255),
+		PROJECTID uniqueidentifier,
+		CHILDNO nvarchar(255),
+		ELIGIBILITY nvarchar(255),
+		AVAILABILITY nvarchar(255)
+	)
+	insert @ReservedChildren
+	exec dbo.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER @PARTNERLOOKUPID
+
+	select 
+		rc.ID,
+		rc.PROJECTID,
+		rc.COUNTRYID,
+		rc.COUNTRYNAME,
+		project.LOOKUPID,
+		rc.PROJECTNAME,
+		rc.CHILDNO,
+		rc.FIRSTNAME,
+		rc.LASTNAME,
+		rc.FULLNAME,
+		rc.AGE,
+		rc.BIRTHDATE,
+		rc.GENDER,
+		rc.GENDERCODE,
+		rc.ELIGIBILITY,
+		rc.AVAILABILITY
+	from 
+		@ReservedChildren rc
+	inner join 
+		dbo.CONSTITUENT project on project.ID = rc.PROJECTID
+	where
+		((@GENDER is null or @GENDER = '') or (rc.GENDER = @GENDER))
+	and ((@COUNTRY is null or @COUNTRY = '') or (upper(COUNTRYNAME) = upper(@COUNTRY)))
+	and ((@AGEMIN is null or @AGEMIN ='') or (@AGEMIN is not null and @AGEMIN <> '' and rc.AGE >= cast (@AGEMIN as int)))
+	and ((@AGEMAX is null or @AGEMAX ='') or (@AGEMAX is not null and @AGEMAX <> '' and rc.AGE <= cast (@AGEMAX as int)))
+
+end
+	]]>
+		</common:CreateProcedureSQL>
+	</SPDataList>
+	
+	<!-- describe the context ID parameter for the SP (if applicable)-->
+	<Context ContextRecordType="Church Partner" RecordIDParameter="PARTNERLOOKUPID"/>
+
+	<!-- describe any parameters (other than the context ID) defined on the SP -->
+	<Parameters>
+
+		<common:FormMetaData>
+			<common:FormFields>
+				<common:FormField FieldID="GENDER" Caption="Gender" DataType="String"/>
+				<common:FormField FieldID="AGEMIN" Caption="Minimum Age" DataType="String"/>
+				<common:FormField FieldID="AGEMAX" Caption="Maximum Age" DataType="String"/>
+				<common:FormField FieldID="COUNTRY" Caption="Country" DataType="String"/>
+			</common:FormFields>
+		</common:FormMetaData>
+	</Parameters>
+
+	<!-- define the output fields in the list -->
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="System record ID" DataType ="Guid" IsHidden="true"  />
+			<OutputField FieldID="PROJECTID" Caption="Project ID" DataType="Guid" IsHidden="true"/>
+			<OutputField FieldID="COUNTRYID" Caption="Country ID" DataType="Guid" IsHidden="true"/>
+			<OutputField FieldID="COUNTRYNAME" Caption="Country Name" DataType="String" />
+			<OutputField FieldID="PROJECTLOOKUPID" Caption="Project Lookup ID"  DataType="String"/>
+			<OutputField FieldID="PROJECTNAME" Caption="Project Name"  DataType="String"/>
+			<OutputField FieldID="CHILDNO" Caption="Child Number" DataType="String" />
+			<OutputField FieldID="FIRSTNAME" Caption="First Name" DataType="String" />
+			<OutputField FieldID="LASTNAME" Caption="Last Name" DataType="String" />
+			<OutputField FieldID="FULLNAME" Caption="Full Name" DataType="String" />
+			<OutputField FieldID="AGE" Caption="Age" DataType="TinyInt" />
+			<OutputField FieldID="BIRTHDATE" Caption="Birthdate" DataType="String"/>
+			<OutputField FieldID="GENDER" Caption="Gender" DataType="String"  />
+			<OutputField FieldID="GENDERCODE" Caption="Gender Code" DataType="TinyInt" />
+			<OutputField FieldID="ELIGIBILITY" Caption="Eligibility" DataType="String"/>
+			<OutputField FieldID="AVAILABILITY" Caption="Availability" DataType="String"/>
+
+		</OutputFields>
+	</Output>
+
+
+</DataListSpec>

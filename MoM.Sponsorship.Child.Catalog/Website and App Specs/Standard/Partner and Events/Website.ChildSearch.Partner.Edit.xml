@@ -1,0 +1,102 @@
+<EditDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="c4d1f2b7-c74c-456a-a146-8b127d564c50"
+    Name="Website Child Search Partner Edit Form"
+    Description="Used for editing the given Website Child Search Partner"
+    Author="Cary Mayeda"
+    RecordType="Website Child Search Partner"
+    DataFormInstanceID="5d4db8ec-877c-4e4d-8c57-d84e891ec8a2"
+    c:SecurityUIFolder="Website"
+    OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+    xmlns="bb_appfx_editdataformtemplate"
+    >
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataForm>
+        <LoadImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDITLOAD_WEBSITE_CHILDSEARCH_PARTNER">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_WEBSITE_CHILDSEARCH_PARTNER
+(
+    @ID uniqueidentifier,
+    @DATALOADED bit = 0 output,
+    @TSLONG bigint = 0 output,
+    @PARTNERID nvarchar(100) = null output,
+    @DESCRIPTION nvarchar(255) = null output
+)
+as
+
+	set nocount on;
+
+	-- be sure to set these, in case the select returns no rows
+	set @DATALOADED = 0
+	set @TSLONG = 0
+
+	-- populate the output parameters, which correspond to fields on the form.  Note that
+	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
+	-- will display a "no data loaded" message.  Also note that we fetch the TSLONG so that concurrency
+	-- can be considered.
+	select
+		@DATALOADED = 1,
+		@TSLONG = TSLONG,
+        @PARTNERID = PARTNERID, 
+        @DESCRIPTION = DESCRIPTION
+	from dbo.USR_WEBSITE_CHILDSEARCH_PARTNER
+	where ID = @ID
+
+	return 0;
+]]>
+</c:CreateProcedureSQL>
+        </LoadImplementation>
+        <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_EDIT_WEBSITE_CHILDSEARCH_PARTNER">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDIT_WEBSITE_CHILDSEARCH_PARTNER
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null,
+    @PARTNERID nvarchar(100),
+    @DESCRIPTION nvarchar(255)
+)
+as
+
+	set nocount on;
+
+	if @CHANGEAGENTID is null  
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+						
+	begin try
+		-- handle updating the data
+		update dbo.USR_WEBSITE_CHILDSEARCH_PARTNER set
+            PARTNERID = @PARTNERID,
+            DESCRIPTION = @DESCRIPTION,
+
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = getdate()
+		where ID = @ID
+	end try
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+
+return 0;
+]]>
+</c:CreateProcedureSQL>
+
+		</SaveImplementation>
+    </SPDataForm>
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="PARTNERID" Required="true" MaxLength="100" Caption="Partner ID" />
+            <c:FormField FieldID="DESCRIPTION" Required="true" MaxLength="255" Caption="Description" Multiline="true" />
+        </c:FormFields>
+        <c:FormUIComponent />
+    </c:FormMetaData>
+</EditDataFormTemplateSpec>

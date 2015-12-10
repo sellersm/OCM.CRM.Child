@@ -1,0 +1,31 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="e5a6e164-a8e4-43e7-9fea-b94f4964ad15"
+	Name="Website"
+	Description="REPLACE_WITH_DESCRIPTION"
+	Author="BETHESDA\cmayeda"
+	Tablename="REPLACE_WITH_DB_TABLE_NAME"		   
+	>
+
+	<!-- define fields on the table -->
+	<Fields>
+
+	</Fields>
+
+	<!-- define any additional check constraints on the table -->
+	<CheckConstraints>
+
+	</CheckConstraints>
+
+	<!-- define any indexes on the table -->
+	<Indexes>
+
+	</Indexes>
+		
+	<!-- define any triggers on the table -->
+	<Triggers>
+
+	</Triggers>
+
+</TableSpec>

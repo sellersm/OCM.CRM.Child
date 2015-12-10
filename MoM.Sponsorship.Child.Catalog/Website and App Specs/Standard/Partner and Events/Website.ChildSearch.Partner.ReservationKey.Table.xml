@@ -1,0 +1,33 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="090ef485-5c67-4689-9a34-06cc2dc78432"
+	Name="Website Child Search Partner Reservation Key"
+	Description="Used to track the reservation keys for each child search catalog item"
+	Author="Cary Mayeda"
+	Tablename="USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY"		   
+	>
+	<!-- 
+	Remarks:	The reservation keys used for a partner/event.
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<!-- define fields on the table -->
+	<Fields>
+		<ForeignKeyField Name="PARTNEREVENTID" ForeignTable="USR_WEBSITE_CHILDSEARCH_PARTNER" ForeignFieldName="ID" Description="The ID of the Partner/Event" Required="true" ForeignDataType="uniqueidentifier"/>
+		<EnumField Name="KEYTYPECODE" DefaultValue="0" Description="What level of or type of sharing the reservation key prefix has">
+			<EnumValues>
+				<EnumValue ID="0" Translation="Exclusive"/>
+				<EnumValue ID="1" Translation="Partner Share"/>
+				<EnumValue ID="2" Translation="Shared with General Website"/>
+				<EnumValue ID="3" Translation="General Website"/>
+			</EnumValues>
+		</EnumField>
+		<TextField Name="RESERVATIONKEYPREFIX" Description="The string that is used for a particular set of reservation keys (all that start with a certain string)" Length="100"/>
+		<TextField Name="GENERALWEBSITEPROJECT" Description="Project Lookup ID for projects that are shared with the general website." Length="6"/>
+	</Fields>
+
+</TableSpec>

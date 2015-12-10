@@ -1,0 +1,71 @@
+<AddDataFormTemplateSpec 
+    xmlns:c="bb_appfx_commontypes"
+    ID="1ea5613f-967f-4db6-ba35-41454a75d097"
+    Name="Website Child Search Partner Add Form"
+    Description="Used for adding a new Website Child Search Partner"
+    Author="Cary Mayeda"
+    RecordType="Website Child Search Partner"
+    DataFormInstanceID="22bde317-010a-4c8e-bc84-7d15258b5d70"
+    c:SecurityUIFolder="Website"
+    xmlns="bb_appfx_adddataformtemplate"
+    >
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<SPDataForm>
+        <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_WEBSITE_CHILDSEARCH_PARTNER">
+            <c:CreateProcedureSQL>
+<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_WEBSITE_CHILDSEARCH_PARTNER
+(
+    @ID uniqueidentifier = null output,
+    @CHANGEAGENTID uniqueidentifier = null,
+    @PARTNERID nvarchar(100),
+    @DESCRIPTION nvarchar(255)
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_WEBSITE_CHILDSEARCH_PARTNER
+		(ID, PARTNERID, DESCRIPTION, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @PARTNERID, @DESCRIPTION, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+
+]]>
+</c:CreateProcedureSQL>
+   
+		</SaveImplementation>
+    </SPDataForm>
+    <c:FormMetaData FixedDialog="true">
+        <c:FormFields>
+            <c:FormField FieldID="PARTNERID" Required="true" MaxLength="100" Caption="Partner ID" />
+            <c:FormField FieldID="DESCRIPTION" Required="true" MaxLength="255" Caption="Description" Multiline="true" />
+        </c:FormFields>
+        <c:FormUIComponent />
+    </c:FormMetaData>
+</AddDataFormTemplateSpec>

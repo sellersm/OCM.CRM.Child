@@ -1,0 +1,118 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="66279733-67cb-4c94-bdb4-2830fac14b32"
+	Name="USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER"
+	Description="List of Children for a particular partner and search criteria"
+	Author="Cary Mayeda"
+	SPName="USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER"
+	>
+	<!-- 
+	Remarks:    
+		This is used by the data list for the website child search part.
+		
+	History:
+	Date            Modified By     Comments
+	29-Nov-2015		CMayeda			Initial Version
+	-->
+
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_WEBSITE_GETAVAILABLECHILDRENFORPARTNER
+(
+	@PARTNERID nvarchar(100),
+	@GENDER nvarchar(25) = null,
+    @AGEMIN nvarchar(10) = null,
+	@AGEMAX nvarchar(10) = null,
+	@COUNTRY nvarchar(25) = null
+
+)
+as
+begin
+
+	-- This is used for the general website keys.  This isn't enforced anywhere, so it's something that needs to be done in training.
+	declare @GENERALWEBSITEID nvarchar(100);
+	set @GENERALWEBSITEID  = 'generalwebsite';
+
+	with ChildList as 
+	(
+		select
+			so.ID,
+			so_child.FIRSTNAME,
+			so_child.LASTNAME,
+			so_child.FIRSTNAME + ' ' + so_child.LASTNAME AS FULLNAME,
+			countryconst.KEYNAME as COUNTRYNAME,
+			countryconst.ID as COUNTRYID,
+			so_child.AGE,
+			SUBSTRING(so_child.BIRTHDATE,5,2) + '/' + SUBSTRING(so_child.BIRTHDATE,7,2) + '/' + SUBSTRING(so_child.BIRTHDATE,1,4)  as BIRTHDATE,
+			CASE so_child.GENDER
+				WHEN 'Female' THEN 'Girl'
+				WHEN 'Male' THEN 'Boy'
+			END AS GENDER,
+			so_child.GENDERCODE,
+			childprojectconst.KEYNAME as PROJECTNAME,
+			childprojectconst.ID AS PROJECTID,
+			so.LOOKUPID as CHILDNO,
+			ELIGIBILITY,
+			AVAILABILITY
+		from	
+			dbo.SPONSORSHIPOPPORTUNITY so
+			inner join dbo.SPONSORSHIPLOCATION sloc on sloc.ID = so.SPONSORSHIPLOCATIONID
+			inner join dbo.SPONSORSHIPOPPORTUNITYCHILD so_child on so_child.ID = so.ID
+			--inner join dbo.SMARTFIELD0CEE2E20081D42CA9A9E87847970093F sf on sf.ID = so.ID   				-- Greatest Need Smart Field
+			left outer join dbo.USR_CHILDPROJECTEXTENSION projectext on sloc.FIELDOFFICEID = projectext.ID
+			left outer join dbo.CONSTITUENT childprojectconst on childprojectconst.ID = projectext.ID       -- This is the constituent record that has note of type "Project Bio"
+			left outer join dbo.USR_COUNTRYEXTENSION countryext on projectext.COUNTRYEXTENSIONID = countryext.ID
+			left outer join dbo.CONSTITUENT countryconst on countryconst.ID = countryext.ID        			-- This is the constituent record that has the note of type "Country Bio"
+		where 
+			ELIGIBILITY = 'Eligible'
+		and AVAILABILITY = 'Reserved'
+		and (exists (	select 1
+						from 
+							dbo.USR_WEBSITE_CHILDSEARCH_PARTNER searchcat
+						inner join 
+							dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY searchkeys on searchcat.ID = searchkeys.PARTNEREVENTID
+						inner join 
+							dbo.SPONSORSHIPOPPORTUNITYRESERVEPROCESS so_reservations on so_reservations.NAME like searchkeys.RESERVATIONKEYPREFIX + '%'
+						where 
+							lower(searchcat.PARTNERID) = lower(@PARTNERID)
+						and searchkeys.KEYTYPECODE in (0, 1)
+						and so_reservations.ID = so.RESERVATIONKEYID
+					)
+					or
+			 exists (	select 1
+						from 
+					dbo.USR_WEBSITE_CHILDSEARCH_PARTNER searchcat
+						inner join 
+							dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY searchkeys on searchcat.ID = searchkeys.PARTNEREVENTID
+						left join 
+							dbo.SPONSORSHIPOPPORTUNITYRESERVEPROCESS so_reservations on so_reservations.NAME like searchkeys.RESERVATIONKEYPREFIX --so.RESERVATIONKEYID = so_reservations.ID
+						where 
+							lower(searchcat.PARTNERID) = @GENERALWEBSITEID
+						and searchkeys.KEYTYPECODE = 3
+						and so_reservations.ID = so.RESERVATIONKEYID			
+						and childprojectconst.LOOKUPID in (select GENERALWEBSITEPROJECT 
+															from dbo.USR_WEBSITE_CHILDSEARCH_PARTNER_RESERVATIONKEY searchkeys
+															inner join USR_WEBSITE_CHILDSEARCH_PARTNER searchcat on searchkeys.PARTNEREVENTID = searchcat.ID
+															where lower(searchcat.PARTNERID) = lower(@PARTNERID)
+															  and searchkeys.KEYTYPECODE = 2)
+					)
+			)	
+	)
+		
+	select * 
+	from 
+		ChildList
+	where
+		((@GENDER is null) or (GENDER = @GENDER))
+	and ((@COUNTRY is null) or (upper(COUNTRYNAME) = upper(@COUNTRY)))
+	and ((@AGEMIN is null) or (@AGEMAX is null) or (AGE >= @AGEMIN and AGE <= @AGEMAX))
+	order by CHILDNO
+
+
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>
