@@ -3,6 +3,7 @@ Imports System.Globalization
 Imports Blackbaud.AppFx.UIModeling.Core
 Imports Blackbaud.AppFx
 Imports Blackbaud.AppFx.Sponsorship.UIModel
+Imports System.Web
 
 ' This was copied from the OOB - SponsorshipOpportunityPreprocessIneligibleHelper, because it's a Friend class.
 ' The only changes that were made was replacing the Resouces strings with hard coded values.
