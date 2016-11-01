@@ -633,6 +633,9 @@
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\Website.ChildSearch.Partner.Delete.RecordOperation.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.Package.xml" />
     <EmbeddedResource Include="Website and App Specs\Standard\Partner and Events\WebsitePartnerEvent.PackageVersion.DataList.xml" />
+    <EmbeddedResource Include="ChildPhoto\DeleteFileNexusImportBatchRowsForChild.RecordOperation.xml" />
+    <EmbeddedResource Include="ChildPhoto\USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_DELETE_BYLOOKUPID.xml" />
+    <EmbeddedResource Include="Pages\AlterChildProject_ActionGroupChanges.Page.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

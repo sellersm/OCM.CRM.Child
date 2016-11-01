@@ -1,0 +1,73 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:common="bb_appfx_commontypes" 
+	ID="1ff6917d-c7fa-4810-91b0-518e4ba553bd"
+	Name="USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_DELETE_BYLOOKUPID"
+	Description="Deletes rows for given Child from FileNexus Photo Year Import Batch table."
+	Author="Memphis Sellers"
+	SPName="USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_DELETE_BYLOOKUPID"
+	>
+
+	<!-- 
+	Remarks:    
+
+	History:
+	Date            Modified By     Comments
+	12-Jul-2016		Memphis			Initial creation. This is used as a short-term solution to allow deleting a Child that may have a FK constraint
+										conflict when trying to delete.  This will delete the records in the 
+										USR_FILENEXUSPHOTOYEAR_IMPORTBATCH table for the given child.
+									This is a copy of the built-in sproc that deletes by ID with ChangeAgentID
+	-->
+
+
+	<CreateProcedureSQL>
+		<![CDATA[
+CREATE PROCEDURE dbo.USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_DELETE_BYLOOKUPID (
+   @LOOKUPID         nvarchar(10),
+   @CHANGEAGENTID    UNIQUEIDENTIFIER = NULL)
+AS
+begin
+	/*
+	Sets Context Info to the CHANGEAGENTID
+	Deletes a row in the USR_FILENEXUSPHOTOYEAR_IMPORTBATCH table with the given ID
+	Resets Context info to the previous value
+
+	The Context Info will be used by delete triggers to log the AUDITCHANGEAGENTID
+	as the supplied @CHANGEAGENTID rather than the default change agent id.
+	*/
+
+	SET  NOCOUNT ON;
+
+	DECLARE @e   INT;
+	DECLARE @contextCache   VARBINARY (128);
+
+	if @CHANGEAGENTID is null
+		exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output;
+
+	/* cache current context information */
+	SET @contextCache = CONTEXT_INFO ();
+
+	/* set CONTEXT_INFO to @CHANGEAGENTID */
+	IF NOT @CHANGEAGENTID IS NULL
+	   SET  CONTEXT_INFO @CHANGEAGENTID
+
+	DELETE 
+	FROM dbo.USR_FILENEXUSPHOTOYEAR_IMPORTBATCH
+	WHERE CHILDLOOKUPID = @LOOKUPID;
+
+	/* reset CONTEXT_INFO to previous value */
+	IF NOT @contextCache IS NULL
+	   SET  CONTEXT_INFO @contextCache
+
+	SELECT @e = @@error;
+
+	IF @e <> 0
+	   RETURN -456;          --always return non-zero sp result if an error occurs
+
+	RETURN 0;
+end
+
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

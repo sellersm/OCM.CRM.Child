@@ -55,6 +55,7 @@ Public NotInheritable Class SponsorshipOpportunityDepartureTransferIneligibleEdi
 	End Function
 
 	Public Overrides Function Save() As Blackbaud.AppFx.Server.AppCatalog.AppEditDataFormSaveResult
+		oldSponsorshipOpportunityID = New System.Guid(ProcessContext.RecordID)
 		Using conn As SqlClient.SqlConnection = Me.RequestContext.OpenAppDBConnection(RequestContext.ConnectionContext.BusinessProcess)
 			Dim cmd As SqlClient.SqlCommand = conn.CreateCommand()
 			Try

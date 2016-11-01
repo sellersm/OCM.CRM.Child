@@ -1,0 +1,49 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:c="bb_appfx_commontypes"
+    ID="f36bcb16-3902-41b5-aa9f-ae0ffb86c8bb"
+    Name="Alter Child Project Action Group Changes"
+    Description="Alter child project action group changes."
+    Author="Memphis Sellers"
+    ContextRecordType="Constituent"	
+    >
+
+	<!-- Note:  A page can optionally have a view form associated with it as the "Expression form".  While implemented as a view data form,
+	this form has no UI in this context, and is simply used as a way of loading additional information associated with the page.  The fields
+	returned by the expression form can be used as expressions in various properties throughout the page.  To specify an expression form for this
+	page, add the following attribute:		ExpressionDataFormID="<some guid>"-->
+
+	<!-- define how the page header should appear -->
+	<PageHeader Caption="REPLACE_WITH_CAPTION" ImageKey="REPLACE_WITH_IMAGEKEY" />
+
+	<!-- define the tabs for the page - note that if only one tab is present, then that tab's sections are promoted to the page level (ie., the tab
+	itself isn't shown -->
+	
+	<!-- Disable this action group
+	<PageActionGroup ID="53f0ee6f-c0e0-4d1e-9ea6-70ee3d0f98fc" Caption="More information">
+        <Action ID="68c042d3-705c-4344-8985-623fc09a620c" Caption="Interactions" ImageKey="catalog:Blackbaud.AppFx.Constituent.Catalog.dll,Blackbaud.AppFx.Constituent.Catalog.interactions.png">
+          <ShowPage PageID="ede4cf10-a84d-4434-87ef-ae143c78eaaf" TabID="00000000-0000-0000-0000-000000000000" SectionID="00000000-0000-0000-0000-000000000000" xmlns="bb_appfx_commontypes">
+            <ActionContext>
+              <PageContextID />
+            </ActionContext>
+          </ShowPage>
+        </Action>	
+	-->
+	<AlterExistingPages>
+		<AlterPages>
+			<AlterPage PageID="29d5b7a5-d032-4b66-80f9-b1d451292ad6">
+				<AlterPageActionGroups>
+					<!-- More Information section of the action groups/tasks-->
+					<AlterPageActionGroup PageActionGroupID="53f0ee6f-c0e0-4d1e-9ea6-70ee3d0f98fc">
+						<!-- remove the existing Interactions task from the More Information group  -->
+						<AlterActions>
+							<!--  Show Page (Interactions) action -->
+							<RemoveShowPageAction ActionID="68c042d3-705c-4344-8985-623fc09a620c" PageID="ede4cf10-a84d-4434-87ef-ae143c78eaaf"/>
+						</AlterActions>
+					</AlterPageActionGroup>
+				</AlterPageActionGroups>
+			</AlterPage>
+		</AlterPages>
+	</AlterExistingPages>
+
+</PageDefinitionSpec>

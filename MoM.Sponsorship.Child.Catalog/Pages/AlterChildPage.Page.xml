@@ -2,8 +2,8 @@
     xmlns="bb_appfx_pagedefinition" 
     xmlns:common="bb_appfx_commontypes"
     ID="57c3a7d4-be34-4054-a2dc-8c34f3a13484"
-    Name="AlterChildPage Page"
-    Description="Alters the Child Page to put a new Action task in the Admin Tasks"
+    Name="Alter Child Page"
+    Description="Alter Child Page to put new Action task in the Admin Tasks"
     Author="Memphis Sellers"
     ContextRecordType="SponsorshipOpportunity"	
     >
@@ -14,6 +14,7 @@
 	History:
 	Date            Modified By     Comments
 	14-Oct-2012		Memphis			Added the task to Admin actions for Set Registration Date. FogBugz Case 793.
+	14-Sep-2016		Memphis			Added the task to delete filenexus batch row records.
 	-->	
 
 	<!-- define how the page header should appear -->
@@ -25,7 +26,8 @@
 				<AlterOrAddPageActionGroups>
 					<AlterOrAddPageActionGroup ID="6a23ead0-0148-430b-baaf-7aa5697d3ec8" Caption="Admin Tasks" >
 						<AddAction>
-							<Action ID="c9e3d194-eba5-49ed-8212-a4c27a950823" Caption="Set Registration Date" ImageKey="res:Edit">
+							<!-- Not sure this one below is used anymore, so just commenting out for now... -->
+							<!--<Action ID="c9e3d194-eba5-49ed-8212-a4c27a950823" Caption="Set Registration Date" ImageKey="res:Edit">
 								<ShowDataForm DataFormID="7e3e34eb-9ac0-499b-a34b-9515bfe59706" xmlns="bb_appfx_commontypes">
 									<ActionContext>
 										<PageContextID />
@@ -34,7 +36,14 @@
 										<RefreshPage />
 									</PostActionEvent>
 								</ShowDataForm>
-							</Action>					
+							</Action>-->
+							<Action ID="a644c651-ae94-43e0-be97-f051740e88cc" Caption="Delete FileNexus Import Batch Rows" ImageKey="RES:delete" CaptionResourceKey="$$delete">
+								<ExecuteRecordOperation RecordOperationID="80a71d6a-d225-47d6-be44-57ec7f9273ce" xmlns="bb_appfx_commontypes">
+									<ActionContext>
+										<PageExpressionField>LOOKUPID</PageExpressionField>
+									</ActionContext>
+								</ExecuteRecordOperation>
+							</Action>
 						</AddAction>
 					</AlterOrAddPageActionGroup>
 				</AlterOrAddPageActionGroups>
