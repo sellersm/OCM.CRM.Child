@@ -638,6 +638,23 @@
     <EmbeddedResource Include="ChildPhoto\DeleteFileNexusImportBatchRowsForChild.RecordOperation.xml" />
     <EmbeddedResource Include="ChildPhoto\USR_USP_FILENEXUSPHOTOYEARIMPORTBATCH_DELETE_BYLOOKUPID.xml" />
     <EmbeddedResource Include="Pages\AlterChildProject_ActionGroupChanges.Page.xml" />
+    <EmbeddedResource Include="Tables\SponsorshipChild.Tables.Package.xml" />
+    <EmbeddedResource Include="Smart Fields\SponsorshipChild.SmartFields.Package.xml" />
+    <EmbeddedResource Include="Reservations\SponsorshipChild.Reservations.Package.xml" />
+    <EmbeddedResource Include="Record Operations\SponsorshipChild.RecordOperations.Package.xml" />
+    <EmbeddedResource Include="Query Views\SponsorshipChild.QueryViews.Package.xml" />
+    <EmbeddedResource Include="Pages\SponsorshipChild.Pages.Package.xml" />
+    <EmbeddedResource Include="PageExpressions\SponsorshipChild.PageExpressions.Package.xml" />
+    <EmbeddedResource Include="OtherTabs\ChildExtensionOtherTabs.Package.xml" />
+    <EmbeddedResource Include="CRUD\Departures\SponsorshipChild.Departures.Package.xml" />
+    <EmbeddedResource Include="ChildTransfer\ChildTransfer.Package.xml" />
+    <EmbeddedResource Include="ChildSiblings\ChildSiblings.Package.xml" />
+    <EmbeddedResource Include="ChildReactivation\ChildReactivation.Package.xml" />
+    <EmbeddedResource Include="ChildPhoto\SponsorshipChild.ChildPhoto.Package.xml" />
+    <EmbeddedResource Include="ChildDepartureSpecs\ChildDepartureSpecs.Package.xml" />
+    <EmbeddedResource Include="ChildCCHSpecs\ChildCCHSpecs.Package.xml" />
+    <EmbeddedResource Include="Child Unlock\ChildUnlock.Package.xml" />
+    <EmbeddedResource Include="AdminChildTasks\AdminChildTasks.Package.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
