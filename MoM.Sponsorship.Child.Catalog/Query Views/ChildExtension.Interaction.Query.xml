@@ -16,8 +16,9 @@
 	Remarks:    Parent is Sponsorship Opportunity (V_QUERY_SPONSORSHIPOPPORTUNITY) and it relates to USR_V_QUERY_INTERACTIONEXTENSION 
 
 	History:
-	Date            Modified By     Comments
-	29-Sep-2012		CMayeda			Initial Version - FogBugz Case 825
+	Date          Modified By   Comments
+	29-Sep-2012		CMayeda			  Initial Version - FogBugz Case 825
+  31-Aug-2017   MSellers      Changed 'Cancelled' to 'Canceled' to match CRM 4.0
 	-->
 	
 	<ViewImplementation ViewName="USR_V_QUERY_INTERACTION_SPONSORSHIPOPPORTUNITYCHILD">
@@ -145,7 +146,7 @@
 							<common:TranslationListOption Value="Planned" />
 							<common:TranslationListOption Value="Pending" />
 							<common:TranslationListOption Value="Completed" />
-							<common:TranslationListOption Value="Cancelled" />
+							<common:TranslationListOption Value="Canceled" />
 							<common:TranslationListOption Value="Declined" />
 						</common:Options>
 					</TranslationList>
