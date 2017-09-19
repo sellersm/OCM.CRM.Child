@@ -25,6 +25,7 @@
 	21-Jan-2013		Memphis			FogBugz Case 960: Check for the attribute before adding it, set the PreDepartureGiftStatus value in the 
 									USR_FINANCIALTRANSACTION_EXTENSION table.
 	20-Feb-2013		Memphis			Fogbugz Case 992.
+  19-Sep-2017   MSellers    Fixed bug with using GETDATE instead of getdate().
 	-->
 	
 	
@@ -265,8 +266,8 @@ begin try
 						@CREDITCARDSCHEDULECODEID = null,
 						@ADDEDBYID = @CHANGEAGENTID,
 						@CHANGEDBYID = @CHANGEAGENTID,
-						@DATEADDED  = GETDATE,
-						@DATECHANGED = GETDATE
+						@DATEADDED  = @CURRENTDATE, --GETDATE,
+						@DATECHANGED = @CURRENTDATE --GETDATE
 				end
 			
 			update dbo.USR_FINANCIALTRANSACTION_EXTENSION
