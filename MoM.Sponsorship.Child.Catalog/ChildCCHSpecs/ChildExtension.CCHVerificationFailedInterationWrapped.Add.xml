@@ -23,6 +23,7 @@
 	13-Aug-2012		CMayeda			Changed call of USR_USP_SPONSORSHIPOPPORTUNITYELIGIBILITYCHECK to USR_USP_CHILD_CHECKELIGIBILITY 
 									Removed reset of Registration Date to null - FogBugz Case 756
 	28-Aug-2015		Memphis			Updated raiserror call: raiserror('Field office for Transfer Location is not configured.',16,1);									
+  15-Jan-2018   MSellers    Updated to include the 2 fields needed for 4.0 Interaction wrapped add form.
 	-->
 
 	<c:ImpliedSecurityList>
@@ -104,7 +105,9 @@ create procedure dbo.USP_DATAFORMTEMPLATE_ADD_INTERACTION_2_WRAPPED
     @ISALLDAYEVENT bit = null,
     @TIMEZONEENTRYID uniqueidentifier = null,
     @ACTUALSTARTTIME dbo.UDT_HOURMINUTE = null,
-    @ACTUALENDTIME dbo.UDT_HOURMINUTE = null
+    @ACTUALENDTIME dbo.UDT_HOURMINUTE = null,
+    @LOCATIONID uniqueidentifier = null,
+    @OTHERLOCATION nvarchar(300) = ''
 )
 
 
@@ -175,7 +178,11 @@ end try
 	  @ISALLDAYEVENT = @ISALLDAYEVENT, 
 	  @TIMEZONEENTRYID = @TIMEZONEENTRYID, 
 	  @ACTUALSTARTTIME = @ACTUALSTARTTIME, 
-	  @ACTUALENDTIME = @ACTUALENDTIME
+	  @ACTUALENDTIME = @ACTUALENDTIME,
+    -- MSellers added these 2 parameters 1-15-2018
+    @LOCATIONID = null,
+    @OTHERLOCATION = ''
+    
 
 	if @@error <> 0 
 		begin
@@ -341,6 +348,19 @@ end
             </c:FormField>
             <c:FormField FieldID="ACTUALSTARTTIME" DataType="HourMinute" Caption="Actual start time" CaptionResourceKey="$$actual_start_time" />
             <c:FormField FieldID="ACTUALENDTIME" DataType="HourMinute" Caption="Actual end time" CaptionResourceKey="$$actual_end_time" />
+          
+          <!--  MSellers added this 1-15-2018 to try and fix error of missing LOCATIONID field-->
+          <c:FormField FieldID="LOCATIONID" DataType="Guid" Caption="Location" CaptionResourceKey="$$location">
+            <c:SimpleDataList SimpleDataListID="b0cb4058-4355-431a-abdb-3e9f2be8c918">
+              <c:Params>
+                <c:Param ID="CONSTITUENTID">
+                  <c:Value>PARENT.FIELDS!CONTEXTID</c:Value>
+                </c:Param>
+              </c:Params>
+            </c:SimpleDataList>
+          </c:FormField>
+          <c:FormField FieldID="OTHERLOCATION" MaxLength="300" Caption="Other location" DefaultValueText="" CaptionResourceKey="$$other_location" />
+          <!--  END OF NEW CODE: MSellers added this 1-15-2018 to try and fix error of missing LOCATIONID field-->
         </c:FormFields>
         <c:WebUIComponent>
             <c:UIModel AssemblyName="Blackbaud.AppFx.Constituent.UIModel.dll" ClassName="Blackbaud.AppFx.Constituent.UIModel.Interaction.InteractionAddForm2UIModel" />
