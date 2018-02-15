@@ -57,9 +57,10 @@
 	-->
 	
 	<c:DependencyList>
-        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.ChildReservation.DataList.xml" />
-        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.ChildReservationFulfillmentStatus.Edit.xml" />
-        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.ChildReservationFulfillmentStatus.View.xml" />
-    </c:DependencyList>
+    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.ChildReservation.DataList.xml" />
+    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.ChildReservationFulfillmentStatus.Edit.xml" />
+    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.ChildReservationFulfillmentStatus.View.xml" />
+    <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Reservations.DeleteChildReservationRow.RecordOperation.xml" />
+  </c:DependencyList>
 
 </PackageSpec>
