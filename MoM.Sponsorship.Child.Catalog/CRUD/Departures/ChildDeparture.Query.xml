@@ -15,8 +15,9 @@
 	  Remarks:    Query to add the Child Departure fields to the Sponsorship Opportunity query.
 
 	  History:
-	  Date			Modified By     Comments
-	  16-Sep-2013	Memphis			B-01414 in V1.
+	  Date			  Modified By   Comments
+	  16-Sep-2013	Memphis			  B-01414 in V1.
+    06-Jun-2018 MSellers      Adding new column to display the Departure Reason checkbox value selected by user.
 	 -->
 
 
@@ -34,6 +35,25 @@ select
     USR_CHILDDEPARTURE.[FORMCOMPLETEDBY],
     USR_CHILDDEPARTURE.[DATEOFDEPARTURE],
     USR_CHILDDEPARTURE.[DATEPROCESSED],
+	  stuff(
+	  case when DEPARTURE_OTHER = '1' then 'Departure other' else DEPARTURE_OTHER end
+		  + case when DEPARTURE_LIVESWITHRELATIVES = 1 then 'Lives with relatives' else '' end 
+		  + case when DEPARTURE_FAMILYMOVED	= 1 then 'Family moved' else '' end
+		  + case when DEPARTURE_FAMILYNOWPROVIDES = 1 then 'Family provides' else '' end
+		  + case when DEPARTURE_PROJECTTOOFAR= 1 then 'Project too far' else '' end
+		  + case when DEPARTURE_REMOVEDBYPARENTS= 1 then 'Removed by parents' else '' end
+		  + case when DEPARTURE_LACKOFINTEREST= 1 then 'Lack of interest' else '' end
+		  + case when DEPARTURE_NEEDEDATHOME= 1 then 'Needed at home' else '' end
+		  + case when DEPARTURE_EMPLOYED= 1 then 'Employed' else '' end
+		  + case when DEPARTURE_TRANSFERRED= 1 then 'Transferred' else '' end
+		  + case when DEPARTURE_FAILED= 1 then 'Failed' else '' end
+		  + case when DEPARTURE_DEATHOFCHILD= 1 then 'Deceased' else '' end
+		  + case when DEPARTURE_ILLNESS= 1 then 'Illness' else '' end
+		  + case when DEPARTURE_PREGNANCY= 1 then 'Pregnancy' else '' end
+		  + case when DEPARTURE_MARRIED= 1 then 'Married' else '' end
+		  + case when ISPROGRAMCOMPLETION = 1 then 'Program Completion' else '' end
+		  , 1,0,'') as DEPARTUREREASON,
+      
     (select USR_DEPARTURE_ADMINISTRATIVE_CODE.DESCRIPTION from dbo.USR_DEPARTURE_ADMINISTRATIVE_CODE where USR_DEPARTURE_ADMINISTRATIVE_CODE.ID = USR_CHILDDEPARTURE.[ADMINISTRATIVECODEID]) as ADMINISTRATIVECODEID_TRANSLATION,
     USR_CHILDDEPARTURE.[ADMINISTRATIVEEXPLANATION],
     USR_CHILDDEPARTURE.[DEPARTURETYPE],
@@ -109,6 +129,7 @@ from
             <OutputField Name="FORMCOMPLETEDBY" Caption="Formcompletedby" />
             <OutputField Name="DATEOFDEPARTURE" Caption="Dateofdeparture" DataType="Date" />
             <OutputField Name="DATEPROCESSED" Caption="Dateprocessed" DataType="Date" />
+            <OutputField Name="DEPARTUREREASON" Caption="Departure Reason" DataType="String" />
             <OutputField Name="ADMINISTRATIVECODEID_TRANSLATION" Caption="Administrative">
                 <LookupInfo>
                     <CodeTable CodeTableName="USR_DEPARTURE_ADMINISTRATIVE_CODE" IncludeInactive="true" />
