@@ -656,6 +656,7 @@
     <EmbeddedResource Include="Child Unlock\ChildUnlock.Package.xml" />
     <EmbeddedResource Include="AdminChildTasks\AdminChildTasks.Package.xml" />
     <EmbeddedResource Include="Reservations\DeleteChildReservationRow.RecordOperation.xml" />
+    <EmbeddedResource Include="Smart Fields\Child.CurrentSponsorshipExtensionStatus.SmartField.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

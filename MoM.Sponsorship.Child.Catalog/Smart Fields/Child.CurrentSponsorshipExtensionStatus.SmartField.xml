@@ -1,0 +1,62 @@
+﻿<SmartFieldSpec
+	xmlns="bb_appfx_smartfield"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="d3bea590-b292-42a9-864f-ce00f9f1da62"
+	Name="Current Sponsorship Extension Status"
+	Description="Current status from sponsorship extension record."
+	Author="Mark Sellers"
+	SPName="USR_USP_SMARTFIELD_CHILD_CURRENT_SPONEX_STATUS"
+	DataType="String" 
+	RecordType="Sponsorship opportunity child" 
+	DisplayName="Current Sponsorship Extension Status" 
+	SmartFieldFolder="Sponsorship opportunity child"
+	>
+
+  <!-- 
+	Remarks:  The smart field “Current sponsorship status” would contain the values: Sponsored and Not Sponsored
+            Sponsored = if CCSS is equal to Sponsored
+            Not Sponsored = if CCSS is equal to Blank (Null), Formerly Sponsored, Formerly Prospect Sponsored or Prospect Sponsored
+
+	History:
+	Date          Modified By   Comments
+	11-Jul-2018   MSellers			Initial Version. Per Pamela
+  -->
+  
+	<!-- describe the SP used to calculate the smart field values -->
+	<CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USR_USP_SMARTFIELD_CHILD_CURRENT_SPONEX_STATUS
+(
+	@ASOF datetime 
+)
+as begin
+	-- write sql to calculate the smart field values based on the parameters and ASOF date
+  ;with cteCurrentSponsorshipStatus 
+  as
+  (select SPONSORSHIPOPPORTUNITYID,
+		  (case when c.[DESCRIPTION] = 'Sponsored' then 'Sponsored' else 
+			  case when (c.[DESCRIPTION] in ('Formerly Sponsored', 'Formerly Prospect Sponsored', 'Prospect Sponsored') or c.[DESCRIPTION] is null) then 'Not Sponsored' else '' end
+		  end) as 'CURRENTSTATUS'
+  from dbo.usr_sponsorshipextension
+  --left join dbo.USR_INITIALOPPORTUNITYSPONSORSHIPSTATUSCODE i on i.ID = INITIALOPPORTUNITYSPONSORSHIPSTATUSCODEID
+  left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE c on c.ID = CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
+  where ISCURRENT = 1
+  )
+  select	SPONSORSHIPOPPORTUNITYID,
+		  CURRENTSTATUS
+  from cteCurrentSponsorshipStatus
+  group by SPONSORSHIPOPPORTUNITYID,CURRENTSTATUS;
+
+end
+		]]>
+	</CreateProcedureSQL>
+
+	<!-- describe any parameters (other than the ASOF date) defined on the SP -->
+	<!--<FormMetaData xmlns="bb_appfx_commontypes">
+		<FormFields>
+			<FormField Caption="Parameter 1" FieldID="PARAMETER1" DataType="Integer"/>
+			<FormField Caption="Parameter 2" FieldID="PARAMETER2" DataType="Money"/>
+		</FormFields>
+	</FormMetaData>-->
+
+</SmartFieldSpec>
