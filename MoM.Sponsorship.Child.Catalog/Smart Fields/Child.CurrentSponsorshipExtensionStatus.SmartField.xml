@@ -20,6 +20,7 @@
 	History:
 	Date          Modified By   Comments
 	11-Jul-2018   MSellers			Initial Version. Per Pamela
+  17-Jul-2018   MSellers      Fix bug, wasn't getting all children
   -->
   
 	<!-- describe the SP used to calculate the smart field values -->
@@ -31,21 +32,24 @@ create procedure dbo.USR_USP_SMARTFIELD_CHILD_CURRENT_SPONEX_STATUS
 )
 as begin
 	-- write sql to calculate the smart field values based on the parameters and ASOF date
-  ;with cteCurrentSponsorshipStatus 
-  as
-  (select SPONSORSHIPOPPORTUNITYID,
-		  (case when c.[DESCRIPTION] = 'Sponsored' then 'Sponsored' else 
-			  case when (c.[DESCRIPTION] in ('Formerly Sponsored', 'Formerly Prospect Sponsored', 'Prospect Sponsored') or c.[DESCRIPTION] is null) then 'Not Sponsored' else '' end
-		  end) as 'CURRENTSTATUS'
-  from dbo.usr_sponsorshipextension
-  --left join dbo.USR_INITIALOPPORTUNITYSPONSORSHIPSTATUSCODE i on i.ID = INITIALOPPORTUNITYSPONSORSHIPSTATUSCODEID
-  left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE c on c.ID = CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
-  where ISCURRENT = 1
-  )
-  select	SPONSORSHIPOPPORTUNITYID,
-		  CURRENTSTATUS
-  from cteCurrentSponsorshipStatus
-  group by SPONSORSHIPOPPORTUNITYID,CURRENTSTATUS;
+	;with cteCurrentSponsorshipStatus 
+	as
+	(select soc.ID,
+			(case when (c.[DESCRIPTION] is not null and c.[DESCRIPTION] = 'Sponsored') then 'Sponsored' else 
+				case when ((c.[DESCRIPTION] is not null and c.[DESCRIPTION] in ('Formerly Sponsored', 'Formerly Prospect Sponsored', 'Prospect Sponsored')) or c.[DESCRIPTION] is null) then 'Not Sponsored' else '' end
+			end) as 'CURRENTSTATUS'
+	from dbo.SPONSORSHIPOPPORTUNITYCHILD soc
+	left outer join dbo.USR_SPONSORSHIPEXTENSION sponex on sponex.SPONSORSHIPOPPORTUNITYID = soc.ID
+	left join dbo.USR_CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODE c on c.ID = sponex.CURRENTOPPORTUNITYSPONSORSHIPSTATUSCODEID
+	where (sponex.ID is not null and ISCURRENT = 1)
+	or sponex.ID is null
+	)
+	select	
+      ID,
+			CURRENTSTATUS
+	from 
+      cteCurrentSponsorshipStatus  
+  --group by SPONSORSHIPOPPORTUNITYID,CURRENTSTATUS;
 
 end
 		]]>

@@ -657,6 +657,13 @@
     <EmbeddedResource Include="AdminChildTasks\AdminChildTasks.Package.xml" />
     <EmbeddedResource Include="Reservations\DeleteChildReservationRow.RecordOperation.xml" />
     <EmbeddedResource Include="Smart Fields\Child.CurrentSponsorshipExtensionStatus.SmartField.xml" />
+    <EmbeddedResource Include="Documentation Notifications\ChildAnnotation.Table.xml" />
+    <EmbeddedResource Include="Documentation Notifications\ChildNoteNotifications.Table.xml" />
+    <EmbeddedResource Include="Documentation Notifications\ChildNoteNotification.Add.xml" />
+    <EmbeddedResource Include="Documentation Notifications\ChildNoteNotification.Edit.xml" />
+    <EmbeddedResource Include="Documentation Notifications\OCMChildDocumentation.DataList.xml" />
+    <EmbeddedResource Include="Documentation Notifications\ChildNoteNotificationDelete.RecordOperation.xml" />
+    <EmbeddedResource Include="Documentation Notifications\ChildNoteNotifications.Package.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

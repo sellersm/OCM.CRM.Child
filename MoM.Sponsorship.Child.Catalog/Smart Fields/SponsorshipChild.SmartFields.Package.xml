@@ -62,6 +62,7 @@
         <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Smart Fields.ChildExtension.WaitingDurationDays.SmartField.xml" />
         <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Smart Fields.ChildGreatestNeed.SmartField.xml" />
         <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Smart Fields.ChildQuota.WaitingListReason.SmartField.xml" />
-    </c:DependencyList>
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Smart Fields.Child.CurrentSponsorshipExtensionStatus.SmartField.xml" />
+  </c:DependencyList>
 
 </PackageSpec>

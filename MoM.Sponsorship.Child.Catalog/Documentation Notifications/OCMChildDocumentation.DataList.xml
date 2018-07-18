@@ -1,0 +1,209 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="21d3322d-0b6e-4c08-a0a9-6fa4c05c304a" 
+	Name="OCM Child Documentation Data List"
+	Description="OCM-specific list of child documentation records." 
+	Author="Mark Sellers"
+	c:SecurityUIFolder="Sponsorship\Opportunity\Documentation"
+	>
+
+  <!-- 
+	Remarks:    This is a copy of the BB Out of the Box Sponsorship Opportunity Documentation datalist. 
+              Only difference is addition of the ANNOTATIONEXISTS field so we can enable/disable the
+              Notification Actions we've added.
+
+	History:
+	Date            Modified By     Comments
+	18-Jul-2018		  MSellers			  Initial version.
+	-->
+
+
+  <c:InstalledProductList>
+    <c:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+  </c:InstalledProductList>
+  <ResourceFile AssemblyName="Blackbaud.AppFx.Sponsorship.Catalog.dll" ClassName="Blackbaud.AppFx.Sponsorship.Catalog.SponsorshipOpportunityDocumentation.DataList" />
+  <RSSFeed style="list">
+    <Channel>
+      <ViewDataFormID>0fec4381-a657-4627-a65b-8afab11af9c8</ViewDataFormID>
+      <Title Caption="Documentation: {0}" ResourceKey="RSS_TITLE">
+        <FieldArguments>
+          <Field>SPONSORSHIPOPPORTUNITYNAME</Field>
+        </FieldArguments>
+      </Title>
+      <Description Caption="Documentation for the Sponsorship Opportunity &quot;{0}&quot;" ResourceKey="RSS_DESCRIPTION">
+        <FieldArguments>
+          <Field>SPONSORSHIPOPPORTUNITYNAME</Field>
+        </FieldArguments>
+      </Description>
+      <Groups>
+        <Group Field="DOCUMENTATIONTYPE" />
+        <Group Field="Author" />
+      </Groups>
+      <Categories>
+        <Category Caption="Sponsorship Opportunity Documentation" ResourceKey="RSS_CHANNELCATEGORY" />
+      </Categories>
+    </Channel>
+    <Item>
+      <IDField>RSSID</IDField>
+      <Title Caption="{0} - {1} - {2}">
+        <FieldArguments>
+          <Field>DOCUMENTATIONTYPE</Field>
+          <Field>TITLE</Field>
+          <Field>TYPE</Field>
+        </FieldArguments>
+      </Title>
+      <PublicationDateField>DATE</PublicationDateField>
+      <DefaultLink>
+        <ContextID>
+          <ListContextID />
+        </ContextID>
+        <PageID>0f392d71-5884-4363-b6e3-a75755f8402a</PageID>
+      </DefaultLink>
+    </Item>
+  </RSSFeed>
+  <SPDataList SPName="USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYDOCUMENTATION">
+    <c:CreateProcedureSQL>
+
+      create procedure dbo.USR_USP_DATALIST_SPONSORSHIPOPPORTUNITYDOCUMENTATION
+      (
+      @SPONSORSHIPOPPORTUNITYID uniqueidentifier = null,
+      @DOCUMENTATIONTYPECODE tinyint = null,
+      @TITLE nvarchar(50) = '',
+      @CURRENTAPPUSERID uniqueidentifier = null
+      )
+      as
+      set nocount on;
+      declare @ISSYSADMIN bit;
+      select @ISSYSADMIN = dbo.UFN_APPUSER_ISSYSADMIN(@CURRENTAPPUSERID);
+
+      select
+      SPONSORSHIPOPPORTUNITYNOTE.ID,
+      '664ad089-af34-423f-9e53-33ada21f42ef' as [VIEWFORMID],
+      0 as [DOCUMENTATIONTYPECODE],
+      null as [MEDIAURL],
+      null as [FILENAME],
+      null as [FILEFIELDID],
+      'Note' as [DOCUMENTATIONTYPE],
+      SPONSORSHIPOPPORTUNITYNOTE.DATEENTERED,
+      SPROPPNOTETYPECODE.DESCRIPTION as [TYPE],
+      SPONSORSHIPOPPORTUNITYNOTE.TITLE,
+      CAST(SPONSORSHIPOPPORTUNITYNOTE.ID AS NVARCHAR(36)) + ':0' AS RSSID,
+      dbo.UFN_ANNOTATION_ANNOTATIONEXISTS('Sponsorship Opportunity Note',SPONSORSHIPOPPORTUNITYNOTE.ID) as ANNOTATIONEXISTS
+      from
+      dbo.SPONSORSHIPOPPORTUNITYNOTE
+      inner join
+      dbo.SPROPPNOTETYPECODE
+      on
+      SPROPPNOTETYPECODE.ID = SPONSORSHIPOPPORTUNITYNOTE.SPROPPNOTETYPECODEID
+      where
+      SPONSORSHIPOPPORTUNITYNOTE.SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYID and
+      (@DOCUMENTATIONTYPECODE is null or @DOCUMENTATIONTYPECODE = 0) and
+      (@TITLE = '' or SPONSORSHIPOPPORTUNITYNOTE.TITLE like @TITLE + '%') and
+      (@ISSYSADMIN = 1 or dbo.UFN_SECURITY_APPUSER_GRANTED_CODETABLEENTRY(@CURRENTAPPUSERID,SPROPPNOTETYPECODE.ID) = 1)
+
+      union all
+      select
+      SPONSORSHIPOPPORTUNITYMEDIALINK.ID,
+      'bb9582c0-be03-4988-9874-0dd2cd8015a1' as [VIEWFORMID],
+      1 as [DOCUMENTATIONTYPECODE],
+      SPONSORSHIPOPPORTUNITYMEDIALINK.MEDIAURL,
+      null,
+      null,
+      'Media link' as [DOCUMENTATIONTYPE],
+      SPONSORSHIPOPPORTUNITYMEDIALINK.DATEENTERED,
+      SPROPPMEDIALINKTYPECODE.DESCRIPTION as [TYPE],
+      SPONSORSHIPOPPORTUNITYMEDIALINK.TITLE,
+      CAST(SPONSORSHIPOPPORTUNITYMEDIALINK.ID AS NVARCHAR(36)) + ':1'  AS RSSID,
+      cast (0 as bit) as ANNOTATIONEXISTS
+      from
+      dbo.SPONSORSHIPOPPORTUNITYMEDIALINK
+      inner join
+      dbo.SPROPPMEDIALINKTYPECODE
+      on
+      SPROPPMEDIALINKTYPECODE.ID = SPONSORSHIPOPPORTUNITYMEDIALINK.SPROPPMEDIALINKTYPECODEID
+      where
+      SPONSORSHIPOPPORTUNITYMEDIALINK.SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYID and
+      (@DOCUMENTATIONTYPECODE is null or @DOCUMENTATIONTYPECODE = 1) and
+      (@TITLE = '' or SPONSORSHIPOPPORTUNITYMEDIALINK.TITLE like @TITLE + '%') and
+      (@ISSYSADMIN = 1 or dbo.UFN_SECURITY_APPUSER_GRANTED_CODETABLEENTRY(@CURRENTAPPUSERID,SPROPPMEDIALINKTYPECODE.ID) = 1)
+      union all
+      select
+      SPONSORSHIPOPPORTUNITYATTACHMENT.ID,
+      '2f09c59b-3a6f-430a-b358-18226b7bfcbb' as [VIEWFORMID],
+      2 as [DOCUMENTATIONTYPECODE],
+      null,
+      SPONSORSHIPOPPORTUNITYATTACHMENT.FILENAME,
+      'FILE',
+      'Attachment' as [DOCUMENTATIONTYPE],
+      SPONSORSHIPOPPORTUNITYATTACHMENT.DATEENTERED,
+      SPROPPATTACHMENTTYPECODE.DESCRIPTION as [TYPE],
+      SPONSORSHIPOPPORTUNITYATTACHMENT.TITLE,
+      CAST(SPONSORSHIPOPPORTUNITYATTACHMENT.ID AS NVARCHAR(36)) + ':2'  AS RSSID,
+      cast (0 as bit) as ANNOTATIONEXISTS
+      from
+      dbo.SPONSORSHIPOPPORTUNITYATTACHMENT
+      inner join
+      dbo.SPROPPATTACHMENTTYPECODE
+      on
+      SPROPPATTACHMENTTYPECODE.ID = SPONSORSHIPOPPORTUNITYATTACHMENT.SPROPPATTACHMENTTYPECODEID
+      where
+      SPONSORSHIPOPPORTUNITYATTACHMENT.SPONSORSHIPOPPORTUNITYID = @SPONSORSHIPOPPORTUNITYID and
+      (@DOCUMENTATIONTYPECODE is null or @DOCUMENTATIONTYPECODE = 2) and
+      (@TITLE = '' or SPONSORSHIPOPPORTUNITYATTACHMENT.TITLE like @TITLE + '%') and
+      (@ISSYSADMIN = 1 or dbo.UFN_SECURITY_APPUSER_GRANTED_CODETABLEENTRY(@CURRENTAPPUSERID,SPROPPATTACHMENTTYPECODE.ID) = 1)
+      order by
+      DATEENTERED desc;
+
+    </c:CreateProcedureSQL>
+  </SPDataList>
+  <Context ContextRecordType="Sponsorship Opportunity" RecordIDParameter="SPONSORSHIPOPPORTUNITYID" />
+  <Parameters>
+    <c:FormMetaData>
+      <c:FormFields>
+        <c:FormField FieldID="DOCUMENTATIONTYPECODE" DataType="TinyInt" Caption="Documentation type" CaptionResourceKey="$$documentation_type">
+          <c:ValueList>
+            <c:Items>
+              <c:Item>
+                <c:Value>0</c:Value>
+                <c:Label>Note</c:Label>
+              </c:Item>
+              <c:Item>
+                <c:Value>1</c:Value>
+                <c:Label>Media Link</c:Label>
+              </c:Item>
+              <c:Item>
+                <c:Value>2</c:Value>
+                <c:Label>Attachment</c:Label>
+              </c:Item>
+            </c:Items>
+          </c:ValueList>
+        </c:FormField>
+        <c:FormField FieldID="TITLE" MaxLength="50" Caption="Title" CaptionResourceKey="$$title" />
+      </c:FormFields>
+      <c:FormUIComponent />
+      <c:WebUIComponent>
+        <c:UIModel AssemblyName="Blackbaud.AppFx.Documentation.UIModel.dll" ClassName="Blackbaud.AppFx.Documentation.UIModel.GenericDocumentationListUIModel" />
+        <c:WebUI>
+          <c:ExternalResource Url="browser/htmlforms/documentation/GenericDocumentationList.html" />
+        </c:WebUI>
+      </c:WebUIComponent>
+    </c:FormMetaData>
+  </Parameters>
+  <Output>
+    <OutputFields>
+      <OutputField FieldID="ID" Caption="ID" IsHidden="true" DataType="Guid" />
+      <OutputField FieldID="ViewFormID" Caption="ViewFormID" IsHidden="true" DataType="Guid" />
+      <OutputField FieldID="DocumentationTypeCode" Caption="DocumentationTypeCode" IsHidden="true" DataType="TinyInt" />
+      <OutputField FieldID="Media URL" Caption="Media URL" IsHidden="true" DataType="String" />
+      <OutputField FieldID="File Name" Caption="File Name" IsHidden="true" DataType="String" />
+      <OutputField FieldID="File Field ID" Caption="File Field ID" IsHidden="true" DataType="String" />
+      <OutputField FieldID="DOCUMENTATIONTYPE" Caption="Documentation type" DataType="String" CaptionResourceKey="$$documentation_type" />
+      <OutputField FieldID="DATE" Caption="Date" DataType="Date" CaptionResourceKey="$$date" />
+      <OutputField FieldID="TYPE" Caption="Type" DataType="String" CaptionResourceKey="$$type" />
+      <OutputField FieldID="TITLE" Caption="Title" DataType="String" CaptionResourceKey="$$title" />
+      <OutputField FieldID="RSSID" Caption="RSSID" IsHidden="true" DataType="String" />
+      <OutputField FieldID="ANNOTATIONEXISTS" Caption="Notification" DataType="Boolean" DisplayBooleanAsCheck="true" CaptionResourceKey="$$notification" />
+    </OutputFields>
+  </Output>
+</DataListSpec>

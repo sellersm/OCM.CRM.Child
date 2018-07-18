@@ -1,0 +1,39 @@
+﻿<TableSpec 
+	xmlns="bb_appfx_table"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="9EDC31CE-10AB-4D8E-9FB2-942979891488"
+	Name="ANNOTATION9EDC31CE10AB4D8E9FB2942979891488"
+	Description="Auto-generated table for Sponsorship Opportunity Child Note annotations."
+	Author="Blackbaud Product Development"
+	Tablename="ANNOTATION9EDC31CE10AB4D8E9FB2942979891488"		   
+	IsBuiltIn="true"
+  PrimaryKeyAsForeignKeyTablename="SPONSORSHIPOPPORTUNITYNOTE">
+
+  <!-- THIS TABLE SPEC IS NOT USED FOR THE CHILD NOTIFICATIONS!  DO NOT LOAD IT-->
+  <Fields>
+    <BooleanField Name="DISPLAYNOTIFICATIONWINDOW" />
+    <DateField Name="VALIDUNTIL" />
+    <EnumField Name="APPLYTOCODE" DefaultValue="0">
+      <EnumValues>
+        <EnumValue ID="0" Translation="All users" />
+        <EnumValue ID="1" Translation="Selected users" />
+      </EnumValues>
+    </EnumField>
+    <ForeignKeyField Name="APPUSERIDSETREGISTERID" ForeignTable="IDSETREGISTER" />
+  </Fields>
+  <Triggers>
+    <Trigger Name="TR_ANNOTATION9EDC31CE10AB4D8E9FB2942979891488_T2BDELETE" Enabled="false">
+      <CreateTriggerSQL>
+        create trigger TR_ANNOTATION9EDC31CE10AB4D8E9FB2942979891488_T2BDELETE on dbo.ANNOTATION9EDC31CE10AB4D8E9FB2942979891488 after delete not for replication
+        as begin
+        -- TAIntegration data sync
+        if dbo.UFN_B2T_CONTEXTISSYNC() = 1
+        update dbo.B2TROWS
+        set SYNCSTATUSCODE = 11
+        where BBECID in(select ID from DELETED)
+        and BBECTABLE = (select BBECTABLE from dbo.B2TTABLES where ATTRIBUTETABLE = 'ANNOTATION9EDC31CE10AB4D8E9FB2942979891488')
+        end
+      </CreateTriggerSQL>
+    </Trigger>
+  </Triggers>
+</TableSpec>

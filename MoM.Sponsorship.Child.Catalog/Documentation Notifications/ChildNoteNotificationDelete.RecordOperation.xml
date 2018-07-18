@@ -1,0 +1,49 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="d2400630-97f8-4f20-8e25-f179be64ddd8" 
+	Name="Child Note Notification Delete Record Operation" 
+	Description="Deletes the child note notification record."
+	Author="Mark Sellers"
+	OperationType="Delete"
+	RecordType="Child Note Notification"
+	c:SecurityUIFolder="Child"  
+	>
+
+  <c:InstalledProductList>
+    <c:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
+    <c:InstalledProduct ID="42c15648-749e-4859-a56d-3a6474814cc7" />
+    <c:InstalledProduct ID="6f77d512-d0d1-444f-9b46-b8603a6fe5f1" />
+    <!--Basic Education-->
+    <c:InstalledProduct ID="f5ac53c4-d0ce-4e20-bca6-aacdfc01b302" />
+  </c:InstalledProductList>
+  <ResourceFile AssemblyName="Blackbaud.AppFx.Constituent.Catalog.dll" ClassName="Blackbaud.AppFx.Constituent.Catalog.ConstituentNoteAnnotationDelete.RecordOperation" />
+  
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_RECORDOPERATION_CHILDNOTENOTIFICATIONDELETE">
+			<c:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_RECORDOPERATION_CHILDNOTENOTIFICATIONDELETE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	--check deletion rules, if any
+
+	-- use the system generated delete routine to allow proper recording of the deleting agent
+	exec dbo.USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+				]]>
+			</c:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to delete this Notification?" />
+	</Prompt>
+
+</RecordOperationSpec>
