@@ -6,6 +6,17 @@
 		   Tablename="ANNOTATIONE607DCD82D214918A0445597DF53A403"
 		   IsBuiltIn="true"
 		   PrimaryKeyAsForeignKeyTablename="SPONSORSHIPOPPORTUNITYNOTE">
+
+  <!-- 
+	Remarks:    This is a copy of the BB Out of the Box annotation table used for Constituent 
+              Note notifications. 
+              I had to set the author and IsBuiltin to trick the spec loader to accept it.
+
+	History:
+	Date            Modified By     Comments
+	24-Jul-2018		  MSellers			  Initial version.
+	-->
+
   <Fields>
     <BooleanField Name="DISPLAYNOTIFICATIONWINDOW" />
     <DateField Name="VALIDUNTIL" />

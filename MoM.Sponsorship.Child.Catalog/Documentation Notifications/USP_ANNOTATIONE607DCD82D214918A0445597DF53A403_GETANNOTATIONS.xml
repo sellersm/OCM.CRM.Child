@@ -1,0 +1,61 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="5ce1ad3f-239c-4a0d-96b0-1373bd237584"
+	Name="USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_GETANNOTATIONS"
+	Description="Gets child note notification records."
+	Author="Blackbaud Product Development"
+	SPName="USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_GETANNOTATIONS"
+  GrantServiceRolePermission="true"  
+	>
+
+  <!-- 
+	Remarks:    This is a copy of the BB Out of the Box Constiuent Note Notification SPROC. 
+              Gets Child Note notification record(s).
+
+	History:
+	Date            Modified By     Comments
+	24-Jul-2018		  MSellers			  Initial version.
+	-->
+
+
+  <CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_GETANNOTATIONS
+(
+	@RECORDID uniqueidentifier,
+	@APPUSERID uniqueidentifier
+)
+as
+begin
+	declare @ISSYSADMIN bit;
+  select @ISSYSADMIN = dbo.UFN_APPUSER_ISSYSADMIN(@APPUSERID);
+
+	select 
+		ANNOTATIONTABLE.ID, 
+		NOTETABLE.TITLE,
+		NOTETABLE.TEXTNOTE,
+		ANNOTATIONTABLE.DISPLAYNOTIFICATIONWINDOW,
+		'Child' as DISPLAYFORRECORDTYPENAME,
+		coalesce('[' + APPUSERREGISTER.DBOBJECTNAME + ']' + (case APPUSERREGISTER.OBJECTTYPE when 1 then '()' else '' end),''),
+		ANNOTATIONTABLE.APPLYTOCODE
+    from
+		dbo.SPONSORSHIPOPPORTUNITYNOTE as NOTETABLE
+		inner join dbo.ANNOTATIONE607DCD82D214918A0445597DF53A403 as ANNOTATIONTABLE on NOTETABLE.ID = ANNOTATIONTABLE.ID
+		left join IDSETREGISTER as APPUSERREGISTER on APPUSERREGISTER.ID = ANNOTATIONTABLE.APPUSERIDSETREGISTERID
+	where 
+		NOTETABLE.SPONSORSHIPOPPORTUNITYID = @RECORDID 
+		and 
+		(
+			(ANNOTATIONTABLE.VALIDUNTIL is null) 
+			or 
+			(dbo.UFN_DATE_GETEARLIESTTIME(getdate()) <= dbo.UFN_DATE_GETEARLIESTTIME(ANNOTATIONTABLE.VALIDUNTIL))
+		)
+		
+		
+	return 0;
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

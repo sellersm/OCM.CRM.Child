@@ -12,6 +12,16 @@
   FormHeaderResourceKey="$$add_notification"
 	>
 
+  <!-- 
+	Remarks:    This is a copy of the BB Out of the Box Constiuent Note Notification ADD form. 
+              Adds a new Child Note notification.
+
+	History:
+	Date            Modified By     Comments
+	24-Jul-2018		  MSellers			  Initial version.
+	-->
+
+
   <c:DependencyList>
     <c:Dependency CatalogAssembly="Blackbaud.AppFx.Platform.Catalog.dll" CatalogItem="Blackbaud.AppFx.Platform.Catalog.IDSet.Search.xml" />
   </c:DependencyList>

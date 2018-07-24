@@ -10,6 +10,16 @@
 	c:SecurityUIFolder="Child"  
 	>
 
+  <!-- 
+	Remarks:    Record op called by the new Child Note Delete Notification action.
+
+	History:
+	Date            Modified By     Comments
+	24-Jul-2018		  MSellers			  Initial version.
+	-->
+
+
+
   <c:InstalledProductList>
     <c:InstalledProduct ID="3117d2c8-7f46-42f2-abeb-b654f2f63046" />
     <c:InstalledProduct ID="42c15648-749e-4859-a56d-3a6474814cc7" />

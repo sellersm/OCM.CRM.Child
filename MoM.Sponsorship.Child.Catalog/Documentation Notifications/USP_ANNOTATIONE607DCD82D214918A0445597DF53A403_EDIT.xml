@@ -1,0 +1,65 @@
+﻿<SQLStoredProcedureSpec
+	xmlns="bb_appfx_sqlstoredprocedure"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="0bf83aae-91a6-492c-9cb8-db5e1037171c"
+	Name="USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_EDIT"
+	Description="Edit child note notification record."
+	Author="Blackbaud Product Development"
+	SPName="USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_EDIT"
+  GrantServiceRolePermission="true"
+	>
+
+  <!-- 
+	Remarks:    This is a copy of the BB Out of the Box Constiuent Note Notification edit SPROC. 
+              Edits the given Child Note notification.
+
+	History:
+	Date            Modified By     Comments
+	24-Jul-2018		  MSellers			  Initial version.
+	-->
+
+
+  <CreateProcedureSQL>
+		<![CDATA[
+create procedure dbo.USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_EDIT
+(
+	@ID uniqueidentifier,
+	@DISPLAYNOTIFICATIONWINDOW bit,
+	@APPLYTOCODE tinyint,
+	@VALIDUNTIL datetime,
+	@APPUSERIDSETREGISTERID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier = null
+)
+as
+begin
+	set nocount off
+	
+	declare @CURRENTDATE datetime
+	set @CURRENTDATE = getdate()
+	
+	begin try
+		if @CHANGEAGENTID is null  
+			exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+		
+		update 
+			dbo.[ANNOTATIONE607DCD82D214918A0445597DF53A403]
+		set 
+			DISPLAYNOTIFICATIONWINDOW = @DISPLAYNOTIFICATIONWINDOW,
+			APPLYTOCODE = @APPLYTOCODE,
+			VALIDUNTIL = @VALIDUNTIL,
+			APPUSERIDSETREGISTERID = @APPUSERIDSETREGISTERID,
+			CHANGEDBYID = @CHANGEAGENTID,
+			DATECHANGED = @CURRENTDATE
+		where 
+			ID = @ID							
+	end try
+
+	begin catch
+		exec dbo.USP_RAISE_ERROR
+		return 1
+	end catch
+end
+		]]>
+	</CreateProcedureSQL>
+
+</SQLStoredProcedureSpec>

@@ -664,6 +664,9 @@
     <EmbeddedResource Include="Documentation Notifications\OCMChildDocumentation.DataList.xml" />
     <EmbeddedResource Include="Documentation Notifications\ChildNoteNotificationDelete.RecordOperation.xml" />
     <EmbeddedResource Include="Documentation Notifications\ChildNoteNotifications.Package.xml" />
+    <EmbeddedResource Include="Documentation Notifications\USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_GETANNOTATIONS.xml" />
+    <EmbeddedResource Include="Documentation Notifications\USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_ADD.xml" />
+    <EmbeddedResource Include="Documentation Notifications\USP_ANNOTATIONE607DCD82D214918A0445597DF53A403_EDIT.xml" />
     <Content Include="Website and App Specs\Standard\WebsiteAndApp.PackageVersion.DataList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
