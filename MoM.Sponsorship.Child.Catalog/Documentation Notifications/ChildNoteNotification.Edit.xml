@@ -1,18 +1,18 @@
 ﻿<EditDataFormTemplateSpec 
-	xmlns="bb_appfx_editdataformtemplate"
-	xmlns:c="bb_appfx_commontypes" 
-	ID="4d5bd7a9-e1ea-4843-941e-c796713804fe" 
-	Name="Child Note Notification Edit Data Form"
-	Description="Edit a child note notification." 
-	Author="Mark Sellers"
-	DataFormInstanceID="bdc2e76e-5b37-49d7-8aef-6b1703d56102" 
-	RecordType="Child Note Notification"
-	c:SecurityUIFolder="Child"
-	FormHeader="Edit a child note notification"
-  HelpKey="CRMEditNotification.html" 
-  FormHeaderResourceKey="$$edit_notification"
-  OwnerIDMapperID="00000000-0000-0000-0000-000000000000" 
-	>
+    xmlns="bb_appfx_editdataformtemplate"
+    xmlns:c="bb_appfx_commontypes"
+    ID="4d5bd7a9-e1ea-4843-941e-c796713804fe"
+    Name="Child Note Notification Edit Data Form"
+    Description="Edit a child note notification."
+    Author="Mark Sellers"
+    DataFormInstanceID="bdc2e76e-5b37-49d7-8aef-6b1703d56102"
+    RecordType="Child Note Notification"
+    c:SecurityUIFolder="Child"
+    FormHeader="Edit a child note notification"
+    HelpKey="CRMEditNotification.html"
+    FormHeaderResourceKey="$$edit_notification"
+    OwnerIDMapperID="00000000-0000-0000-0000-000000000000"
+    >
 
   <!-- 
 	Remarks:    This is a copy of the BB Out of the Box Constiuent Note Notification edit form. 
@@ -49,7 +49,8 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_EDITLOAD_CHILDNOTENOTIFICATION
     @DISPLAYNOTIFICATIONWINDOW bit = null output,
     @APPLYTOCODE tinyint = null output,
     @VALIDUNTIL datetime = null output,
-    @APPUSERIDSETREGISTERID uniqueidentifier = null output
+    @APPUSERIDSETREGISTERID uniqueidentifier = null output,
+    @APPUSERRECORDTYPEID uniqueidentifier = null output
 )
 as
 
@@ -58,6 +59,7 @@ as
 	-- be sure to set these, in case the select returns no rows
 	set @DATALOADED = 0
 	set @TSLONG = 0
+  set @APPUSERRECORDTYPEID = dbo.UFN_RECORDTYPE_GETIDBYNAME('Application User');
 
 	-- populate the output parameters, which correspond to fields on the form.  Note that
 	-- we set @DATALOADED = 1 to indicate that the load was successful.  Otherwise, the system
@@ -131,12 +133,13 @@ return 0;
       <!--<c:FormField FieldID="ID" Hidden="true" Caption="ID" />-->
       <c:FormField FieldID="DISPLAYNOTIFICATIONWINDOW" DataType="Boolean" Caption="Display in notification window" CaptionResourceKey="$$display_in_notification_window" />
       <c:FormField FieldID="VALIDUNTIL" DataType="Date" Caption="End date" CaptionResourceKey="$$end_date" />
-      <!--<c:FormField FieldID="APPUSERRECORDTYPEID" DataType="Guid" ReadOnly="true" Hidden="true" />-->
+      <c:FormField FieldID="APPUSERRECORDTYPEID" DataType="Guid" ReadOnly="true" Hidden="true" />
       <c:FormField FieldID="APPUSERIDSETREGISTERID" DataType="Guid" Caption="Selection" CaptionResourceKey="$$selection">
-        <c:SearchList SearchListID="98d0070e-c4a7-495b-a438-2ac12da79068" EnableQuickFind="true">
+        <c:SearchList SearchListID="98d0070e-c4a7-495b-a438-2ac12da79068" EnableQuickFind="true" >
           <c:FormFieldOverrides>
-            <c:FormFieldOverride FieldID="RECORDTYPEID" Caption="Record type" ReadOnly="true" DefaultValueText="Fields!APPUSERRECORDTYPEID" />
+            <c:FormFieldOverride FieldID="RECORDTYPEID" Caption="Record type" ReadOnly="true" DefaultValueText="Fields!APPUSERRECORDTYPEID"  />
           </c:FormFieldOverrides>
+          <c:QuerySearchOptions ValueIsSelectionID="true" />          
         </c:SearchList>
       </c:FormField>
       <c:FormField FieldID="APPLYTOCODE" DataType="TinyInt" Required="true" Caption="Displays for" DefaultValueText="0" CaptionResourceKey="$$displays_for">
@@ -154,6 +157,13 @@ return 0;
         </c:ValueList>
       </c:FormField>
     </c:FormFields>
+
+        <c:WebUIComponent>
+            <c:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildNoteNotificationEditDataFormUIModel" />
+            <c:WebUI>
+                <c:ExternalResource Url="browser/htmlforms/custom/ChildNoteNotificationEditDataForm.html" />
+            </c:WebUI>
+        </c:WebUIComponent>
     <!--<c:WebUIComponent>
       <c:UIModel AssemblyName="Blackbaud.AppFx.Documentation.UIModel.dll" ClassName="Blackbaud.AppFx.Documentation.UIModel.GenericNoteNotificationAddEditFormUIModel" />
       <c:WebUI>

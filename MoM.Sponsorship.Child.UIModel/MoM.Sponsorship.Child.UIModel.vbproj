@@ -230,6 +230,14 @@
       <DependentUpon>ChildPhotoViewDataFormUIModel.vb</DependentUpon>
     </Compile>
     <Compile Include="ChildPhoto\ChildPhotoViewDataFormUIModel.vb" />
+    <Compile Include="Documentation Notifications\ChildNoteNotificationAddDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildNoteNotificationAddDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Documentation Notifications\ChildNoteNotificationAddDataFormUIModel.vb" />
+    <Compile Include="Documentation Notifications\ChildNoteNotificationEditDataFormUIModel.CodeGen.vb">
+      <DependentUpon>ChildNoteNotificationEditDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Documentation Notifications\ChildNoteNotificationEditDataFormUIModel.vb" />
     <Compile Include="Helpers\CCHFormsHelper.vb" />
     <Compile Include="Helpers\DepartureFieldNames.vb" />
     <Compile Include="Helpers\DepartureFormsHelper.vb" />
@@ -243,6 +251,20 @@
     <None Include="Migrated rules for Blackbaud.CustomFx.ChildExtension.UIModel.ruleset" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MoM.Sponsorship.Child.Catalog\Documentation Notifications\ChildNoteNotification.Edit.xml">
+      <Link>LinkedSpecs\ChildNoteNotification.Edit.xml</Link>
+    </None>
+    <Content Include="ChildNoteNotificationEditDataForm.html" />
+    <Content Include="Documentation Notifications\ChildNoteNotificationEditDataFormUIModel.xml">
+      <DependentUpon>ChildNoteNotificationEditDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <None Include="..\MoM.Sponsorship.Child.Catalog\Documentation Notifications\ChildNoteNotification.Add.xml">
+      <Link>LinkedSpecs\ChildNoteNotification.Add.xml</Link>
+    </None>
+    <Content Include="ChildNoteNotificationAddDataForm.html" />
+    <Content Include="Documentation Notifications\ChildNoteNotificationAddDataFormUIModel.xml">
+      <DependentUpon>ChildNoteNotificationAddDataFormUIModel.vb</DependentUpon>
+    </Content>
     <None Include="..\MoM.Sponsorship.Child.Catalog\ChildPhoto\ChildPhoto.Edit.xml">
       <Link>LinkedSpecs\ChildPhoto.Edit.xml</Link>
     </None>

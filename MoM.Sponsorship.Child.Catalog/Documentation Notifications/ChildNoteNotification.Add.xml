@@ -1,16 +1,16 @@
 ﻿<AddDataFormTemplateSpec 
-	xmlns="bb_appfx_adddataformtemplate"
-	xmlns:c="bb_appfx_commontypes" 
-	ID="c9985890-bab5-4ddb-b2b5-8ce4e029db05" 
-	Name="Child Note Notification Add Data Form"
-	Description="A data form for adding child note notification records" 
-	Author="Mark Sellers"
-	DataFormInstanceID="707b565c-df95-48d2-bfdb-47a35554cda0" 
-	RecordType="Child Note Notification"
-	c:SecurityUIFolder="Child"
-	FormHeader="Add a child note notification"
-  FormHeaderResourceKey="$$add_notification"
-	>
+    xmlns="bb_appfx_adddataformtemplate"
+    xmlns:c="bb_appfx_commontypes"
+    ID="c9985890-bab5-4ddb-b2b5-8ce4e029db05"
+    Name="Child Note Notification Add Data Form"
+    Description="A data form for adding child note notification records"
+    Author="Mark Sellers"
+    DataFormInstanceID="707b565c-df95-48d2-bfdb-47a35554cda0"
+    RecordType="Child Note Notification"
+    c:SecurityUIFolder="Child"
+    FormHeader="Add a child note notification"
+    FormHeaderResourceKey="$$add_notification"
+    >
 
   <!-- 
 	Remarks:    This is a copy of the BB Out of the Box Constiuent Note Notification ADD form. 
@@ -49,7 +49,8 @@ as
 	set nocount on;
 		
 	-- populate the fields that have default values that should be fetched from the database
-  set @APPUSERRECORDTYPEID = 'E607DCD8-2D21-4918-A044-5597DF53A403'  -- sponsorship opportunity
+  --set @APPUSERRECORDTYPEID = '5334DE9F-89E3-4D75-B074-537064EB893D' -- constituent note 'E607DCD8-2D21-4918-A044-5597DF53A403'  -- sponsorship opportunity
+  set @APPUSERRECORDTYPEID = dbo.UFN_RECORDTYPE_GETIDBYNAME('Application User');
 	
 	return 0;				
 				]]>
@@ -69,7 +70,7 @@ create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_CHILDNOTENOTIFICATION
     @APPLYTOCODE tinyint = 0,
 	  @VALIDUNTIL datetime = null,
 	  @APPUSERIDSETREGISTERID uniqueidentifier = null,
-    @RECORDTYPE uniqueidentifier = '9EDC31CE-10AB-4D8E-9FB2-942979891488'  -- sponsorship opportunity note
+    @RECORDTYPE uniqueidentifier = null -- '9EDC31CE-10AB-4D8E-9FB2-942979891488'  -- sponsorship opportunity note
 )
 as
 
@@ -136,12 +137,23 @@ return 0
         </c:ValueList>
       </c:FormField>
     </c:FormFields>
+
+        <c:WebUIComponent>
+            <c:UIModel AssemblyName="MoM.Sponsorship.Child.UIModel.dll" ClassName="MoM.Sponsorship.Child.UIModel.ChildNoteNotificationAddDataFormUIModel" />
+            <c:WebUI>
+                <c:ExternalResource Url="browser/htmlforms/custom/ChildNoteNotificationAddDataForm.html" />
+            </c:WebUI>
+        </c:WebUIComponent>
+    
+    <!-- This is here to test if I can use the built-in UIModel with our custom form-->
     <!--<c:WebUIComponent>
       <c:UIModel AssemblyName="Blackbaud.AppFx.Documentation.UIModel.dll" ClassName="Blackbaud.AppFx.Documentation.UIModel.GenericNoteNotificationAddEditFormUIModel" />
       <c:WebUI>
         <c:ExternalResource Url="browser/htmlforms/documentation/GenericNoteNotificationAddEditForm.html" />
       </c:WebUI>
     </c:WebUIComponent>-->
+    <!--End of out of the box UIModel section-->
+    
     <c:FieldGroups>
       <c:FieldGroup ID="NOTIFICATIONUSERS" Caption="Notification users" CaptionResourceKey="$$notification_users">
         <c:Fields>
