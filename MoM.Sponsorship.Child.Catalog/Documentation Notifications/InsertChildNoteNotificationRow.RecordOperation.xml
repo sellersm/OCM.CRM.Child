@@ -1,0 +1,93 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="97e7ebb0-a2c7-467a-8fd5-8a59072980d2" 
+	Name="Insert Child Note Notification Row Record Operation" 
+	Description="*FOR DEPLOYMENT ONLY*"
+	Author="Mark Sellers"
+	OperationType="Update"
+	RecordType="Sponsorship Opportunity Note"
+	c:SecurityUIFolder="Child"  
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_RECORDOPERATION_INSERTCHILDNOTENOTIFICATIONROW">
+			<c:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_RECORDOPERATION_INSERTCHILDNOTENOTIFICATIONROW
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+  -- Script to insert necessary items for Child Notification feature:
+
+  --declare @CHANGEAGENTID uniqueidentifier = null;
+  declare @dateAdded datetime = getdate();
+  if @CHANGEAGENTID is null  
+	  exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+  --1. Insert new row into NOTIFICATIONRECORDTYPE for Sponsorship Opportunity
+  if not exists (select 1 from dbo.NOTIFICATIONRECORDTYPE where ID = 'E607DCD8-2D21-4918-A044-5597DF53A403')
+	  begin
+
+		  INSERT INTO [dbo].[NOTIFICATIONRECORDTYPE]
+				     ([ID]
+				     ,[ADDEDBYID]
+				     ,[CHANGEDBYID]
+				     ,[DATEADDED]
+				     ,[DATECHANGED])
+			   VALUES
+				     ('E607DCD8-2D21-4918-A044-5597DF53A403'
+				     ,@CHANGEAGENTID
+				     ,@CHANGEAGENTID
+				     ,@dateAdded
+				     ,@dateAdded)
+	  end
+
+  -- 2: insert a row into AnnotationTableMapping:
+  -- ID										SOURCERECORDTYPEID						DISPLAYFORRECORDTYPEID					ANNOTATIONTABLECATALOGID
+  -- 2F70D9AF-9162-4A74-AAEA-0B9413346961		9EDC31CE-10AB-4D8E-9FB2-942979891488	E607DCD8-2D21-4918-A044-5597DF53A403	E607DCD8-2D21-4918-A044-5597DF53A403
+
+  if not exists (select 1 from dbo.ANNOTATIONTABLEMAPPING  where ID = '2F70D9AF-9162-4A74-AAEA-0B9413346961')
+	  begin
+		  INSERT INTO [dbo].[ANNOTATIONTABLEMAPPING]
+				     ([ID]
+				     ,[SOURCERECORDTYPEID]
+				     ,[DISPLAYFORRECORDTYPEID]
+				     ,[ANNOTATIONTABLECATALOGID]
+				     ,[ADDEDBYID]
+				     ,[CHANGEDBYID]
+				     ,[DATEADDED]
+				     ,[DATECHANGED]
+				     ,[SOURCETABLENAMECOLUMN]
+				     ,[INSTALLEDPRODUCTLISTEVALUATIONMETHOD]
+				     ,[INSTALLEDPRODUCTLIST])
+			   VALUES
+				     ('2F70D9AF-9162-4A74-AAEA-0B9413346961'
+				     ,'9EDC31CE-10AB-4D8E-9FB2-942979891488'
+				     ,'E607DCD8-2D21-4918-A044-5597DF53A403'
+				     ,'E607DCD8-2D21-4918-A044-5597DF53A403' --'5334DE9F-89E3-4D75-B074-537064EB893D'
+				     ,@CHANGEAGENTID
+				     ,@CHANGEAGENTID
+				     ,@dateAdded
+				     ,@dateAdded
+				     ,'TITLE'
+				     ,''
+				     ,'')
+	  end
+
+  return 0;
+	
+end
+				]]>
+			</c:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<!-- optionally, offer a prompt before executing the record operation -->
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+
+</RecordOperationSpec>
