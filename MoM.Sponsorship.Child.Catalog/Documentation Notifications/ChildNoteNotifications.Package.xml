@@ -63,6 +63,7 @@
         <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Documentation Notifications.OCMChildDocumentation.DataList.xml" />
         <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Documentation Notifications.ChildNoteNotification.Add.xml" />
         <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Documentation Notifications.ChildNoteNotification.Edit.xml" />
-    </c:DependencyList>
+        <c:Dependency CatalogAssembly="MoM.Sponsorship.Child.Catalog.dll" CatalogItem="MoM.Sponsorship.Child.Catalog.Documentation Notifications.ChildNotifications.Query.xml" />
+  </c:DependencyList>
 
 </PackageSpec>

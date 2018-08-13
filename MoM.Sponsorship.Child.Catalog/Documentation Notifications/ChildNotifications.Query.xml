@@ -1,0 +1,104 @@
+﻿<QueryViewSpec
+	xmlns="bb_appfx_queryview"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="bf7ea1ef-b789-4964-9f9e-1852565709ec"
+	Name="Child Notifications Query"
+	Description="Displays child notifications records"
+	Author="Mark Sellers"
+	IsRoot="true"
+	PrimaryKeyField="ID"
+	RecordType="Notification Query\Sponsorship Opportunity Note"
+	c:SecurityUIFolder="Child Notifications"
+	>
+
+	<!-- define the view used to return data for the query -->
+	<ViewImplementation ViewName="USR_V_QUERY_ANNOTATIONE607DCD82D214918A0445597DF53A403">
+		<ViewSQL>
+			<![CDATA[
+        select
+	        ANNOTATION.ID,
+	        ANNOTATION.DISPLAYNOTIFICATIONWINDOW,
+	        ANNOTATION.VALIDUNTIL,
+	        ANNOTATION.APPLYTO,
+	        IDSETREGISTER.NAME as APPUSERIDSETREGISTERNAME,
+	        ANNOTATION.APPUSERIDSETREGISTERID,
+	        SOURCE.TITLE as SOURCETITLE,
+	        ANNOTATION.DATEADDED,
+	        ANNOTATION.DATECHANGED,
+	        ANNOTATION.TSLONG,
+	        ADDEDBY.APPLICATIONNAME as ADDEDBY_APPLICATION,
+	        ADDEDBY.USERNAME as ADDEDBY_USERNAME,
+	        CHANGEDBY.APPLICATIONNAME as CHANGEDBY_APPLICATION,
+	        CHANGEDBY.USERNAME as CHANGEDBY_USERNAME
+	        /*#EXTENSION*/ 
+        from 
+	        dbo.ANNOTATIONE607DCD82D214918A0445597DF53A403 as ANNOTATION
+	        inner join dbo.CHANGEAGENT as ADDEDBY on ADDEDBY.ID = ANNOTATION.ADDEDBYID
+	        inner join dbo.CHANGEAGENT as CHANGEDBY on CHANGEDBY.ID = ANNOTATION.CHANGEDBYID
+	        inner join dbo.SPONSORSHIPOPPORTUNITYNOTE as SOURCE on ANNOTATION.ID = SOURCE.ID
+	        left join dbo.IDSETREGISTER on IDSETREGISTER.ID = ANNOTATION.APPUSERIDSETREGISTERID
+  ]]>
+		</ViewSQL>
+	</ViewImplementation>
+
+	<!-- describe each field in the view output -->
+	<Output>
+		<OutputFields>
+      <OutputField Name="ID" Caption="System record ID" Category="System Fields" CaptionResourceKey="$$system_record_id" CategoryResourceKey="$$system_fields" />
+      <OutputField Name="DISPLAYNOTIFICATIONWINDOW" Caption="Display in notification window" CaptionResourceKey="$$display_in_notification_window" />
+      <OutputField Name="VALIDUNTIL" Caption="End date" CaptionResourceKey="$$end_date" />
+      <OutputField Name="APPLYTO" Caption="Displays for" CaptionResourceKey="$$displays_for">
+        <LookupInfo>
+          <TranslationList>
+            <c:Options>
+              <c:TranslationListOption Value="All users" />
+              <c:TranslationListOption Value="Selected users" />
+            </c:Options>
+          </TranslationList>
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="APPUSERIDSETREGISTERNAME" Caption="Selection" CaptionResourceKey="$$selection" />
+      <OutputField Name="APPUSERIDSETREGISTERID" Caption="Selection system record ID" CaptionResourceKey="$$selection_system_record_id">
+        <LookupInfo>
+          <SearchList ID="98d0070e-c4a7-495b-a438-2ac12da79068">
+            <FormFieldOverrides>
+              <c:FormFieldOverride FieldID="RECORDTYPEID" Caption="Record type" ReadOnly="true" DefaultValueText="cfd7e05e-7b57-4eed-ad21-5b94b551c0be" />
+            </FormFieldOverrides>
+          </SearchList>
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="DATEADDED" Caption="Date added" Category="System Fields" CaptionResourceKey="$$date_added" CategoryResourceKey="$$system_fields" />
+      <OutputField Name="DATECHANGED" Caption="Date changed" Category="System Fields" CaptionResourceKey="$$date_changed" CategoryResourceKey="$$system_fields" />
+      <OutputField Name="TSLONG" Caption="Timestamp value" IsHidden="true" Category="System Fields" />
+      <OutputField Name="ADDEDBY_APPLICATION" Caption="Added by application" Category="System Fields" CaptionResourceKey="$$added_by_application" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="ADDEDBY_USERNAME" Caption="Added by user name" Category="System Fields" CaptionResourceKey="$$added_by_user_name" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="CHANGEDBY_APPLICATION" Caption="Changed by application" Category="System Fields" CaptionResourceKey="$$changed_by_application" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="37e3e458-af0d-4dbc-8a18-a93885521a42" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="CHANGEDBY_USERNAME" Caption="Changed by user name" Category="System Fields" CaptionResourceKey="$$changed_by_user_name" CategoryResourceKey="$$system_fields">
+        <LookupInfo>
+          <SimpleDataList SimpleDataListID="cea15e1c-e455-41be-9ecf-6b5453fa96a4" />
+        </LookupInfo>
+      </OutputField>
+      <OutputField Name="SOURCETITLE" Caption="Source title" IsHidden="true" />
+    </OutputFields>
+    <IdentifyingFields>
+      <IdentifyingField Name="SOURCETITLE" />
+    </IdentifyingFields>
+  </Output>
+  <RelationshipOperations>
+    <AddToParentView ParentView="V_QUERY_SPONSORSHIPOPPORTUNITYNOTE" ParentViewRelatedField="ID" Field="ID" PathAlias="Notification" DisplayAliasResourceKey="$$notification" />
+  </RelationshipOperations>
+
+</QueryViewSpec>
+
