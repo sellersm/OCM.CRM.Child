@@ -10,6 +10,19 @@
 	c:SecurityUIFolder="CHILD"
 	>
 
+  <!-- 
+  	Remarks: The “Delete” Action will only be displayed if the Status value is “Open” or “Closed”.
+              - If the Status value is either “Sponsored” or “Prospect sponsored” then the Delete action will be disabled.
+
+	  History:
+	  Date            Modified By     Comments
+	  ??-Feb-2018		  MSellers			  Initial Version
+    26-Sep-2018     MSellers        Updated per the following:
+      -	When the user presses the Delete action: 
+        o	if the Status value is “Open”, then the process will run the Unreserve task process.
+        o	If the Status value is “Closed”, then it will only delete the Reservation Key row and NOT run the Unreserve process.
+  -->
+
 	<SPRecord>
 		<SPOperationImplementation SPName="USR_USP_RECORDOPERATION_DELETECHILDRESERVATIONROW">
 			<c:CreateProcedureSQL>
@@ -20,12 +33,33 @@ create procedure dbo.USR_USP_RECORDOPERATION_DELETECHILDRESERVATIONROW
 	@CHANGEAGENTID uniqueidentifier
 )
 as begin
-	--check deletion rules, if any
+  declare @KEYSTATUS nvarchar(18);
+  declare @SPONSORSHIPOPPORTUNITYCHILDID uniqueidentifier;
 
-	-- use the system generated delete routine to allow proper recording of the deleting agent
-	exec dbo.USP_USR_CHILDRESERVATION_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
-	return 0;
-	
+  begin try
+	  --get the Reservation Key Status value:
+    select  @KEYSTATUS = STATUS,
+            @SPONSORSHIPOPPORTUNITYCHILDID = SPONSORSHIPOPPORTUNITYCHILDID
+    from dbo.USR_CHILDRESERVATION
+    where ID = @ID;
+
+	  -- use the system generated delete routine to allow proper recording of the deleting agent
+	  exec dbo.USP_USR_CHILDRESERVATION_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+  
+    -- if the Status was Open, perform the Unreserve process:
+    if lower(@KEYSTATUS) = 'open'
+      begin
+        exec dbo.USP_RECORDOPERATION_SPONSORSHIPOPPORTUNITY_UNRESERVE @SPONSORSHIPOPPORTUNITYCHILDID, @CHANGEAGENTID
+      end    
+	  
+    return 0;
+  end try
+
+  begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1;
+  end catch
+
 end
 				]]>
 			</c:CreateProcedureSQL>
