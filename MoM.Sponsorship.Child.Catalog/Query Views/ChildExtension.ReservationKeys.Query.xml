@@ -7,27 +7,28 @@
 	Author="Cary Mayeda"
 	IsRoot="true"
 	PrimaryKeyField="ID"
-	RecordType="Sponsorship Opportunity"
+	RecordType="Child Reservation"
     common:SecurityUIFolder="Sponsorship\Opportunity"
 	UseInReportModelGenerator="true"
 	EnforceRecordAccessSecurity="true" >
 	
 	<!-- 
 	Remarks:    Parent is Sponsorship Opportunity (V_QUERY_SPONSORSHIPOPPORTUNITY)
+              NOTE: we need the Child Reservation ID as the key field as this is used 
+              as the basis of a Selection used in the Global Change.
 
 	History:
 	Date          Modified By   Comments
 	30-Sep-2012		CMayeda			  Initial Version - FogBugz Case 836
   04-Oct-2018   MSellers      Added the Child's LookupId per Pamela
-                              Set the ID column to the ChildId so user can view Child page
 	-->
 	
 	<!-- define the view used to return data for the query -->
 	<ViewImplementation ViewName="USR_V_QUERY_RESERVATIONKEY_SPONSORSHIPOPPORTUNITYCHILD">
 		<ViewSQL>
 			<![CDATA[
-    select	--USR_CHILDRESERVATION.ID,
-            child.CONSTITUENTID as ID,
+    select	USR_CHILDRESERVATION.ID,
+            --child.CONSTITUENTID as ID,
             SPONSORSHIPOPPORTUNITYCHILDID,
             (select NAME from SPONSORSHIPOPPORTUNITYRESERVEPROCESS where ID = USR_CHILDRESERVATION.SPONSORSHIPOPPORTUNITYRESERVEPROCESSID) as SPONSORSHIPOPPORTUNITYRESERVEPROCESSNAME,
             SOLICITORID,
